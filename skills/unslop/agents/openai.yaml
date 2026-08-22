@@ -1,0 +1,7 @@
+interface:
+  display_name: "Unslop"
+  short_description: "Remove AI writing patterns without changing facts"
+  default_prompt: "$unslop"
+
+policy:
+  allow_implicit_invocation: true

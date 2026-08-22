@@ -1,0 +1,38 @@
+name: Validate agent skills
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install development dependency
+        run: python3 -m pip install -r requirements-dev.txt
+
+      - name: Validate catalog
+        run: python3 scripts/validate-skills.py
+
+      - name: Test canonical skills
+        run: python3 tests/unslop-test.py
+
+      - name: Check repository shell syntax
+        run: |
+          bash -n scripts/manage-skills.sh
+          bash -n tests/manage-skills-test.sh
+
+      - name: Test skill management
+        run: bash tests/manage-skills-test.sh
