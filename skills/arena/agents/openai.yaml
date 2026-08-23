@@ -1,0 +1,7 @@
+interface:
+  display_name: "Arena"
+  short_description: "Compare parallel attempts and synthesize the best"
+  default_prompt: "Use $arena to run isolated competing attempts, judge them against a rubric, and synthesize one verified result."
+
+policy:
+  allow_implicit_invocation: false

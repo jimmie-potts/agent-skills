@@ -27,7 +27,13 @@ jobs:
         run: python3 scripts/validate-skills.py
 
       - name: Test canonical skills
-        run: python3 tests/unslop-test.py
+        run: |
+          python3 tests/architect-test.py
+          python3 tests/blast-radius-test.py
+          python3 tests/interrogate-test.py
+          python3 tests/pstack-analysis-skills-test.py
+          python3 tests/pstack-workflow-skills-test.py
+          python3 tests/unslop-test.py
 
       - name: Check repository shell syntax
         run: |

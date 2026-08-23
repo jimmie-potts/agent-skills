@@ -1,0 +1,7 @@
+interface:
+  display_name: "TDD"
+  short_description: "Prove a bug red before fixing it green"
+  default_prompt: "Use $tdd to reproduce this bug with a failing test, fix it, and prove the regression check passes."
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Why"
+  short_description: "Trace the evidence behind technical decisions"
+  default_prompt: "Use $why to investigate the evidence for why this code or design has its current shape."
+
+policy:
+  allow_implicit_invocation: true

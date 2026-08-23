@@ -11,12 +11,27 @@ registry, cloud-sync service, automatic updater, or organization-wide
 distribution system. Project-specific skills should remain in the project that
 uses them.
 
-The catalog currently contains [`unslop`](skills/unslop/SKILL.md), a pinned
-third-party editorial skill that can match drafting or material edits to
-narrative prose while preserving authoritative content. Its license and source
-record travel with the skill, and root-level provenance is recorded in
-[`PROVENANCE.md`](PROVENANCE.md). The examples under `tests/fixtures/` are
-validation fixtures, not installable catalog entries.
+The catalog currently contains:
+
+- [`architect`](skills/architect/SKILL.md), an explicit design-first code
+  architecture workflow;
+- [`arena`](skills/arena/SKILL.md), an explicit parallel-candidate synthesis
+  workflow;
+- [`blast-radius`](skills/blast-radius/SKILL.md), an explicit change-risk
+  analysis workflow;
+- [`how`](skills/how/SKILL.md), a code-flow and architecture explainer;
+- [`interrogate`](skills/interrogate/SKILL.md), an explicit independent
+  adversarial-review workflow;
+- [`teach`](skills/teach/SKILL.md), a layered code and design lesson workflow;
+- [`tdd`](skills/tdd/SKILL.md), an explicit failing-test-first bug-fix workflow;
+- [`technical-writing`](skills/technical-writing/SKILL.md), an explicit technical
+  prose drafting and review standard;
+- [`unslop`](skills/unslop/SKILL.md), an editorial workflow for narrative prose;
+- [`why`](skills/why/SKILL.md), an evidence-based design-rationale investigator.
+
+Their licenses and source records travel with each skill, and root-level
+provenance is recorded in [`PROVENANCE.md`](PROVENANCE.md). The examples under
+`tests/fixtures/` are validation fixtures, not installable catalog entries.
 
 ## Prerequisites
 
@@ -81,6 +96,11 @@ credential, generated cache, or machine-specific configuration.
 
 ```bash
 python3 scripts/validate-skills.py
+python3 tests/architect-test.py
+python3 tests/blast-radius-test.py
+python3 tests/interrogate-test.py
+python3 tests/pstack-analysis-skills-test.py
+python3 tests/pstack-workflow-skills-test.py
 python3 tests/unslop-test.py
 bash -n scripts/manage-skills.sh
 bash -n tests/manage-skills-test.sh

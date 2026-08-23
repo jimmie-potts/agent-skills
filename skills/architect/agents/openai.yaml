@@ -1,0 +1,7 @@
+interface:
+  display_name: "Architect"
+  short_description: "Design code contracts and module ownership first"
+  default_prompt: "Use $architect to design the caller contract, types, and module boundaries before implementation."
+
+policy:
+  allow_implicit_invocation: false
