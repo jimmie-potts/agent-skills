@@ -24,8 +24,8 @@ The catalog currently contains:
   adversarial-review workflow;
 - [`teach`](skills/teach/SKILL.md), a layered code and design lesson workflow;
 - [`tdd`](skills/tdd/SKILL.md), an explicit failing-test-first bug-fix workflow;
-- [`technical-writing`](skills/technical-writing/SKILL.md), an explicit technical
-  prose drafting and review standard;
+- [`technical-writing`](skills/technical-writing/SKILL.md), a technical prose
+  drafting and review standard;
 - [`unslop`](skills/unslop/SKILL.md), an editorial workflow for narrative prose;
 - [`why`](skills/why/SKILL.md), an evidence-based design-rationale investigator.
 

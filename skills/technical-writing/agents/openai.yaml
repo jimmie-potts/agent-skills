@@ -4,4 +4,4 @@ interface:
   default_prompt: "Use $technical-writing to draft or review this technical prose for purpose, clarity, and unambiguous syntax."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

@@ -1,6 +1,6 @@
 ---
 name: technical-writing
-description: Draft or review technical documentation using a clear document mode, direct developer-focused sentences, limited sentence load, and unambiguous syntax. Use only when the user explicitly invokes technical-writing or asks to apply this writing standard to documentation, RFCs, READMEs, pull-request descriptions, or commit messages.
+description: Draft or review developer-facing technical prose using a clear document mode, direct sentences, limited sentence load, and unambiguous syntax. Use for requests to draft, rewrite, or review documentation, RFCs, READMEs, pull-request descriptions, commit messages, or formal technical reports; do not use for code-only work, ordinary code explanations, or nontechnical prose.
 ---
 
 # Technical writing

@@ -19,6 +19,11 @@ EXPECTED_DIGESTS = {
     "tdd": "adad031f9e79d7f7389fa128f7af8e03344831270e282cf4e40bdacb8418c386",
     "technical-writing": "bd0cb21034f4fe6695cfdf8cd3561026eec943f0bb6e9300bc78a2b3340865a7",
 }
+EXPECTED_IMPLICIT_INVOCATION = {
+    "teach": False,
+    "tdd": False,
+    "technical-writing": True,
+}
 
 
 def split_frontmatter(markdown: str) -> tuple[dict[str, object], str]:
@@ -48,8 +53,9 @@ class PstackWorkflowSkillsTest(unittest.TestCase):
                 self.assertTrue(path.is_file(), f"{path} must be a regular file")
                 self.assertFalse(path.is_symlink(), f"{path} must not be a symlink")
 
-    def test_all_three_skills_are_explicit_only_and_portable(self) -> None:
-        for name in EXPECTED_DIGESTS:
+    def test_skills_have_portable_frontmatter_and_intended_invocation_policy(self) -> None:
+        self.assertEqual(set(EXPECTED_DIGESTS), set(EXPECTED_IMPLICIT_INVOCATION))
+        for name, allow_implicit in EXPECTED_IMPLICIT_INVOCATION.items():
             directory = SKILLS_ROOT / name
             frontmatter, _ = split_frontmatter(
                 (directory / "SKILL.md").read_text(encoding="utf-8")
@@ -59,11 +65,40 @@ class PstackWorkflowSkillsTest(unittest.TestCase):
             )
             self.assertEqual(sorted(frontmatter), ["description", "name"])
             self.assertEqual(frontmatter["name"], name)
-            self.assertIn("explicit", str(frontmatter["description"]).lower())
+            description = str(frontmatter["description"]).lower()
+            if allow_implicit:
+                self.assertNotIn("explicit", description)
+            else:
+                self.assertIn("explicit", description)
             self.assertEqual(sorted(metadata), ["interface", "policy"])
             self.assertIn(f"${name}", metadata["interface"]["default_prompt"])
-            self.assertIs(metadata["policy"]["allow_implicit_invocation"], False)
+            self.assertIs(
+                metadata["policy"]["allow_implicit_invocation"], allow_implicit
+            )
             self.assertNotIn("dependencies", metadata)
+
+        technical_description = str(
+            split_frontmatter(
+                (SKILLS_ROOT / "technical-writing" / "SKILL.md").read_text(
+                    encoding="utf-8"
+                )
+            )[0]["description"]
+        ).lower()
+        for trigger in (
+            "documentation",
+            "rfcs",
+            "readmes",
+            "pull-request descriptions",
+            "commit messages",
+            "formal technical reports",
+        ):
+            self.assertIn(trigger, technical_description)
+        for boundary in (
+            "code-only work",
+            "ordinary code explanations",
+            "nontechnical prose",
+        ):
+            self.assertIn(boundary, technical_description)
 
     def test_workflows_keep_their_material_invariants(self) -> None:
         bodies = {

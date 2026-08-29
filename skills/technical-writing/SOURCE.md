@@ -9,11 +9,14 @@
 
 ## Local adaptations
 
-The upstream explicit-invocation setting moves from Cursor-only frontmatter to
-`agents/openai.yaml`. The local version keeps the Diátaxis mode selection,
-developer-focused sentence style, Simplified Technical English constraints,
-Global English disambiguation, and `unslop` final pass in a shorter portable
-workflow.
+The local version does not preserve the upstream explicit-only invocation
+setting. `agents/openai.yaml` enables Codex implicit invocation so ordinary
+technical-prose requests and other installed workflows can select the skill.
+The portable description provides the shared selection boundary.
+
+The local version keeps the Diátaxis mode selection, developer-focused sentence
+style, Simplified Technical English constraints, Global English disambiguation,
+and `unslop` final pass in a shorter portable workflow.
 
 It removes upstream instructions to change another skill and project-specific
 snippet indentation. It adds authority and evidence boundaries so a writing
