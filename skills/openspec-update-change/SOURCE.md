@@ -19,3 +19,7 @@ owns issue identity, completion gates, and delivery effects.
 Regenerate into an isolated temporary project when updating the pinned version.
 Review the complete generated diff and these adaptations in this catalog.
 Do not generate or vendor shared integrations in consuming product repositories.
+
+Authority adaptations also reconcile update/explore capture, grouped questioning,
+issue-linked selection, and archive warnings with consuming repository policy.
+Routine authorized steps do not add confirmation rounds.

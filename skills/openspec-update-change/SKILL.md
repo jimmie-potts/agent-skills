@@ -13,7 +13,11 @@ new filesystem, tracker, publication, or implementation authority. A planning-
 only request stays read-only unless it explicitly authorizes artifact writes.
 When composed within authorized delivery, return to the coordinating workflow
 at the end of this substep; do not discard its existing authority. Repository
-policy controls completion, required synchronization, and archival gates.
+policy controls completion, required synchronization, and archival gates,
+including stricter requirements than the fallback steps below. Reuse existing
+authorization for scoped artifact edits; ask only when authority or a material
+decision is missing. If the repository links changes to issues, require that
+exact link; a lone or recently modified change does not establish a match.
 
 Revise a change's existing planning artifacts and keep them coherent. Never edit code.
 
@@ -67,15 +71,16 @@ Revise a change's existing planning artifacts and keep them coherent. Never edit
    - Revise only files that already exist (`existingOutputPaths`). Do NOT create artifacts that don't exist yet, and do NOT invent new files under a glob artifact - note them and point the user to `openspec-continue-change` to create them.
    - If the change is already coherent, say so and make no edits.
 
-5. **Confirm and apply, one artifact at a time**
-   - Show each proposed revision and why. Write only after the user confirms.
+5. **Apply authorized revisions, one artifact at a time**
+   - Explain each revision and why. Apply edits already authorized by the request. For additional scope or unresolved decisions, show the proposal and obtain the missing authorization or answer first.
    - If the user rejects a revision, do not write it - leave that artifact unchanged.
    - When a substantial rewrite is needed, get that artifact's rules and template first:
      ```bash
      openspec instructions "<artifact-id>" --change "<name>" --json
      ```
 
-6. **Point to the next step (guidance only - NEVER act on it)**
+6. **Return the next step to the coordinator**
+   - This substep edits planning artifacts only. Return to an authorized delivery coordinator for subsequent work; a direct plan-only request stops at its requested boundary.
    - Artifacts still missing -> suggest `openspec-continue-change` to create them.
    - Change already implemented (tasks checked off / already applied) -> the code may no longer match the revised plan; suggest `openspec-apply-change` to carry the delta into code.
    - Everything done and implemented -> suggest `openspec-archive-change`.
@@ -88,9 +93,9 @@ After each invocation, show:
 - Where the change stands and the recommended next command
 
 **Guardrails**
-- Planning artifacts only - NEVER edit implementation code. If the revised plan implies code changes, stop and point to `openspec-apply-change`.
+- Planning artifacts only - NEVER edit implementation code. If the revised plan implies code changes, report them to the coordinator for `openspec-apply-change`; do not implement inside this substep.
 - Use the artifact ids and paths reported by `openspec status`; never branch on hardcoded artifact names.
 - Edit only the concrete files in `existingOutputPaths`; never write to a glob `resolvedOutputPath`.
 - Do not advance the build frontier: no new artifacts, no new files under glob artifacts - that is `openspec-continue-change`'s job.
-- Confirm every edit with the user before writing.
+- Preserve existing authority for routine scoped edits. Ask before expanding the authorized scope; decision answers alone do not authorize new work.
 - If the request changes the change's *intent* rather than refining it, first verify whether the optional `openspec-new-change` workflow is available. If it is, recommend starting fresh with `openspec-new-change` (the "Update vs. Start Fresh" heuristic). If it is unavailable, ask for a distinct unused change name and recommend `openspec new change "<new-change-name>"` instead.

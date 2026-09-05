@@ -13,7 +13,11 @@ new filesystem, tracker, publication, or implementation authority. A planning-
 only request stays read-only unless it explicitly authorizes artifact writes.
 When composed within authorized delivery, return to the coordinating workflow
 at the end of this substep; do not discard its existing authority. Repository
-policy controls completion, required synchronization, and archival gates.
+policy controls completion, required synchronization, and archival gates,
+including stricter requirements than the fallback steps below. Reuse existing
+authorization for scoped artifact edits; ask only when authority or a material
+decision is missing. If the repository links changes to issues, require that
+exact link; a lone or recently modified change does not establish a match.
 
 Implement tasks from an OpenSpec change.
 

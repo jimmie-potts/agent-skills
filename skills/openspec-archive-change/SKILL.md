@@ -13,7 +13,11 @@ new filesystem, tracker, publication, or implementation authority. A planning-
 only request stays read-only unless it explicitly authorizes artifact writes.
 When composed within authorized delivery, return to the coordinating workflow
 at the end of this substep; do not discard its existing authority. Repository
-policy controls completion, required synchronization, and archival gates.
+policy controls completion, required synchronization, and archival gates,
+including stricter requirements than the fallback steps below. Reuse existing
+authorization for scoped artifact edits; ask only when authority or a material
+decision is missing. If the repository links changes to issues, require that
+exact link; a lone or recently modified change does not establish a match.
 
 Archive a completed change in the experimental workflow.
 
@@ -75,8 +79,8 @@ Archive a completed change in the experimental workflow.
 
    **If any artifacts are neither `done` nor `skipped`** (skipped artifacts satisfy the requirement - the change declares skip_specs):
    - Display warning listing incomplete artifacts
-   - Ask the user to confirm they want to proceed
-   - Proceed if user confirms
+   - Stop if the consuming repository requires completion. Otherwise describe the incomplete work and obtain explicit authority for an incomplete archive.
+   - Proceed only when repository policy and the authorized target permit it
 
 3. **Check task completion status**
 
@@ -86,8 +90,8 @@ Archive a completed change in the experimental workflow.
 
    **If incomplete tasks found:**
    - Display warning showing count of incomplete tasks
-   - Ask the user to confirm they want to proceed
-   - Proceed if user confirms
+   - Stop if the consuming repository requires completion. Otherwise describe the incomplete work and obtain explicit authority for an incomplete archive.
+   - Proceed only when repository policy and the authorized target permit it
 
    **If no tasks file exists:** Proceed without task-related warning.
 
@@ -174,7 +178,7 @@ Archive a completed change in the experimental workflow.
 **Guardrails**
 - Announce the selected change; prompt for selection when it is ambiguous
 - Use artifact graph (openspec status --json) for completion checking
-- Don't block archive on warnings - just inform and confirm
+- Apply the consuming repository's completion gates. Incomplete required work blocks archival; confirmation cannot bypass those gates. Other warnings need an explicit disposition.
 - Preserve .openspec.yaml when moving to archive (it moves with the directory)
 - Show clear summary of what happened
 - If sync is requested, run the `openspec-sync-specs` workflow inline (agent-driven)

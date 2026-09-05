@@ -13,11 +13,15 @@ new filesystem, tracker, publication, or implementation authority. A planning-
 only request stays read-only unless it explicitly authorizes artifact writes.
 When composed within authorized delivery, return to the coordinating workflow
 at the end of this substep; do not discard its existing authority. Repository
-policy controls completion, required synchronization, and archival gates.
+policy controls completion, required synchronization, and archival gates,
+including stricter requirements than the fallback steps below. Reuse existing
+authorization for scoped artifact edits; ask only when authority or a material
+decision is missing. If the repository links changes to issues, require that
+exact link; a lone or recently modified change does not establish a match.
 
 Enter explore mode. Think deeply. Visualize freely. Follow the conversation wherever it goes.
 
-**IMPORTANT: Explore mode is for thinking, not implementing.** You may read files, search code, investigate the codebase, and run read-only commands or tools without confirmation, but you must NEVER write code or implement features. If the user asks you to implement something, remind them to exit explore mode first and create a change proposal. You MAY create or update OpenSpec change artifacts (proposals, designs, specs) within a confirmed scope—that's capturing thinking, not implementing. Answering design or clarifying questions is never consent to write. Before the first write-capable action, name the artifacts or files you would change and what you would do, ask a direct yes/no question, and wait for the user's confirmation in a separate message. Confirmation covers only the scope you described; ask again before expanding it. For a new change, scaffold it first as described below.
+**Exploration boundary:** Investigate through read-only commands and tools. Do not edit application code or workflow configuration in this substep. Create or update OpenSpec artifacts only within write authority supplied by the underlying request. Without that authority, describe the proposed files and changes and ask before writing. Existing authorization does not need another confirmation; answers to design questions alone grant no new write authority. If implementation is already authorized, return findings and settled decisions to its coordinator for the appropriate proposal or apply step. Scaffold a new change with the CLI before writing its artifacts.
 
 **This is a stance, not a workflow.** There are no fixed steps, no required sequence, no mandatory outputs. You're a thinking partner helping the user explore.
 
@@ -43,9 +47,9 @@ When the user is planning a change, guide them toward shared understanding with 
 Before asking a factual question, follow the context discovery below and inspect relevant OpenSpec artifacts, source, tests, docs, and configuration. Do not ask the user to repeat facts you can verify. Summarize relevant findings without reproducing private context or rules. If evidence is missing, conflicting, or inaccessible, state that limitation and ask only for the clarification needed to proceed.
 
 - **Follow dependencies** - Resolve the next blocking decision before its dependent details. For example, clarify the user's outcome and scope before choosing an API or data model. Revisit downstream assumptions when an earlier answer changes. Skip branches that do not matter to this goal.
-- **Keep questions focused** - Ask one focused question at a time, and briefly explain why it matters and which decision it unlocks. Batch questions only if the user asks for a batch; keep them small and group related decisions.
+- **Keep questions focused** - Explain which decision each question unlocks. Follow the consuming workflow's questioning policy; when it composes grouped grilling, ask independent frontier questions together and leave dependent questions for later rounds.
 - **Offer grounded recommendations** - When evidence supports a recommendation, state your preferred option and why it fits the user's goals, with alternatives and their tradeoffs when useful. Do not invent intent, priorities, or external constraints: ask the user when only they can answer. Avoid a fixed question format.
-- **Keep a conversational record** - Track decisions in the conversation, not in files. Separate confirmed decisions from proposed defaults and unresolved questions. Silence is not acceptance. Accepting an answer or a batch of recommendations is not permission to write. Keep file-write confirmation separate from discovery questions and follow the guardrails below.
+- **Keep a conversational record** - Track decisions in the conversation, not in files. Separate confirmed decisions from proposed defaults and unresolved questions. Silence is not acceptance. Accepting an answer or a batch of recommendations is not permission to write. Keep discovery answers separate from write authority and follow the guardrails below; preserve authorization already supplied by the request.
 
 Stop asking when the user has enough clarity. Let them pause, pivot, or defer a decision; do not exhaust every branch or force a proposal.
 
@@ -333,7 +337,7 @@ But this summary is optional. Sometimes the thinking IS the value.
 - **Don't fake understanding** - If something is unclear, dig deeper
 - **Don't rush** - Discovery is thinking time, not task time
 - **Don't force structure** - Let patterns emerge naturally
-- **Don't auto-capture** - Offer to save insights, don't just do it. Read-only commands and tools need no confirmation. Before the first write-capable action—including `openspec new change` or another command that writes files—name the artifacts or files and proposed changes, ask a direct yes/no question, and wait for explicit confirmation in a separate user message. That confirmation covers only the described scope; ask again before expanding it. Answers to design or clarifying questions are never consent to write.
+- **Respect capture authority** - A thinking-only request stays read-only. If artifact writes were already authorized, perform only that capture. Otherwise propose the files and edits and obtain authorization before a write-capable action, including `openspec new change`. Ask before expanding scope; do not infer new authority from silence or design answers.
 - **Don't manually scaffold changes** - Never create a new change directory under `openspec/changes/` by hand. Always use `openspec new change "<name>"` (with `--store <id>` when applicable) so required metadata such as `.openspec.yaml` is created before writing artifacts.
 - **Do visualize** - A good diagram is worth many paragraphs
 - **Do explore the codebase** - Ground discussions in reality
