@@ -33,7 +33,7 @@ Revise a change's existing planning artifacts and keep them coherent. Never edit
 
    If a name is provided, use it. Otherwise:
    - Infer from conversation context if the user mentioned a change
-   - Auto-select if only one active change exists
+   - Auto-select only when the active change matches the requested scope and any required issue link
    - If ambiguous, run `openspec list --json` to get available changes sorted by most recently modified, and ask the user to select one
 
    When prompting, present the top 3-4 most recently modified changes as options, showing:
@@ -42,7 +42,7 @@ Revise a change's existing planning artifacts and keep them coherent. Never edit
    - Status (e.g., "0/5 tasks", "complete", "no tasks")
    - How recently it was modified (from `lastModified` field)
 
-   Mark the most recently modified change as "(Recommended)" since it's likely what the user wants to update.
+   Recommend a change only when its scope matches the request; recency alone is not evidence of intent.
 
    Always announce: "Using change: <name>" and how to override (e.g., `openspec-update-change <other>`).
 

@@ -23,3 +23,7 @@ Do not generate or vendor shared integrations in consuming product repositories.
 Authority adaptations also reconcile update/explore capture, grouped questioning,
 issue-linked selection, and archive warnings with consuming repository policy.
 Routine authorized steps do not add confirmation rounds.
+
+Archive adaptations require successful current input retrieval, account for
+legitimate conditional artifacts, and reuse authorized synchronization instead
+of offering options that conflict with repository completion gates.

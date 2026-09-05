@@ -33,7 +33,7 @@ Archive a completed change in the experimental workflow.
 
    If a name is provided, use it. Otherwise:
    - Infer from conversation context if the user mentioned a change
-   - Auto-select if only one active change exists
+   - Auto-select only when the active change matches the requested scope and any required issue link
    - If ambiguous, run `openspec list --json` to get available changes and ask the user to select one
 
    When prompting, show only active changes (not already archived).
@@ -47,11 +47,10 @@ Archive a completed change in the experimental workflow.
    ```bash
    openspec instructions archive --change "<name>" --json
    ```
-   Keep the same selected-root flags on this command. This lookup is advisory and
-   optional: it only supplies extra prompt inputs, so it must never block archiving.
-   If it exits non-zero or returns invalid JSON — for example on an older CLI that
-   does not support this command yet — continue the archive workflow with no
-   context and no operation guidance. Do not report an error and do not stop.
+   Keep the same selected-root flags on this command. Require a successful
+   lookup and valid JSON before archival. If the command is unsupported, exits
+   non-zero, or returns invalid JSON, report the failure and stop before moving
+   the change. Do not treat failed input retrieval as absent configuration.
 
    A successful response may omit both optional fields. Treat `context` as a
    required prompt-level input: read and consider it, and apply relevant project
@@ -77,8 +76,13 @@ Archive a completed change in the experimental workflow.
    - `planningHome`, `changeRoot`, `artifactPaths`, and `actionContext`: path and scope context
    - `artifacts`: List of artifacts with their status (`done`, `skipped`, or other)
 
-   **If any artifacts are neither `done` nor `skipped`** (skipped artifacts satisfy the requirement - the change declares skip_specs):
-   - Display warning listing incomplete artifacts
+   Evaluate the schema's required artifact set and any documented conditional
+   omission. A justified omission can leave an optional artifact `ready`; verify
+   its condition and every other requirement instead of treating that flag alone
+   as incomplete work. File existence alone does not establish acceptance.
+
+   **If required artifacts remain incomplete:**
+   - Display the incomplete artifacts and their missing evidence
    - Stop if the consuming repository requires completion. Otherwise describe the incomplete work and obtain explicit authority for an incomplete archive.
    - Proceed only when repository policy and the authorized target permit it
 
@@ -93,7 +97,7 @@ Archive a completed change in the experimental workflow.
    - Stop if the consuming repository requires completion. Otherwise describe the incomplete work and obtain explicit authority for an incomplete archive.
    - Proceed only when repository policy and the authorized target permit it
 
-   **If no tasks file exists:** Proceed without task-related warning.
+   **If no tasks file exists:** Verify the schema and repository do not require one before proceeding. A missing required task artifact blocks archival.
 
 4. **Assess delta spec sync state**
 
@@ -107,15 +111,14 @@ Archive a completed change in the experimental workflow.
    - Determine what changes would be applied (adds, modifications, removals, renames)
    - Show a combined summary before prompting
 
-   **Prompt options:**
-   - If changes needed: "Sync now (recommended)", "Archive without syncing"
-   - If already synced: "Archive now", "Sync anyway", "Cancel"
-
-   Route on the answer:
-   - "Cancel" — stop, do not archive
-   - "Archive without syncing" or "Archive now" — proceed to archive
-   - "Sync now" or "Sync anyway" — sync, then verify (below)
-   - Anything else — ask again rather than archiving
+   **Resolve synchronization within existing authority:**
+   - If the request already authorizes synchronization and archive, and repository
+     policy requires them, perform the necessary sync, verify it, then archive.
+     If already synchronized, verify that state and proceed without another prompt.
+   - Otherwise ask only for the missing decision or authority. Offer only options
+     allowed by repository policy. Cancel means stop; an ambiguous answer does
+     not authorize archive.
+   - Never offer an unsynchronized archive when repository policy requires sync.
 
    Before a selected sync writes any main spec, run
    `openspec instructions specs --change "<name>" --json` once with the same
@@ -183,9 +186,9 @@ Archive a completed change in the experimental workflow.
 - Show clear summary of what happened
 - If sync is requested, run the `openspec-sync-specs` workflow inline (agent-driven)
 - Never archive while a spec sync is still in flight — run the sync inline and verify the main specs before moving `changeRoot`
-- If delta specs exist, always run the sync assessment and show the combined summary before prompting
+- If delta specs exist, always assess synchronization and show the combined summary; ask only for missing authority or decisions
 - Apply relevant runtime context and report conflicts; operation guidance remains advisory
 - Consider every guidance entry and explain any inapplicable or conflicting advice
-- Existing CLI checks, resolved paths, prompts, and command contracts are unchanged
+- Preserve CLI checks, resolved paths, and command contracts; apply the authority boundary to prompts
 - Artifact rules constrain only the specs being written and are never operation guidance
 - Never copy runtime context, operation guidance, or artifact-rule text verbatim into output files

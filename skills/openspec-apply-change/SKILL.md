@@ -31,7 +31,7 @@ Implement tasks from an OpenSpec change.
 
    If a name is provided, use it. Otherwise:
    - Infer from conversation context if the user mentioned a change
-   - Auto-select if only one active change exists
+   - Auto-select only when the active change matches the requested scope and any required issue link
    - If ambiguous, run `openspec list --json` to get available changes and ask the user to select one
 
    Always announce: "Using change: <name>" and how to override (e.g., `openspec-apply-change <other>`).
