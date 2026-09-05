@@ -56,6 +56,9 @@ jobs:
           PATCH_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
           if [[ -n "$PATCH_BASE_SHA" && "$PATCH_BASE_SHA" != "0000000000000000000000000000000000000000" ]]; then
+            if ! git cat-file -e "$PATCH_BASE_SHA^{commit}" 2>/dev/null; then
+              git fetch --no-tags --depth=1 origin "$PATCH_BASE_SHA"
+            fi
             git diff --check "$PATCH_BASE_SHA" HEAD
           else
             git diff-tree --check --root -r HEAD
