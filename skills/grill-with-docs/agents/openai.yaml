@@ -1,0 +1,7 @@
+interface:
+  display_name: "Grill with Docs"
+  short_description: "Grill decisions and prepare documentation proposals"
+  default_prompt: "Use $grill-with-docs to compose $grilling and $domain-modeling, collect exact documentation proposals without writing, and wait for confirmation."
+
+policy:
+  allow_implicit_invocation: false

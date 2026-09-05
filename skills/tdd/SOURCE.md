@@ -18,6 +18,11 @@ The trigger is narrowed to explicit TDD or regression-test requests. The
 upstream heuristic that could select TDD automatically for an obvious cheap
 test does not override its own explicit-only host policy.
 
+The shared adaptation uses repository-defined scope and delivery owners.
+TDD covers both bugs and accepted feature scenarios with incremental
+red/green/refactor cycles. Deliberate composition is supported while the
+existing global explicit-only invocation setting remains unchanged.
+
 Updates are manual. Fetch the pinned source into a temporary directory, review
 the license and complete diff, recompute the digest, and rerun all checks before
 changing this copy.

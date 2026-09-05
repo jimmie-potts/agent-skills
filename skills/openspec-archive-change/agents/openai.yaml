@@ -1,0 +1,6 @@
+interface:
+  display_name: "Openspec Archive Change"
+  short_description: "Use the shared OpenSpec archive change workflow"
+  default_prompt: "Use $openspec-archive-change with this repository's pinned CLI and authorized scope."
+policy:
+  allow_implicit_invocation: true
