@@ -29,10 +29,11 @@ when the request is design-only.
 
 ### Ground
 
-Build a concrete model of every existing subsystem the design will touch. Use
-`$how` to trace runtime flow, ownership, data, and boundaries. Use `$why` when
-historical constraints, incidents, compatibility promises, or rejected
-alternatives could constrain the new shape. Preserve `$why`'s confidence labels
+Build a concrete model of every existing subsystem the design will touch. Load
+and follow `how` to trace runtime flow, ownership, data, and boundaries. Load
+and follow `why` when historical constraints, incidents, compatibility
+promises, or rejected
+alternatives could constrain the new shape. Preserve `why`'s confidence labels
 and gaps.
 
 Skip repository grounding only for genuinely greenfield work. Even then, state
@@ -58,10 +59,10 @@ Read [the candidate design discipline](references/design-review.md) before
 generating candidates. Write the caller's usage first, then derive data types,
 function signatures, module boundaries, and data flow.
 
-Use `$arena` to produce at least two structurally different candidate designs
-when independent candidates are available. Give each candidate the same
-grounding, constraints, and output contract. Different names around the same
-module graph do not count as distinct designs.
+Load and follow `arena` to produce at least two structurally different candidate
+designs when independent candidates are available. Give each candidate the
+same grounding, constraints, and output contract. Different names around the
+same module graph do not count as distinct designs.
 
 If independent candidates are unavailable, compare two genuinely different
 shapes in one design pass and disclose the limitation. Do not claim a
@@ -89,9 +90,9 @@ Choose one coherent base. Port only compatible ideas from losing candidates.
 Do not average designs with conflicting ownership or data models. Write the
 result using [the rationale template](references/rationale-template.md).
 
-Run `$interrogate` on the chosen design only when the user asks for adversarial
-review or the original architect request explicitly includes it. A design
-review does not authorize implementation.
+Load and follow `interrogate` on the chosen design only when the user asks for
+adversarial review or the original architect request explicitly includes it. A
+design review does not authorize implementation.
 
 ### Implement
 
@@ -112,7 +113,7 @@ special cases, recurring casts, callers coordinating internal stages, or shared
 state contradicting the ownership model. A single difficult edge case does not
 invalidate the design.
 
-Feed implementation evidence back through `$how`, update the constraints, and
+Feed implementation evidence back through `how`, update the constraints, and
 return to Explore. Remove the mistaken assumption before adding more machinery.
 
 ## Return
@@ -122,5 +123,5 @@ data and control flow, boundary and state rules, the synthesis decision,
 accepted tradeoffs, rejected alternatives, risks, and the next implementation
 step. For implementation work, add the deviations found and verification run.
 
-Apply `$unslop` to human-facing rationale without changing code, contracts,
-identifiers, citations, evidence, or confidence labels.
+Apply the `unslop` skill to human-facing rationale without changing code,
+contracts, identifiers, citations, evidence, or confidence labels.

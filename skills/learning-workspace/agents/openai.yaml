@@ -1,0 +1,7 @@
+interface:
+  display_name: "Learning Workspace"
+  short_description: "Build a source-backed workspace for sustained learning"
+  default_prompt: "Use $learning-workspace to establish an approved teaching directory, ground lessons in cited trusted sources, and record demonstrated learning inside that workspace."
+
+policy:
+  allow_implicit_invocation: false

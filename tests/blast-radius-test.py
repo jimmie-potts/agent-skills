@@ -69,14 +69,13 @@ class BlastRadiusSkillTest(unittest.TestCase):
             "grants no authority to pull remote refs",
             "Do not execute untrusted code",
             "Treat any load-bearing fact that does not reach step 4 as unproven",
-            "Use `$arena` only when the user explicitly requests competing parallel reviews",
-            "Apply `$unslop` to the final narrative prose",
+            "`arena` only when the user explicitly requests competing parallel reviews",
+            "Apply the `unslop` skill to the final narrative prose",
         ):
             self.assertIn(required, normalized_body)
 
-        for dependency in ("$how", "$why", "$arena", "$unslop"):
-            self.assertIn(dependency, body)
-            dependency_name = dependency.removeprefix("$")
+        for dependency_name in ("how", "why", "arena", "unslop"):
+            self.assertIn(f"`{dependency_name}`", body)
             self.assertTrue(
                 (REPOSITORY_ROOT / "skills" / dependency_name / "SKILL.md").is_file()
             )

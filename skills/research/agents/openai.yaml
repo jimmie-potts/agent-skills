@@ -1,0 +1,7 @@
+interface:
+  display_name: "Research"
+  short_description: "Investigate with primary sources and citations"
+  default_prompt: "Use $research to answer this question from high-trust sources with claim-level citations, returning findings in the response unless an exact file destination is authorized."
+
+policy:
+  allow_implicit_invocation: true

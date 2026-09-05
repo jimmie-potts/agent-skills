@@ -77,7 +77,7 @@ class PstackWorkflowSkillsTest(unittest.TestCase):
 
         for body in bodies.values():
             self.assertIn("grants no authority", body)
-            self.assertIn("$unslop", body)
+            self.assertIn("the `unslop` skill", body)
             for cursor_specific in (
                 "disable-model-invocation",
                 "generalPurpose",
@@ -86,8 +86,8 @@ class PstackWorkflowSkillsTest(unittest.TestCase):
             ):
                 self.assertNotIn(cursor_specific, body)
 
-        for dependency in ("$how", "$why", "$unslop"):
-            self.assertIn(dependency, bodies["teach"])
+        for dependency in ("how", "why", "unslop"):
+            self.assertIn(f"`{dependency}`", bodies["teach"])
         self.assertIn("fails for the expected reason", bodies["tdd"])
         self.assertIn("same regression test and confirm it passes", bodies["tdd"])
         for mode in ("Tutorial", "How-to", "Reference", "Explanation"):
@@ -97,7 +97,7 @@ class PstackWorkflowSkillsTest(unittest.TestCase):
     def test_teach_dependencies_resolve_to_catalog_entries(self) -> None:
         teach = (SKILLS_ROOT / "teach" / "SKILL.md").read_text(encoding="utf-8")
         for dependency in ("how", "why", "unslop"):
-            self.assertIn(f"${dependency}", teach)
+            self.assertIn(f"`{dependency}`", teach)
             self.assertTrue((SKILLS_ROOT / dependency / "SKILL.md").is_file())
 
     def test_provenance_and_mit_notices_are_pinned(self) -> None:

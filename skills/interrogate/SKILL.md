@@ -103,6 +103,6 @@ impact matter more than reviewer count.
 - **Agreement map.** Summarize convergence, divergence, and what was verified.
 - **Verification gaps.** Name claims that could not be confirmed and why.
 
-Do not apply changes unless the user separately asks for fixes. Apply `$unslop`
+Do not apply changes unless the user separately asks for fixes. Apply the `unslop` skill
 to the verdict without changing evidence, severity, citations, identifiers, or
 reviewer attribution.

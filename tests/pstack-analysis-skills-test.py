@@ -76,7 +76,7 @@ class PstackAnalysisSkillsTest(unittest.TestCase):
         }
         for body in bodies.values():
             self.assertIn("grants no authority", " ".join(body.split()))
-            self.assertIn("$unslop", body)
+            self.assertIn("the `unslop` skill", body)
             for cursor_specific in (
                 "generalPurpose",
                 "grok-4.6",
@@ -123,7 +123,7 @@ class PstackAnalysisSkillsTest(unittest.TestCase):
             encoding="utf-8"
         )
         for dependency in ("how", "why", "arena", "unslop"):
-            self.assertIn(f"${dependency}", blast_radius)
+            self.assertIn(f"`{dependency}`", blast_radius)
             self.assertTrue((SKILLS_ROOT / dependency / "SKILL.md").is_file())
 
 

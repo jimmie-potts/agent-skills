@@ -1,0 +1,7 @@
+interface:
+  display_name: "Diagnosing Bugs"
+  short_description: "Diagnose bugs through red-capable evidence"
+  default_prompt: "Use $diagnosing-bugs to demonstrate this symptom with a red-capable loop, test falsifiable causes, and stop after diagnosis unless a fix is separately authorized."
+
+policy:
+  allow_implicit_invocation: true

@@ -89,5 +89,5 @@ Return one synthesized artifact and a short synthesis note containing:
 - judge disagreements or convergence;
 - the verification performed and its result.
 
-Apply `$unslop` to human-facing prose while preserving the task contract,
+Apply the `unslop` skill to human-facing prose while preserving the task contract,
 rubric, evidence, code, identifiers, and verification results.

@@ -67,5 +67,5 @@ Report the exact test or check that failed before the fix and its failure
 reason. Report the same check passing afterward, plus nearby validation. If a
 red test was impractical, state why and name the substitute regression evidence.
 
-Apply `$unslop` to the final explanation without changing commands, test names,
+Apply the `unslop` skill to the final explanation without changing commands, test names,
 failures, logs, identifiers, or verification results.
