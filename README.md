@@ -1,9 +1,9 @@
 # Agent Skills
 
 `agent-skills` is the canonical authoring repository for reusable Agent Skills
-that should work in both Codex and Claude Code. A skill is maintained once under
-`skills/` and can be exposed to either local agent through one symlink per
-selected skill.
+that should work in Codex, Claude Code, and Pi. A skill is maintained once under
+`skills/` and can be exposed to local agents through one symlink per selected
+skill.
 
 This repository provides local authoring, validation, testing, status, install,
 and uninstall workflows for WSL/Linux. It is not a plugin, marketplace, custom
@@ -19,15 +19,34 @@ The catalog currently contains:
   workflow;
 - [`blast-radius`](skills/blast-radius/SKILL.md), an explicit change-risk
   analysis workflow;
+- [`codebase-design`](skills/codebase-design/SKILL.md), focused interface, seam,
+  locality, and testability design guidance;
+- [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md), a red-capable,
+  evidence-first diagnosis workflow;
+- [`grill-me`](skills/grill-me/SKILL.md), an explicit compatibility alias for
+  `grilling`;
+- [`handoff`](skills/handoff/SKILL.md), an explicit verified continuation
+  snapshot;
 - [`how`](skills/how/SKILL.md), a code-flow and architecture explainer;
 - [`interrogate`](skills/interrogate/SKILL.md), an explicit independent
   adversarial-review workflow;
+- [`learning-workspace`](skills/learning-workspace/SKILL.md), an explicit
+  source-backed workspace for sustained learning;
+- [`plan-jira-sprints`](skills/plan-jira-sprints/SKILL.md), agent-driven sprint
+  planning and approved Jira issue updates with human-owned sprint setup;
+- [`prototype`](skills/prototype/SKILL.md), an explicit bounded experiment or
+  functional delivery-slice workflow;
+- [`research`](skills/research/SKILL.md), source-backed investigation with
+  claim-level citations;
 - [`teach`](skills/teach/SKILL.md), a layered code and design lesson workflow;
-- [`tdd`](skills/tdd/SKILL.md), explicit or deliberately composed incremental TDD for bugs and features;
+- [`tdd`](skills/tdd/SKILL.md), explicit or deliberately composed incremental
+  TDD for bugs and features;
 - [`technical-writing`](skills/technical-writing/SKILL.md), an explicit technical
   prose drafting and review standard;
 - [`unslop`](skills/unslop/SKILL.md), an editorial workflow for narrative prose;
-- [`why`](skills/why/SKILL.md), an evidence-based design-rationale investigator.
+- [`why`](skills/why/SKILL.md), an evidence-based design-rationale investigator;
+- [`writing-for-agents`](skills/writing-for-agents/SKILL.md), guidance for
+  reliable skills, `AGENTS.md`, and conditional instruction references.
 
 Reusable SDLC workflows also include:
 
@@ -49,9 +68,39 @@ Repository instructions must name that composition and preserve the underlying
 request's action boundaries. A context pointer does not change host discovery
 or install a missing skill.
 
-Their licenses and source records travel with each skill, and root-level
+Third-party licenses and source records travel with their skills. Root-level
 provenance is recorded in [`PROVENANCE.md`](PROVENANCE.md). The examples under
 `tests/fixtures/` are validation fixtures, not installable catalog entries.
+
+## Selection contract
+
+The focused tests treat these prompts as the intended selection boundary. This
+table documents the contract; it is not evidence that a fresh host session ran
+the prompts.
+
+| Prompt | Intended result |
+| --- | --- |
+| `Grill me on this service design` | Select `grilling` and ask all currently independent questions as one group. |
+| `Stress-test this rollout plan` | Select `grilling`. |
+| Explicit `$grill-me` | Select `grill-me`, which loads `grilling` and adds no second method. |
+| Explicit `$grill-with-docs` | Compose `grilling` and `domain-modeling`; collect proposals without immediate writes. |
+| `Implement this approved story` | Do not select `grilling`. |
+| `Review the completed sprint, refine the next one, and forecast the following sprint` | Select `plan-jira-sprints`; propose changes before any unauthorized writes. |
+| `Apply the Jira issue changes from the approved sprint plan` | Select `plan-jira-sprints`; preserve human ownership of sprint creation and metadata. |
+| `Implement DEMO-21 and open its PR` | Do not select `plan-jira-sprints` or start sprint planning. |
+| `Summarize this finished plan` | Do not start a grilling session. |
+| `Read CONTEXT.md so you use the right terminology` | Select neither `domain-modeling` nor `grill-with-docs`. |
+| `Resolve whether Account means tenant or login identity` | Select `domain-modeling`. |
+| `Design a testable seam for this module` | Select `codebase-design`; a runtime explanation selects `how`. |
+| `Diagnose why this request is slow` | Select `diagnosing-bugs`; implementing a confirmed fix does not. |
+| `Review this pull request against its specification` | Select `code-review`; a plain change summary does not. |
+| `Interrogate this PR diff` | Select `interrogate`, not `code-review`, because the explicit adversarial multi-review request takes precedence. |
+| `Review this small diff I do not trust; what could it break?` | Select `blast-radius`, not `code-review`, because explicit breakage-risk analysis takes precedence. |
+| `Where should rate limiting live?` | Select `how` Placement, not `codebase-design`. |
+| `Critique this module boundary` | Select `how` Critique, not `codebase-design`. |
+| `Research the current API limits using official sources` | Select `research`; implementation from supplied sources does not. |
+| Explicit `$prototype`, `$handoff`, or `$learning-workspace` | Select only the named explicit workflow; nearby ordinary requests do not. |
+| `Explain how this parser handles errors` | Do not select `learning-workspace`. |
 
 ## Prerequisites
 
@@ -118,13 +167,19 @@ credential, generated cache, or machine-specific configuration.
 python3 scripts/validate-skills.py
 python3 tests/architect-test.py
 python3 tests/blast-radius-test.py
+python3 tests/grilling-skills-test.py
 python3 tests/interrogate-test.py
+python3 tests/matt-engineering-skills-test.py
+python3 tests/matt-productivity-skills-test.py
+python3 tests/pi-skills-test.py
 python3 tests/pstack-analysis-skills-test.py
 python3 tests/pstack-workflow-skills-test.py
 python3 tests/unslop-test.py
+python3 tests/writing-for-agents-test.py
 bash -n scripts/manage-skills.sh
 bash -n tests/manage-skills-test.sh
 bash tests/manage-skills-test.sh
+git diff --check
 ```
 
 Validate an isolated catalog root with:
@@ -157,16 +212,38 @@ either `--all` or one or more skill names; omission never means “all.”
 ./scripts/manage-skills.sh uninstall --agent both <skill-name>
 ```
 
-Defaults:
+Defaults and discovery:
 
 | Agent | Personal destination | Explicit invocation |
 | --- | --- | --- |
 | Codex | `~/.agents/skills/<skill-name>` | `$skill-name` |
 | Claude Code | `~/.claude/skills/<skill-name>` | `/skill-name` |
+| Pi | `~/.agents/skills/<skill-name>` | `/skill:<skill-name>` |
 
-Both hosts may also select a skill automatically when its description matches
-the request. If a newly created top-level skills directory is not detected,
+All three hosts may also select a skill automatically when its description
+matches the request. Pi discovers the same `~/.agents/skills/` destination as
+Codex, so a skill installed with `--agent codex` is available to both hosts.
+The manager has no separate `--agent pi` option because it would address the
+same links. After adding or changing skills, use Pi's `/reload` command or
 restart the relevant local agent.
+
+Pi can also load this catalog for one session without installing links:
+
+```bash
+pi --skill /path/to/agent-skills/skills
+```
+
+For persistent direct loading, add the catalog path to the `skills` array in
+`~/.pi/agent/settings.json`. See Pi's
+[skill documentation](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/skills.md)
+for its discovery, trust, and collision rules.
+
+`arena` and `interrogate` need genuine independent candidate or reviewer
+sessions. Pi must have a separate orchestration extension or package that
+provides that capability. Without one, those skills report the limitation
+instead of presenting repeated work from one reasoning pass as independent.
+`architect` can still compare alternatives in one pass and must disclose that
+fallback.
 
 For tests or an intentional advanced setup, override the roots without changing
 `HOME`:
@@ -201,8 +278,8 @@ instructions and documentation. A project-local skill belongs there only when
 its procedure depends on that project's domain. Do not create renamed project
 wrappers or vendor shared skills into application repositories.
 
-For local Codex use, select the required skills from this catalog with the
-manager. For example, from this repository:
+For local Codex and Pi use, select the required skills from this catalog with
+the manager. For example, from this repository:
 
 ```bash
 ./scripts/manage-skills.sh install --agent codex github-delivery tdd grill-with-docs grilling domain-modeling code-review openspec-propose openspec-explore openspec-apply-change openspec-update-change openspec-sync-specs openspec-archive-change

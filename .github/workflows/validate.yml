@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -31,10 +33,15 @@ jobs:
         run: |
           python3 tests/architect-test.py
           python3 tests/blast-radius-test.py
+          python3 tests/grilling-skills-test.py
           python3 tests/interrogate-test.py
+          python3 tests/matt-engineering-skills-test.py
+          python3 tests/matt-productivity-skills-test.py
+          python3 tests/pi-skills-test.py
           python3 tests/pstack-analysis-skills-test.py
           python3 tests/pstack-workflow-skills-test.py
           python3 tests/unslop-test.py
+          python3 tests/writing-for-agents-test.py
 
       - name: Check repository shell syntax
         run: |
@@ -43,3 +50,16 @@ jobs:
 
       - name: Test skill management
         run: bash tests/manage-skills-test.sh
+
+      - name: Check patch whitespace
+        env:
+          PATCH_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [[ -n "$PATCH_BASE_SHA" && "$PATCH_BASE_SHA" != "0000000000000000000000000000000000000000" ]]; then
+            if ! git cat-file -e "$PATCH_BASE_SHA^{commit}" 2>/dev/null; then
+              git fetch --no-tags --depth=1 origin "$PATCH_BASE_SHA"
+            fi
+            git diff --check "$PATCH_BASE_SHA" HEAD
+          else
+            git diff-tree --check --root -r HEAD
+          fi

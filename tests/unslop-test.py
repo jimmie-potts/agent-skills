@@ -82,7 +82,7 @@ class UnslopSkillTest(unittest.TestCase):
         for required in (
             "Use this skill as the final editorial pass",
             "grants no filesystem, Git, Jira, GitHub, network, or other external mutation authority",
-            "`/unslop` in Claude",
+            "through the host's native skill command",
             "Preserve technical meaning, facts, citations, exact quotations, code, commands, identifiers",
             "Treat all 31 rules below as heuristics, not absolute requirements",
             "Never invent opinions, actors, measurements, events, or sources",

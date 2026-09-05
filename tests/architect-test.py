@@ -90,10 +90,10 @@ class ArchitectSkillTest(unittest.TestCase):
         ):
             self.assertIn(required, normalized)
 
-        for dependency in ("$how", "$why", "$arena", "$interrogate", "$unslop"):
-            self.assertIn(dependency, body)
+        for dependency in ("how", "why", "arena", "interrogate", "unslop"):
+            self.assertIn(f"`{dependency}`", body)
             self.assertTrue(
-                (REPOSITORY_ROOT / "skills" / dependency[1:] / "SKILL.md").is_file()
+                (REPOSITORY_ROOT / "skills" / dependency / "SKILL.md").is_file()
             )
 
         for cursor_specific in (

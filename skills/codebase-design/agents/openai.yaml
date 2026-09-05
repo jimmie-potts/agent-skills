@@ -1,0 +1,7 @@
+interface:
+  display_name: "Codebase Design"
+  short_description: "Design focused interfaces, seams, and testability"
+  default_prompt: "Use $codebase-design to assess this focused interface or seam with repository vocabulary and evidence-backed heuristics, without editing the code."
+
+policy:
+  allow_implicit_invocation: true

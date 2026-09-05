@@ -41,21 +41,21 @@ Treat any load-bearing fact that does not reach step 4 as unproven.
    removes. Do not fetch or pull anything unless separately authorized.
 2. State the load-bearing safety fact. If it holds, it should eliminate most of
    the plausible breakage paths.
-3. Use `$how` when the change needs a full runtime-flow or ownership map. Look
-   where caller searches stop. Check pinned dependency behavior, local
-   patches, lifecycle and timing, serialized data, database columns, wire
-   formats, feature flags, other languages reading the same bytes, and consumers
-   several hops downstream.
-4. Use `$why` when historical constraints, incidents, thresholds, or rejected
-   alternatives could explain a load-bearing behavior. Keep evidence-backed
-   rationale separate from inference.
+3. Load and follow `how` when the change needs a full runtime-flow or ownership
+   map. Look where caller searches stop. Check pinned dependency behavior,
+   local patches, lifecycle and timing, serialized data, database columns, wire
+   formats, feature flags, other languages reading the same bytes, and
+   consumers several hops downstream.
+4. Load and follow `why` when historical constraints, incidents, thresholds,
+   or rejected alternatives could explain a load-bearing behavior. Keep
+   evidence-backed rationale separate from inference.
 5. Classify each confirmed risk by likelihood and impact. Cite real code and
    never invent a caller, contract, or API. Keep cleared risks separate.
 6. Prove the safety fact with the smallest authorized test or repro that uses
    the real code. Record the command and result. If proof is not safe or cheap,
    mark it unproven and name the missing evidence.
 7. For a wide change, broaden the inspection across affected subsystems. Use
-   `$arena` only when the user explicitly requests competing parallel reviews;
+   `arena` only when the user explicitly requests competing parallel reviews;
    otherwise inspect the relevant slices directly.
 
 ## Return
@@ -69,5 +69,5 @@ Treat any load-bearing fact that does not reach step 4 as unproven.
 - **Before merge.** Give the cheapest test or repro that would catch the real
   failure.
 
-Apply `$unslop` to the final narrative prose, cite real code, and remove private
-information before anything is shared publicly.
+Apply the `unslop` skill to the final narrative prose, cite real code, and
+remove private information before anything is shared publicly.

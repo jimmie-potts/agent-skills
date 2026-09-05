@@ -1,0 +1,7 @@
+interface:
+  display_name: "Plan Jira Sprints"
+  short_description: "Review delivery and plan upcoming Jira sprints"
+  default_prompt: "Use $plan-jira-sprints to review recent sprint outcomes, refine the upcoming sprint, and forecast the following sprint with parallel work and an automated demonstration."
+
+policy:
+  allow_implicit_invocation: true

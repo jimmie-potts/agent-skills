@@ -9,8 +9,8 @@ description: Remove common AI writing patterns from narrative prose. Use when dr
 
 Use this skill as the final editorial pass when drafting or materially editing
 agent-authored narrative prose, including documentation, explanations, reports,
-and authorized Jira or pull-request prose. It may also be invoked explicitly as
-`$unslop` in Codex or `/unslop` in Claude. It is an editorial aid. It grants no
+and authorized Jira or pull-request prose. It may also be invoked explicitly
+through the host's native skill command. It is an editorial aid. It grants no
 filesystem, Git, Jira, GitHub, network, or other external mutation authority.
 
 Follow the applicable `AGENTS.md`, user instructions, task constraints, and authoritative repository sources before these style heuristics. Preserve technical meaning, facts, citations, exact quotations, code, commands, identifiers, required terminology, schemas, contracts, ADRs, acceptance criteria, evidence, receipts, status claims, and required structure. If a heuristic conflicts with any of those constraints, do not apply it.

@@ -78,5 +78,5 @@ citations before synthesis.
 - **Change constraints.** When the investigation precedes a code change, end
   with Preserve, Change, Avoid, and Risk constraints grounded in the evidence.
 
-Apply `$unslop` to the final prose without weakening confidence language or
+Apply the `unslop` skill to the final prose without weakening confidence language or
 changing quotations, citations, identifiers, or facts.

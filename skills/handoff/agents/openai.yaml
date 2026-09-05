@@ -1,0 +1,7 @@
+interface:
+  display_name: "Handoff"
+  short_description: "Prepare a verified, redacted continuation snapshot"
+  default_prompt: "Use $handoff to freeze the current task state, authority, blockers, and verification evidence in a redacted nonauthoritative snapshot."
+
+policy:
+  allow_implicit_invocation: false

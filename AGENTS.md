@@ -42,13 +42,19 @@ Then run:
 python3 scripts/validate-skills.py
 python3 tests/architect-test.py
 python3 tests/blast-radius-test.py
+python3 tests/grilling-skills-test.py
 python3 tests/interrogate-test.py
+python3 tests/matt-engineering-skills-test.py
+python3 tests/matt-productivity-skills-test.py
+python3 tests/pi-skills-test.py
 python3 tests/pstack-analysis-skills-test.py
 python3 tests/pstack-workflow-skills-test.py
 python3 tests/unslop-test.py
+python3 tests/writing-for-agents-test.py
 bash -n scripts/manage-skills.sh
 bash -n tests/manage-skills-test.sh
 bash tests/manage-skills-test.sh
+git diff --check
 ```
 
 Do not execute scripts bundled in catalog skills merely to validate them.

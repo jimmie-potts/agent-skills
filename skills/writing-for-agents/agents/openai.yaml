@@ -1,0 +1,7 @@
+interface:
+  display_name: "Writing for Agents"
+  short_description: "Write reliable instructions for coding agents"
+  default_prompt: "Use $writing-for-agents to draft or revise these agent instructions with clear scope, triggers, and completion evidence."
+
+policy:
+  allow_implicit_invocation: true

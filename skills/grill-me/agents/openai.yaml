@@ -1,0 +1,7 @@
+interface:
+  display_name: "Grill Me"
+  short_description: "Explicit alias for the grilling workflow"
+  default_prompt: "Use $grill-me to load and follow the canonical $grilling workflow for this decision."
+
+policy:
+  allow_implicit_invocation: false

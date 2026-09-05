@@ -13,8 +13,9 @@ the depth the conversation calls for. Do not change the subject being taught.
 
 This skill grants no authority to modify files, fetch remote state, install
 dependencies, access private sources, call live systems, or run untrusted code.
-Use only evidence available within the original request's scope. Applying
-`$how` or `$why` provides a method, not additional access or mutation authority.
+Use only evidence available within the original request's scope. Applying the
+`how` or `why` skill provides a method, not additional access or mutation
+authority.
 
 ## Build the lesson
 
@@ -23,9 +24,9 @@ Use only evidence available within the original request's scope. Applying
    instead of turning the exchange into a questionnaire.
 2. Choose the few ideas the user needs to leave with. Skip concepts they
    already understand and spend detail where their question is concentrated.
-3. Use `$how` to trace what the implementation does. Use `$why` when historical
-   intent or constraints matter. For a small question, one may be enough.
-   Preserve `$why`'s confidence language and source gaps.
+3. Load and follow `how` to trace what the implementation does. Load and follow
+   `why` when historical intent or constraints matter. For a small question,
+   one may be enough. Preserve `why`'s confidence language and source gaps.
 4. Investigate directly unless the user separately requests delegation or
    parallel reviewers. Do not repeat the same exploration after the companion
    skills have established it.
@@ -63,5 +64,6 @@ one or two sentences that define the subject and its role here. Add the runtime
 flow, design reasons, and edge cases in layers. Cite real paths and sources so
 the user can inspect the evidence.
 
-Apply `$unslop` to every human-facing response. Preserve `$why`'s confidence
-language, technical facts, citations, code, commands, and identifiers.
+Apply the `unslop` skill to every human-facing response. Preserve `why`'s
+confidence language, technical facts, citations, code, commands, and
+identifiers.

@@ -83,5 +83,5 @@ empty findings list is valid.
   verified.
 - **Placement or critique.** Include only when the requested mode calls for it.
 
-Apply `$unslop` to the final human-facing explanation without changing code,
+Apply the `unslop` skill to the final human-facing explanation without changing code,
 identifiers, citations, or technical meaning.

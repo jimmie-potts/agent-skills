@@ -1,0 +1,7 @@
+interface:
+  display_name: "Prototype"
+  short_description: "Answer one question with a bounded artifact"
+  default_prompt: "Use $prototype to state the concrete question, classify the result as disposable or a functional delivery slice, and build only within the authorized scope."
+
+policy:
+  allow_implicit_invocation: false
