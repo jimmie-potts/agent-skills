@@ -93,3 +93,52 @@
 Updates are manual. Review the complete upstream diff and license, update the
 pinned commit and digests, and rerun all repository checks before accepting a
 new source revision.
+
+
+## `grill-with-docs`
+
+- Canonical path: [`skills/grill-with-docs/`](skills/grill-with-docs/SKILL.md)
+- Original repository: `https://github.com/mattpocock/skills`
+- Original path: `skills/engineering/grill-with-docs/`
+- Pinned Git commit: `5b15a47f2d7150f545fbcacbfe381787fc0230dc`
+- License: [MIT](skills/grill-with-docs/LICENSE), Copyright (c) 2026 Matt Pocock
+- Detailed source record: [`skills/grill-with-docs/SOURCE.md`](skills/grill-with-docs/SOURCE.md)
+
+
+## `grilling`
+
+- Canonical path: [`skills/grilling/`](skills/grilling/SKILL.md)
+- Original repository: `https://github.com/mattpocock/skills`
+- Original path: `skills/productivity/grilling/`
+- Pinned Git commit: `5b15a47f2d7150f545fbcacbfe381787fc0230dc`
+- License: [MIT](skills/grilling/LICENSE), Copyright (c) 2026 Matt Pocock
+- Detailed source record: [`skills/grilling/SOURCE.md`](skills/grilling/SOURCE.md)
+
+
+## `domain-modeling`
+
+- Canonical path: [`skills/domain-modeling/`](skills/domain-modeling/SKILL.md)
+- Original repository: `https://github.com/mattpocock/skills`
+- Original path: `skills/engineering/domain-modeling/`
+- Pinned Git commit: `5b15a47f2d7150f545fbcacbfe381787fc0230dc`
+- License: [MIT](skills/domain-modeling/LICENSE), Copyright (c) 2026 Matt Pocock
+- Detailed source record: [`skills/domain-modeling/SOURCE.md`](skills/domain-modeling/SOURCE.md)
+
+
+## `code-review`
+
+- Canonical path: [`skills/code-review/`](skills/code-review/SKILL.md)
+- Original repository: `https://github.com/mattpocock/skills`
+- Original path: `skills/engineering/code-review/`
+- Pinned Git commit: `5b15a47f2d7150f545fbcacbfe381787fc0230dc`
+- License: [MIT](skills/code-review/LICENSE), Copyright (c) 2026 Matt Pocock
+- Detailed source record: [`skills/code-review/SOURCE.md`](skills/code-review/SOURCE.md)
+
+## OpenSpec core workflows
+
+The six `skills/openspec-*/` directories derive from the core Codex generator
+in `@fission-ai/openspec` version `1.12.0`, sourced from
+[OpenSpec v1.12.0](https://github.com/Fission-AI/OpenSpec/tree/v1.12.0).
+Each directory includes its generated source digest in `SOURCE.md`, an MIT
+license with OpenSpec contributor attribution, and the portable local
+adaptations. Updates are reviewed in this shared catalog.

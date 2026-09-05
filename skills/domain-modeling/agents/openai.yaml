@@ -1,0 +1,7 @@
+interface:
+  display_name: "Domain Modeling"
+  short_description: "Sharpen active vocabulary and decision models"
+  default_prompt: "Use $domain-modeling to reconcile these domain terms and propose repository-aligned vocabulary or decision-record changes without writing unless authorized."
+
+policy:
+  allow_implicit_invocation: true

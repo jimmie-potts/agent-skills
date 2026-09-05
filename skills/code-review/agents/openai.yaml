@@ -1,0 +1,7 @@
+interface:
+  display_name: "Code Review"
+  short_description: "Review one fixed change against standards and spec"
+  default_prompt: "Use $code-review to freeze this comparison, review Standards and Spec separately, and return evidence-backed findings without modifying the change."
+
+policy:
+  allow_implicit_invocation: true

@@ -23,11 +23,31 @@ The catalog currently contains:
 - [`interrogate`](skills/interrogate/SKILL.md), an explicit independent
   adversarial-review workflow;
 - [`teach`](skills/teach/SKILL.md), a layered code and design lesson workflow;
-- [`tdd`](skills/tdd/SKILL.md), an explicit failing-test-first bug-fix workflow;
+- [`tdd`](skills/tdd/SKILL.md), explicit or deliberately composed incremental TDD for bugs and features;
 - [`technical-writing`](skills/technical-writing/SKILL.md), an explicit technical
   prose drafting and review standard;
 - [`unslop`](skills/unslop/SKILL.md), an editorial workflow for narrative prose;
 - [`why`](skills/why/SKILL.md), an evidence-based design-rationale investigator.
+
+Reusable SDLC workflows also include:
+
+- [`grill-with-docs`](skills/grill-with-docs/SKILL.md), which composes
+  [`grilling`](skills/grilling/SKILL.md) and
+  [`domain-modeling`](skills/domain-modeling/SKILL.md) for grouped decisions and
+  documentation proposals;
+- [`code-review`](skills/code-review/SKILL.md), separate Standards and
+  Specification reviews against one fixed comparison;
+- [`github-delivery`](skills/github-delivery/SKILL.md), authorized delivery
+  through the consuming repository's review, CI, and completion rules;
+- the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
+  `openspec-apply-change`, `openspec-update-change`, `openspec-sync-specs`, and
+  `openspec-archive-change`. They use the consuming repository's pinned CLI.
+
+A repository can deliberately compose the existing explicit-only TDD and
+Grill with Docs methods without changing their global invocation switches.
+Repository instructions must name that composition and preserve the underlying
+request's action boundaries. A context pointer does not change host discovery
+or install a missing skill.
 
 Their licenses and source records travel with each skill, and root-level
 provenance is recorded in [`PROVENANCE.md`](PROVENANCE.md). The examples under
@@ -173,62 +193,37 @@ symlink. It also finds owned links left dangling after their source skill is
 removed. Missing optional skills do not make status fail; validation errors and
 conflicts do.
 
-## Personal, project-local, and cloud availability
+## Shared and domain skill ownership
 
-Personal symlinks are local to this WSL machine. Codex discovers them under
-`~/.agents/skills/`; Claude Code discovers them under `~/.claude/skills/`.
-Cloud agents cannot follow links to this machine.
+Maintain reusable methods here. Consuming projects keep domain contracts,
+validation commands, scope ownership, and workflow policy in their own agent
+instructions and documentation. A project-local skill belongs there only when
+its procedure depends on that project's domain. Do not create renamed project
+wrappers or vendor shared skills into application repositories.
 
-For a repository-local or cloud-visible snapshot, choose the relevant host and
-copy real files into only that host's project directory.
-
-Codex project or cloud:
-
-```bash
-mkdir -p /path/to/project/.agents/skills
-if [[ ! -e /path/to/project/.agents/skills/<skill-name> && ! -L /path/to/project/.agents/skills/<skill-name> ]]; then
-  cp -a -- skills/<skill-name> /path/to/project/.agents/skills/<skill-name>
-else
-  printf 'Conflict: Codex target already exists; preserved.\n' >&2
-fi
-```
-
-Claude project or cloud, as an alternative:
+For local Codex use, select the required skills from this catalog with the
+manager. For example, from this repository:
 
 ```bash
-mkdir -p /path/to/project/.claude/skills
-if [[ ! -e /path/to/project/.claude/skills/<skill-name> && ! -L /path/to/project/.claude/skills/<skill-name> ]]; then
-  cp -a -- skills/<skill-name> /path/to/project/.claude/skills/<skill-name>
-else
-  printf 'Conflict: Claude target already exists; preserved.\n' >&2
-fi
+./scripts/manage-skills.sh install --agent codex github-delivery tdd grill-with-docs grilling domain-modeling code-review openspec-propose openspec-explore openspec-apply-change openspec-update-change openspec-sync-specs openspec-archive-change
 ```
 
-If the same target project genuinely needs both hosts, keep one real in-project
-copy and add an internal relative symlink for the other host. Both Codex and
-Claude Code support symlinked skill directories:
+The resulting personal symlinks point to this canonical checkout. Do not
+commit external symlinks into a consuming repository. Keep the catalog available
+while agents use it, and restart a host when it needs to refresh discovery.
+The manager preserves conflicting installations and reports them for resolution.
 
-```bash
-mkdir -p /path/to/project/.agents/skills /path/to/project/.claude/skills
-if [[ ! -e /path/to/project/.agents/skills/<skill-name> && ! -L /path/to/project/.agents/skills/<skill-name> ]]; then
-  cp -a -- skills/<skill-name> /path/to/project/.agents/skills/<skill-name>
-  if [[ ! -e /path/to/project/.claude/skills/<skill-name> && ! -L /path/to/project/.claude/skills/<skill-name> ]]; then
-    ln -s -- ../../.agents/skills/<skill-name> /path/to/project/.claude/skills/<skill-name>
-  else
-    printf 'Conflict: Claude target already exists; preserved.\n' >&2
-  fi
-else
-  printf 'Conflict: canonical project target already exists; preserved.\n' >&2
-fi
-```
+For a fresh or cloud environment, provision a reviewed catalog revision as a
+separate dependency using the host's supported user-skill mechanism. A local
+symlink does not make a skill available in the cloud. If a required shared skill
+is unavailable, report the missing prerequisite; do not silently copy its body
+into the application or claim the workflow was loaded. Cloud setup is not
+verified by the local manager tests.
 
-Commit `.agents/skills/<skill-name>/` for Codex cloud or
-`.claude/skills/<skill-name>/` for Claude cloud only when that target project
-needs the skill. A dual-host internal symlink must resolve to real files inside
-the same repository. Never commit a symlink whose target is outside the target
-repository, and never maintain separate real Codex and Claude copies of one
-shared skill. These are deliberate export snapshots; refresh the one real copy
-from the canonical catalog. Plugin or account distribution is deferred.
+Update OpenSpec integrations here, using the pinned generator in an isolated
+scratch project. Preserve source records, licenses, and shared authority/CLI
+adaptations during upgrades. Application projects keep their specifications
+and OpenSpec configuration, without generated integration copies.
 
 ## Security and provenance
 
