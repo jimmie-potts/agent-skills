@@ -1,0 +1,7 @@
+interface:
+  display_name: "Deliver Jira Work"
+  short_description: "Deliver one authorized issue using project policy"
+  default_prompt: "Use $deliver-jira-work for the named Jira issue within my stated delivery limits."
+
+policy:
+  allow_implicit_invocation: false

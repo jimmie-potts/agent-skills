@@ -58,6 +58,10 @@ Reusable SDLC workflows also include:
   Specification reviews against one fixed comparison;
 - [`github-delivery`](skills/github-delivery/SKILL.md), authorized delivery
   through the consuming repository's review, CI, and completion rules;
+- [`deliver-jira-work`](skills/deliver-jira-work/SKILL.md), explicit delivery of
+  one Jira issue using the owning project's planning, hosting, review, and
+  completion policy. It supports a ready-PR-only limit and requires no specific
+  specification framework;
 - the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
   `openspec-apply-change`, `openspec-update-change`, `openspec-sync-specs`, and
   `openspec-archive-change`. They use the consuming repository's pinned CLI.
@@ -88,6 +92,11 @@ the prompts.
 | `Review the completed sprint, refine the next one, and forecast the following sprint` | Select `plan-jira-sprints`; propose changes before any unauthorized writes. |
 | `Apply the Jira issue changes from the approved sprint plan` | Select `plan-jira-sprints`; preserve human ownership of sprint creation and metadata. |
 | `Implement DEMO-21 and open its PR` | Do not select `plan-jira-sprints` or start sprint planning. |
+| Explicit `$deliver-jira-work DEMO-21` | Discover the owning project and deliver that issue within the user's authority and project gates. |
+| `$deliver-jira-work DEMO-21, ready PR only` | Stop at the ready PR and its required handoff evidence; retain the appropriate Jira state. |
+| `Plan how to deliver DEMO-21` | Do not select `deliver-jira-work` or start delivery effects. |
+| `$deliver-jira-work DEMO-21, planning only` | Read the skill's authority boundary and produce read-only planning; do not implement or transition Jira. |
+| `Implement this approved Jira story` | Do not implicitly select `deliver-jira-work`; it requires explicit invocation. |
 | `Summarize this finished plan` | Do not start a grilling session. |
 | `Read CONTEXT.md so you use the right terminology` | Select neither `domain-modeling` nor `grill-with-docs`. |
 | `Resolve whether Account means tenant or login identity` | Select `domain-modeling`. |
@@ -167,6 +176,7 @@ credential, generated cache, or machine-specific configuration.
 python3 scripts/validate-skills.py
 python3 tests/architect-test.py
 python3 tests/blast-radius-test.py
+python3 tests/deliver-jira-work-test.py
 python3 tests/grilling-skills-test.py
 python3 tests/interrogate-test.py
 python3 tests/matt-engineering-skills-test.py
@@ -289,6 +299,24 @@ The resulting personal symlinks point to this canonical checkout. Do not
 commit external symlinks into a consuming repository. Keep the catalog available
 while agents use it, and restart a host when it needs to refresh discovery.
 The manager preserves conflicting installations and reports them for resolution.
+
+To install only the explicit Jira delivery workflow, use a reviewed catalog
+checkout and run:
+
+```bash
+./scripts/manage-skills.sh install --agent codex --dry-run deliver-jira-work
+./scripts/manage-skills.sh install --agent codex deliver-jira-work
+./scripts/manage-skills.sh status --agent codex
+```
+
+Keep the source checkout available. Verify discovery in a fresh neutral Codex
+context outside any consuming repository with a same-named local skill. Record
+the discovered path and published revision. Static metadata tests and the
+[synthetic delivery scenarios](skills/deliver-jira-work/references/validation-scenarios.md)
+are separate evidence from actual host discovery. Codex explicit-only policy
+uses `agents/openai.yaml`; the shared instructions also state the invocation
+boundary for other hosts. See [OpenAI's skill documentation](https://learn.chatgpt.com/docs/build-skills)
+for discovery and invocation controls.
 
 For a fresh or cloud environment, provision a reviewed catalog revision as a
 separate dependency using the host's supported user-skill mechanism. A local
