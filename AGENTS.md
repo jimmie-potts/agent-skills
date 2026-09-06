@@ -42,6 +42,7 @@ Then run:
 python3 scripts/validate-skills.py
 python3 tests/architect-test.py
 python3 tests/blast-radius-test.py
+python3 tests/deliver-jira-work-test.py
 python3 tests/grilling-skills-test.py
 python3 tests/interrogate-test.py
 python3 tests/matt-engineering-skills-test.py
