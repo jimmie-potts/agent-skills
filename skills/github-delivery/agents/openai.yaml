@@ -1,6 +1,0 @@
-interface:
-  display_name: "GitHub delivery"
-  short_description: "Deliver authorized GitHub work with review and CI"
-  default_prompt: "Use $github-delivery to complete this work within the repository's delivery policy and my requested scope."
-policy:
-  allow_implicit_invocation: true
