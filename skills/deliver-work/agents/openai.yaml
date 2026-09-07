@@ -1,0 +1,6 @@
+interface:
+  display_name: "Deliver Work"
+  short_description: "Deliver a named work item through verified completion"
+  default_prompt: "Use $deliver-work for the named issue or requirement within my stated delivery limits."
+policy:
+  allow_implicit_invocation: false

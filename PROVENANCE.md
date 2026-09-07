@@ -215,3 +215,15 @@ adaptations. Updates are reviewed in this shared catalog.
 - Pinned Git commit: `5b15a47f2d7150f545fbcacbfe381787fc0230dc`
 - License: [MIT](skills/learning-workspace/LICENSE), Copyright (c) 2026 Matt Pocock
 - Detailed source record: [`skills/learning-workspace/SOURCE.md`](skills/learning-workspace/SOURCE.md)
+
+## `deliver-work`
+
+- Canonical path: [`skills/deliver-work/`](skills/deliver-work/SKILL.md)
+- Local consolidation of this repository's `deliver-jira-work` and
+  `github-delivery` at commit `aed5f28c96c90430256abdc1790b520ebb34faeb`.
+- The former Jira workflow originated in Notification Service and was made
+  portable by NS-334 before this consolidation. The former GitHub workflow
+  supplied conditional skill composition and the two independent review axes.
+- Accepted scope: [agent-skills issue #5](https://github.com/jimmie-potts/agent-skills/issues/5).
+- Both retired skill names are replaced without compatibility wrappers. Shared
+  composed skills retain their existing provenance and license records.
