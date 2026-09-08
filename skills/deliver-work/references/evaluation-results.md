@@ -33,7 +33,7 @@ Reproduce from the repository root after normal environment setup:
 python3 tests/workflow-evaluation-test.py
 ```
 
-This checks the known broken/reference outcomes and both recorded proposals.
+This checks the known broken/reference outcomes and recorded proposals.
 Deliberate fixture failures are expected by the wrapper, not ignored CI failures.
 New trials receive only input files, never recorded proposals or evaluator data.
 
@@ -44,6 +44,8 @@ Input SHA-256 values:
 - retry_base.py: `61dc5650064ea4a40c51285f69887db0507bb2d3552162c47dc3856e608a89d5`
 - test_retry.py: `e55f351730531410499628260fc891fa3a19562dabe8db3932919beda3ff021b`
 - graders.md: `8f7f88d43e337a21b49f984a760deb083f7ab5790c6d5f7002b936115930896c`
+- clarification_case.md: `e6a0a264a1276c25ee7279b82dde14cc18355a54d1496318f3d23d0007f5ecd7`
+- clarification_grader.md: `8826910f6b61abdd8e08308e789ce3e949799521f3321c8c2d9e0b263a8e15bb`
 
 ## Results and evidence limits
 
@@ -88,22 +90,77 @@ exception subclasses, or forbidden sleep/network effects. Inspection of both
 small proposals found no added effects or contrary special handling. Passing
 six methods alone is not exhaustive verification.
 
+## Review-driven coverage correction
+
+Specification review found that the six original cases did not test an unresolved
+user-owned requirement. One supplemental archive-retention case now covers both
+planning and delivery, with its own withheld rubric and two fresh Sol/medium
+requests. Their summaries support 2/2 phase decisions each, with no critical
+violations recorded across four opportunities. Both required a user decision before dependent work and
+kept independent read-only investigation available. Neither would publish while
+questioning. The original six-case inputs, grader and results remain unchanged.
+Sanitized observations and assessment variation are in observed-decisions.md.
+This was one evaluation-coverage correction from review, not a failed worker
+proposal. Worker identity and token/cost telemetry remain unknown. Both responses
+were observed within 162 seconds of the common launch origin; these coarse times
+do not measure model latency.
+
+A separate evaluator requested Astra/high confirmed those summary-level grades
+and independently ran the broken/reference/first paired coding fixtures. It did
+not inspect raw responses, worker-local commands or actual tracker effects.
+Summary grades therefore do not independently establish full response compliance
+or the absence of unrecorded effects. Its runtime identity was unverified.
+
 ## Selection conclusion and unsupported evidence
 
-Keep published routing heuristics unchanged. Two simple successes support this
+### Live paired coding comparison
+
+After runtime discovery, two fresh Sol/medium requests repeated the same retry
+task/base under sol-with-astra. They used the same published operating revision,
+Python environment and unchanged six-method grader as the direct trials.
+Only the pairing instructions and consultation steps differed for this coding
+task. The original Astra/medium coordinator answered approach requests before
+dependent implementation and inspected final proposals. It applied both exact
+proposals; each same worker then validated its applied file without writes.
+
+| Measure | Paired trial 1 | Paired trial 2 |
+| --- | --- | --- |
+| Approach exchanges with original advisor | 1 | 1 |
+| Final advisor inspection and worker validation | Completed | Completed |
+| Frozen coding grader methods passing | 6/6 | 6/6 |
+| Returned proposals requiring correction | 0/1 | 0/1 |
+| Observed seconds to proposal | 281 | 135 |
+| Observed seconds through applied-file validation | 342 | 177 |
+
+Both direct and both paired proposals passed the same coding grader without
+correction. Consultation messages and coordinator-run outcomes were observed
+live; sanitized summaries are in observed-decisions.md. Worker-local red/green
+checks remain reported evidence. Workers did not receive held-out answers or
+other outputs before returning proposals; executing the grader was authorized
+only for final applied-file validation.
+
+The advisor had already seen direct outputs and the grader, so this was not a
+blind comparison. Direct workers also handled six workflow cases, whereas paired
+workers handled coding only. Elapsed times include launch, scheduling, advice,
+and collection delays and cannot support relative speed claims. Token/cost is
+unknown. This tiny task exercises the consultation protocol and compares coding
+outcomes, not model quality, production reliability, or high-complexity work.
+
+### Policy and remaining gaps
+
+Keep published routing heuristics unchanged. These simple successes support this
 bounded exercise, not claims that Sol is optimal or medium reasoning suffices
 for high-impact work. Future critical violations block acceptance until corrected
 and reassessed, rather than lowering the rubric to obtain a pass.
 
-A live direct-versus-Sol-with-Astra comparison was unsupported because the
-original coordinator's exact Astra identity could not be established. No
-replacement advisor was created. Pairing performance, consultation reliability,
-relative cost, and superiority remain unverified. Earlier simulated pairing
-cases do not fill this gap. Neutral-host discovery, live Jira behavior, and
-human-calibrated subjective scoring also remain unverified.
+The original coordinator's identity was initially unknown. A later read-only
+lookup of authoritative current-thread host turn metadata established
+gpt-6-astra with medium reasoning, enabling the live pairing trials described
+below. No replacement advisor was created. Worker identities remain unverified.
+Neutral-host discovery, live Jira behavior, and human-calibrated subjective
+scoring remain unverified.
 
 The source delivery supplies GitHub PR/CI/merge evidence in the issue's linked
 PR, separate from these simulations. Source CI does not prove the unexercised
-capabilities. This bounded issue requires comparison where supported, not an
-invented live-pairing success. A future explicit live comparison remains pending
-until its runtime prerequisites and authority are satisfied.
+capabilities. The bounded results do not establish production reliability,
+relative cost, a superior strategy, or appropriate settings for complex work.

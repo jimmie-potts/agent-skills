@@ -25,7 +25,8 @@ class WorkflowEvaluationTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_recorded_proposals_satisfy_contract(self):
-        for implementation in ('retry_trial1.py', 'retry_trial2.py'):
+        for implementation in ('retry_trial1.py', 'retry_trial2.py',
+                               'retry_paired1.py', 'retry_paired2.py'):
             with self.subTest(implementation=implementation):
                 result = self.grade(implementation)
                 self.assertEqual(result.returncode, 0, result.stderr)
