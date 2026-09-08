@@ -1,0 +1,6 @@
+interface:
+  display_name: "Plan Work"
+  short_description: "Define scoped work with acceptance evidence"
+  default_prompt: "Use $plan-work to define work for this outcome within my stated planning and publication limits."
+policy:
+  allow_implicit_invocation: false
