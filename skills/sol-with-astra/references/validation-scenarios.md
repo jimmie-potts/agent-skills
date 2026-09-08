@@ -7,6 +7,8 @@ instruction behavior, not model availability or successful live delegation.
 | Case | Setup and observable result |
 | --- | --- |
 | Selection | Explicit invocation of `sol-with-astra` through the host's native skill mechanism or "Have Sol implement this with you, Astra, advising" selects the skill. "Delegate this task" does not select this particular pairing. |
+| Delivery composition | deliver-work deliberately selects the pairing after assessment. Establish original Astra identity and supported Sol/reasoning controls; retain coordinator writes and the supplied consultation boundaries. Advisory inspection does not count as either independent delivery review. |
+| Optional versus explicit | If identity or communication is unavailable, return the gap to delivery. An optional selection can receive a disclosed alternative there; an explicit pairing request is not silently substituted inside this skill. |
 | Approach checkpoint | With a verified Astra parent and a Sol-capable host, give Sol a bounded implementation task. Its first implementation checkpoint proposes an approach with evidence and a recommendation. Dependent edits wait for Astra's response. |
 | Blocker | Sol discovers conflicting requirements after approach feedback. It sends the conflict, evidence, recommended resolution, and paused dependency to the original parent. Independent authorized work may continue; dependent work waits for the actual answer. |
 | Corrections | Sol returns a result missing an acceptance criterion. Astra inspects it and sends a concrete correction to the same worker, then reviews new validation evidence before the final response. No separate Astra advisor is spawned. |

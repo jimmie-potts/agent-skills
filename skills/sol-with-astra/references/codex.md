@@ -14,8 +14,10 @@ unknown or different, report that the requested pairing cannot be established.
 Call `collaboration.spawn_agent` with a unique task name, the self-contained
 brief from SKILL.md, `model="gpt-5.6-sol"`, and `fork_turns="none"`. Full-history
 forks inherit the parent's model and do not accept model overrides in this
-host. Leave reasoning effort at the inherited/default setting unless the user
-or applicable instructions specify it.
+host. Use deliver-work's selected reasoning_effort when it deliberately composes
+this pairing and that value is supported by the current host. Otherwise leave
+reasoning at the inherited/default setting unless the user or applicable
+instructions specify it. Record requested and observable settings separately.
 
 Include the coordinator's actual canonical agent address, obtained from the
 host, in the brief. Do not hard-code `/root` when the coordinator has another
