@@ -53,6 +53,12 @@ The catalog currently contains:
 
 Reusable SDLC workflows also include:
 
+- [`plan-work`](skills/plan-work/SKILL.md), explicit requirements definition and
+  authorized GitHub/Jira publication with assessments and acceptance evidence.
+  It reads the installed `deliver-work` package's canonical
+  `references/work-assessment.md` without invoking delivery, and composes
+  `grill-with-docs` for material unresolved decisions. Install those dependencies
+  when using this planner; missing resources are reported, never copied;
 - [`grill-with-docs`](skills/grill-with-docs/SKILL.md), which composes
   [`grilling`](skills/grilling/SKILL.md) and
   [`domain-modeling`](skills/domain-modeling/SKILL.md) for grouped decisions and
@@ -85,6 +91,9 @@ the prompts.
 
 | Prompt | Intended result |
 | --- | --- |
+| Explicit `$plan-work`, proposal only | Define assessed work and planned acceptance evidence without writes. |
+| Explicit `$plan-work`, define and publish these outcomes | Settle requirements, publish authorized GitHub/Jira work, verify readbacks, and stop before implementation. |
+| `How might we improve this?` | Do not select the explicit-only plan-work workflow. |
 | `Grill me on this service design` | Select `grilling` and ask all currently independent questions as one group. |
 | `Stress-test this rollout plan` | Select `grilling`. |
 | Explicit `$grill-me` | Select `grill-me`, which loads `grilling` and adds no second method. |
@@ -181,6 +190,7 @@ python3 scripts/validate-skills.py
 python3 tests/architect-test.py
 python3 tests/blast-radius-test.py
 python3 tests/deliver-work-test.py
+python3 tests/plan-work-test.py
 python3 tests/grilling-skills-test.py
 python3 tests/interrogate-test.py
 python3 tests/matt-engineering-skills-test.py
