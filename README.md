@@ -38,6 +38,9 @@ The catalog currently contains:
   functional delivery-slice workflow;
 - [`research`](skills/research/SKILL.md), source-backed investigation with
   claim-level citations;
+- [`sol-with-astra`](skills/sol-with-astra/SKILL.md), a Sol worker with the
+  original Astra agent providing approach feedback, blocker advice, and final
+  review through a verified host adapter;
 - [`teach`](skills/teach/SKILL.md), a layered code and design lesson workflow;
 - [`tdd`](skills/tdd/SKILL.md), explicit or deliberately composed incremental
   TDD for bugs and features;
