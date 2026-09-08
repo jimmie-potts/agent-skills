@@ -60,6 +60,14 @@ class DeliverWorkStructureTest(unittest.TestCase):
                            (SKILL / 'SKILL.md').read_text())
         self.assertIn(resource, links)
 
+    def test_selection_resources_are_routed(self):
+        entry_links = re.findall(r'\]\(([^)]+)\)',
+                                (SKILL / 'SKILL.md').read_text())
+        self.assertIn('references/model-selection.md', entry_links)
+        policy = SKILL / 'references/model-selection.md'
+        adapter_links = re.findall(r'\]\(([^)]+)\)', policy.read_text())
+        self.assertIn('codex-model-selection.md', adapter_links)
+
     def test_canonical_check_wiring(self):
         command = 'python3 tests/deliver-work-test.py'
         for path in (ROOT / 'AGENTS.md', ROOT / 'README.md',

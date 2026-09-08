@@ -52,9 +52,9 @@ modifies itself. The candidate cannot waive the gates used to approve it.
    read [project discovery](references/project-discovery.md).
 4. Resolve material scope, acceptance, target or policy conflicts before the work
    they govern. Continue independent authorized work. Use judgment for routine
-   choices when policy is absent; preserve host model settings unless the user
-   or project specifies otherwise. Missing risk/model policy alone is not a
-   reason to stop. Record consequential choices and their reasons.
+   choices when policy is absent. Use the assessment and selection policy below;
+   missing project model policy alone is not a reason to stop. Explicit user
+   and project requirements prevail. Record consequential choices and reasons.
 5. Inspect existing branches, worktrees, PRs and planning artifacts. Reuse
    verified authorized work; reconcile a merged PR before creating anything.
    Resolve ambiguous identity or another coordinator's ownership first. Start
@@ -68,6 +68,10 @@ Before deciding readiness and checks, read [work assessment](references/work-ass
 Assess unclassified work or refresh its planning assessment against current
 sources. Map acceptance criteria to verification and identify conditional
 reviews and operational handoffs. Preserve the project's mandatory gates.
+Before selecting implementation or reviewers, read
+[model and strategy selection](references/model-selection.md). Choose settings
+per role, preserve coordinator ownership, and report capability limits. Compose
+sol-with-astra only when that policy and the pairing's prerequisites support it.
 
 Use the project's planning method and acceptance criteria. Do not install a
 specification framework or add a delivery runtime to fit this skill. Load shared
@@ -111,6 +115,8 @@ limitations. Task checkboxes and passing local tests alone do not prove delivery
    requirements. Self-review or the review skill's single-agent fallback cannot
    authorize merge. Missing acceptance/specification evidence cannot count as
    Specification approval. Keep revision-dependent evidence outside its commit.
+   Apply the selection reference's independent initial findings, changed-area
+   coverage, test-quality inspection, and conditional specialist/human review.
 3. Fix P0-P2 defects and every project-defined blocker; record P3 dispositions.
    Disputed findings need evidence and reviewer reassessment. Read every page of
    provider reviews, change requests and discussion threads. Resolve blockers

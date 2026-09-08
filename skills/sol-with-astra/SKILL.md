@@ -1,6 +1,6 @@
 ---
 name: sol-with-astra
-description: Delegate a task to Sol with the original Astra agent as its advisor. Use when explicitly invoked or when the user requests Sol working with Astra for approach feedback, blocker consultations, and final review; do not select for ordinary delegation.
+description: Delegate a task to Sol with the original Astra agent as its advisor. Use when explicitly invoked, requested by the user, or deliberately composed by deliver-work after assessment; do not select for ordinary delegation.
 ---
 
 # Sol with Astra
@@ -10,6 +10,11 @@ responsibility for implementation and validation within the user's task. Sol
 consults that same Astra agent rather than creating a separate advisor.
 
 ## Establish the pairing
+
+When composed by deliver-work, retain its assessment, selected worker reasoning,
+and coordinator-only write ownership. Read that workflow's selection reference
+as directed by its coordinator; do not invoke a second delivery workflow. Its
+optional-pairing fallback does not change this skill's fixed model identities.
 
 Verify from host-provided runtime evidence that the current coordinator is
 `gpt-6-astra`, that `gpt-5.6-sol` can be selected, and that the worker can

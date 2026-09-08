@@ -24,10 +24,11 @@ For routine choices with no policy, use judgment within the requested scope.
 Use [work assessment](work-assessment.md) for readiness and verification,
 including existing issues without a planning assessment. Preserve unknowns and
 refresh stale evidence; ratings do not replace mandatory project requirements.
-Preserve host model and reasoning defaults unless a user/project rule says
-otherwise. Assess consequential risk with a reason; do not invent a mandatory
-risk rubric, model choice or approval gate. Report actual runtime settings only
-when observable. An absent optional planning framework does not require setup;
+Use [model selection](model-selection.md) after assessment. Explicit user/project
+requirements prevail; missing optional host controls retain defaults with a
+disclosed limitation. Report actual runtime settings only when observable.
+Do not invent an approval gate from a missing optional control.
+An absent optional planning framework does not require setup;
 the accepted issue or requirement can supply the plan when policy permits it.
 
 When OpenSpec applies, resolve pinned tooling, local configuration, active and

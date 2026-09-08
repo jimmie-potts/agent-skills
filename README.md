@@ -69,6 +69,11 @@ Reusable SDLC workflows also include:
   one Jira issue, GitHub issue, or document requirement using the owning
   project's planning, hosting, review, and completion policy. It supports a
   ready-PR-only limit and requires no specific specification framework;
+  it assesses verification needs and selects implementation/reviewer settings
+  from available host capabilities. It may compose `sol-with-astra` for bounded
+  implementation with advisory checkpoints; install that skill separately when
+  using the optional pairing. Advisory inspection never replaces its two
+  independent delivery reviews;
 - the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
   `openspec-apply-change`, `openspec-update-change`, `openspec-sync-specs`, and
   `openspec-archive-change`. They use the consuming repository's pinned CLI.
