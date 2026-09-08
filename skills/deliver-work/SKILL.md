@@ -64,6 +64,11 @@ modifies itself. The candidate cannot waive the gates used to approve it.
 
 ## Plan, implement and validate
 
+Before deciding readiness and checks, read [work assessment](references/work-assessment.md).
+Assess unclassified work or refresh its planning assessment against current
+sources. Map acceptance criteria to verification and identify conditional
+reviews and operational handoffs. Preserve the project's mandatory gates.
+
 Use the project's planning method and acceptance criteria. Do not install a
 specification framework or add a delivery runtime to fit this skill. Load shared
 skills only for the substeps below; use their available canonical definitions,

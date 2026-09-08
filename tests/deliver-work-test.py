@@ -52,6 +52,14 @@ class DeliverWorkStructureTest(unittest.TestCase):
                 self.assertIn(path.suffix, {'.md', '.yaml'})
         self.assertFalse((SKILL / 'scripts').exists())
 
+    def test_assessment_resource_is_exposed_to_consumers(self):
+        # Other workflows discover this stable resource without invoking delivery.
+        resource = 'references/work-assessment.md'
+        self.assertTrue((SKILL / resource).is_file())
+        links = re.findall(r'\]\(([^)]+)\)',
+                           (SKILL / 'SKILL.md').read_text())
+        self.assertIn(resource, links)
+
     def test_canonical_check_wiring(self):
         command = 'python3 tests/deliver-work-test.py'
         for path in (ROOT / 'AGENTS.md', ROOT / 'README.md',
