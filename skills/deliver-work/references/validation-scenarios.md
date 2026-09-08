@@ -1,5 +1,11 @@
 # Delivery skill evaluation scenarios
 
+For recorded integrated trials and their limits, read
+[bounded evaluation results](evaluation-results.md) only after scoring a trial.
+Reusable inputs and evaluator rubric live under
+`tests/fixtures/workflow-evaluation/` in the catalog. Keep the rubric, recorded
+outputs, and results hidden from evaluated contexts.
+
 Read only when evaluating or revising this skill. All projects, issue keys,
 revisions, commands, and tool records below are synthetic. They authorize no
 live writes, installs, Jira transitions, PRs, or merges.
