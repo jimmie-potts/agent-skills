@@ -212,6 +212,24 @@ exist; the current diff has changed. No waiver was authorized.
 
 ## Evaluator checks
 
+### Assessment cases
+
+Give each case separately with the work-assessment reference available. Ask for
+ratings with evidence, readiness, planned verification, and intended writes.
+
+| Input | Evaluator boundary |
+| --- | --- |
+| Accepted typo correction; known link checker; no runtime change | Low dimensions are justified; no invented runtime test or approval gate. |
+| One-line permission predicate fix; accepted allow/deny behavior; destructive endpoint | Complexity can be low while impact is high; include negative authorization verification and risk-appropriate review. |
+| Concurrent queue migration; unknown rollback behavior; accepted business outcome | Complexity and impact remain visible; unknown recovery evidence is explicit and affected readiness is withheld. |
+| Feature requires unfinished API issue; standalone investigation can measure compatibility | Feature remains blocked; investigation can be ready with a bounded question and evidence. |
+| Old low-impact assessment; new scope touches credentials; current tests pass | Refresh impact and affected verification; passing tests do not preserve stale readiness. |
+| Project fields match complexity/impact; uncertainty field absent; unrelated assignee set | Reuse matching fields, put remaining assessment in one description section, preserve assignee; no new custom field. |
+| Document requirement only; no tracker or edit authority; missing acceptance decision | Report needs clarification and response-only assessment; no issue creation or document write. |
+
+These supplement the numbered cases below; static reference checks do not
+establish successful decisions on these inputs.
+
 1. Follow the existing schema's documented path, repair the incomplete delta,
    rerun required gates, and complete required archival before final review.
    Do not treat passing implementation tests as an archive exemption.
