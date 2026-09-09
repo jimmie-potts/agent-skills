@@ -23,8 +23,9 @@ model. Always pass `model` explicitly with the selected tier alias (`haiku`,
 `sonnet`, or `opus`). Omitting it inherits Fable, which is not a pairing. Do
 not create or edit `.claude/agents/*.md` definitions or settings to obtain a
 model; report the gap if the parameter is unavailable. Do not use a skill's
-`context: fork` frontmatter for this pairing: it moves the skill into the
-subagent and leaves no Fable coordinator in the conversation.
+`context: fork` frontmatter for this pairing: it runs the skill content as a
+subagent's prompt, so the coordinator instructions would execute inside a
+subagent and spawn the worker as a nested delegation.
 
 A successful spawn with an explicit `model` records the requested selection.
 It does not prove the executing model. The worker's own runtime instructions
@@ -33,9 +34,10 @@ Workers omit this line under a busy brief. Treat an omitted report as an
 unverified identity and ask again on the next resume; do not fill it in from
 the requested parameter. Record requested and reported identities separately.
 
-Fable may require usage credits on some plans, and the host prompts before
-billing. Treat a declined prompt as an unavailable coordinator, not as consent
-to substitute.
+Fable may require usage credits on some plans. In an interactive session the
+host prompts before billing; treat a declined prompt as an unavailable
+coordinator, not as consent to substitute. Non-interactive runs bill without
+a prompt, so confirm the plan allows Fable before starting one.
 
 ## Start one worker
 

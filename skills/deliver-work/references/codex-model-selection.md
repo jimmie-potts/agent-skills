@@ -32,7 +32,9 @@ Confirm the host's current model list, spawn identifiers, and reasoning enum
 before use; the table adds neither. The identifiers this catalog records are
 `gpt-6-astra` as coordinator, `gpt-5.6-sol` as worker, and `gpt-5.6-terra`
 as worker. Sol was verified in live spawns; Terra was supplied by the
-maintainer and awaits a recorded spawn.
+maintainer and awaits a recorded spawn. The Codex worker evaluation named
+below is the maintainer's comparison plan kept outside this repository; its
+recorded spawns and results lift the provisional labels.
 
 The `reasoning_effort` values documented for `collaboration.spawn_agent` are
 `low`, `medium`, and `high`, and this catalog has observed `medium` and `high`

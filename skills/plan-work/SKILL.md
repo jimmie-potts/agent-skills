@@ -58,8 +58,11 @@ when it can resolve technical uncertainty; a missing product decision remains a
 question. A bounded investigation may compose the host's advisory pairing in
 planning-only mode, selected from verified host tooling: sol-with-astra with
 Codex collaboration tools, worker-with-fable with Claude Code subagent tools,
-neither elsewhere. The worker reads and proposes without writes, and a missing
-pairing does not block this planner's own investigation. Link specifications and decision records without copying their content.
+neither elsewhere. An explicit request naming the other host's pairing is
+reported as a host mismatch, not substituted. The worker reads and proposes
+without writes, and a missing pairing does not block this planner's own
+investigation. Link specifications and decision records without copying
+their content.
 When repository policy requires specification artifacts, use its canonical method
 within existing edit authority; do not invent a specification framework.
 

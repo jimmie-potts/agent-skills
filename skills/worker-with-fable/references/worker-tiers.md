@@ -18,8 +18,14 @@ than tokens. Many independent pieces call for separate bounded workers under
 the composing workflow's ordinary delegation, not this pairing.
 
 The advisor hands over only capability the worker lacks, so a wider gap
-between worker and Fable yields more from each consultation. Anthropic's
-measured default pairing is a Sonnet worker under a Fable advisor.
+between worker and Fable yields more from each consultation. Anthropic's cost
+guidance names a frontier advisor over a mid-tier executor as the most
+cost-effective configuration, which is why Sonnet is the default here. Its
+measured evidence is narrower: the most accurate coding configuration it
+reports is an Opus 5 worker under a Fable 5.1 advisor, and a Sonnet 5 worker
+under Fable 5.1 matched Fable alone at medium effort within noise on one
+research benchmark at higher cost. The Sonnet default is therefore a cost
+hypothesis pending measurement, not a measured result.
 
 ## Tiers
 
@@ -30,6 +36,8 @@ measured default pairing is a Sonnet worker under a Fable advisor.
 | `opus` (Claude Opus 5) | Work whose implementation itself needs deep reasoning: high complexity, high impact, or large refactors where the consultation rate would otherwise be high | Routine design choices within the approved approach and scope | Approach, blockers, final review; expect a smaller advisor gain |
 | `fable` | Not a worker tier. Fable implements directly when the task needs it. | | |
 
+The version names in the table are the documented targets of the aliases at
+authoring time, not identity evidence; the worker's own runtime report is.
 Haiku has a smaller context window than the other tiers; keep its briefs and
 source sets short. An explicitly requested tier has no fallback. A tier
 selected by a composing workflow may fall back with disclosure under that

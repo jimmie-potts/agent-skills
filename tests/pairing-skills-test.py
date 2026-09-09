@@ -17,7 +17,7 @@ def links(path):
     return re.findall(r'\]\(([^)]+)\)', path.read_text())
 
 
-def reference_closure(skill):
+def reference_closure(case, skill):
     pending, visited = [skill / 'SKILL.md'], set()
     while pending:
         path = pending.pop().resolve()
@@ -28,8 +28,9 @@ def reference_closure(skill):
             if '://' in link or link.startswith('#'):
                 continue
             target = (path.parent / link.split('#')[0]).resolve()
-            assert target.is_relative_to(skill.resolve()), link
-            assert target.is_file(), link
+            case.assertTrue(target.is_relative_to(skill.resolve()),
+                            f'{path}: {link}')
+            case.assertTrue(target.is_file(), f'{path}: {link}')
             if target.suffix == '.md':
                 pending.append(target)
     return visited
@@ -54,7 +55,7 @@ class PairingSkillsStructureTest(unittest.TestCase):
             self.assertIn(adapter, links(skill / 'SKILL.md'), name)
             self.assertIn('references/validation-scenarios.md',
                           links(skill / 'SKILL.md'), name)
-            visited = reference_closure(skill)
+            visited = reference_closure(self, skill)
             references = set((skill / 'references').glob('*.md'))
             self.assertTrue(references <= visited, references - visited)
 

@@ -39,7 +39,9 @@ For Claude Code subagent tools, read [the Claude Code adapter](references/claude
 before spawning or resuming a worker. On another host, use only verified
 equivalent model selection and worker resumption capabilities. Report an
 unsupported pairing without changing host configuration or installing tools.
-On a Codex host, the sol-with-astra pairing applies instead of this skill.
+On a Codex host, report the host mismatch: an explicit request for this
+pairing is not substituted, and a composing workflow may offer sol-with-astra
+only as a disclosed alternative when the pairing was optional.
 
 Preserve the underlying task's scope, mode, permissions, and ownership rules.
 Planning-only work stays read-only. This skill grants no new publication,

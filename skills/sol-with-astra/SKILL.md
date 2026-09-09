@@ -30,7 +30,9 @@ For Codex collaboration tools, read [the Codex adapter](references/codex.md)
 before spawning or messaging. On another host, use only verified equivalent
 model selection and parent communication capabilities. Report an unsupported
 pairing without changing host configuration or installing tools. On a Claude
-Code host, the worker-with-fable pairing applies instead of this skill.
+Code host, report the host mismatch: an explicit request for this pairing is
+not substituted, and a composing workflow may offer worker-with-fable only as
+a disclosed alternative when the pairing was optional.
 
 Preserve the underlying task's scope, mode, permissions, and ownership rules.
 Planning-only work stays read-only. This skill grants no new publication,

@@ -1,7 +1,9 @@
 # Terra versus Sol worker comparison plan
 
 Superseded by the evaluator-owned comparison plan maintained outside this
-repository; retained for reference only.
+repository; retained for reference only. Its statements about Luna, Terra,
+and the reasoning enum are superseded by the Codex selection adapter, and its
+recording instructions are not authoritative.
 
 Plan only. Running it spends tokens and needs the user's authorization for each
 phase. It decides three Codex adapter questions with measured evidence:
