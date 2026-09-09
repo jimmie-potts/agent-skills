@@ -348,8 +348,9 @@ No skill in this catalog sets the reasoning effort. Claude Code documents an
 catalog's shared frontmatter stays portable with only `name` and
 `description`, and the catalog ships no `.claude/agents` definitions. The
 Agent tool has no per-call effort parameter, and a subagent inherits the
-session level by default. Claude Code's documented default is `high` for
-current models unless an organization default applies. The documentation
+session level by default. Claude Code's documented default is `high` on
+every model that supports effort except Opus 4.7, unless an organization
+default applies. The documentation
 describes one way for a skill to read the current level, the
 `${CLAUDE_EFFORT}` substitution inside skill text, which the portable
 entrypoints here do not use, and some runtimes attach an effort marker to a
@@ -367,11 +368,13 @@ claude --effort medium
 claude --effort high
 ```
 
-Inside a session, `/effort medium` or `/effort high` changes the level, and
-`/effort auto` clears the saved level for the active model. The
-`effortLevel` key in `settings.json` and the per-model `modelSettings` entry
-persist a choice, and the `CLAUDE_CODE_EFFORT_LEVEL` environment variable
-sets it for a process.
+The launch flag applies to that session. A level typed after `/effort` is
+saved for the active model and applies to later sessions on it, so a
+planning session started with `/effort medium` leaves the next delivery
+session at `medium` until `/effort high` or `/effort auto`, which clears the
+saved level. The `effortLevel` key in `settings.json` and the per-model
+`modelSettings` entry persist a choice, and the `CLAUDE_CODE_EFFORT_LEVEL`
+environment variable sets it for a process.
 
 The recommendation follows Anthropic's published effort measurements
 ([Optimizing for cost and intelligence](https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence),
@@ -387,9 +390,10 @@ planning work is recorded in
 [issue 24](https://github.com/jimmie-potts/agent-skills/issues/24).
 
 A worker spawned from a planning session inherits its level. The advisory
-pairing keeps its worker at the default because a reduced-effort worker stops
-consulting, so run a planning session at `high` when it may compose the
-pairing, or accept that its read-only investigation worker runs at `medium`.
+pairing wants its worker at the default because a reduced-effort worker stops
+consulting, and no skill can raise the level for the worker alone. Run a
+planning session at `high` when it may compose the pairing, or accept that
+its read-only investigation worker runs at `medium` and record that.
 
 ## Shared and domain skill ownership
 
