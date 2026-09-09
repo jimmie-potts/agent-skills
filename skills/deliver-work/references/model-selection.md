@@ -59,8 +59,9 @@ when different settings or isolation materially help, and separate bounded
 workers when the work splits into independent pieces or exceeds one context.
 Workers return proposed patches and evidence; the coordinator applies changes.
 Give each worker outcome, source/revision, applicable instructions, assessment,
-acceptance mapping, constraints, ownership, and expected result. Use a
-self-contained brief when overrides prevent full-history inheritance.
+acceptance mapping, constraints, ownership, and the entrypoint's labeled
+worker return format. Use a self-contained brief when overrides prevent
+full-history inheritance.
 Distinguish requested settings from observable runtime identity.
 
 Name the chosen strategy in the record. The strategies are direct

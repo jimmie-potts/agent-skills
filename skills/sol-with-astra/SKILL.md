@@ -48,6 +48,7 @@ Give Sol a self-contained brief with:
 - the requested outcome, relevant source material, and acceptance criteria;
 - workspace, current revision, applicable instructions, and write ownership;
 - current mode, permissions, constraints, and required validation;
+- the labeled return format in Review and finish;
 - the original Astra agent's address and the consultation protocol below.
 
 Pass these instructions and the applicable host adapter to Sol explicitly.
@@ -75,8 +76,27 @@ do not recursively delegate the task or create another Astra advisor.
 
 ## Review and finish
 
-Sol returns the result or proposed patch, changed files, actual validation
-commands and outcomes, unresolved limitations, and any decision still needed.
+Sol returns completed or blocked results in this labeled format:
+
+- Artifact: proposed patch or exact file contents; requested findings or plan
+  for read-only work; `none` when no artifact is produced.
+- Changed files: paths, distinguishing proposed from applied changes, or `none`.
+- Validation: commands actually run with trimmed outcomes and the revision or
+  state checked; identify required checks not run.
+- Consultations: count for an advisor loop, otherwise `not applicable`.
+- Settings: requested and reported model/reasoning, with `unknown` for
+  unexposed values; retain any host-required identity evidence.
+- Limitations: unresolved gaps or blockers, or `none`.
+- Pending decisions: decision and owner, or `none`.
+
+Exclude surrounding narrative, transcript replay, and restated instructions.
+Keep the requested artifact and required evidence intact. Consultation requests
+keep their decision, evidence, recommendation, and paused-dependency format.
+If required evidence is missing, return the specific omissions to the same
+worker before accepting completion. If the evidence is complete but extra
+narrative is present, disregard that narrative and evaluate the result normally;
+do not request a cosmetic rewrite or treat format compliance as correctness.
+
 Astra inspects the result against the acceptance criteria and evidence. Return
 actionable corrections to Sol when needed and review the corrected result.
 If work is blocked, report the concrete blocker instead of treating it as done.

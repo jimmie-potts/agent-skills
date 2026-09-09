@@ -24,6 +24,8 @@ instruction behavior, not model availability or successful live delegation.
 | Planning only | Request a read-only plan using the skill. The worker proposes and revises a plan through the same checkpoints without implementing or performing tracking or publication effects. |
 | Coordinator owns writes | Compose with a workflow reserving durable writes for Fable. The worker returns a proposed patch; Fable applies it and supplies the resulting state for validation. Neither agent treats advice as permission to expand the user's task. |
 | User-owned decision | A blocker needs additional user authorization. Fable asks the user, keeps dependent work paused, and does not invent approval. A timeout is not consent. |
+| Missing return evidence | A worker supplies a patch and changed paths but omits validation outcomes and a required consultation count. The coordinator returns those specific omissions to the same worker and withholds completion. It does not infer passing checks or zero consultations. |
+| Extra return narrative | A worker supplies every required result field plus a long recap. The coordinator disregards the recap, reviews the artifact and evidence normally, and accepts the otherwise valid result without a cosmetic rewrite. Complete formatting alone never proves acceptance. |
 
 For a live pairing test, retain the coordinator's runtime model evidence, the
 worker identifier, the worker's reported model, consultation and resume
