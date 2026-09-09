@@ -55,5 +55,21 @@ Direct implementation is the baseline in every row: choose a worker only when
 its cost per completed task, including consultations and corrections, beats
 Fable doing the work. A worker on `fable` is not a pairing.
 
+## Map impact to independent reviewers
+
+Use this mapping for both Standards and Specification, independently of the
+implementation row. Complexity or uncertainty may warrant stronger settings.
+
+| Impact | Reviewer default | Rationale and limits |
+| --- | --- | --- |
+| Low or medium impact | `sonnet` for each axis | Capable mid-tier verification is the default for routine work |
+| High impact, even with a tiny diff | Strongest evidenced relevant choice of `opus` or the coordinator's model, in separate fresh reviewer contexts | High reasoning recommended; apply the effort observation and capability-gap rules above |
+
+Pass the reviewer model explicitly rather than inheriting it accidentally.
+The coordinator's model here means a fresh independent reviewer on that model,
+never the coordinating writer's own judgment. These are capability hypotheses,
+not measured review-quality results. Explicit user/project requirements and
+stronger evidence override the defaults; no effort control is added.
+
 Do not launch replacement sessions, change personal settings, install
 adapters, or simulate multiple models by writing both sides of a conversation.

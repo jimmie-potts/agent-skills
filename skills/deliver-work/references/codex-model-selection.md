@@ -82,6 +82,23 @@ leaf worker a boundary against spawning further agents, respect the host's
 concurrency limit, and keep the coordinating turn available to the user while
 workers run.
 
+## Map impact to independent reviewers
+
+Use this mapping for both Standards and Specification, independently of the
+implementation row. Complexity or uncertainty may warrant stronger settings.
+
+| Impact | Reviewer default | Rationale and limits |
+| --- | --- | --- |
+| Low or medium impact | Terra (`gpt-5.6-terra`) at `high` for each axis, provisional pending the Codex worker evaluation | Capable mid-tier verification is the default for routine work |
+| High impact, even with a tiny diff | Strongest evidenced relevant choice of Sol (`gpt-5.6-sol`) at `high` or Astra (`gpt-6-astra`) at `high` | Use separate fresh reviewer contexts; inspect high-impact negative cases |
+
+Select reviewer overrides through the verified spawn schema above. Astra in
+this table is an independent reviewer, not an implementation worker or a
+replacement coordinator. Terra's identifier and review suitability remain
+provisional pending recorded evidence; listing it here is not live verification.
+Explicit user/project requirements and stronger evidence override these
+defaults. Different models for the two axes remain optional.
+
 Call collaboration tools through the interface actually exposed by the host.
 Do not launch replacement sessions, change personal settings, install adapters,
 or simulate multiple models by writing both sides of a conversation.
