@@ -51,6 +51,10 @@ The catalog currently contains:
   prose drafting and review standard;
 - [`unslop`](skills/unslop/SKILL.md), an editorial workflow for narrative prose;
 - [`why`](skills/why/SKILL.md), an evidence-based design-rationale investigator;
+- [`worker-with-fable`](skills/worker-with-fable/SKILL.md), a Haiku, Sonnet, or
+  Opus worker with the original Fable agent providing approach feedback,
+  blocker advice, and final review through Claude Code subagent tools; the
+  Claude Code counterpart of `sol-with-astra`;
 - [`writing-for-agents`](skills/writing-for-agents/SKILL.md), guidance for
   reliable skills, `AGENTS.md`, and conditional instruction references.
 
@@ -60,8 +64,10 @@ Reusable SDLC workflows also include:
   authorized GitHub/Jira publication with assessments and acceptance evidence.
   It reads the installed `deliver-work` package's canonical
   `references/work-assessment.md` without invoking delivery, and composes
-  `grill-with-docs` for material unresolved decisions. Install those dependencies
-  when using this planner; missing resources are reported, never copied;
+  `grill-with-docs` for material unresolved decisions. A bounded read-only
+  investigation may compose the host's advisory pairing. Install those
+  dependencies when using this planner; missing resources are reported, never
+  copied;
 - [`grill-with-docs`](skills/grill-with-docs/SKILL.md), which composes
   [`grilling`](skills/grilling/SKILL.md) and
   [`domain-modeling`](skills/domain-modeling/SKILL.md) for grouped decisions and
@@ -73,10 +79,12 @@ Reusable SDLC workflows also include:
   project's planning, hosting, review, and completion policy. It supports a
   ready-PR-only limit and requires no specific specification framework;
   it assesses verification needs and selects implementation/reviewer settings
-  from available host capabilities. It may compose `sol-with-astra` for bounded
-  implementation with advisory checkpoints; install that skill separately when
-  using the optional pairing. Advisory inspection never replaces its two
-  independent delivery reviews;
+  from available host capabilities. It may compose the host's advisory pairing
+  for bounded implementation with checkpoints, `sol-with-astra` under Codex
+  collaboration tools or `worker-with-fable` under Claude Code subagent tools,
+  choosing by verified host tooling rather than by request wording; install the
+  applicable skill separately when using the optional pairing. Advisory
+  inspection never replaces its two independent delivery reviews;
 - the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
   `openspec-apply-change`, `openspec-update-change`, `openspec-sync-specs`, and
   `openspec-archive-change`. They use the consuming repository's pinned CLI.
@@ -211,6 +219,7 @@ python3 tests/blast-radius-test.py
 python3 tests/deliver-work-test.py
 python3 tests/plan-work-test.py
 python3 tests/improve-codebase-architecture-test.py
+python3 tests/pairing-skills-test.py
 python3 tests/workflow-evaluation-test.py
 python3 tests/grilling-skills-test.py
 python3 tests/interrogate-test.py

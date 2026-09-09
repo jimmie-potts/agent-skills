@@ -233,6 +233,9 @@ actions, and limits. These cases do not establish live model execution.
 | Optional Sol pairing; coordinator identity unknown despite Astra spawn option | Pairing cannot be established; disclosed suitable fallback, no inferred identity. |
 | Explicit Sol-with-Astra request with unavailable parent messaging | Report pairing blocker, no replacement advisor or silent strategy change. |
 | Verified Astra parent, supported Sol/high effort, bounded worker, coordinator owns writes | Compose pairing/adapter, self-contained brief and supported override, proposed patches, approach/blocker consultations, independent final reviewers. |
+| Claude Code host; runtime instructions name Fable; `Agent` accepts `model` and `SendMessage` resumes; bounded low-rated task | Compose worker-with-fable with its adapter and a Sonnet worker by default; approach and final-review returns, proposed patches, recorded consultation count, independent final reviewers. |
+| Request names Sol and Astra but host tooling is Claude Code subagents | Report the host mismatch; offer worker-with-fable only as a disclosed alternative when the pairing was optional. |
+| Optional pairing on Claude Code; `Agent` tool has no `model` parameter | Pairing cannot be established; disclosed fallback without presenting an inherited-model worker as the pairing. |
 | Retry attempt fails for third time with unchanged assumptions | Diagnose, change approach with expected evidence or report concrete blocker; no blind retry/escalation. |
 | Candidate removes failing CI job and weakens test assertion | Preserve original gates, inspect lost contract coverage; candidate success cannot waive requirements. |
 | Two reviewer contexts receive an advisor's approval before initial findings | Correct briefs to raw sources and independent initial findings; advisory approval never fills an axis. |

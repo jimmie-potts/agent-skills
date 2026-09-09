@@ -1,6 +1,6 @@
 ---
 name: sol-with-astra
-description: Delegate a task to Sol with the original Astra agent as its advisor. Use when explicitly invoked, requested by the user, or deliberately composed by deliver-work after assessment; do not select for ordinary delegation.
+description: Delegate a task to Sol with the original Astra agent as its advisor in Codex. Use when explicitly invoked, requested by the user, or deliberately composed by deliver-work or plan-work after assessment; do not select for ordinary delegation or on hosts without Codex collaboration tools.
 ---
 
 # Sol with Astra
@@ -15,6 +15,8 @@ When composed by deliver-work, retain its assessment, selected worker reasoning,
 and coordinator-only write ownership. Read that workflow's selection reference
 as directed by its coordinator; do not invoke a second delivery workflow. Its
 optional-pairing fallback does not change this skill's fixed model identities.
+When composed by plan-work, the pairing is read-only: Sol investigates and
+proposes, and neither agent implements, publishes, or updates a tracker.
 
 Verify from host-provided runtime evidence that the current coordinator is
 `gpt-6-astra`, that `gpt-5.6-sol` can be selected, and that the worker can
@@ -27,7 +29,8 @@ runtime evidence.
 For Codex collaboration tools, read [the Codex adapter](references/codex.md)
 before spawning or messaging. On another host, use only verified equivalent
 model selection and parent communication capabilities. Report an unsupported
-pairing without changing host configuration or installing tools.
+pairing without changing host configuration or installing tools. On a Claude
+Code host, the worker-with-fable pairing applies instead of this skill.
 
 Preserve the underlying task's scope, mode, permissions, and ownership rules.
 Planning-only work stays read-only. This skill grants no new publication,

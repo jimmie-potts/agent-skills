@@ -45,6 +45,7 @@ python3 tests/blast-radius-test.py
 python3 tests/deliver-work-test.py
 python3 tests/plan-work-test.py
 python3 tests/improve-codebase-architecture-test.py
+python3 tests/pairing-skills-test.py
 python3 tests/workflow-evaluation-test.py
 python3 tests/grilling-skills-test.py
 python3 tests/interrogate-test.py
