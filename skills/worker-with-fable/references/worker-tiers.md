@@ -25,10 +25,10 @@ measured evidence is narrower: the most accurate coding configuration it
 reports is an Opus 5 worker under a Fable 5.1 advisor, and that same pairing
 matched Fable alone at medium effort within noise on a chart-reading benchmark
 at higher cost because the worker consulted on nearly every task. Its Sonnet 5
-executor results are a large gain on one coding benchmark where the executor
-kept consulting and a loss on another where it stopped consulting; neither
-names a Fable advisor. The Sonnet default is therefore a cost hypothesis
-pending measurement, not a measured result.
+results are for a low-effort executor: a large gain on one coding benchmark
+where it kept consulting, and on another it stopped consulting, with no score
+reported; neither names a Fable advisor. The Sonnet default is therefore a
+cost hypothesis pending measurement, not a measured result.
 
 ## Tiers
 
