@@ -22,10 +22,13 @@ between worker and Fable yields more from each consultation. Anthropic's cost
 guidance names a frontier advisor over a mid-tier executor as the most
 cost-effective configuration, which is why Sonnet is the default here. Its
 measured evidence is narrower: the most accurate coding configuration it
-reports is an Opus 5 worker under a Fable 5.1 advisor, and a Sonnet 5 worker
-under Fable 5.1 matched Fable alone at medium effort within noise on one
-research benchmark at higher cost. The Sonnet default is therefore a cost
-hypothesis pending measurement, not a measured result.
+reports is an Opus 5 worker under a Fable 5.1 advisor, and that same pairing
+matched Fable alone at medium effort within noise on a chart-reading benchmark
+at higher cost because the worker consulted on nearly every task. Its Sonnet 5
+executor results are a large gain on one coding benchmark where the executor
+kept consulting and a loss on another where it stopped consulting; neither
+names a Fable advisor. The Sonnet default is therefore a cost hypothesis
+pending measurement, not a measured result.
 
 ## Tiers
 
