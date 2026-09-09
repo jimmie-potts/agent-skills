@@ -11,10 +11,14 @@ and [Optimizing for cost and intelligence](https://platform.claude.com/docs/en/a
 The advisor pattern pays when the task is serial work with a few hard decision
 points: choosing an approach, recovering from a failure, settling scope. It
 does not pay when every turn needs frontier judgment, when the task is one
-short dependent chain that fits in one context, or when Fable at a lower
-reasoning setting already meets the bar. Fable implementing directly is the
-baseline every pairing has to beat, measured as cost per completed task rather
-than tokens. Many independent pieces call for separate bounded workers under
+short dependent chain that fits in one context, or when Fable implementing
+directly already meets the bar. The baseline every pairing must beat is Fable
+implementing directly at the current session effort, measured as cost per
+completed task including failed attempts, consultations, and corrections.
+Claude Code sets effort at session scope by default; this skill cannot lower
+Fable's effort for one task. A fresh worker starts with a small task context
+while the coordinator retains its existing context, so include both in the
+comparison. Many independent pieces call for separate bounded workers under
 the composing workflow's ordinary delegation, not this pairing.
 
 The advisor hands over only capability the worker lacks, so a wider gap
@@ -36,7 +40,7 @@ cost hypothesis pending measurement, not a measured result.
 | --- | --- | --- | --- |
 | `haiku` (Claude Haiku 4.5) | Bounded mechanical work with strong existing checks: renames, fixture and documentation edits, evidence summaries, single-file changes with a known test | Nothing consequential; wording and ordering within one bounded step | After each bounded step, plus the mandatory approach and final-review consultations |
 | `sonnet` (Claude Sonnet 5) | Default worker for coding, debugging, tests, and agentic tool use on bounded work with low or medium assessment ratings | Routine implementation choices consistent with the approved approach | Approach, blockers, final review |
-| `opus` (Claude Opus 5) | Work whose implementation itself needs deep reasoning: high complexity, high impact, or large refactors where the consultation rate would otherwise be high | Routine design choices within the approved approach and scope | Approach, blockers, final review; expect a smaller advisor gain |
+| `opus` (Claude Opus 5) | Work whose implementation itself needs deep reasoning: high complexity, high impact, large refactors, or a default Sonnet attempt that failed after diagnosis and reassessment | Routine design choices within the approved approach and scope | Approach, blockers, final review; expect a smaller advisor gain |
 | `fable` | Not a worker tier. Fable implements directly when the task needs it. | | |
 
 The version names in the table are the documented targets of the aliases at
