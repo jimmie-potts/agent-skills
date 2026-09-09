@@ -341,6 +341,65 @@ symlink. It also finds owned links left dangling after their source skill is
 removed. Missing optional skills do not make status fail; validation errors and
 conflicts do.
 
+### Session effort on Claude Code
+
+No skill in this catalog sets the reasoning effort. Claude Code documents an
+`effort` frontmatter field for [skills](https://code.claude.com/docs/en/skills)
+and [subagent definitions](https://code.claude.com/docs/en/sub-agents), but the
+catalog's shared frontmatter stays portable with only `name` and
+`description`, and the catalog ships no `.claude/agents` definitions. The
+Agent tool has no per-call effort parameter, and a subagent inherits the
+session level by default. Claude Code's documented default is `high` on
+every model that supports effort except Opus 4.7, unless an organization
+default applies; see the [model configuration docs](https://code.claude.com/docs/en/model-config).
+The [skill substitutions reference](https://code.claude.com/docs/en/skills#available-string-substitutions)
+describes `${CLAUDE_EFFORT}` inside skill text to read the level. The portable
+entrypoints here do not use it. `plan-work` and `deliver-work` record the level
+they can observe or that you state, otherwise unknown, and never claim to
+change it.
+
+Set effort per session rather than per skill. Start a planning session at a
+lower level and a delivery session at `high`, the Fable default:
+
+```bash
+claude --effort medium
+```
+
+```bash
+claude --effort high
+```
+
+The launch flag applies to that session. In an interactive session, a typed
+`/effort medium` or `/effort high` is saved for the active model and applies
+to later sessions on it. Use the launch flag for a one-session choice;
+`/effort auto` clears the saved level. The `effortLevel` key in `settings.json` and the per-model
+`modelSettings` entry persist a choice, and the `CLAUDE_CODE_EFFORT_LEVEL`
+environment variable takes precedence for a process. Some older models hold
+their default ahead of saved settings until an interactive effort choice
+ends that hold; `--effort` overrides it for one launch. Check the session
+header or `/effort` to confirm the effective level.
+
+The recommendation follows Anthropic's published effort measurements
+([Optimizing for cost and intelligence](https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence),
+read September 2026). On four knowledge-work benchmarks run with Claude
+Fable 5, `medium` matched the default's accuracy at about 70 to 87 percent
+of its cost, and `low` gave up one to three points for a third to a half
+off. On SWE-bench Pro with Claude Opus 5, `medium` gave up about two points
+for half the cost and `low` about eight for a quarter. This note treats
+planning with `plan-work` as knowledge work and delivery with `deliver-work`
+as coding. The source advises sweeping levels on your own traffic, so measure
+before relying on it; the decision to accept whatever loss appears on
+planning work is recorded in
+[issue 24](https://github.com/jimmie-potts/agent-skills/issues/24).
+
+Without a host override, a spawned worker inherits the session level. The advisory
+pairing recommends default effort because a low-effort worker can stop
+consulting; the effect depends on the task. These catalog skills cannot raise
+the level for the worker alone. For Fable sessions that may compose the
+pairing, start at `high`, or disclose the inherited reduced level and monitor
+consultations. The same inheritance applies to read-only investigation
+workers.
+
 ## Shared and domain skill ownership
 
 Maintain reusable methods here. Consuming projects keep domain contracts,

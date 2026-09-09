@@ -50,9 +50,11 @@ foreground when the next coordinator step depends on the checkpoint, so the
 coordinating turn stays active.
 
 Retain the agent identifier returned by the host; every later exchange targets
-it. The `Agent` tool exposes no per-call effort control, so the worker runs at
-the host default. Record that as the observed reasoning setting and do not
-claim a different one.
+it. The `Agent` tool exposes no per-call effort control, and a subagent
+inherits the session's effort level unless an existing host override applies.
+Record the effective worker level when exposed or stated, otherwise unknown;
+use the known session level only when inheritance is established. Report a
+known mismatch with the recommended default; do not claim to change effort.
 
 ## Exchange advice without losing the worker
 

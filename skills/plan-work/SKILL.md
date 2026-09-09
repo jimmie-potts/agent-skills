@@ -53,16 +53,21 @@ implementation chores alone is not implementation-ready work. Each item needs:
 - conditional specialist/human review and operational handoff expectations.
 
 Apply the assessment contract without embedding model names in planning ratings.
-Keep planned commands and paths explicitly unexecuted. Use a bounded investigation
-when it can resolve technical uncertainty; a missing product decision remains a
-question. A bounded investigation may compose the host's advisory pairing in
-planning-only mode, selected from verified host tooling: sol-with-astra with
-Codex collaboration tools, worker-with-fable with Claude Code subagent tools,
+Record the session's reasoning setting in the planning evidence when the host
+exposes it or the user states it; otherwise record it as unknown. Report a
+known mismatch with documented workflow guidance or a composed skill's
+reasoning requirement, such as a pairing worker that would inherit a reduced
+level, and never claim to change it. Keep planned commands and
+paths explicitly unexecuted. Use a bounded investigation when it can resolve
+technical uncertainty; a missing product decision remains a question. A
+bounded investigation may compose the host's advisory pairing in planning-only
+mode, selected from verified host tooling: sol-with-astra with Codex
+collaboration tools, worker-with-fable with Claude Code subagent tools,
 neither elsewhere. An explicit request naming the other host's pairing is
 reported as a host mismatch, not substituted. The worker reads and proposes
 without writes, and a missing pairing does not block this planner's own
-investigation. Link specifications and decision records without copying
-their content.
+investigation. Link specifications and decision records without copying their
+content.
 When repository policy requires specification artifacts, use its canonical method
 within existing edit authority; do not invent a specification framework.
 

@@ -81,8 +81,11 @@ until Fable responds and may finish independent authorized work before
 returning. Advice cannot replace missing user authority. Fable brings
 user-owned decisions back to the user while continuing unaffected work.
 
-Keep the worker at the host's default reasoning setting. A worker at reduced
-effort stops noticing when it is stuck, and the consultation rate collapses.
+Prefer the model's default effort for the worker. It inherits the session
+level unless an existing host override applies; this skill cannot set a
+per-worker level. Record the effective level when exposed or stated, otherwise
+unknown, and report a known mismatch with the recommendation. A low-effort
+worker can stop noticing it is stuck; monitor its consultation rate.
 Count consultations per task. If the worker consults on nearly every decision,
 the pairing costs more than direct Fable implementation; finish the current
 task, then report that evidence for the next selection.

@@ -9,8 +9,11 @@ For a supported override, call `Agent` with the exact selected model alias, a
 self-contained brief, and foreground execution when the next step depends on
 the result. Subagents inherit no conversation and cannot message the
 coordinator mid-run; they return a report, and `SendMessage` resumes the same
-agent. The tool exposes no per-call reasoning control. Record the host default
-as the observed setting and do not report an override the host cannot apply.
+agent. The tool exposes no per-call reasoning control. A worker inherits
+session effort unless an existing host override applies. Record the effective
+level when exposed or stated, otherwise unknown; use a known session level
+only when inheritance is established. Report known mismatches with the
+selected role setting, without claiming to change effort.
 Do not create `.claude/agents` definitions or change settings to obtain a
 model.
 

@@ -51,8 +51,9 @@ workflow's policy.
 - Two consultations are mandatory: approach before substantial implementation,
   and final review before reporting completion. Workers under-consult without
   them, especially on coding work.
-- Keep the worker at the host default reasoning setting. Reduced effort makes
-  the worker stop noticing it is stuck.
+- Prefer default effort, but record the inherited session level or an exposed
+  host override, otherwise unknown. Report a known mismatch; this skill cannot
+  set worker effort. Low effort can reduce consultation, depending on the task.
 - Record the consultation count. A worker consulting on nearly every decision
   means the task belonged to Fable directly; finish, then report that evidence
   for the next selection.
