@@ -55,8 +55,9 @@ implementation chores alone is not implementation-ready work. Each item needs:
 Apply the assessment contract without embedding model names in planning ratings.
 Record the session's reasoning setting in the planning evidence when the host
 exposes it or the user states it; otherwise record it as unknown. Report when
-it exceeds or undershoots what the assessment needs, and never claim to change
-it. Keep planned commands and paths explicitly unexecuted. Use a bounded
+a composed skill needs a different level, such as a pairing worker that would
+inherit a reduced one, and never claim to change it. Keep planned commands and
+paths explicitly unexecuted. Use a bounded
 investigation when it can resolve technical uncertainty; a missing product
 decision remains a question. A bounded investigation may compose the host's
 advisory pairing in planning-only mode, selected from verified host tooling:

@@ -75,8 +75,8 @@ the host's advisory pairing, sol-with-astra with Codex collaboration tools or
 worker-with-fable with Claude Code subagent tools, only when that policy and
 the pairing's prerequisites support it. Record the session's reasoning setting
 in the delivery evidence when the host exposes it or the user states it;
-otherwise record it as unknown. Report when it exceeds or undershoots what the
-assessment needs, and never claim to change it.
+otherwise record it as unknown. Report when it differs from the setting the
+selection policy chose for a role, and never claim to change it.
 
 Use the project's planning method and acceptance criteria. Do not install a
 specification framework or add a delivery runtime to fit this skill. Load shared

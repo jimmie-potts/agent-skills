@@ -316,45 +316,6 @@ boundary. Verify host behavior before claiming it has been enforced. See
 [Claude Code](https://code.claude.com/docs/en/skills#control-who-invokes-a-skill),
 and [Pi](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/skills.md).
 
-### Session effort on Claude Code
-
-No skill in this catalog sets the reasoning effort. Shared frontmatter stays
-portable, subagent definitions have no documented effort field, and the Agent
-tool has no per-call effort parameter, so the coordinator and every subagent
-run at whatever the session was given. Claude Code's documented default is
-`high`. Claude Code exposes the current level to a skill only through the
-`${CLAUDE_EFFORT}` substitution inside skill text, which the portable
-entrypoints here do not use, and it does not surface the level in the system
-prompt, so `plan-work` and `deliver-work` record the level you state or leave
-it unknown. They never claim to change it.
-
-Set effort per session rather than per skill. Start a planning session with a
-lower level and a delivery session at the default:
-
-```bash
-claude --effort medium
-```
-
-```bash
-claude --effort high
-```
-
-Inside a session, `/effort medium` or `/effort high` changes the level, and
-`/effort auto` clears the saved level for the active model. The
-`effortLevel` key in `settings.json`, the per-model `modelSettings` entry, and
-the `CLAUDE_CODE_EFFORT_LEVEL` environment variable set it persistently.
-
-The recommendation follows Anthropic's published effort measurements
-([Optimizing for cost and intelligence](https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence),
-read September 2026). On planning-shaped knowledge work, `medium` cost 13 to
-31 percent less than the default for a one-to-three-point loss, and `low`
-cost 33 to 50 percent less for the same loss. On long coding tasks the curve
-is steep: `medium` roughly halved cost for about two points, and `low` cut it
-to a quarter for about eight. Planning with `plan-work` is knowledge work;
-delivery with `deliver-work` is coding. Accepting the one-to-three-point
-planning tradeoff is a maintainer decision recorded in
-[issue 24](https://github.com/jimmie-potts/agent-skills/issues/24).
-
 For tests or an intentional advanced setup, override the roots without changing
 `HOME`:
 
@@ -379,6 +340,56 @@ conflicting regular file or directory, a foreign symlink, or a broken owned
 symlink. It also finds owned links left dangling after their source skill is
 removed. Missing optional skills do not make status fail; validation errors and
 conflicts do.
+
+### Session effort on Claude Code
+
+No skill in this catalog sets the reasoning effort. Claude Code documents an
+`effort` frontmatter field for skills and for subagent definitions, but the
+catalog's shared frontmatter stays portable with only `name` and
+`description`, and the catalog ships no `.claude/agents` definitions. The
+Agent tool has no per-call effort parameter, and a subagent inherits the
+session level by default. Claude Code's documented default is `high` for
+current models unless an organization default applies. The documentation
+describes one way for a skill to read the current level, the
+`${CLAUDE_EFFORT}` substitution inside skill text, which the portable
+entrypoints here do not use, and some runtimes attach an effort marker to a
+turn. `plan-work` and `deliver-work` record the level they can observe or
+that you state, otherwise unknown, and never claim to change it.
+
+Set effort per session rather than per skill. Start a planning session at a
+lower level and a delivery session at the default:
+
+```bash
+claude --effort medium
+```
+
+```bash
+claude --effort high
+```
+
+Inside a session, `/effort medium` or `/effort high` changes the level, and
+`/effort auto` clears the saved level for the active model. The
+`effortLevel` key in `settings.json` and the per-model `modelSettings` entry
+persist a choice, and the `CLAUDE_CODE_EFFORT_LEVEL` environment variable
+sets it for a process.
+
+The recommendation follows Anthropic's published effort measurements
+([Optimizing for cost and intelligence](https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence),
+read September 2026). On four knowledge-work benchmarks run with Claude
+Fable 5, `medium` matched the default's accuracy at about 70 to 87 percent
+of its cost, and `low` gave up one to three points for a third to a half
+off. On SWE-bench Pro with Claude Opus 5, `medium` gave up about two points
+for half the cost and `low` about eight for a quarter. This note treats
+planning with `plan-work` as knowledge work and delivery with `deliver-work`
+as coding. The source advises sweeping levels on your own traffic, so measure
+before relying on it; the decision to accept whatever loss appears on
+planning work is recorded in
+[issue 24](https://github.com/jimmie-potts/agent-skills/issues/24).
+
+A worker spawned from a planning session inherits its level. The advisory
+pairing keeps its worker at the default because a reduced-effort worker stops
+consulting, so run a planning session at `high` when it may compose the
+pairing, or accept that its read-only investigation worker runs at `medium`.
 
 ## Shared and domain skill ownership
 
