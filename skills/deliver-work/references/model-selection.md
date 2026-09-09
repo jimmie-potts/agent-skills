@@ -26,20 +26,27 @@ its affected step. Never silently substitute an explicitly requested model.
 ## Choose by role and evidence
 
 Use this guidance as a starting hypothesis, adjusted to actual evidence and
-supported controls. Do not combine the ratings into an average.
+supported controls. Do not combine the ratings into an average. Start reviewer
+selection from impact: capable mid-tier reviewers for low and medium impact,
+and the strongest evidenced relevant reviewers at high reasoning for high
+impact. This reserves frontier judgment for costly mistakes while retaining
+capable verification on routine work. Complexity and uncertainty may raise the
+selection; explicit user/project reviewer requirements always prevail.
 
 | Evidence | Implementation | Standards review | Specification review |
 | --- | --- | --- | --- |
-| Bounded local work, low uncertainty/impact, strong checks | Demonstrated suitable coding model at default/moderate reasoning | Suitable reviewer with correctness and test inspection | Suitable reviewer with criterion-by-criterion evidence |
+| Low or medium impact | Suitable implementation settings for the complexity and uncertainty | Capable mid-tier reviewer by default, with correctness and test inspection | Capable mid-tier reviewer by default, with criterion-by-criterion evidence |
 | High interacting-state complexity | Stronger coding capability and higher reasoning; decompose at testable boundaries | Increase reasoning for interactions, concurrency, invariants, recovery | Increase reasoning when acceptance spans component interactions |
 | High uncertainty or unknown material evidence | Investigate/clarify before dependent implementation | Examine assumptions affecting correctness and test validity | Stronger reasoning/capability for ambiguity, omissions, conflicting evidence |
-| High impact even with a tiny diff | Capability floor adequate for the risk; strongest evidenced relevant option when suitability is uncertain | Strong relevant capability and high reasoning; specialist/human evidence as required | Independently verify negative cases, exclusions, and high-impact acceptance |
+| High impact even with a tiny diff | Capability floor adequate for the risk; strongest evidenced relevant option when suitability is uncertain | Strongest evidenced relevant reviewer at high reasoning; specialist/human evidence as required | Strongest evidenced relevant reviewer at high reasoning; verify negative cases, exclusions, and high-impact acceptance |
 
 Default/moderate/high are relative recommendations, not portable API enum names.
 Choose actual host-supported settings and record the mapping. Maximum reasoning
 is not automatic; raise it when unresolved reasoning warrants it. A stronger
 model cannot supply a missing product decision. Different reviewer models are
-optional, justified by evidence rather than imposed as a gate.
+optional, justified by evidence rather than imposed as a gate. Both axes may
+use the same model in separate fresh contexts. These defaults never authorize
+self-review or weaken independent review requirements.
 
 ## Choose an implementation strategy
 

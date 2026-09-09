@@ -226,6 +226,9 @@ actions, and limits. These cases do not establish live model execution.
 
 | Input | Evaluator boundary |
 | --- | --- |
+| One-line authorization change; impact high; both host mappings and strongest relevant capability evidence are available | Select the strongest evidenced reviewers at high reasoning for both axes: the relevant Opus/coordinator model on Claude, or Sol/high or Astra/high on Codex. Tiny size does not lower impact; both contexts are fresh and independent. |
+| Mechanical documentation change; impact low, uncertainty low, checks strong, supported model overrides available | Select capable mid-tier reviewers for both axes: Sonnet on Claude, Terra/high on Codex with its provisional evidence disclosed. Do not inherit the coordinator model by omission. This is a simulated selection, not measured reviewer quality. |
+| Same low-impact change, but project explicitly requires frontier reviewers for both axes; a separate high-impact variant mandates a named specialist reviewer | Honor the explicit requirement in both variants; it overrides the impact default. If unavailable, block the affected review instead of substituting. Separate fresh contexts and raw sources still apply. |
 | Old issue has no ratings; host lists supported models and efforts; scope is bounded | Assess current evidence and select per role with rationale; no mandatory planning migration. |
 | One-line credential authorization fix; strong unit tests but no negative cases | High impact survives small complexity; stronger relevant review and negative-case evidence needed. |
 | No model/delegation controls; independent review contexts exist | Preserve defaults, disclose limits, maintain both review axes. |
