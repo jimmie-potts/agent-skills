@@ -227,3 +227,12 @@ adaptations. Updates are reviewed in this shared catalog.
 - Accepted scope: [agent-skills issue #5](https://github.com/jimmie-potts/agent-skills/issues/5).
 - Both retired skill names are replaced without compatibility wrappers. Shared
   composed skills retain their existing provenance and license records.
+
+## `improve-codebase-architecture`
+
+- Canonical path: [`skills/improve-codebase-architecture/`](skills/improve-codebase-architecture/SKILL.md)
+- Original repository: `https://github.com/mattpocock/skills`
+- Original path: `skills/engineering/improve-codebase-architecture/`
+- Pinned Git commit: `3cca18b368ae95cdbdebbff572ccafa662551015`
+- License: [MIT](skills/improve-codebase-architecture/LICENSE), Copyright (c) 2026 Matt Pocock
+- Detailed source record: [`skills/improve-codebase-architecture/SOURCE.md`](skills/improve-codebase-architecture/SOURCE.md)

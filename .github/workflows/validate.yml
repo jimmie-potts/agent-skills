@@ -35,6 +35,7 @@ jobs:
           python3 tests/blast-radius-test.py
           python3 tests/deliver-work-test.py
           python3 tests/plan-work-test.py
+          python3 tests/improve-codebase-architecture-test.py
           python3 tests/workflow-evaluation-test.py
           python3 tests/grilling-skills-test.py
           python3 tests/interrogate-test.py
@@ -66,3 +67,33 @@ jobs:
           else
             git diff-tree --check --root -r HEAD
           fi
+
+  architecture-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Prepare isolated browser dependency
+        run: |
+          npm install --prefix "$RUNNER_TEMP/architecture-report-deps" --ignore-scripts --no-audit --no-fund playwright@1.62.1
+          "$RUNNER_TEMP/architecture-report-deps/node_modules/.bin/playwright" install --with-deps chromium
+
+      - name: Verify offline report at desktop and mobile widths
+        env:
+          NODE_PATH: ${{ runner.temp }}/architecture-report-deps/node_modules
+          ARCHITECTURE_REPORT_OUTPUT: ${{ runner.temp }}/architecture-report-output
+        run: node tests/architecture-report-browser-test.cjs
+
+      - name: Preserve report verification artifacts
+        uses: actions/upload-artifact@v5
+        with:
+          name: architecture-report
+          path: ${{ runner.temp }}/architecture-report-output
+          if-no-files-found: error

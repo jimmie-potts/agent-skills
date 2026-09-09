@@ -21,6 +21,9 @@ The catalog currently contains:
   analysis workflow;
 - [`codebase-design`](skills/codebase-design/SKILL.md), focused interface, seam,
   locality, and testability design guidance;
+- [`improve-codebase-architecture`](skills/improve-codebase-architecture/SKILL.md),
+  an explicit, evidence-backed review that ranks module improvements before
+  detailed design and supports offline visual reports;
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md), a red-capable,
   evidence-first diagnosis workflow;
 - [`grill-me`](skills/grill-me/SKILL.md), an explicit compatibility alias for
@@ -118,6 +121,8 @@ the prompts.
 | `Summarize this finished plan` | Do not start a grilling session. |
 | `Read CONTEXT.md so you use the right terminology` | Select neither `domain-modeling` nor `grill-with-docs`. |
 | `Resolve whether Account means tenant or login identity` | Select `domain-modeling`. |
+| Explicit `$improve-codebase-architecture` | Review bounded scope, rank evidenced candidates or recommend no change, then let the user select. |
+| `Explain or critique this subsystem` | Select `how`; do not select the explicit architecture improvement workflow. |
 | `Design a testable seam for this module` | Select `codebase-design`; a runtime explanation selects `how`. |
 | `Diagnose why this request is slow` | Select `diagnosing-bugs`; implementing a confirmed fix does not. |
 | `Review this pull request against its specification` | Select `code-review`; a plain change summary does not. |
@@ -144,6 +149,15 @@ python -m pip install -r requirements-dev.txt
 ```
 
 The manager never installs packages or executes scripts bundled in a skill.
+
+The offline architecture report has a separate browser check:
+`node tests/architecture-report-browser-test.cjs`. It needs Playwright 1.62.1
+and Chromium. An existing package directory can be selected with `NODE_PATH`,
+an existing browser with `ARCHITECTURE_REPORT_CHROMIUM`, and a temporary output
+directory with `ARCHITECTURE_REPORT_OUTPUT`. CI provisions these dependencies
+in its temporary workspace and retains desktop/mobile screenshots and a result
+receipt. Local browser unavailability is reported, not counted as a pass; the
+hosted `architecture-report` job supplies that acceptance evidence.
 
 ## Skill format
 
@@ -196,6 +210,7 @@ python3 tests/architect-test.py
 python3 tests/blast-radius-test.py
 python3 tests/deliver-work-test.py
 python3 tests/plan-work-test.py
+python3 tests/improve-codebase-architecture-test.py
 python3 tests/workflow-evaluation-test.py
 python3 tests/grilling-skills-test.py
 python3 tests/interrogate-test.py
@@ -274,6 +289,23 @@ provides that capability. Without one, those skills report the limitation
 instead of presenting repeated work from one reasoning pass as independent.
 `architect` can still compare alternatives in one pass and must disclose that
 fallback.
+
+`improve-codebase-architecture` uses the existing `codebase-design` skill and
+conditionally `grilling` or `grill-with-docs` with `domain-modeling`. Keep those
+companions available through supported discovery. A missing companion blocks
+only its dependent phase; the workflow does not install it. It can investigate
+sequentially and return Markdown when sub-agents, report writing, or browser
+preview are unavailable.
+
+The shared package requires explicit invocation in its description and body.
+Codex additionally enforces selection through `agents/openai.yaml`. Claude Code
+and Pi support native `disable-model-invocation` frontmatter, but this catalog
+keeps its shared entrypoint to `name` and `description`; explicit-only behavior
+there is an instruction contract, not a native invocation switch or permission
+boundary. Verify host behavior before claiming it has been enforced. See
+[Codex](https://developers.openai.com/codex/skills),
+[Claude Code](https://code.claude.com/docs/en/skills#control-who-invokes-a-skill),
+and [Pi](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/skills.md).
 
 For tests or an intentional advanced setup, override the roots without changing
 `HOME`:
