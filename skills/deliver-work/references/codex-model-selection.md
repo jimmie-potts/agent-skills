@@ -38,9 +38,10 @@ The `reasoning_effort` values documented for `collaboration.spawn_agent` are
 `low`, `medium`, and `high`, and this catalog has observed `medium` and `high`
 in spawns. Codex session and config settings also accept `xhigh` and `max`
 through `model_reasoning_effort`. Whether a spawn call accepts those two is
-unverified, and "Ultra" in community writing has no confirmed mapping to
-either. Do not request `xhigh` or `max` for a worker unless the host's spawn
-schema lists it, and never present a rejected setting as applied.
+unverified and provisional pending the Codex worker evaluation, and "Ultra"
+in community writing has no confirmed mapping to either. Do not request
+`xhigh` or `max` for a worker unless the host's spawn schema lists it, and
+never present a rejected setting as applied.
 
 The Codex lineup by role:
 
@@ -51,11 +52,13 @@ The Codex lineup by role:
   read-only scout, `medium` as the baseline for scoped implementation, `high`
   for difficult implementation and ambiguity.
 - Terra (GPT-5.6) is the everyday implementation and testing worker for
-  scoped multi-step work with clear boundaries, at `high`. Multi-agent v2
-  spawns Sol and Terra as subagents.
+  scoped multi-step work with clear boundaries, at `high`. Its rows below
+  are provisional pending the Codex worker evaluation.
 - Luna (GPT-5.6) is the fast option for extraction, classification,
-  transformation, and structured summaries. It is not spawnable as a
-  subagent in multi-agent v2; do not select it for delegated work.
+  transformation, and structured summaries. Confirm from the host's spawn
+  schema whether it is spawnable: an earlier community report said
+  multi-agent v2 could not spawn it, and a later host probe listed it. Do
+  not select it for delegated work until a recorded spawn verifies it.
 
 | Assessment evidence | Strategy | Worker and reasoning | Coordinator role |
 | --- | --- | --- | --- |
@@ -70,7 +73,8 @@ The Codex lineup by role:
 
 Direct implementation is the baseline in every row: choose a worker only when
 its cost per completed task, including consultations and corrections, beats
-Astra doing the work. A worker on Astra is not the pairing, and the pairing
+Astra doing the work. Rows naming Terra are provisional pending the Codex
+worker evaluation. A worker on Astra is not the pairing, and the pairing
 itself is always Sol; Terra is for assigned and parallel workers. Give every
 leaf worker a boundary against spawning further agents, respect the host's
 concurrency limit, and keep the coordinating turn available to the user while
