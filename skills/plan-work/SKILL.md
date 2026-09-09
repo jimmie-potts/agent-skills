@@ -54,9 +54,10 @@ implementation chores alone is not implementation-ready work. Each item needs:
 
 Apply the assessment contract without embedding model names in planning ratings.
 Record the session's reasoning setting in the planning evidence when the host
-exposes it or the user states it; otherwise record it as unknown. Report when
-a composed skill needs a different level, such as a pairing worker that would
-inherit a reduced one, and never claim to change it. Keep planned commands and
+exposes it or the user states it; otherwise record it as unknown. Report a
+known mismatch with documented workflow guidance or a composed skill's
+reasoning requirement, such as a pairing worker that would inherit a reduced
+level, and never claim to change it. Keep planned commands and
 paths explicitly unexecuted. Use a bounded investigation when it can resolve
 technical uncertainty; a missing product decision remains a question. A
 bounded investigation may compose the host's advisory pairing in planning-only

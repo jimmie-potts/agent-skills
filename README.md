@@ -351,10 +351,10 @@ catalog's shared frontmatter stays portable with only `name` and
 Agent tool has no per-call effort parameter, and a subagent inherits the
 session level by default. Claude Code's documented default is `high` on
 every model that supports effort except Opus 4.7, unless an organization
-default applies. The [model configuration docs](https://code.claude.com/docs/en/model-config)
-describe one way for a skill to read the current level, the
-`${CLAUDE_EFFORT}` substitution inside skill text, which the portable
-entrypoints here do not use. `plan-work` and `deliver-work` record the level
+default applies; see the [model configuration docs](https://code.claude.com/docs/en/model-config).
+The [skill substitutions reference](https://code.claude.com/docs/en/skills#available-string-substitutions)
+describes `${CLAUDE_EFFORT}` inside skill text to read the level. The portable
+entrypoints here do not use it. `plan-work` and `deliver-work` record the level
 they can observe or that you state, otherwise unknown, and never claim to
 change it.
 
