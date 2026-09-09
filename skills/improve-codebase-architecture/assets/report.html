@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+  <title>Architecture review example</title>
+  <style>
+    :root { color-scheme: light; font: 17px/1.55 system-ui, sans-serif; color: #172b3a; background: #f2f5f7; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { max-width: 1080px; margin: auto; padding: clamp(16px, 4vw, 48px); }
+    h1, h2, h3 { line-height: 1.2; }
+    h1 { font-size: clamp(1.6rem, 4vw, 2.5rem); }
+    h2 { font-size: 1.4rem; }
+    h3 { font-size: 1.05rem; }
+    p, li, dd, code { overflow-wrap: anywhere; }
+    article { background: white; border: 1px solid #bdcbd4; border-radius: 12px; padding: clamp(16px, 3vw, 28px); margin: 24px 0; }
+    .eyebrow { font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; }
+    .badge { display: inline-block; background: #d5ede2; color: #154c36; padding: 4px 10px; border-radius: 6px; }
+    .figures { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    figure { margin: 0; min-width: 0; }
+    svg { display: block; width: 100%; height: auto; background: #f2f5f7; border-radius: 8px; }
+    svg text { font: 15px system-ui, sans-serif; fill: #172b3a; }
+    svg rect { fill: white; stroke: #526c7b; stroke-width: 2; }
+    svg path { fill: none; stroke: #526c7b; stroke-width: 2; }
+    figcaption { margin: 8px 0 16px; font-size: .9rem; }
+    dt { font-weight: 650; margin-top: 16px; }
+    dd { margin: 4px 0; }
+    .note { border-left: 4px solid #826311; padding-left: 14px; }
+    footer { font-size: .9rem; }
+    @media (max-width: 650px) { .figures { grid-template-columns: 1fr; } }
+    @media print { :root { background: white; } main { padding: 0; } article { break-inside: avoid; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">Architecture assessment</p>
+    <h1>Order pricing review</h1>
+    <p id="scope">Example only. Scope: checkout and invoice source snapshots. No representative Git history.</p>
+  </header>
+  <article aria-labelledby="candidate-title">
+    <p><span class="badge">Strong</span> Confidence: high for the source mismatch; migration evidence is incomplete.</p>
+    <h2 id="candidate-title">Share the shipping calculation</h2>
+    <p id="problem">Checkout and invoice repeat the shipping rule with different thresholds. Orders at 5000 cents receive different totals.</p>
+    <div class="figures">
+      <figure>
+        <h3>Before: observed structure</h3>
+        <svg viewBox="0 0 380 160" role="img" aria-labelledby="before-title before-desc">
+          <title id="before-title">Two callers repeat shipping policy</title>
+          <desc id="before-desc">Checkout uses a 5000-cent threshold; invoice uses 6000 cents.</desc>
+          <rect x="20" y="20" width="340" height="48" rx="7"/>
+          <text x="36" y="50">Checkout: threshold 5000</text>
+          <rect x="20" y="90" width="340" height="48" rx="7"/>
+          <text x="36" y="120">Invoice: threshold 6000</text>
+        </svg>
+        <figcaption>Two copies of one rule can disagree.</figcaption>
+      </figure>
+      <figure>
+        <h3>After: proposed structure</h3>
+        <svg viewBox="0 0 380 160" role="img" aria-labelledby="after-title after-desc">
+          <title id="after-title">Both callers use one calculation</title>
+          <desc id="after-desc">Checkout and invoice retain their responses and share a pure pricing calculation.</desc>
+          <rect x="20" y="15" width="155" height="40" rx="7"/>
+          <text x="38" y="41">Checkout</text>
+          <rect x="205" y="15" width="155" height="40" rx="7"/>
+          <text x="228" y="41">Invoice</text>
+          <path d="M98 55 V78 H190 M282 55 V78 H190 V100 M184 94 L190 100 L196 94"/>
+          <rect x="20" y="103" width="340" height="42" rx="7"/>
+          <text x="42" y="130">One shipping calculation</text>
+        </svg>
+        <figcaption>Public responses stay stable; shipping policy has one owner.</figcaption>
+      </figure>
+    </div>
+    <dl>
+      <dt>Evidence and callers</dt>
+      <dd id="evidence"><code>checkout.py:5</code>, <code>invoice.py:5</code>, and the shipping rule in <code>commerce.md:4</code>. These are illustrative source pointers.</dd>
+      <dt>Benefit and migration cost</dt>
+      <dd id="cost">One rule change can cover both callers. Move the calculation while preserving total_cents and amount_due; external caller compatibility still needs verification.</dd>
+      <dt>Verification</dt>
+      <dd id="verification">Preserve endpoint checks; add expected totals below, at, and above the threshold. Agreement alone would allow both callers to be wrong.</dd>
+      <dt>Decision conflicts and uncertainty</dt>
+      <dd id="uncertainty">No conflict identified in this example. External caller behavior and historical cause have not been verified.</dd>
+    </dl>
+  </article>
+  <section aria-labelledby="next-title">
+    <h2 id="next-title">Recommended next step</h2>
+    <p id="next">Explore this candidate if the migration cost fits the current work. Detailed interface design follows candidate selection.</p>
+    <p class="note" id="limits">Example artifact. No implementation or live system verification is claimed.</p>
+  </section>
+  <footer>Observed behavior and proposed structure are separate. A no-change result is a valid assessment.</footer>
+</main>
+</body>
+</html>

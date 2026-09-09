@@ -1,0 +1,6 @@
+interface:
+  display_name: "Improve Codebase Architecture"
+  short_description: "Find worthwhile module improvements before design"
+  default_prompt: "Use $improve-codebase-architecture to review this scope, rank evidence-backed improvements, and preserve my review-only boundaries."
+policy:
+  allow_implicit_invocation: false

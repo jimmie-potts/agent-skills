@@ -44,6 +44,7 @@ python3 tests/architect-test.py
 python3 tests/blast-radius-test.py
 python3 tests/deliver-work-test.py
 python3 tests/plan-work-test.py
+python3 tests/improve-codebase-architecture-test.py
 python3 tests/workflow-evaluation-test.py
 python3 tests/grilling-skills-test.py
 python3 tests/interrogate-test.py
@@ -61,3 +62,12 @@ git diff --check
 ```
 
 Do not execute scripts bundled in catalog skills merely to validate them.
+
+For changes to the architecture report example or its browser check, also run
+`node tests/architecture-report-browser-test.cjs` with Playwright 1.62.1 and
+Chromium available. `NODE_PATH` may point to an existing dependency directory;
+`ARCHITECTURE_REPORT_CHROMIUM` may select an available executable, and
+`ARCHITECTURE_REPORT_OUTPUT` may select an authorized artifact directory.
+Do not install into personal directories merely to run this check. If local
+browser execution is unavailable, report the limit and require the hosted
+`architecture-report` job and its screenshots before claiming render acceptance.
