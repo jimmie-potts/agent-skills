@@ -96,6 +96,28 @@ this coordinator; they neither grant nor cancel the user's existing authority.
   instruction changes, inspect the result and exercise representative behavior;
   do not invent executable tests that merely mirror prose.
 
+Include this labeled return format in every implementation or investigation
+worker brief, and require it for completed or blocked results:
+
+- Artifact: proposed patch or exact file contents; requested findings or plan
+  for read-only work; `none` when no artifact is produced.
+- Changed files: paths, distinguishing proposed from applied changes, or `none`.
+- Validation: commands actually run with trimmed outcomes and the revision or
+  state checked; identify required checks not run.
+- Consultations: count for an advisor loop, otherwise `not applicable`.
+- Settings: requested and reported model/reasoning, with `unknown` for
+  unexposed values; retain any host-required identity evidence.
+- Limitations: unresolved gaps or blockers, or `none`.
+- Pending decisions: decision and owner, or `none`.
+
+Exclude surrounding narrative, transcript replay, and restated instructions.
+Keep the requested artifact and required evidence intact. Consultation requests
+keep their decision, evidence, recommendation, and paused-dependency format.
+If required evidence is missing, return the specific omissions to the same
+worker before accepting completion. If the evidence is complete but extra
+narrative is present, disregard that narrative and evaluate the result normally;
+do not request a cosmetic rewrite or treat format compliance as correctness.
+
 Prepare acceptance evidence and dependency-ordered tasks before coding. Apply
 an established start-work tracking update immediately before implementation and
 read it back. Do not replay earlier states on resumption. Implement only scoped
@@ -168,12 +190,26 @@ scope. For an ambiguous or partial effect, suspend dependent mutations and
 reconcile authoritative state before retrying. A stale or delayed read does not
 prove absence. Read [recovery](references/recovery.md) for these cases.
 
-At substantive checkpoints, blockers and handoff, report source reference,
-stage, plan/spec identity when applicable, branch, PR, last verified revision,
-next checkpoint and blocker. Separate local checks, hosted CI, independent
-review, merge, tracking completion, and installation/deployment or human
-acceptance when applicable. Monitoring another coordinator is read-only. Apply
-`unslop` to narrative prose while preserving authoritative text and evidence.
+At substantive checkpoints, blockers and handoff, use only these fields. Write
+`unknown`, `none`, or `not applicable` where appropriate; never imply that an
+unverified gate passed:
+
+- Source: authoritative work reference.
+- Stage: current delivery stage.
+- Plan/spec: identity or canonical reference, when applicable.
+- Branch: current branch.
+- PR: reference or `none`.
+- Last verified revision: immutable revision and what was verified there.
+- Evidence: separate local checks, hosted CI, independent review, merge,
+  tracking completion, and required installation/deployment or human acceptance.
+  Associate each result with its revision; link existing details.
+- Next checkpoint: next action and its completion evidence.
+- Blocker: concrete blocker and owner, or `none`.
+
+Keep each field short; omit narrative, transcript replay, and restated
+instructions. Preserve required evidence even when it needs more than one line.
+Monitoring another coordinator is read-only. Apply `unslop` to user-facing
+prose while preserving artifacts, authoritative text, and evidence.
 
 When evaluating or revising this skill, read the synthetic
 [validation scenarios](references/validation-scenarios.md). Distinguish static
