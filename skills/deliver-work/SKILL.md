@@ -71,7 +71,9 @@ reviews and operational handoffs. Preserve the project's mandatory gates.
 Before selecting implementation or reviewers, read
 [model and strategy selection](references/model-selection.md). Choose settings
 per role, preserve coordinator ownership, and report capability limits. Compose
-sol-with-astra only when that policy and the pairing's prerequisites support it.
+the host's advisory pairing, sol-with-astra with Codex collaboration tools or
+worker-with-fable with Claude Code subagent tools, only when that policy and
+the pairing's prerequisites support it.
 
 Use the project's planning method and acceptance criteria. Do not install a
 specification framework or add a delivery runtime to fit this skill. Load shared
