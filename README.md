@@ -344,21 +344,22 @@ conflicts do.
 ### Session effort on Claude Code
 
 No skill in this catalog sets the reasoning effort. Claude Code documents an
-`effort` frontmatter field for skills and for subagent definitions, but the
+`effort` frontmatter field for [skills](https://code.claude.com/docs/en/skills)
+and [subagent definitions](https://code.claude.com/docs/en/sub-agents), but the
 catalog's shared frontmatter stays portable with only `name` and
 `description`, and the catalog ships no `.claude/agents` definitions. The
 Agent tool has no per-call effort parameter, and a subagent inherits the
 session level by default. Claude Code's documented default is `high` on
 every model that supports effort except Opus 4.7, unless an organization
-default applies. The documentation
-describes one way for a skill to read the current level, the
+default applies. The [model configuration docs](https://code.claude.com/docs/en/model-config)
+describe one way for a skill to read the current level, the
 `${CLAUDE_EFFORT}` substitution inside skill text, which the portable
-entrypoints here do not use, and some runtimes attach an effort marker to a
-turn. `plan-work` and `deliver-work` record the level they can observe or
-that you state, otherwise unknown, and never claim to change it.
+entrypoints here do not use. `plan-work` and `deliver-work` record the level
+they can observe or that you state, otherwise unknown, and never claim to
+change it.
 
 Set effort per session rather than per skill. Start a planning session at a
-lower level and a delivery session at the default:
+lower level and a delivery session at `high`, the Fable default:
 
 ```bash
 claude --effort medium
@@ -368,13 +369,15 @@ claude --effort medium
 claude --effort high
 ```
 
-The launch flag applies to that session. A level typed after `/effort` is
-saved for the active model and applies to later sessions on it, so a
-planning session started with `/effort medium` leaves the next delivery
-session at `medium` until `/effort high` or `/effort auto`, which clears the
-saved level. The `effortLevel` key in `settings.json` and the per-model
+The launch flag applies to that session. In an interactive session, a typed
+`/effort medium` or `/effort high` is saved for the active model and applies
+to later sessions on it. Use the launch flag for a one-session choice;
+`/effort auto` clears the saved level. The `effortLevel` key in `settings.json` and the per-model
 `modelSettings` entry persist a choice, and the `CLAUDE_CODE_EFFORT_LEVEL`
-environment variable sets it for a process.
+environment variable takes precedence for a process. Some older models hold
+their default ahead of saved settings until an interactive effort choice
+ends that hold; `--effort` overrides it for one launch. Check the session
+header or `/effort` to confirm the effective level.
 
 The recommendation follows Anthropic's published effort measurements
 ([Optimizing for cost and intelligence](https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence),
@@ -389,11 +392,13 @@ before relying on it; the decision to accept whatever loss appears on
 planning work is recorded in
 [issue 24](https://github.com/jimmie-potts/agent-skills/issues/24).
 
-A worker spawned from a planning session inherits its level. The advisory
-pairing wants its worker at the default because a reduced-effort worker stops
-consulting, and no skill can raise the level for the worker alone. Run a
-planning session at `high` when it may compose the pairing, or accept that
-its read-only investigation worker runs at `medium` and record that.
+Without a host override, a spawned worker inherits the session level. The advisory
+pairing recommends default effort because a low-effort worker can stop
+consulting; the effect depends on the task. These catalog skills cannot raise
+the level for the worker alone. For Fable sessions that may compose the
+pairing, start at `high`, or disclose the inherited reduced level and monitor
+consultations. The same inheritance applies to read-only investigation
+workers.
 
 ## Shared and domain skill ownership
 

@@ -51,9 +51,10 @@ coordinating turn stays active.
 
 Retain the agent identifier returned by the host; every later exchange targets
 it. The `Agent` tool exposes no per-call effort control, and a subagent
-inherits the session's effort level by default. Record the session level as
-the worker's reasoning setting when it is known, otherwise unknown, and do
-not claim a different one.
+inherits the session's effort level unless an existing host override applies.
+Record the effective worker level when exposed or stated, otherwise unknown;
+use the known session level only when inheritance is established. Report a
+known mismatch with the recommended default; do not claim to change effort.
 
 ## Exchange advice without losing the worker
 
