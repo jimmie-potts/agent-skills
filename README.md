@@ -316,6 +316,45 @@ boundary. Verify host behavior before claiming it has been enforced. See
 [Claude Code](https://code.claude.com/docs/en/skills#control-who-invokes-a-skill),
 and [Pi](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/skills.md).
 
+### Session effort on Claude Code
+
+No skill in this catalog sets the reasoning effort. Shared frontmatter stays
+portable, subagent definitions have no documented effort field, and the Agent
+tool has no per-call effort parameter, so the coordinator and every subagent
+run at whatever the session was given. Claude Code's documented default is
+`high`. Claude Code exposes the current level to a skill only through the
+`${CLAUDE_EFFORT}` substitution inside skill text, which the portable
+entrypoints here do not use, and it does not surface the level in the system
+prompt, so `plan-work` and `deliver-work` record the level you state or leave
+it unknown. They never claim to change it.
+
+Set effort per session rather than per skill. Start a planning session with a
+lower level and a delivery session at the default:
+
+```bash
+claude --effort medium
+```
+
+```bash
+claude --effort high
+```
+
+Inside a session, `/effort medium` or `/effort high` changes the level, and
+`/effort auto` clears the saved level for the active model. The
+`effortLevel` key in `settings.json`, the per-model `modelSettings` entry, and
+the `CLAUDE_CODE_EFFORT_LEVEL` environment variable set it persistently.
+
+The recommendation follows Anthropic's published effort measurements
+([Optimizing for cost and intelligence](https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence),
+read September 2026). On planning-shaped knowledge work, `medium` cost 13 to
+31 percent less than the default for a one-to-three-point loss, and `low`
+cost 33 to 50 percent less for the same loss. On long coding tasks the curve
+is steep: `medium` roughly halved cost for about two points, and `low` cut it
+to a quarter for about eight. Planning with `plan-work` is knowledge work;
+delivery with `deliver-work` is coding. Accepting the one-to-three-point
+planning tradeoff is a maintainer decision recorded in
+[issue 24](https://github.com/jimmie-potts/agent-skills/issues/24).
+
 For tests or an intentional advanced setup, override the roots without changing
 `HOME`:
 
