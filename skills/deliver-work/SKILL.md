@@ -82,6 +82,13 @@ in the delivery evidence when the host exposes it or the user states it;
 otherwise record it as unknown. Report when it differs from the setting the
 selection policy chose for a role, and never claim to change it.
 
+Before implementation or delegation, read
+[execution reporting](references/execution-reporting.md) and publish the chosen
+strategy, decision owner and contributors, model roles, and planned versus actual
+agent counts in the task. Refresh these fields when the strategy, settings, or
+team changes, at substantive checkpoints, and in the final response, including
+blocked or limited delivery. Keep unknown settings and counts explicit.
+
 Use the project's planning method and acceptance criteria. Do not install a
 specification framework or add a delivery runtime to fit this skill. Load shared
 skills only for the substeps below; use their available canonical definitions,
@@ -203,12 +210,23 @@ scope. For an ambiguous or partial effect, suspend dependent mutations and
 reconcile authoritative state before retrying. A stale or delayed read does not
 prove absence. Read [recovery](references/recovery.md) for these cases.
 
-At substantive checkpoints, blockers and handoff, use only these fields. Write
+At substantive checkpoints, blockers, handoff and final response, use only these
+fields, including the execution summary even when no workers were used. Write
 `unknown`, `none`, or `not applicable` where appropriate; never imply that an
 unverified gate passed:
 
 - Source: authoritative work reference.
 - Stage: current delivery stage.
+- Strategy: chosen approach, brief reason, decision owner, and contributing
+  agents with their input, or `none`; distinguish changes from the original plan.
+- Models: each agent's role and selected/requested versus reported model and
+  reasoning, with the evidence source or `unknown`; label unstarted roles planned.
+  Retain correction/attempt history and reasons for effort increases or promotion.
+- Agents: active now, distinct used to date, and planned additional agents,
+  including the coordinator, workers, advisors, and independent reviewers.
+  Use the counting rules in execution reporting; roles are not extra agents.
+- Consultations: completed advisor consultations per worker and total, or
+  `not applicable`; pending requests and unknown counts stay separate.
 - Plan/spec: identity or canonical reference, when applicable.
 - Branch: current branch.
 - PR: reference or `none`.
@@ -216,6 +234,8 @@ unverified gate passed:
 - Evidence: separate local checks, hosted CI, independent review, merge,
   tracking completion, and required installation/deployment or human acceptance.
   Associate each result with its revision; link existing details.
+  Include attributable usage when exposed, preserving unknowns and the selection
+  policy's distinction between subscription usage and API cost.
   Include guide-source synchronization, public artifact publication, and live
   verification separately when applicable, with pending work and its owner or
   next action. Reuse these fields rather than adding another status ledger.

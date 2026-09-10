@@ -167,9 +167,13 @@ authorized work.
 Record source/candidate revision, assessment, role, strategy, coordinator and
 worker requested model/reasoning separately, observable runtime settings,
 correction/attempt history, attributable usage, consultation count for a pairing,
-rationale, fallback/escalation, and verification limits in existing task/PR
-evidence. Do not publish private runtime
-metadata or invent telemetry. Reuse still-current evidence, renew affected tests
+rationale, fallback/escalation, and verification limits in existing task evidence.
+During delivery, use [execution reporting](execution-reporting.md) to expose the
+decision owner and contributors, model roles, and planned versus actual agent
+counts at selection, team changes, checkpoints, and final handoff. A planning
+consumer records proposed selections as planned; reading this policy does not
+start delivery or agents. Keep public PR evidence free of private runtime metadata
+and do not invent telemetry. Reuse still-current evidence, renew affected tests
 and reviews, and retain mandatory requirements throughout reassessment.
 
 For Codex collaboration tools, read the

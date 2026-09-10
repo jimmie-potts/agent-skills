@@ -86,7 +86,12 @@ Reusable SDLC workflows also include:
   collaboration tools or `worker-with-fable` under Claude Code subagent tools,
   choosing by verified host tooling rather than by request wording; install the
   applicable skill separately when using the optional pairing. Advisory
-  inspection never replaces its two independent delivery reviews;
+  inspection never replaces its two independent delivery reviews. Its task
+  updates and final handoff include the chosen strategy and reason, decision
+  contributors, model roles and observed settings, active and distinct agent
+  counts, planned additional agents, and advisor consultations. See
+  [execution reporting](skills/deliver-work/references/execution-reporting.md)
+  for counting rules and an example;
 - the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
   `openspec-apply-change`, `openspec-update-change`, `openspec-sync-specs`, and
   `openspec-archive-change`. They use the consuming repository's pinned CLI.
