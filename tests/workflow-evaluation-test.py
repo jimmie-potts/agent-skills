@@ -31,6 +31,19 @@ class WorkflowEvaluationTest(unittest.TestCase):
                 result = self.grade(implementation)
                 self.assertEqual(result.returncode, 0, result.stderr)
 
+    def test_native_qualification_proposals(self):
+        for implementation in ('retry_native_terra.py', 'retry_native_sol.py'):
+            with self.subTest(implementation=implementation):
+                result = self.grade(implementation)
+                self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_native_injected_candidate_is_rejected(self):
+        result = self.grade('retry_native_injected.py')
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn('test_nonretryable_propagates_once', result.stderr)
+        self.assertIn('3 != 1', result.stderr)
+        self.assertIn('FAILED (failures=1)', result.stderr)
+
     def test_grader_rejects_known_contract_defects(self):
         result = self.grade('retry_base.py')
         self.assertEqual(result.returncode, 1, result.stderr)
