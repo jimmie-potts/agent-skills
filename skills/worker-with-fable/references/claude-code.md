@@ -64,7 +64,10 @@ result. An advice request carries the decision needed, evidence, the worker's
 recommendation, and the paused dependency. Fable answers by calling
 `SendMessage` with the retained identifier, and the worker resumes with its
 context intact. A new `Agent` call starts a fresh worker with no memory of the
-task; that is a second delegation, which this skill forbids for the same task.
+task. Use it only for a composing workflow's explicitly selected new attempt
+after the previous assignment has ended and the shared handoff is complete.
+Never describe a fresh Agent call as SendMessage resumption. Re-establish the
+pairing prerequisites and both consultations with the original Fable advisor.
 
 The mandatory sequence is at least three worker turns: the approach proposal,
 implementation through to the final-review request, and any corrections. Extra
@@ -77,6 +80,16 @@ the returned state and evidence before taking further action. Report a terminal
 failure as a blocker; do not claim a completed advisory exchange, replace the
 advisor, or silently start over with another worker. If the user pauses the
 task, preserve the worker identifier and the pending question for resumption.
+
+## End an attempt before replacement
+
+Apply the composing workflow's shared attempt-handoff contract. Retain the old
+identifier and establish that the foreground worker has returned or terminated.
+If it is still running, use only verified host stop controls and confirm it has
+stopped; unavailable stopping blocks replacement. Start the selected new model
+with `Agent`, supplying the complete handoff brief and unchanged ownership.
+Do not change session settings to obtain a different effort. A terminal failure
+still requires diagnosis; it is not permission to silently replace a worker.
 
 ## Ownership and delivery
 

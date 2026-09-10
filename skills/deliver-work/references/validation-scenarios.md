@@ -237,7 +237,7 @@ actions, and limits. These cases do not establish live model execution.
 | No model/delegation controls; independent review contexts exist | Preserve defaults, disclose limits, maintain both review axes. |
 | User mandates unavailable model | Block that affected step; do not silently substitute. |
 | Optional Sol pairing; coordinator identity unknown despite Astra spawn option | Pairing cannot be established; disclosed suitable fallback, no inferred identity. |
-| Explicit Sol-with-Astra request with unavailable parent messaging | Report pairing blocker, no replacement advisor or silent strategy change. |
+| Explicit worker-with-astra request with unavailable parent messaging | Report pairing blocker, no replacement advisor or silent strategy change. |
 | Verified Astra parent, supported Sol/high effort, bounded worker, coordinator owns writes | Compose pairing/adapter, self-contained brief and supported override, proposed patches, approach/blocker consultations, independent final reviewers. |
 | Claude Code host; runtime instructions name Fable; `Agent` accepts `model` and `SendMessage` resumes; bounded low-rated task | Compose worker-with-fable with its adapter and a Sonnet worker by default; approach and final-review returns, proposed patches, recorded consultation count, independent final reviewers. |
 | Request names Sol and Astra but host tooling is Claude Code subagents | Report the host mismatch; offer worker-with-fable only as a disclosed alternative when the pairing was optional. |

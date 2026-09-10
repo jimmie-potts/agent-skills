@@ -7,7 +7,7 @@ instruction behavior, not model availability or successful live delegation.
 | Case | Setup and observable result |
 | --- | --- |
 | Selection | Explicit invocation of `worker-with-fable` through the host's native skill mechanism or "Have a Sonnet worker implement this with you, Fable, advising" selects the skill. "Delegate this task" does not select this particular pairing. |
-| Host routing | An explicit request for this skill on a Codex host with collaboration tools is reported as a host mismatch, not substituted; a composing workflow may offer sol-with-astra only as a disclosed alternative when the pairing was optional. A Claude Code host does not select sol-with-astra. Selection follows verified tool schemas, not the names in the request. |
+| Host routing | An explicit request for this skill on a Codex host with collaboration tools is reported as a host mismatch, not substituted; a composing workflow may offer worker-with-astra only as a disclosed alternative when the pairing was optional. A Claude Code host does not select worker-with-astra. Selection follows verified tool schemas, not the names in the request. |
 | Delivery composition | deliver-work deliberately selects the pairing after assessment. Establish original Fable identity, the `Agent` model parameter, and `SendMessage` resumption; retain coordinator writes and the supplied consultation boundaries. Advisory inspection does not count as either independent delivery review. |
 | Planning composition | plan-work composes the pairing for a bounded investigation. The worker reads and proposes through the same checkpoints; no file, tracker, or Git write occurs. |
 | Tier selection | The composing workflow supplies a bounded low-rated task. The coordinator selects `sonnet` by default, `haiku` only with strong existing checks and a per-step return boundary, and `opus` when the assessment shows high complexity or impact, or a completed default Sonnet attempt has failed acceptance and reassessment selects a stronger tier. A `fable` worker is refused as a non-pairing. |
@@ -34,3 +34,12 @@ skill files. Do not describe a simulated transcript or a requested model
 parameter as proof of runtime identity. Confirm actual host discovery
 separately if installation is authorized; reading the skill by path alone is
 not a discovery test.
+
+## New attempt after capability failure
+
+A default Sonnet attempt fails acceptance because of a diagnosed capability gap.
+The composing workflow ends it, transfers the shared handoff, and selects Opus.
+The original Fable remains advisor; new prerequisites and both consultations
+apply. Ordinary corrections still use SendMessage. An explicit Sonnet request
+has no silent fallback. Unresolved Opus capability failure returns to the
+original coordinator; no Fable implementation worker is spawned.
