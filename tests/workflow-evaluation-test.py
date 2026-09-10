@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Check the bounded evaluation grader with known broken/working fixtures."""
 import os
+import hashlib
+import json
 from pathlib import Path
 import subprocess
 import sys
@@ -30,6 +32,25 @@ class WorkflowEvaluationTest(unittest.TestCase):
             with self.subTest(implementation=implementation):
                 result = self.grade(implementation)
                 self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_native_receipt_matches_recorded_bytes(self):
+        receipt = json.loads((FIXTURES / 'native-qualification-receipt.json').read_text())
+        for name, record in receipt['checks'].items():
+            self.assertEqual(hashlib.sha256((FIXTURES / name).read_bytes()).hexdigest(),
+                             record['sha256'], name)
+        artifacts = {
+            'terra_initial_native': 'retry_native_terra.py',
+            'terra_correction_native': 'retry_native_terra.py',
+            'terra_initial_injected': 'retry_native_injected.py',
+            'terra_correction_injected': 'retry_native_injected.py',
+            'sol_native': 'retry_native_sol.py',
+        }
+        for event in receipt['events']:
+            path = FIXTURES / artifacts[event['stage']]
+            self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(),
+                             event['artifact_sha256'], event['stage'])
+            self.assertEqual(event['checker_sha256'],
+                             receipt['checks']['test_retry.py']['sha256'])
 
     def test_native_qualification_proposals(self):
         for implementation in ('retry_native_terra.py', 'retry_native_sol.py'):
