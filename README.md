@@ -41,7 +41,7 @@ The catalog currently contains:
   functional delivery-slice workflow;
 - [`research`](skills/research/SKILL.md), source-backed investigation with
   claim-level citations;
-- [`sol-with-astra`](skills/sol-with-astra/SKILL.md), a Sol worker with the
+- [`worker-with-astra`](skills/worker-with-astra/SKILL.md), a Terra or Sol worker with the
   original Astra agent providing approach feedback, blocker advice, and final
   review through a verified host adapter;
 - [`teach`](skills/teach/SKILL.md), a layered code and design lesson workflow;
@@ -54,7 +54,7 @@ The catalog currently contains:
 - [`worker-with-fable`](skills/worker-with-fable/SKILL.md), a Haiku, Sonnet, or
   Opus worker with the original Fable agent providing approach feedback,
   blocker advice, and final review through Claude Code subagent tools; the
-  Claude Code counterpart of `sol-with-astra`;
+  Claude Code counterpart of `worker-with-astra`;
 - [`writing-for-agents`](skills/writing-for-agents/SKILL.md), guidance for
   reliable skills, `AGENTS.md`, and conditional instruction references.
 
@@ -82,7 +82,7 @@ Reusable SDLC workflows also include:
   ready-PR-only limit and requires no specific specification framework;
   it assesses verification needs and selects implementation/reviewer settings
   from available host capabilities. It may compose the host's advisory pairing
-  for bounded implementation with checkpoints, `sol-with-astra` under Codex
+  for bounded implementation with checkpoints, `worker-with-astra` under Codex
   collaboration tools or `worker-with-fable` under Claude Code subagent tools,
   choosing by verified host tooling rather than by request wording; install the
   applicable skill separately when using the optional pairing. Advisory

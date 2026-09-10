@@ -1,5 +1,9 @@
 # Integrated workflow trial inputs
 
+Historical inputs for the recorded trials at [a2b2ac1](https://github.com/jimmie-potts/agent-skills/tree/a2b2ac11ef46f36a8b6189a6a333956418d4acf5).
+The fixed Sol pairing name below describes that baseline; use current skill
+validation scenarios for the replacement pairing.
+
 All records are synthetic. Load the published plan-work/deliver-work entrypoints
 and their selected operating references. Do not read graders.md, evaluation
 results, other trial responses, or skill validation-scenarios.md. Return intended

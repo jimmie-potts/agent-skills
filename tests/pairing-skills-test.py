@@ -2,13 +2,17 @@
 """Structural contracts for the host-specific advisory pairing skills."""
 from pathlib import Path
 import re
+import os
+import subprocess
+import tempfile
+import shutil
 import unittest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ROOT / 'skills'
 PAIRINGS = {
-    'sol-with-astra': 'references/codex.md',
+    'worker-with-astra': 'references/codex.md',
     'worker-with-fable': 'references/claude-code.md',
 }
 
@@ -68,10 +72,10 @@ class PairingSkillsStructureTest(unittest.TestCase):
             self.assertFalse((SKILLS / name / 'scripts').exists())
 
     def test_each_pairing_names_its_host_counterpart(self):
-        astra = (SKILLS / 'sol-with-astra/SKILL.md').read_text()
+        astra = (SKILLS / 'worker-with-astra/SKILL.md').read_text()
         fable = (SKILLS / 'worker-with-fable/SKILL.md').read_text()
         self.assertIn('worker-with-fable', astra)
-        self.assertIn('sol-with-astra', fable)
+        self.assertIn('worker-with-astra', fable)
         for text in (astra, fable):
             self.assertIn('plan-work', text)
             self.assertIn('deliver-work', text)
@@ -84,11 +88,40 @@ class PairingSkillsStructureTest(unittest.TestCase):
         for path in (deliver / 'SKILL.md', policy,
                      SKILLS / 'plan-work/SKILL.md'):
             text = path.read_text()
-            self.assertIn('sol-with-astra', text, str(path))
+            self.assertIn('worker-with-astra', text, str(path))
             self.assertIn('worker-with-fable', text, str(path))
         adapter = (deliver / 'references/claude-code-model-selection.md').read_text()
         self.assertIn('references/worker-tiers.md', adapter)
         self.assertTrue((SKILLS / 'worker-with-fable/references/worker-tiers.md').is_file())
+
+    def test_retired_entrypoint_and_disposable_install(self):
+        self.assertFalse((SKILLS / 'sol-with-astra').exists())
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            catalog = root / 'catalog'
+            catalog.mkdir()
+            shutil.copytree(SKILLS / 'worker-with-astra',
+                            catalog / 'worker-with-astra')
+            env = dict(os.environ, AGENT_SKILLS_SOURCE_DIR=str(catalog),
+                       CODEX_SKILLS_DIR=str(root / 'codex'),
+                       CLAUDE_SKILLS_DIR=str(root / 'claude'))
+            command = ['bash', str(ROOT / 'scripts/manage-skills.sh')]
+            for action in ('install', 'uninstall'):
+                result = subprocess.run(command + [action, '--agent', 'both',
+                                        'worker-with-astra'], env=env,
+                                        capture_output=True, text=True)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                for host in ('codex', 'claude'):
+                    link = root / host / 'worker-with-astra'
+                    self.assertEqual(link.is_symlink(), action == 'install')
+                    if action == 'install':
+                        self.assertEqual(link.resolve(), catalog / 'worker-with-astra')
+            self.assertTrue((catalog / 'worker-with-astra/SKILL.md').is_file())
+            result = subprocess.run(command + ['install', '--agent', 'both',
+                                    'sol-with-astra'], env=env,
+                                    capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('unknown skill', result.stderr)
 
     def test_check_wiring(self):
         for path in (ROOT / 'README.md', ROOT / 'AGENTS.md',
