@@ -400,6 +400,21 @@ pairing, start at `high`, or disclose the inherited reduced level and monitor
 consultations. The same inheritance applies to read-only investigation
 workers.
 
+## Codex worker routing
+
+The [Codex selection adapter](skills/deliver-work/references/codex-model-selection.md)
+uses Luna/low for narrow read-only work, Terra/medium for bounded investigation
+or implementation with reliable checks, and Sol/medium or high for harder work.
+Verify live host support and preserve explicit stronger settings. Strategy is a
+separate choice: direct work, one assigned worker, independent parallel workers,
+or worker-with-astra advice at useful checkpoints.
+
+An initial result plus one guided correction at unchanged settings triggers
+reassessment if still inadequate. Diagnose missing facts, authority, or broken
+infrastructure before promoting capability. These are bounded defaults, not
+measured savings. Routine independent reviewers remain Terra/high. Claude keeps
+its own first-failed-attempt escalation and effort-inheritance rules.
+
 ## Shared and domain skill ownership
 
 Maintain reusable methods here. Consuming projects keep domain contracts,

@@ -42,6 +42,10 @@ class PlanWorkStructureTest(unittest.TestCase):
 
     def test_canonical_assessment_dependency(self):
         resource = 'references/work-assessment.md'
+        selection = 'references/model-selection.md'
+        self.assertTrue((ROOT / 'skills/deliver-work' / selection).is_file())
+        self.assertFalse((SKILL / selection).exists())
+        self.assertIn(selection, (SKILL / 'SKILL.md').read_text())
         self.assertTrue((ROOT / 'skills/deliver-work' / resource).is_file())
         self.assertFalse((SKILL / resource).exists())
         self.assertIn(resource, (SKILL / 'SKILL.md').read_text())
