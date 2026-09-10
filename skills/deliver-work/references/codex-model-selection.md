@@ -16,7 +16,7 @@ the executing model's identity. Disclose unknown identity; handle a verified
 mismatch against explicit requirements before dependent work. Model options
 alone never prove that the current coordinator is Astra.
 
-For sol-with-astra, discover its installed package and follow its
+For worker-with-astra, discover its installed package and follow its
 references/codex.md rather than copying the consultation protocol. Keep durable
 writes with this delivery coordinator. Fresh independent review briefs carry
 the fixed comparison and raw sources without prior approval narratives.
@@ -49,7 +49,7 @@ The Codex lineup by role:
 
 - Astra (GPT-6) is the coordinator and advisor. It plans, delegates, tracks
   workers, and answers consultations. It is not spawned as a worker.
-- Sol (GPT-5.6) is the worker for the advisory pairing and for open-ended or
+- Sol (GPT-5.6) is a worker for the advisory pairing and for open-ended or
   hard implementation. Its reasoning setting is the main lever: `low` for a
   read-only scout, `medium` as the baseline for scoped implementation, `high`
   for difficult implementation and ambiguity.
@@ -65,8 +65,8 @@ The Codex lineup by role:
 | Assessment evidence | Strategy | Worker and reasoning | Coordinator role |
 | --- | --- | --- | --- |
 | Narrow read-only question: locate files, trace a path, find tests | Parallel scouts | Sol at `low`, `fork_turns="none"`, read-only | Sends focused scouts in parallel; merges findings; no advisor loop |
-| Low complexity, low impact, strong existing checks, mechanical change | Assigned worker or advisory pairing | Terra at `high` as an assigned worker; Sol at `medium` for the pairing | Applies patches; advises at approach and final review |
-| Low or medium complexity, low or medium impact, bounded coding | Advisory pairing when hard decision points exist; otherwise assigned worker | Sol at `medium` for the pairing; Terra at `high` as an assigned worker | Advises at approach, blockers, final review |
+| Low complexity, low impact, strong existing checks, mechanical change | Assigned worker or advisory pairing | Terra at `medium` for eligible pairing work or `high` as an assigned worker | Applies patches; advises at approach and final review |
+| Low or medium complexity, low or medium impact, bounded coding | Advisory pairing when hard decision points exist; otherwise assigned worker | Terra at `medium` for eligible pairing work; Sol at `medium` for harder work; Terra at `high` as an assigned worker | Advises at approach, blockers, final review |
 | High complexity, separable into checkpoints | Advisory pairing | Sol at `high` | Advises; expect a higher consultation count |
 | High complexity, continuous difficult reasoning | Direct implementation | none | Astra implements; no worker |
 | High uncertainty | Investigation before dependent implementation | Sol at `low` scouts for facts, Sol at `medium` for a bounded read-only investigation, or none | Resolves facts; brings product decisions to the user; no setting change |
@@ -77,7 +77,7 @@ Direct implementation is the baseline in every row: choose a worker only when
 its cost per completed task, including consultations and corrections, beats
 Astra doing the work. Rows naming Terra are provisional pending the Codex
 worker evaluation. A worker on Astra is not the pairing, and the pairing
-itself is always Sol; Terra is for assigned and parallel workers. Give every
+accepts Terra and Sol under its worker-tiers reference. Give every
 leaf worker a boundary against spawning further agents, respect the host's
 concurrency limit, and keep the coordinating turn available to the user while
 workers run.

@@ -76,7 +76,7 @@ Choose the host's advisory pairing when bounded, capable worker implementation
 benefits from coordinator approach/blocker checkpoints: serial work with a few
 hard decision points rather than continuous difficult reasoning. Select the
 pairing skill from verified host tooling, never from a persona or a model list.
-Codex collaboration tools select sol-with-astra. Claude Code subagent tools
+Codex collaboration tools select worker-with-astra. Claude Code subagent tools
 select worker-with-fable. Any other host has no pairing. Discover and read the
 selected skill and its host adapter before starting. Its original-coordinator
 identity, worker availability, parent communication or worker resumption, and
@@ -91,6 +91,30 @@ and disclose why. If the user explicitly requested the pairing, report its
 unmet prerequisite; do not create a replacement advisor or silently substitute
 another arrangement. Advisory inspection never replaces independent delivery
 reviews.
+
+## Correct, consult, or hand off an attempt
+
+A correction asks the same worker to repair its result. A consultation asks the
+same original advisor for a decision and pauses dependent work until answered.
+A promoted attempt starts a fresh worker when supported settings cannot change
+in place. These events have separate counts; use the host adapter's failure
+threshold and preserve explicit model/pairing requirements.
+
+Diagnose an inadequate result before changing settings. For a new attempt,
+stop the old assignment and verify its state before transferring ownership.
+Carry its artifact or patch, source/candidate revision, acceptance criteria,
+failed checks and outcomes, attempt/settings history, unresolved question,
+permissions and write ownership in a self-contained brief. Preserve history
+across replacements and resumptions; do not pass a new spawn off as a resume.
+Host adapters own stop/spawn/resume mechanics. An unavailable stop or required
+control blocks the affected replacement, not independent authorized work.
+
+For a new advisory attempt, retain the original advisor and re-establish all
+pairing prerequisites and mandatory approach/final consultations. A standalone
+pairing reports the inadequate attempt to its coordinator; the composing
+workflow chooses promotion. Explicit requirements have no silent fallback.
+Use existing labeled worker returns and task evidence; include handoff rationale
+and history without replaying transcripts. Advice never expands authority.
 
 ## Review independently and verify tests
 

@@ -93,6 +93,12 @@ workflow selects a new attempt; never pass a fresh spawn off as a resume or
 replace the advisor. Each new pairing must establish its prerequisites and
 retain both mandatory consultations and coordinator-owned writes.
 
+Use the shared selection policy's attempt-handoff contract for replacement
+and the pairing adapter for host mechanics. If the diagnosed capability gap
+persists at Opus, return the unresolved work and evidence to the original Fable
+coordinator at its existing settings; do not spawn Fable as an implementation
+worker or loop through further unsupported tiers.
+
 This Sonnet-to-Opus policy is a hypothesis inspired by Anthropic's
 [retry-at-higher-capability measurements](https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence#tune-effort),
 which varied effort within one model, not this exact tier sequence. It needs

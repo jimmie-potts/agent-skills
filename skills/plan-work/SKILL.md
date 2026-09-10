@@ -61,7 +61,7 @@ level, and never claim to change it. Keep planned commands and
 paths explicitly unexecuted. Use a bounded investigation when it can resolve
 technical uncertainty; a missing product decision remains a question. A
 bounded investigation may compose the host's advisory pairing in planning-only
-mode, selected from verified host tooling: sol-with-astra with Codex
+mode, selected from verified host tooling: worker-with-astra with Codex
 collaboration tools, worker-with-fable with Claude Code subagent tools,
 neither elsewhere. An explicit request naming the other host's pairing is
 reported as a host mismatch, not substituted. The worker reads and proposes

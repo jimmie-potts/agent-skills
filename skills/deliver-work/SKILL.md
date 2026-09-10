@@ -71,7 +71,7 @@ reviews and operational handoffs. Preserve the project's mandatory gates.
 Before selecting implementation or reviewers, read
 [model and strategy selection](references/model-selection.md). Choose settings
 per role, preserve coordinator ownership, and report capability limits. Compose
-the host's advisory pairing, sol-with-astra with Codex collaboration tools or
+the host's advisory pairing, worker-with-astra with Codex collaboration tools or
 worker-with-fable with Claude Code subagent tools, only when that policy and
 the pairing's prerequisites support it. Record the session's reasoning setting
 in the delivery evidence when the host exposes it or the user states it;

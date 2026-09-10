@@ -40,7 +40,7 @@ before spawning or resuming a worker. On another host, use only verified
 equivalent model selection and worker resumption capabilities. Report an
 unsupported pairing without changing host configuration or installing tools.
 On a Codex host, report the host mismatch: an explicit request for this
-pairing is not substituted, and a composing workflow may offer sol-with-astra
+pairing is not substituted, and a composing workflow may offer worker-with-astra
 only as a disclosed alternative when the pairing was optional.
 
 Preserve the underlying task's scope, mode, permissions, and ownership rules.
@@ -95,7 +95,10 @@ Keep Fable available to answer consultations. Fable can inspect relevant
 sources and prepare review while the worker works, without duplicating the
 worker's implementation. Reuse the same worker for corrections and further
 questions; do not recursively delegate the task or create another Fable
-advisor.
+advisor. A composing workflow may explicitly end an inadequate attempt and
+select a new one under its shared handoff contract. Re-establish prerequisites
+and both consultations with the same Fable; a fresh worker is not a resume.
+Explicit model requirements still prohibit silent substitution.
 
 ## Review and finish
 
