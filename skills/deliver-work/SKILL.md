@@ -48,6 +48,10 @@ modifies itself. The candidate cannot waive the gates used to approve it.
    applicable agent instructions and relevant development policy, contracts,
    code, tests and CI. Establish the planning method, local/hosted checks, review
    requirements, merge strategy and completion conditions before those stages.
+   Identify maintained guides, roadmap and architecture inputs, their owning
+   repositories/coordinator, and any publication procedure. When such policy
+   applies, read [documentation checkpoints](references/documentation.md).
+   Do not invent a documentation system when none is defined.
    For unfamiliar projects, conflicting sources or incomplete resumed records,
    read [project discovery](references/project-discovery.md).
 4. Resolve material scope, acceptance, target or policy conflicts before the work
@@ -123,6 +127,10 @@ an established start-work tracking update immediately before implementation and
 read it back. Do not replay earlier states on resumption. Implement only scoped
 tasks; resolve routine failures within authority and rerun affected checks.
 
+Assess guide and architecture impact before implementation. Prepare affected
+canonical inputs and generated documentation in the candidate or the project's
+linked companion PR, using its maintenance procedure and the user's authority.
+
 Run canonical checks with their prerequisites and working directories. Complete
 required spec synchronization or archive before final review when policy says
 so, then check affected results. Record actual commands, results, revision and
@@ -181,6 +189,11 @@ all required conditions pass, apply the appropriate completion update, then
 read back status and resolution/reason where supported. Report the immutable
 published revision and acceptance evidence.
 
+Reconcile newly confirmed merge, tracking, and acceptance facts in maintained
+documentation. Follow the documentation checkpoint for any required follow-up
+and authorized publication. Report pending stages even when source delivery is
+complete; a source merge alone does not update a separately published guide.
+
 ## Recover and report
 
 Before each consequential external effect, record its intent, object, expected
@@ -203,6 +216,9 @@ unverified gate passed:
 - Evidence: separate local checks, hosted CI, independent review, merge,
   tracking completion, and required installation/deployment or human acceptance.
   Associate each result with its revision; link existing details.
+  Include guide-source synchronization, public artifact publication, and live
+  verification separately when applicable, with pending work and its owner or
+  next action. Reuse these fields rather than adding another status ledger.
 - Next checkpoint: next action and its completion evidence.
 - Blocker: concrete blocker and owner, or `none`.
 

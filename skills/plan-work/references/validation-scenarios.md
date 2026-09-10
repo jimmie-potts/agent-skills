@@ -22,3 +22,10 @@ For actual host discovery, use a fresh neutral context and supported listing or
 loading mechanism; a provided file path alone is not discovery evidence. Live
 tracker exercises need authority for the named effects and verified readbacks.
 Keep credentials, private task data, and runtime state out of catalog evidence.
+
+For project-owned guide/publication checkpoints, also use the isolated inputs in
+`tests/fixtures/workflow-evaluation/documentation-cases.md`. Withhold
+`documentation-graders.md` and recorded responses from evaluated contexts.
+These cases include no-policy, unavailable-policy, read-only, tracker-only, and
+authorized document/publication branches. Reading the shared documentation
+resource must not invoke delivery or expand planning authority.

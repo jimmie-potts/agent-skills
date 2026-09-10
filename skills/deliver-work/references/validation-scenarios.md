@@ -1,5 +1,11 @@
 # Delivery skill evaluation scenarios
 
+For project-owned guide/publication checkpoints, also use the isolated inputs in
+`tests/fixtures/workflow-evaluation/documentation-cases.md`. Withhold
+`documentation-graders.md` and recorded responses from evaluated contexts.
+Exercise candidate preparation, acceptance waiting, architecture impact,
+publication verification, and recovery separately from live execution.
+
 For recorded integrated trials and their limits, read
 [bounded evaluation results](evaluation-results.md) only after scoring a trial.
 Reusable inputs and evaluator rubric live under
