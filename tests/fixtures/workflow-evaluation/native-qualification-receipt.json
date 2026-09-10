@@ -1,0 +1,92 @@
+{
+  "policy_revision": "776fe91541f5b28fde08259b5b7ef72c2dc62c31",
+  "coordinator": {
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "evidence": "current host turn_context metadata; backend identity not independently attested"
+  },
+  "usage_mode": "Codex Pro subscription; no paid API calls; task usage attribution unavailable",
+  "scope": "three native trial contexts Luna/low Terra/medium Sol/medium; root owns all writes; no nested delegation",
+  "injection_plan": "If Terra proposals pass, after initial and guided-correction validation, coordinator injects except Exception in place of except RuntimeError into the synthetic candidate. Preserve both native pass and injected-failure outcomes. Two injected inadequate outcomes trigger the bounded reassessment branch; they are not spontaneous model failures. Sol receives the final defective candidate plus full failed-attempt history. No injection into Sol result.",
+  "checks": {
+    "retry_base.py": {
+      "sha256": "61dc5650064ea4a40c51285f69887db0507bb2d3552162c47dc3856e608a89d5",
+      "exit_code": 1
+    },
+    "retry_reference.py": {
+      "sha256": "fa9010d15c659de65952540f3a54d2a16e8629a99d63fabe56200e9fdbe7b765",
+      "exit_code": 0
+    },
+    "test_retry.py": {
+      "sha256": "e55f351730531410499628260fc891fa3a19562dabe8db3932919beda3ff021b"
+    }
+  },
+  "events": [
+    {
+      "stage": "terra_initial_native",
+      "exit_code": 0,
+      "artifact_sha256": "0aabdbba7be1735d63f7a76eca4df7002d6421b1aad33754f068b217c13944bd",
+      "checker_sha256": "e55f351730531410499628260fc891fa3a19562dabe8db3932919beda3ff021b"
+    },
+    {
+      "stage": "terra_initial_injected",
+      "exit_code": 1,
+      "artifact_sha256": "1e979ea73297288c30cb45518f412502524e14708063701371c97167b59f0302",
+      "checker_sha256": "e55f351730531410499628260fc891fa3a19562dabe8db3932919beda3ff021b"
+    },
+    {
+      "stage": "terra_correction_native",
+      "exit_code": 0,
+      "artifact_sha256": "0aabdbba7be1735d63f7a76eca4df7002d6421b1aad33754f068b217c13944bd",
+      "checker_sha256": "e55f351730531410499628260fc891fa3a19562dabe8db3932919beda3ff021b"
+    },
+    {
+      "stage": "terra_correction_injected",
+      "exit_code": 1,
+      "artifact_sha256": "1e979ea73297288c30cb45518f412502524e14708063701371c97167b59f0302",
+      "checker_sha256": "e55f351730531410499628260fc891fa3a19562dabe8db3932919beda3ff021b"
+    },
+    {
+      "stage": "sol_native",
+      "exit_code": 0,
+      "artifact_sha256": "0aabdbba7be1735d63f7a76eca4df7002d6421b1aad33754f068b217c13944bd",
+      "checker_sha256": "e55f351730531410499628260fc891fa3a19562dabe8db3932919beda3ff021b"
+    }
+  ],
+  "workers": [
+    {
+      "requested_model": "gpt-5.6-luna",
+      "requested_effort": "low",
+      "reported_model": "unknown",
+      "reported_effort": "unknown",
+      "consultations": null,
+      "guided_corrections": 0,
+      "outcome": "correct read-only source evidence"
+    },
+    {
+      "requested_model": "gpt-5.6-terra",
+      "requested_effort": "medium",
+      "reported_model": "unknown",
+      "reported_effort": "unknown",
+      "consultations": 3,
+      "guided_corrections": 1,
+      "outcome": "both native proposals pass; two coordinator injections fail; completed before replacement"
+    },
+    {
+      "requested_model": "gpt-5.6-sol",
+      "requested_effort": "medium",
+      "reported_model": "unknown",
+      "reported_effort": "unknown",
+      "consultations": 2,
+      "guided_corrections": 0,
+      "outcome": "native proposal passes; worker reported a local shell-quoting repair before successful in-memory checks"
+    }
+  ],
+  "limits": [
+    "No independently attested worker runtime identity or attributable usage",
+    "No running-worker cancellation trial",
+    "No neutral-host installed-skill discovery",
+    "Native Claude lifecycle unverified",
+    "Not a comparative quality, speed, cost or production-reliability study"
+  ]
+}

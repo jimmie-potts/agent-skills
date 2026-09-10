@@ -164,3 +164,16 @@ The source delivery supplies GitHub PR/CI/merge evidence in the issue's linked
 PR, separate from these simulations. Source CI does not prove the unexercised
 capabilities. The bounded results do not establish production reliability,
 relative cost, a superior strategy, or appropriate settings for complex work.
+
+
+## Native cost-aware qualification after #31
+
+The separate native exercise for #32 used frozen policy revision
+`776fe91541f5b28fde08259b5b7ef72c2dc62c31`. Read
+`tests/fixtures/workflow-evaluation/native-qualification-results.md` and its
+receipt in the catalog for the synthetic fixture, request/identity distinctions,
+checker outcomes, consultations and predeclared failure injections. This later
+exercise does not revise the historical observations above. Requested Luna/low,
+Terra/medium and Sol/medium contexts exercised scouting and advisory handoff;
+worker runtime identity and attributable usage remained unverified. Native
+Claude acceptance and comparative efficiency remain unestablished.
