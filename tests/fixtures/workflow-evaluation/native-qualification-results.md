@@ -44,11 +44,8 @@ instructions excluding reference solutions, graders and recorded outputs.
 Worker in-memory tests are reported evidence; independent checker outcomes below
 were executed by the coordinator.
 
-| Frozen input | SHA256 |
-| --- | --- |
-| retry_base.py | 61dc5650064ea4a40c51285f69887db0507bb2d3552162c47dc3856e608a89d5 |
-| retry_reference.py | fa9010d15c659de65952540f3a54d2a16e8629a99d63fabe56200e9fdbe7b765 |
-| test_retry.py | e55f351730531410499628260fc891fa3a19562dabe8db3932919beda3ff021b |
+The authoritative exact input hashes are in `checks` in
+`native-qualification-receipt.json`. The replay test verifies those bytes.
 
 ## Predeclared injected failures
 
@@ -102,21 +99,17 @@ review response. Sol had two consultations and no guided implementation correcti
 
 ## Outcome evidence
 
-| Stage | Origin | Checker outcome | Recorded artifact |
-| --- | --- | --- | --- |
-| Terra initial | Native proposal | 6/6 pass | retry_native_terra.py |
-| After initial proposal | Coordinator injection | 5/6 pass; nonretryable propagation fails | retry_native_injected.py |
-| Terra guided correction | Native proposal | 6/6 pass | retry_native_terra.py, identical bytes |
-| After correction | Coordinator injection | 5/6 pass; same failure | retry_native_injected.py, identical bytes |
-| Sol promoted attempt | Native proposal | 6/6 pass | retry_native_sol.py |
+The authoritative stage order, artifact hashes and executed exit codes are in
+`events` in `native-qualification-receipt.json`. The replay test requires all
+five events in their observed order and compares each recorded exit code to
+execution of its mapped artifact. The two native Terra results share
+`retry_native_terra.py`; the two injected failures share
+`retry_native_injected.py`; Sol's result is `retry_native_sol.py`.
 
-All three native implementation results have SHA256
-`0aabdbba7be1735d63f7a76eca4df7002d6421b1aad33754f068b217c13944bd`.
-Both injected results have SHA256
-`1e979ea73297288c30cb45518f412502524e14708063701371c97167b59f0302`.
-Identical final code is expected for this handed-off one-clause repair; it does
-not make the trials independent quality comparisons. The structured receipt is
-`native-qualification-receipt.json` in this directory.
+The native proposals have identical bytes. That is expected for this handed-off
+one-clause repair and does not make the trials independent quality comparisons.
+This narrative summarizes the observed behavior; the receipt is authoritative
+for exact values.
 
 Reproduce artifact acceptance without launching models, from the repository root:
 

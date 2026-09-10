@@ -40,13 +40,20 @@ class WorkflowEvaluationTest(unittest.TestCase):
                              record['sha256'], name)
         artifacts = {
             'terra_initial_native': 'retry_native_terra.py',
-            'terra_correction_native': 'retry_native_terra.py',
             'terra_initial_injected': 'retry_native_injected.py',
+            'terra_correction_native': 'retry_native_terra.py',
             'terra_correction_injected': 'retry_native_injected.py',
             'sol_native': 'retry_native_sol.py',
         }
+        self.assertEqual([event['stage'] for event in receipt['events']],
+                         list(artifacts))
+        outcomes = {}
         for event in receipt['events']:
-            path = FIXTURES / artifacts[event['stage']]
+            artifact = artifacts[event['stage']]
+            path = FIXTURES / artifact
+            if artifact not in outcomes:
+                outcomes[artifact] = self.grade(artifact).returncode
+            self.assertEqual(event['exit_code'], outcomes[artifact], event['stage'])
             self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(),
                              event['artifact_sha256'], event['stage'])
             self.assertEqual(event['checker_sha256'],
