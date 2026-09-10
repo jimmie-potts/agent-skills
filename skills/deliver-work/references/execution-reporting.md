@@ -48,6 +48,12 @@ mismatches and apply the selection policy's mandatory-setting gates.
 - Planned additional: agents selected for future work but not yet established.
   Name their roles and keep them out of actual counts until creation is
   confirmed. If the remaining team is undecided, say `unknown` instead of zero.
+  Zero requires an established plan with no further agents; silence is unknown.
+
+Count the reporting coordinator as one confirmed participant even when the
+available records mention only a worker. Unknown model identity does not remove
+an established agent from the count. Report a known minimum when other activity
+or historical participation is uncertain.
 
 Retain a task-local roster mapping stable labels to verified host identities
 and states using already authorized host records and worker evidence. Keep raw
@@ -59,9 +65,13 @@ an ambiguous spawn outcome remains unresolved until reconciled.
 Keep correction counts, attempt history, effort increases, and model promotions
 in Models, following [model selection](model-selection.md) and its host adapter.
 A same-worker correction adds no agent or advisor consultation by itself; a
-promotion that creates a fresh worker adds one distinct agent. Preserve failure
-history and the task's effort-increase history across handoffs. Include exposed
-attributable usage in Evidence, retaining failed attempts and keeping subscription
+promotion that creates a fresh worker adds one distinct agent. Call a replacement
+a promotion only when the recorded settings establish an increase. State known
+correction and effort-increase counts explicitly; keep missing history unknown.
+Preserve failure history and the task's effort-increase history across handoffs.
+For a new advisory attempt, report required consultations as still outstanding
+until evidenced, and pause the work they govern under the pairing protocol.
+Include exposed attributable usage in Evidence, retaining failed attempts and keeping subscription
 usage separate from API cost. Missing usage remains unknown.
 
 On resumption, reconcile the roster against available history and current host
