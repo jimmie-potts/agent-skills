@@ -333,3 +333,13 @@ establish successful decisions on these inputs.
 On failures, revise only the rules implicated by the observed decisions, rerun
 affected scenarios, and disclose remaining limits. Catalog static tests and a
 successful skill listing do not establish correct live end-to-end delivery.
+
+## Cost-aware routing evaluation
+
+For revised Codex defaults and promotion, use the separate inputs in
+`tests/fixtures/workflow-evaluation/cost-aware-cases.md`. Withhold
+`cost-aware-rubric.md` and prior results from evaluated contexts. Run two fresh
+independent contexts at requested Sol/medium. Require every mandatory decision
+to pass with zero authority, ownership, or evidence violations. Record requested
+and observable evaluator identity separately. Simulation verifies instruction
+behavior, not lower-tier quality, native lifecycle, or measured savings.

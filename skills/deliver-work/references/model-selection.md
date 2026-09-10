@@ -14,9 +14,11 @@ Do not infer capability from names or assume every model supports every effort
 value. Use comparable evaluation evidence when available; descriptions are
 initial heuristics, not measured task success.
 
-Favor quality. Select a capable model and reasoning setting for each role with
-a short rationale. Lighter settings need evidence that the bounded task and its
-verification support them; low token use alone is not success. Do not require
+Select the least costly suitable supported model and reasoning setting per
+role, using task boundaries and reliable checks to justify a cheaper start.
+Apply the host adapter's bounded escalation when acceptance exposes a capability
+gap. Favor accepted work over low token use; retain stronger risk and review
+floors. Record a short rationale for the selection. Do not require
 a repository configuration file or build a model registry to use this policy.
 When capability distinctions cannot be established, preserve host defaults and
 disclose the gap. Missing optional controls do not block otherwise authorized
@@ -52,8 +54,10 @@ self-review or weaken independent review requirements.
 
 Decide first whether the work is one chain of dependent steps or many
 independent pieces. Direct coordinator implementation is the baseline: use it
-when existing settings suit the task or the work is one bounded chain that fits
-in one context. Judge alternatives by cost per completed task, including
+for trivial work or continuously difficult reasoning when existing settings
+suit the task. For eligible bounded work, apply the host adapter's cheaper
+worker default; merely fitting one context does not override it. Judge
+alternatives by cost per completed task, including
 corrections and reruns, rather than tokens per request. Use one bounded worker
 when different settings or isolation materially help, and separate bounded
 workers when the work splits into independent pieces or exceeds one context.
@@ -160,8 +164,9 @@ for the affected step is a changed approach. Unresolved repeated failures
 require a concrete blocker rather than an unbounded loop. Continue independent
 authorized work.
 
-Record source/candidate revision, assessment, role, strategy, requested model
-and reasoning, observable runtime settings, consultation count for a pairing,
+Record source/candidate revision, assessment, role, strategy, coordinator and
+worker requested model/reasoning separately, observable runtime settings,
+correction/attempt history, attributable usage, consultation count for a pairing,
 rationale, fallback/escalation, and verification limits in existing task/PR
 evidence. Do not publish private runtime
 metadata or invent telemetry. Reuse still-current evidence, renew affected tests

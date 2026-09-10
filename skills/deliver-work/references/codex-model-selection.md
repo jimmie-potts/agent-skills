@@ -39,64 +39,83 @@ pairing adapter's prerequisites and consultations with the original advisor.
 
 ## Map assessment evidence to settings
 
-Read the ratings from the work-assessment contract and the role table in the
-selection policy, then choose the concrete Codex setting here. The roles
-follow Eric Provencher's
-[Practical multi-agent orchestration in Codex](https://x.com/pvncher/article/2080707291603407077)
-and [Choosing GPT-5.6 Sol, Terra, or Luna in Codex](https://x.com/pvncher/status/2077708372363624894).
-Confirm the host's current model list, spawn identifiers, and reasoning enum
-before use; the table adds neither. The identifiers this catalog records are
-`gpt-6-astra` as coordinator, `gpt-5.6-sol` as worker, and `gpt-5.6-terra`
-as worker. Sol was verified in live spawns; Terra was supplied by the
-maintainer and awaits a recorded spawn. The Codex worker evaluation named
-below is the maintainer's comparison plan kept outside this repository; its
-recorded spawns and results lift the provisional labels.
+Read the shared assessment and strategy policy first. Select the least costly
+suitable supported starting configuration below, preserving stronger explicit
+requirements. These are task-suitability hypotheses, not measured cost or
+quality results. Verify current model identifiers, descriptions, effort enums,
+and context controls from the live host schema. A supported request may be
+attempted without a prior recorded spawn; availability is not runtime identity.
+A rejected default permits a disclosed suitable fallback under shared policy;
+an unavailable explicitly required model/effort blocks that selection.
 
-The `reasoning_effort` values documented for `collaboration.spawn_agent` are
-`low`, `medium`, and `high`, and this catalog has observed `medium` and `high`
-in spawns. Codex session and config settings also accept `xhigh` and `max`
-through `model_reasoning_effort`. Whether a spawn call accepts those two is
-unverified and provisional pending the Codex worker evaluation, and "Ultra"
-in community writing has no confirmed mapping to either. Do not request
-`xhigh` or `max` for a worker unless the host's spawn schema lists it, and
-never present a rejected setting as applied.
+| Work evidence | Worker default | Strategy and limits |
+| --- | --- | --- |
+| Narrow read-only lookup, extraction, classification, structured transformation | Luna (`gpt-5.6-luna`) at `low` | Assigned scout; parallel only for independent questions; no advisory loop |
+| Bounded investigation or implementation; low/medium complexity and impact, reliable acceptance checks, no unresolved material requirement | Terra (`gpt-5.6-terra`) at `medium` | Assigned worker, or worker-with-astra when approach/blocker advice helps |
+| Open-ended implementation requiring additional design judgment | Sol (`gpt-5.6-sol`) at `medium` | Assigned worker or advisory pairing at separable decision points |
+| High complexity or impact | Sol at `high`, or original coordinator | Stronger implementation floor; direct coordination when difficult reasoning is continuous |
+| High uncertainty or missing material facts | Investigate before dependent implementation | Luna for a narrow fact lookup; Terra for bounded read-only investigation with checks; Sol when open-ended reasoning warrants it; user owns product decisions |
+| Many independent pieces | Select each piece using the rows above | Parallel workers only where pieces are independent; coordinator integrates |
 
-The Codex lineup by role:
+Scouting is a read-only role, orchestration is the coordinator's activity, and
+advisory pairing is an optional strategy. Do not force scouting into parallel
+work or implementation into advice loops. Keep leaf workers from spawning
+further agents and respect the current host concurrency limit. Direct work by
+the original coordinator remains the baseline for trivial or continuously hard
+work. Preserve its settings; Astra (`gpt-6-astra`) is not spawned as an
+implementation worker. Luna is outside worker-with-astra's supported tiers.
 
-- Astra (GPT-6) is the coordinator and advisor. It plans, delegates, tracks
-  workers, and answers consultations. It is not spawned as a worker.
-- Sol (GPT-5.6) is a worker for the advisory pairing and for open-ended or
-  hard implementation. Its reasoning setting is the main lever: `low` for a
-  read-only scout, `medium` as the baseline for scoped implementation, `high`
-  for difficult implementation and ambiguity.
-- Terra (GPT-5.6) is the everyday implementation and testing worker for
-  scoped multi-step work with clear boundaries, at `high`. Its rows below
-  are provisional pending the Codex worker evaluation.
-- Luna (GPT-5.6) is the fast option for extraction, classification,
-  transformation, and structured summaries. Confirm from the host's spawn
-  schema whether it is spawnable: an earlier community report said
-  multi-agent v2 could not spawn it, and a later host probe listed it. Do
-  not select it for delegated work until a recorded spawn verifies it.
+## Bound corrections and promotion
 
-| Assessment evidence | Strategy | Worker and reasoning | Coordinator role |
-| --- | --- | --- | --- |
-| Narrow read-only question: locate files, trace a path, find tests | Parallel scouts | Sol at `low`, `fork_turns="none"`, read-only | Sends focused scouts in parallel; merges findings; no advisor loop |
-| Low complexity, low impact, strong existing checks, mechanical change | Assigned worker or advisory pairing | Terra at `medium` for eligible pairing work or `high` as an assigned worker | Applies patches; advises at approach and final review |
-| Low or medium complexity, low or medium impact, bounded coding | Advisory pairing when hard decision points exist; otherwise assigned worker | Terra at `medium` for eligible pairing work; Sol at `medium` for harder work; Terra at `high` as an assigned worker | Advises at approach, blockers, final review |
-| High complexity, separable into checkpoints | Advisory pairing | Sol at `high` | Advises; expect a higher consultation count |
-| High complexity, continuous difficult reasoning | Direct implementation | none | Astra implements; no worker |
-| High uncertainty | Investigation before dependent implementation | Sol at `low` scouts for facts, Sol at `medium` for a bounded read-only investigation, or none | Resolves facts; brings product decisions to the user; no setting change |
-| High impact, any complexity | Advisory pairing with coordinator-owned writes, or direct implementation | Sol at `high` | Applies every write; strong-capability independent reviews |
-| Many independent pieces | Parallel workers | Terra at `high` per scoped piece; Sol at `medium` for open-ended pieces | Decomposes, merges, reviews; no advisor loop per piece |
+For each unchanged Codex worker configuration, allow an initial returned result
+and at most one evidence-guided correction. A second inadequate result requires
+reassessment; escalate earlier when evidence warrants it. A consultation is not
+itself a failed attempt. Expected red tests during TDD do not count as inadequate
+returned results. Diagnose acceptance failures, including plausible incorrect
+output, before treating them as worker-capability failures. Missing facts,
+product decisions, authority, dependencies, or broken infrastructure require
+their own resolution, not automatic model promotion.
 
-Direct implementation is the baseline in every row: choose a worker only when
-its cost per completed task, including consultations and corrections, beats
-Astra doing the work. Rows naming Terra are provisional pending the Codex
-worker evaluation. A worker on Astra is not the pairing, and the pairing
-accepts Terra and Sol under its worker-tiers reference. Give every
-leaf worker a boundary against spawning further agents, respect the host's
-concurrency limit, and keep the coordinating turn available to the user while
-workers run.
+When capability is the diagnosed gap, permit one effort increase up to `high`
+for an otherwise sound approach that needs deeper reasoning. Otherwise promote
+Luna to Terra to Sol, skipping rungs when the assessment justifies it. Start a
+promoted model at `medium` unless the assessment requires `high`; preserve any
+stronger explicit requirement. The one effort increase applies per unresolved
+task, not again at every new worker. After it is used, further capability gaps
+require model promotion or return to the coordinator. Do not automatically select
+`xhigh`, `max`, or `ultra`, even when the schema supports them. Explicit stronger
+settings still require host support and cannot be silently reduced.
+
+Return unresolved Sol/high capability failures to the original coordinator at
+its existing settings. Do not spawn an Astra implementation worker or reset the
+ladder. Returning work is a handoff for diagnosis and reassessment, not a
+mandate to implement below a capability floor. The coordinator preserves its
+settings and required gates; if its suitability cannot be established, report
+the unresolved blocker instead of claiming the stronger-worker failure is
+resolved. The same rule applies if Sol/medium exhausts its correction allowance
+after the task's effort increase was already used.
+
+A new independent task gets a fresh cheaper-start assessment; rephrasing,
+resuming, or replacing workers on unresolved work preserves failure history.
+Use the shared attempt-handoff contract and the continuation mechanics above
+when changed settings require a fresh worker. Keep model promotion distinct from
+same-worker correction and restore mandatory consultations for a new pairing.
+
+This threshold governs investigation/implementation worker configurations, not
+the number of independent delivery review rounds. Reviewer selection remains
+separate, and no retry allowance waives an acceptance or review gate. Claude's
+first-failed-bounded-attempt Sonnet-to-Opus policy remains in its own adapter.
+
+## Record settings and total work
+
+Use existing labeled returns and task evidence. Record coordinator and worker
+requested settings separately from reported or independently observed settings;
+unexposed values remain `unknown`. Include the role, strategy, correction count,
+effort-increase history, model promotions, rationale, acceptance results, and
+attributable usage when exposed. Count failed attempts, review corrections,
+coordination, consultations, and retries in total-work accounting. Separate
+subscription usage from API dollars; unavailable telemetry is not zero cost.
+Do not infer savings from fewer tokens, a successful spawn, or a small trial.
 
 ## Map impact to independent reviewers
 
@@ -105,13 +124,13 @@ implementation row. Complexity or uncertainty may warrant stronger settings.
 
 | Impact | Reviewer default | Rationale and limits |
 | --- | --- | --- |
-| Low or medium impact | Terra (`gpt-5.6-terra`) at `high` for each axis, provisional pending the Codex worker evaluation | Capable mid-tier verification is the default for routine work |
+| Low or medium impact | Terra (`gpt-5.6-terra`) at `high` for each axis | Capable mid-tier verification is the default for routine work |
 | High impact, even with a tiny diff | Strongest evidenced relevant choice of Sol (`gpt-5.6-sol`) at `high` or Astra (`gpt-6-astra`) at `high` | Use separate fresh reviewer contexts; inspect high-impact negative cases |
 
 Select reviewer overrides through the verified spawn schema above. Astra in
 this table is an independent reviewer, not an implementation worker or a
-replacement coordinator. Terra's identifier and review suitability remain
-provisional pending recorded evidence; listing it here is not live verification.
+replacement coordinator. Reviewer suitability remains a hypothesis until
+evaluated on comparable work; a model listing is not live review verification.
 Explicit user/project requirements and stronger evidence override these
 defaults. Different models for the two axes remain optional.
 

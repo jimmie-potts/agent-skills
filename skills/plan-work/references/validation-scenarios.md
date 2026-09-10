@@ -23,6 +23,14 @@ loading mechanism; a provided file path alone is not discovery evidence. Live
 tracker exercises need authority for the named effects and verified readbacks.
 Keep credentials, private task data, and runtime state out of catalog evidence.
 
+## Bounded investigation selection
+
+Include missing canonical selection-policy discovery, a bounded read-only
+investigation, an unresolved user product decision, and authorized tracker-only
+publication. Selection reads must not invoke delivery or start implementation;
+issue ratings remain model-neutral. Use the cost-aware workflow evaluation
+inputs and keep evaluator expectations hidden from the evaluated context.
+
 For project-owned guide/publication checkpoints, also use the isolated inputs in
 `tests/fixtures/workflow-evaluation/documentation-cases.md`. Withhold
 `documentation-graders.md` and recorded responses from evaluated contexts.

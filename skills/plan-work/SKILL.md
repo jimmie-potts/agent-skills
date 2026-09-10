@@ -66,9 +66,16 @@ exposes it or the user states it; otherwise record it as unknown. Report a
 known mismatch with documented workflow guidance or a composed skill's
 reasoning requirement, such as a pairing worker that would inherit a reduced
 level, and never claim to change it. Keep planned commands and
-paths explicitly unexecuted. Use a bounded investigation when it can resolve
-technical uncertainty; a missing product decision remains a question. A
-bounded investigation may compose the host's advisory pairing in planning-only
+paths explicitly unexecuted.
+
+Before selecting workers for bounded investigation, discover the installed
+canonical deliver-work package as above and read its
+`references/model-selection.md` and selected host adapter. This reads selection
+policy without invoking delivery or authorizing implementation. Keep assessment
+ratings model-neutral. If that resource is unavailable, report the dependent
+selection gap; continue the planner's own authorized read-only discovery.
+Use a bounded investigation when it can resolve technical uncertainty; a
+missing product decision remains a question. A bounded investigation may compose the host's advisory pairing in planning-only
 mode, selected from verified host tooling: worker-with-astra with Codex
 collaboration tools, worker-with-fable with Claude Code subagent tools,
 neither elsewhere. An explicit request naming the other host's pairing is
