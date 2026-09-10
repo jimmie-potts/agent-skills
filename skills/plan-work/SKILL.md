@@ -18,6 +18,9 @@ Identify the requested outcome, owning repository, tracker namespace, and
 publication boundary. Read applicable instructions, planning conventions,
 implementation, tests, contracts, and authoritative specifications. Discover
 facts before asking. Distinguish delivered behavior from proposed additions.
+Identify any project-owned guides, roadmap, architecture inputs, and publication
+procedure, including their coordinator and repository. Do not invent a
+documentation system when none is defined.
 Search existing work, including completed or active implementation, before
 proposing new items; preserve others' ownership and intervening changes.
 
@@ -32,6 +35,11 @@ resource dependency, not an invocation of delivery. Do not guess personal paths
 or duplicate its definitions here. If absent or unreadable, report the gap
 before dependent assessment; continue independent source investigation. Never
 silently install or reconstruct the contract.
+
+When project documentation or publication policy applies, read the same
+discovered package's `references/documentation.md` for its planning checkpoint.
+Keep project paths and commands in that policy. An unavailable required resource
+leaves its dependent synchronization pending; continue independent planning.
 
 ## Settle decisions and define items
 
@@ -58,14 +66,16 @@ exposes it or the user states it; otherwise record it as unknown. Report a
 known mismatch with documented workflow guidance or a composed skill's
 reasoning requirement, such as a pairing worker that would inherit a reduced
 level, and never claim to change it. Keep planned commands and
-paths explicitly unexecuted. Before selecting workers for bounded investigation, discover the installed
+paths explicitly unexecuted.
+
+Before selecting workers for bounded investigation, discover the installed
 canonical deliver-work package as above and read its
 `references/model-selection.md` and selected host adapter. This reads selection
 policy without invoking delivery or authorizing implementation. Keep assessment
 ratings model-neutral. If that resource is unavailable, report the dependent
 selection gap; continue the planner's own authorized read-only discovery.
-Use a bounded investigation when it can resolve technical uncertainty; a missing product decision remains a question. A
-bounded investigation may compose the host's advisory pairing in planning-only
+Use a bounded investigation when it can resolve technical uncertainty; a
+missing product decision remains a question. A bounded investigation may compose the host's advisory pairing in planning-only
 mode, selected from verified host tooling: worker-with-astra with Codex
 collaboration tools, worker-with-fable with Claude Code subagent tools,
 neither elsewhere. An explicit request naming the other host's pairing is
@@ -99,8 +109,15 @@ writes and reconcile authoritative issue/history records before retrying. A stal
 search miss does not prove absence. Repair a verified no-effect failure within
 scope; leave unresolved effects pending without duplicating them.
 
+After verified planning publication, apply the documentation checkpoint within
+the user's edit/publication authority. Reconcile represented scope, dependencies,
+roadmap order, and proposed architecture from saved sources. Tracker-only requests
+stop at tracker effects and report pending guide/publication work with its owner
+or next action. A planning proposal never becomes implemented behavior.
+
 Report verified references, ready items, blockers, clarification needs, skipped
-or pending writes, and evidence limits. Do not describe published unresolved
+or pending writes, guide synchronization, public publication/live verification
+where applicable, and evidence limits. Do not describe published unresolved
 work as ready or launch deliver-work automatically. Apply unslop to narrative
 prose while preserving criteria, source wording, commands, and evidence.
 

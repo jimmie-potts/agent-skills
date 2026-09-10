@@ -30,3 +30,10 @@ investigation, an unresolved user product decision, and authorized tracker-only
 publication. Selection reads must not invoke delivery or start implementation;
 issue ratings remain model-neutral. Use the cost-aware workflow evaluation
 inputs and keep evaluator expectations hidden from the evaluated context.
+
+For project-owned guide/publication checkpoints, also use the isolated inputs in
+`tests/fixtures/workflow-evaluation/documentation-cases.md`. Withhold
+`documentation-graders.md` and recorded responses from evaluated contexts.
+These cases include no-policy, unavailable-policy, read-only, tracker-only, and
+authorized document/publication branches. Reading the shared documentation
+resource must not invoke delivery or expand planning authority.

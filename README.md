@@ -62,6 +62,8 @@ Reusable SDLC workflows also include:
 
 - [`plan-work`](skills/plan-work/SKILL.md), explicit requirements definition and
   authorized GitHub/Jira publication with assessments and acceptance evidence.
+  It follows project-owned guide and publication checkpoints within the user's
+  authority, including a pending-documentation report for tracker-only work.
   It reads the installed `deliver-work` package's canonical
   `references/work-assessment.md` without invoking delivery, and composes
   `grill-with-docs` for material unresolved decisions. A bounded read-only
