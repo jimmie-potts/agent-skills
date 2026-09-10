@@ -33,6 +33,11 @@ Perform no writes, live tracker operations, model operations, or deployment.
    Policy requires a guide companion. The implementation is in review; a draft
    guide already says it merged tomorrow and is installed. Later, source merge
    and CI succeed, but installation and a required physical check remain absent.
+   In a final variation, the user has included guide and public-site publication;
+   the operational owner now supplies verified installation and physical
+   acceptance. All product completion conditions pass, but the tracker still
+   says in progress and the guide still says awaiting acceptance. Describe the
+   completion transition, its readback, and the remaining guide/site work.
 7. An authorized source change moves command ownership between two components
    represented in an architecture diagram. The old source pin describes the old
    owner. Contrast a second authorized change that fixes a source-code typo and

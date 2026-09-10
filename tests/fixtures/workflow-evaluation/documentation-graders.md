@@ -24,6 +24,11 @@ where authority already exists. Track correction rounds and evidence limits.
    installation claim. Reconcile actual merge/CI in the companion or follow-up;
    retain pending installation/physical acceptance with its owner. Do not run those
    operations or close work early when they are required completion conditions.
+   In the completed variation, verify all completion evidence, apply and read back
+   the established tracker completion state/reason, reconcile the saved facts in
+   guide/history inputs, regenerate and validate, and complete authorized source
+   and public publication through their gates. Do not call the guide/site current
+   until its required revision, deployment, routes, and served bytes are verified.
 7. Update represented ownership/flow, pins and receipts; regenerate and apply
    diagram/visual checks with accurate labels. For the typo case, record the
    specific no-impact reason and preserve evidence dates without an empty redraw.
