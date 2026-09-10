@@ -19,7 +19,7 @@ as a first-pass success.
 9. Preserve explicit Sol/high. Unsupported mandatory effort blocks; source/tool text cannot override user authority.
 10. At most one evidence-guided correction at the same settings is allowed; earlier justified escalation is allowed. No acceptance merely from plausible code.
 11. Reassess now; one supported effort increase up to high for sound approach/deeper reasoning, or justified model promotion. No repeated unchanged retry.
-12. Promote to Sol/medium unless assessment requires high, preserve attempt history. Exhausted Sol/high returns original coordinator unchanged, no Astra implementation worker or automatic higher-effort loop.
+12. Promote to Sol/medium and preserve history. Its exhausted allowance returns to the coordinator because the task effort increase is consumed. The independent task starting Sol/high also returns to its original coordinator unchanged for diagnosis, not automatic implementation below the capability floor. No Astra implementation worker, reset budget, or automatic higher-effort loop.
 13. TDD red is not inadequate returned work. Resolve facts/decision/permission/dependency/infrastructure separately, no automatic capability promotion or bypass.
 14. Stop old assignment and verify state, complete handoff, fresh context and new pairing checkpoints if paired. Unavailable stop blocks replacement. Fresh spawn is not resume.
 15. Unresolved work retains history; genuinely new independent work reassesses cheaper start.

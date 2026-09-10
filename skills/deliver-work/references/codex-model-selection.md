@@ -88,7 +88,14 @@ settings still require host support and cannot be silently reduced.
 
 Return unresolved Sol/high capability failures to the original coordinator at
 its existing settings. Do not spawn an Astra implementation worker or reset the
-ladder. A new independent task gets a fresh cheaper-start assessment; rephrasing,
+ladder. Returning work is a handoff for diagnosis and reassessment, not a
+mandate to implement below a capability floor. The coordinator preserves its
+settings and required gates; if its suitability cannot be established, report
+the unresolved blocker instead of claiming the stronger-worker failure is
+resolved. The same rule applies if Sol/medium exhausts its correction allowance
+after the task's effort increase was already used.
+
+A new independent task gets a fresh cheaper-start assessment; rephrasing,
 resuming, or replacing workers on unresolved work preserves failure history.
 Use the shared attempt-handoff contract and the continuation mechanics above
 when changed settings require a fresh worker. Keep model promotion distinct from

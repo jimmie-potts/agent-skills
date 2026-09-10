@@ -54,8 +54,10 @@ self-review or weaken independent review requirements.
 
 Decide first whether the work is one chain of dependent steps or many
 independent pieces. Direct coordinator implementation is the baseline: use it
-when existing settings suit the task or the work is one bounded chain that fits
-in one context. Judge alternatives by cost per completed task, including
+for trivial work or continuously difficult reasoning when existing settings
+suit the task. For eligible bounded work, apply the host adapter's cheaper
+worker default; merely fitting one context does not override it. Judge
+alternatives by cost per completed task, including
 corrections and reruns, rather than tokens per request. Use one bounded worker
 when different settings or isolation materially help, and separate bounded
 workers when the work splits into independent pieces or exceeds one context.
