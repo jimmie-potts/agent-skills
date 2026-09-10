@@ -21,6 +21,22 @@ references/codex.md rather than copying the consultation protocol. Keep durable
 writes with this delivery coordinator. Fresh independent review briefs carry
 the fixed comparison and raw sources without prior approval narratives.
 
+## Continue or replace a worker
+
+These mechanics apply to assigned workers and advisory workers. Retain the
+returned identifier. Use `list_agents` when state is unclear. Use
+`send_message` for a running worker and `followup_task` for a completed/idle
+worker needing a correction or answer; a queued message does not resume an
+idle worker. A correction keeps the same worker and settings.
+
+When reassessment selects a new attempt, follow the shared attempt-handoff
+contract. Stop an active old assignment with `interrupt_agent` and verify its
+state before spawning a replacement; a completed assignment is already stopped.
+Start a fresh context with supported selected settings and the complete handoff.
+A missing stop/resumption capability blocks its affected operation. Never call
+a fresh spawn a resume. Paired workers additionally follow the discovered
+pairing adapter's prerequisites and consultations with the original advisor.
+
 ## Map assessment evidence to settings
 
 Read the ratings from the work-assessment contract and the role table in the

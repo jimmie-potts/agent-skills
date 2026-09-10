@@ -97,8 +97,9 @@ reviews.
 A correction asks the same worker to repair its result. A consultation asks the
 same original advisor for a decision and pauses dependent work until answered.
 A promoted attempt starts a fresh worker when supported settings cannot change
-in place. These events have separate counts; use the host adapter's failure
-threshold and preserve explicit model/pairing requirements.
+in place. These events have separate counts. Apply the host adapter's failure
+policy where defined; otherwise use the shared evidence-based reassessment
+rule below. Preserve explicit model/pairing requirements.
 
 Diagnose an inadequate result before changing settings. For a new attempt,
 stop the old assignment and verify its state before transferring ownership.
