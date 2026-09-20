@@ -28,8 +28,8 @@ pause only the mutations that depend on resolving it.
 | Pending effects | Intent, affected object, expected prior state, guard, known IDs, attempt history and applied/not-applied/partial/unknown result for each uncertain external effect. |
 | Continuation | Last verified checkpoint, next incomplete step, dependencies paused by missing evidence or decisions, and who owns each next action. |
 
-These fields supplement the entrypoint's labeled worker return and checkpoint
-formats. Put artifact identity in Artifact, checked revision in Validation, and
+These fields supplement the [worker return](worker-briefs.md) and entrypoint
+checkpoint formats. Put artifact identity in Artifact, checked revision in Validation, and
 the record link in Plan/spec or Evidence. Keep execution counts in the existing
 Strategy, Models, Agents and Consultations fields. Do not demand a second copy
 of every field in each response.
@@ -73,8 +73,10 @@ a worker's claim or a checked box is not acceptance evidence.
 
 Record what changed since the previous checkpoint without replaying transcripts.
 Retain earlier failed attempts and counts across compaction and replacement.
-Use [execution reporting](execution-reporting.md) to reconcile the roster;
-unknown earlier participation cannot become an exact count or zero retries.
+For non-root agents or incomplete/resumed history, use
+[execution reporting](execution-reporting.md) to reconcile the roster; unknown
+earlier participation cannot become an exact count or zero retries. A verified
+direct-only run uses the entrypoint fields.
 
 ## Reconcile before continuing
 

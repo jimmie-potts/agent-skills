@@ -94,12 +94,16 @@ Reusable SDLC workflows also include:
   reviews at dependency or risk boundaries, retains finding and correction
   history, and honors explicit round, time and spending limits. Productive
   rounds have no universal cap; exhausted limits leave unmet gates pending.
-  Task reviews never replace the two final independent reviews. Its task
-  updates and final handoff include the chosen strategy and reason, decision
+  Task reviews never replace the two final independent reviews. Substantive
+  checkpoints and final handoff include the chosen strategy and reason, decision
   contributors, model roles and observed settings, active and distinct agent
   counts, planned additional agents, and advisor consultations. See
   [execution reporting](skills/deliver-work/references/execution-reporting.md)
-  for counting rules and an example. Its
+  for counting rules. Routine updates report changes, blockers and next actions;
+  consequential strategy, setting, team and authority changes are reported
+  immediately. [Selection](skills/deliver-work/references/model-selection.md)
+  loads only the chosen role and host. Workers receive a bounded brief and,
+  for a pairing, its worker protocol rather than the coordinator's setup rules. Its
   [resumption packet](skills/deliver-work/references/resumption.md) retains task
   and artifact revisions, completed work, retry history and pending effects in
   existing authorized evidence. Resumption checks current scope, ownership and

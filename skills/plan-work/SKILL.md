@@ -74,7 +74,11 @@ paths explicitly unexecuted.
 
 Before selecting workers for bounded investigation, discover the installed
 canonical deliver-work package as above and read its
-`references/model-selection.md` and selected host adapter. This reads selection
+`references/model-selection.md`, its implementation-selection branch, and only
+the selected host's worker adapter. Read `references/worker-briefs.md` before
+dispatch and supply the selected role, criteria, relevant instructions, read-only
+authority and return contract. Do not load reviewer, delivery-reporting or
+unselected pairing rules for an assigned investigation. This reads selection
 policy without invoking delivery or authorizing implementation. Keep assessment
 ratings model-neutral. If that resource is unavailable, report the dependent
 selection gap; continue the planner's own authorized read-only discovery.
