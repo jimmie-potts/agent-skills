@@ -1,5 +1,10 @@
 # Delivery skill evaluation scenarios
 
+For PR feedback, check failures, retry accounting and supervision boundaries, use
+`tests/fixtures/workflow-evaluation/supervision-cases.md`. Withhold
+`supervision-graders.md` and recorded responses from evaluated contexts. Keep
+simulated watching, actual provider effects and live session ownership distinct.
+
 For interrupted delivery, artifact identity and worker replacement, use
 `tests/fixtures/workflow-evaluation/resumption-cases.md`. Withhold
 `resumption-graders.md` and recorded responses from evaluated contexts. Include

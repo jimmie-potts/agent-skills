@@ -96,6 +96,10 @@ Reusable SDLC workflows also include:
   and artifact revisions, completed work, retry history and pending effects in
   existing authorized evidence. Resumption checks current scope, ownership and
   repository state before accepting artifacts or continuing dependent work;
+  [PR supervision](skills/deliver-work/references/pr-supervision.md) tracks
+  published feedback and current checks through the requested finish line.
+  It diagnoses failures from logs, handles fixes before obsolete check reruns,
+  and resumes supervision after each push or rerun;
 - the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
   `openspec-apply-change`, `openspec-update-change`, `openspec-sync-specs`, and
   `openspec-archive-change`. They use the consuming repository's pinned CLI.

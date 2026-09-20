@@ -155,6 +155,12 @@ limitations. Task checkboxes and passing local tests alone do not prove delivery
 
 ## Publish and establish merge eligibility
 
+For a published PR, read [PR supervision](references/pr-supervision.md) and run
+its coordinator-owned loop through the requested delivery boundary. After a fix
+push or check rerun, immediately refresh supervision for the resulting head.
+For full delivery, hand off to guarded merge as soon as all applicable gates
+pass; preserve the user's local-only, ready-PR-only or explicit watch limits.
+
 1. Commit the complete candidate and open or update one ready PR when authorized.
    Describe the problem, resulting behavior, scope links, acceptance evidence,
    risk and remaining completion work. Update established review tracking only

@@ -57,7 +57,8 @@ class DeliverWorkStructureTest(unittest.TestCase):
         links = re.findall(r'\]\(([^)]+)\)',
                            (SKILL / 'SKILL.md').read_text())
         for resource in ('references/work-assessment.md',
-                         'references/resumption.md'):
+                         'references/resumption.md',
+                         'references/pr-supervision.md'):
             self.assertTrue((SKILL / resource).is_file())
             self.assertIn(resource, links)
 
