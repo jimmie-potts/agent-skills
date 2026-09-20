@@ -32,13 +32,17 @@ class ContextMeasurementTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / 'AGENTS.md').write_bytes(b'one\r\ntwo\n')
-            receipt = MEASURE.measure(root, self.response(), 'fixture')
+            response = self.response()
+            response['sources'].append('external: /not-readable/fixture.md')
+            receipt = MEASURE.measure(root, response, 'fixture')
         first = receipt['cases'][0]
         self.assertEqual(first['messages']['brief'], {'bytes': 6, 'words': 2})
         self.assertEqual(first['messages']['return'], {'bytes': 0, 'words': 0})
         self.assertEqual(first['coordinator_actual']['bytes'], 9)
         self.assertEqual(first['worker_proposed']['bytes'], 9)
         self.assertEqual(receipt['combined_union']['bytes'], 9)
+        self.assertEqual(receipt['external_sources_excluded'],
+                         ['external: /not-readable/fixture.md'])
         self.assertEqual(receipt['source_inventory']['AGENTS.md']['sha256'],
                          hashlib.sha256(b'one\r\ntwo\n').hexdigest())
 

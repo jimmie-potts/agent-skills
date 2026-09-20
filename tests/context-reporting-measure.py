@@ -64,13 +64,15 @@ def measure(root, response, revision):
                         "coordinator_actual": exposure(case["reads"]),
                         "worker_proposed": exposure(case["worker_reads"]),
                         "messages": messages})
-    actual_union = exposure(response["sources"])
+    external = [name for name in response["sources"] if name.startswith("external:")]
+    actual_union = exposure([name for name in response["sources"] if name not in external])
     proposed_union = exposure([name for case in cases for name in case["worker_reads"]])
     return {
         "source_revision": revision,
         "method": "UTF-8 bytes and len(text.split()); whole files; deduplicate per case/role",
         "cases": records,
         "actual_union": actual_union,
+        "external_sources_excluded": external,
         "worker_proposed_union": proposed_union,
         "combined_union": exposure(list(inventory)),
         "source_inventory": dict(sorted(inventory.items())),
