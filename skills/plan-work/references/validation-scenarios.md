@@ -4,6 +4,7 @@ For shared task boundaries, coverage, dependency meanings and planning authority
 use `tests/fixtures/workflow-evaluation/task-planning-cases.md`. Withhold the
 separate `task-planning-graders.md`, observations and prior returns. Planning
 proposals and tracker-only publication must not become implementation dispatch.
+Read `task-planning-observations.md` there only after scoring a fresh trial.
 
 Use isolated read-only simulations with case inputs separated from evaluator
 checks below. Supply entrypoint and available operating resources, not expected
