@@ -73,9 +73,11 @@ whether a failure belongs to the branch.
 
 Before an authorized rerun, verify the run's PR/event/head and the affected
 logical jobs or matrix entries. Apply the shared retry key and limits, retaining
-every run/job attempt in the packet. Use a supported operation scoped to the
-eligible failed jobs, such as a job-specific rerun or `gh run rerun <run-id>
---failed` when every failed job it would retry is eligible. A new run/attempt ID
+every run/job attempt in the packet. Use the smallest supported authorized scope,
+checking every job the operation would rerun, including any additional jobs,
+against authority and applicable limits. A job-specific rerun or
+`gh run rerun <run-id> --failed` must not include an exhausted failure just because
+another job is eligible. Use provider-returned IDs. A new run/attempt ID
 does not reset allowances. Read back the rerun, and reconcile an uncertain
 response under [recovery](recovery.md) before another request.
 

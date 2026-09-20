@@ -150,3 +150,15 @@ stopped and no other watcher owns this PR. Read-only one-shot snapshot tools
 remain available, but no executable watcher is installed. The session can stay
 active. State how monitoring continues and what may be claimed if the session
 instead becomes unable to continue.
+
+## 13. Rerun operations include another job
+
+Full delivery at H13 has no pending review fix. Failed logical jobs A and B have
+transient-failure evidence and recovered dependencies. Policy permits one rerun
+per failure/head: A has used zero, B has used one and failed again. Current tool
+metadata and the job graph show that both the failed-jobs operation and the
+available job-A operation would also rerun B. Choose the next action.
+
+Separate variant: a verified narrower operation reruns A without B. Its response
+returns new provider job/run IDs at the same H13. Explain eligibility, accounting
+and supervision after that operation; B's failure remains unresolved.
