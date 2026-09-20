@@ -30,11 +30,13 @@ and return proposals unless exact document edits are authorized. Do not create
 a tracker, planning framework, board, or custom fields to fit this workflow.
 
 Discover the installed canonical deliver-work skill through supported host
-discovery and read its `references/work-assessment.md`. This is a required
-resource dependency, not an invocation of delivery. Do not guess personal paths
-or duplicate its definitions here. If absent or unreadable, report the gap
-before dependent assessment; continue independent source investigation. Never
-silently install or reconstruct the contract.
+discovery and read its `references/work-assessment.md` and
+`references/task-planning.md`. These are required resource dependencies, not an
+invocation of delivery. Use the task-planning definition, boundary and dependency
+sections to propose work; they grant no implementation dispatch authority.
+Do not guess personal paths or duplicate either contract here. If a resource is
+absent or unreadable, report the gap before its dependent planning step and
+continue independent discovery. Never silently install or reconstruct it.
 
 When project documentation or publication policy applies, read the same
 discovered package's `references/documentation.md` for its planning checkpoint.
@@ -49,16 +51,11 @@ and existing authority; after questioning, return control here for authorized
 planning operations. A missing required skill blocks that substep, not unrelated
 discovery. Do not silently fetch, copy, or replace it.
 
-Define one item or decompose a larger outcome only where each item has a
-coherent result and independent acceptance evidence. An epic or a list of
-implementation chores alone is not implementation-ready work. Each item needs:
-
-- outcome, intended behavior, exclusions, and authoritative scope links;
-- testable acceptance criteria and prerequisite decisions/work references;
-- planned verification for each criterion, including relevant failure,
-  recovery, security, compatibility, and user-journey cases;
-- the shared contract's assessment, evidence, unknowns, and readiness;
-- conditional specialist/human review and operational handoff expectations.
+Define one item or decompose a larger outcome using the shared task-planning
+meanings. Carry outcomes, exclusions, acceptance/verification coverage and true
+input dependencies into each proposed work item. An epic or list of chores
+alone is not implementation-ready. Include the assessment, evidence, unknowns,
+readiness and conditional specialist/human review or operational handoffs.
 
 Apply the assessment contract without embedding model names in planning ratings.
 Record the session's reasoning setting in the planning evidence when the host
@@ -85,10 +82,6 @@ investigation. Link specifications and decision records without copying their
 content.
 When repository policy requires specification artifacts, use its canonical method
 within existing edit authority; do not invent a specification framework.
-
-Map real incoming dependencies and detect cycles. Keep shared-file coordination
-and preferred merge order distinct from required inputs. Preserve independently
-deliverable work; do not serialize it merely because one coordinator writes.
 
 ## Publish within authority and verify
 

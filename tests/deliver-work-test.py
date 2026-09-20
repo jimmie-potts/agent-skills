@@ -53,12 +53,13 @@ class DeliverWorkStructureTest(unittest.TestCase):
         self.assertFalse((SKILL / 'scripts').exists())
 
     def test_shared_resources_are_exposed_to_consumers(self):
-        # Stable pointers expose the assessment and packet without a copied schema.
+        # Stable pointers expose shared contracts without copied definitions.
         links = re.findall(r'\]\(([^)]+)\)',
                            (SKILL / 'SKILL.md').read_text())
         for resource in ('references/work-assessment.md',
                          'references/resumption.md',
-                         'references/pr-supervision.md'):
+                         'references/pr-supervision.md',
+                         'references/task-planning.md'):
             self.assertTrue((SKILL / resource).is_file())
             self.assertIn(resource, links)
 
