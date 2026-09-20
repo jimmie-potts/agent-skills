@@ -13,6 +13,9 @@ or required storage format. Link established records instead of copying them.
 Use `unknown`, `none`, or `not applicable` explicitly. An unknown required
 identity or revision prevents acceptance of the dependent artifact, not useful
 independent work.
+Silence about pending effects or earlier activity means `unknown`, not `none`
+or zero. Keep that gap visible until authoritative readbacks establish absence;
+pause only the mutations that depend on resolving it.
 
 | Field | Required content |
 | --- | --- |
