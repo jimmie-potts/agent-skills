@@ -127,9 +127,10 @@ L3 coordinator exposure rises by 5,414 bytes / 670 words on Codex and 5,330 byte
 651 words on Claude. The full lifecycle needs the newly separated initial,
 continuation, reporting, and review instructions. L3 proposed worker exposure
 rises by 4,430 bytes / 649 words on both hosts because the corrected candidate
-includes the `code-review` dependency reached through TDD; the baseline proposal
-omitted it. This is an inventory-completeness difference, not a new required
-worker routing load. It remains in the measured comparison.
+proposes an extra `code-review` read. TDD contains no such dependency and is
+unchanged between the compared revisions. This is an unsupported evaluator
+choice, not a mandatory read missing from the baseline. The extra exposure
+remains in the raw comparison rather than being removed to improve the counts.
 
 L1 candidate reads include an unnecessary documentation reference associated
 with its invalid publication claim. L5 corrected baseline reads include PR
@@ -212,7 +213,7 @@ pass rate and includes the invalid samples below.
 | L1 direct work | Both retain direct root work and pending independent reviews, CI, and merge. Candidate's corrected checkpoint invents separate guide publication/live verification despite the supplied absence of that system. Baseline's checkpoint omits usage and describes the scenario stop as a user limit requiring lifting. Neither checkpoint is a complete acceptance example. The independent boundary sample preserves the real stopping point, unknown usage, and no invented publication gate. |
 | L2 investigation | Both choose Terra/medium or Sonnet and retain response-only authority, source H1/path/line evidence, seven return labels, no tests/changes, and unknown identity/usage. The independent reviewer notes that the existing narrow-lookup versus bounded-investigation rows overlap for a single predicate question. This fixture expressly supplies an assigned medium-rated investigation; it does not prove a unique routing decision for every source lookup. No default table was changed. |
 | L3 lifecycle | Corrected samples preserve initial settings, the Codex failed result plus one correction and one effort increase, the distinct Claude first-attempt promotion threshold, failed history, active/used/planned counts, ambiguous-spawn uncertainty, rejected explicit settings, profile conflict, and the standalone E5 gates/unknown usage. Initial baseline E4 incorrectly finished W2; correction restores unchanged activity. Initial candidate omitted some applicable reads and explicit PR-CI evidence; correction adds them. Reduced routine updates do not omit the supplied state transitions. |
-| L4 pairing | Both retain the original verified advisor, root writes, approach and final consultations, one completed approach versus an unanswered blocker, no checks, user-owned audit-event decision, and useful independent work. Worker protocols replace coordinator setup/routing reads. The independent check verifies the same consultation and authority boundaries on both hosts. |
+| L4 pairing | Both retain the original advisor, root writes, consultation state, user-owned audit decision, and independent-work option. The candidate worker returns omit the required checks not run, `check parser` and `check`, that baseline names. Both pending advice returns omit the required evidence and recommendation. These incomplete returns cannot establish lossless reduction. Worker protocols still preserve those requirements. The independent boundary check describes them but does not supply a complete matched L4 message comparison. |
 | L5 independent review | Both select Astra/high or Opus at the high-impact floor, keep separate fresh axes, and leave the proposed verdict pending without source inspection and hosted CI. Baseline selection incorrectly asserts coordinator and implementer must be distinct contexts. Candidate's extra corrected checkpoint turns those roles into an exact historical count of two; that checkpoint fails the unknown-count rule. The independent verification keeps the prior roster unresolved and distinguishes two planned roles from confirmed creation. |
 
 These are sample-generation and evidence-completeness failures, not successful
@@ -224,13 +225,73 @@ already requires confirmed contexts and explicit unknown history. That review
 provides additional behavior evidence at the problematic boundaries; it does
 not retroactively correct the matched returns or supply a model-quality score.
 
-The acceptance case for C1–C5 combines source-contract inspection with the
-recorded selections, full L3 state sequence, bounded L2/L3 briefs, L4 consultation
-behavior, and independent L1/L5 boundary verification. C6's text evidence is the
-reproducible branch inventories and message counts above, with all increases
-and failures retained. Reduced L1 output and the invalid L5 checkpoint are not
-used as evidence of lossless reporting. Final reviewers must assess the full
-issue acceptance criteria; these observations do not approve their own delivery.
+The raw trials and boundary check alone leave C6 incomplete. Source-contract
+inspection preserves the rules, but cannot make an incomplete worker return
+lossless. Reduced L1 output, incomplete L4 returns, and the invalid L5 checkpoint
+are excluded from claims of lossless reporting. The separately attributed
+coordinator repairs below complete the affected samples for independent fix
+verification; they do not change or reclassify these raw trial outcomes.
+
+## Coordinator repairs and separate counts
+
+Independent final Specification review identified the incorrect TDD explanation
+as `SPEC-43-01` and incomplete matched evidence as `SPEC-43-02`. Both original
+evaluators had already used their one same-setting correction. The remaining
+evidence work returned to the original coordinator at unchanged, unexposed
+settings. These are feedback-guided artifact repairs for the same frozen cases,
+not new blind trials, another worker correction, or actual child execution.
+
+| Coordinator-authored record | Complete samples | Count receipt |
+| --- | --- | --- |
+| Baseline repair | [JSON](context-reporting-baseline-coordinator-repair.json) | [JSON](context-reporting-baseline-coordinator-repair-receipt.json) |
+| Candidate repair | [JSON](context-reporting-candidate-coordinator-repair.json) | [JSON](context-reporting-candidate-coordinator-repair-receipt.json) |
+
+Each repair identifies its original corrected return by filename and SHA-256
+and enumerates every changed case field. Every read list, source list, and
+unlisted case field is identical to that return. The instruction counts retain
+the earlier evaluator's observed reads and proposed worker reads, including
+unnecessary choices. They are not a new measurement of the coordinator's reads.
+The counter uses the same operating revisions and counting method for both
+repairs; the source inventories and instruction totals above are unchanged.
+
+The repaired L1 checkpoint preserves unknown usage and the ordinary pending
+delivery gates, without inventing a publication system or a user-imposed limit.
+Baseline and candidate use the same complete message, so no L1 output reduction
+is claimed. Each L4 blocked return now includes `check parser` and `check` as
+unrun, the pending request's decision, evidence, recommendation and paused
+dependency, the original advisor, consultation history and user ownership.
+Baseline and candidate use the same complete return within each host, so no L4
+worker-return reduction is claimed. L5 baseline selection and candidate
+checkpoints now retain unknown prior participation rather than treating roles
+as proof of distinct contexts.
+
+Only these changed counted messages replace the corresponding raw samples in
+the separate repair receipts. Cells contain bytes / words. Other message counts
+are unchanged.
+
+| Case / host | Message | Baseline repair | Candidate repair |
+| --- | --- | --- | --- |
+| L1 / codex | checkpoint | 1,289 / 166 | 1,289 / 166 |
+| L1 / claude | checkpoint | 1,289 / 166 | 1,289 / 166 |
+| L4 / codex | return | 1,250 / 166 | 1,250 / 166 |
+| L4 / claude | return | 1,319 / 179 | 1,319 / 179 |
+| L5 / codex | checkpoint | — | 1,579 / 197 |
+| L5 / claude | checkpoint | — | 1,582 / 198 |
+
+All literal samples in the repair records total 39,478 / 5,297 →
+36,510 / 4,850. This is an artifact comparison, not a new behavioral pass rate.
+The L3 routine reductions and L2–L5 initial-brief reductions remain unchanged;
+the complete L1 and L4 messages contribute no savings. L2 returns still increase,
+L4 Codex's brief still has equal word counts, and L5's extra checkpoints now
+cost 1,579 / 197 and 1,582 / 198. L3 instruction exposure and the full instruction
+union still increase as reported above.
+
+These repairs provide complete, equivalently counted samples for independent
+fix verification. They cannot establish that either original evaluator produced
+a lossless result, or that a native host would load these files or behave this
+way. C6 acceptance depends on checking the retained traces, repaired artifacts,
+unchanged operating contracts and explicit limits together. No runtime cost,
+speed or model-quality conclusion follows from the text counts.
 
 The original defaults, host-specific correction thresholds, independent final
 review axes, current-head CI, expected-head merge, and completion readbacks
