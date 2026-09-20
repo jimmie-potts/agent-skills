@@ -42,6 +42,11 @@ clarification exist, report both. Unknown evidence affecting scope, acceptance,
 or a mandatory gate prevents declaring that affected work ready. Publication
 of an item does not establish readiness or permission to implement it.
 
+For decomposed work, read [task planning and dispatch](task-planning.md) for
+criterion coverage, task acceptance and the distinction between required
+inputs, shared-file coordination and preferred order. Planning consumers use
+those meanings for proposals without dispatching implementation.
+
 For every acceptance criterion identify a planned test or other evidence,
 the behavior it must observe, and any limitation. Cover relevant success and
 failure cases: retries, timeouts, ordering, recovery, authorization, consumer

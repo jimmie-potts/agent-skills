@@ -1,5 +1,10 @@
 # Evaluate planning behavior
 
+For shared task boundaries, coverage, dependency meanings and planning authority,
+use `tests/fixtures/workflow-evaluation/task-planning-cases.md`. Withhold the
+separate `task-planning-graders.md`, observations and prior returns. Planning
+proposals and tracker-only publication must not become implementation dispatch.
+
 Use isolated read-only simulations with case inputs separated from evaluator
 checks below. Supply entrypoint and available operating resources, not expected
 answers. Record actual decisions, proposed effects, sources read, failures, and

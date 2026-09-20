@@ -40,15 +40,14 @@ class PlanWorkStructureTest(unittest.TestCase):
                     pending.append(target)
         self.assertTrue(set((SKILL / 'references').glob('*.md')) <= visited)
 
-    def test_canonical_assessment_dependency(self):
-        resource = 'references/work-assessment.md'
-        selection = 'references/model-selection.md'
-        self.assertTrue((ROOT / 'skills/deliver-work' / selection).is_file())
-        self.assertFalse((SKILL / selection).exists())
-        self.assertIn(selection, (SKILL / 'SKILL.md').read_text())
-        self.assertTrue((ROOT / 'skills/deliver-work' / resource).is_file())
-        self.assertFalse((SKILL / resource).exists())
-        self.assertIn(resource, (SKILL / 'SKILL.md').read_text())
+    def test_canonical_shared_dependencies(self):
+        for resource in ('references/work-assessment.md',
+                         'references/model-selection.md',
+                         'references/task-planning.md'):
+            with self.subTest(resource=resource):
+                self.assertTrue((ROOT / 'skills/deliver-work' / resource).is_file())
+                self.assertFalse((SKILL / resource).exists())
+                self.assertIn(resource, (SKILL / 'SKILL.md').read_text())
 
     def test_instruction_only_package(self):
         for path in SKILL.rglob('*'):

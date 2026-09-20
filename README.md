@@ -64,8 +64,8 @@ Reusable SDLC workflows also include:
   authorized GitHub/Jira publication with assessments and acceptance evidence.
   It follows project-owned guide and publication checkpoints within the user's
   authority, including a pending-documentation report for tracker-only work.
-  It reads the installed `deliver-work` package's canonical
-  `references/work-assessment.md` without invoking delivery, and composes
+  It reads the installed `deliver-work` package's canonical assessment and
+  task-planning contracts without invoking delivery, and composes
   `grill-with-docs` for material unresolved decisions. A bounded read-only
   investigation may compose the host's advisory pairing. Install those
   dependencies when using this planner; missing resources are reported, never
@@ -86,7 +86,10 @@ Reusable SDLC workflows also include:
   collaboration tools or `worker-with-fable` under Claude Code subagent tools,
   choosing by verified host tooling rather than by request wording; install the
   applicable skill separately when using the optional pairing. Advisory
-  inspection never replaces its two independent delivery reviews. Its task
+  inspection never replaces its two independent delivery reviews. Shared
+  [task planning](skills/deliver-work/references/task-planning.md) maps acceptance
+  to verifiable tasks, distinguishes input dependencies from coordination, and
+  checks contracts, resources and ownership before parallel dispatch. Its task
   updates and final handoff include the chosen strategy and reason, decision
   contributors, model roles and observed settings, active and distinct agent
   counts, planned additional agents, and advisor consultations. See

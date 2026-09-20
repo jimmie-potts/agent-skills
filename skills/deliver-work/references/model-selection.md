@@ -52,8 +52,10 @@ self-review or weaken independent review requirements.
 
 ## Choose an implementation strategy
 
-Decide first whether the work is one chain of dependent steps or many
-independent pieces. Direct coordinator implementation is the baseline: use it
+For decomposed or delegated work, read [task planning and dispatch](task-planning.md)
+before selecting a strategy. Establish required-input readiness and independent
+contracts/resources; file paths alone do not justify parallel workers.
+Direct coordinator implementation is the baseline: use it
 for trivial work or continuously difficult reasoning when existing settings
 suit the task. For eligible bounded work, apply the host adapter's cheaper
 worker default; merely fitting one context does not override it. Judge

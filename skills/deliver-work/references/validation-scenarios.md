@@ -1,5 +1,10 @@
 # Delivery skill evaluation scenarios
 
+For task boundaries, acceptance coverage, dependencies and safe dispatch, use
+`tests/fixtures/workflow-evaluation/task-planning-cases.md`. Withhold
+`task-planning-graders.md` and recorded responses from evaluated contexts.
+Distinguish simulated task decisions from actual concurrent execution.
+
 For PR feedback, check failures, retry accounting and supervision boundaries, use
 `tests/fixtures/workflow-evaluation/supervision-cases.md`. Withhold
 `supervision-graders.md` and recorded responses from evaluated contexts. Keep

@@ -77,6 +77,9 @@ Before deciding readiness and checks, read [work assessment](references/work-ass
 Assess unclassified work or refresh its planning assessment against current
 sources. Map acceptance criteria to verification and identify conditional
 reviews and operational handoffs. Preserve the project's mandatory gates.
+Before decomposing work, ordering tasks or dispatching, read
+[task planning and dispatch](references/task-planning.md). Keep its compact
+definitions and dependency evidence in the existing task record.
 Before selecting implementation or reviewers, read
 [model and strategy selection](references/model-selection.md). Choose settings
 per role, preserve coordinator ownership, and report capability limits. Compose
