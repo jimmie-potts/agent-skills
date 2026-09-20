@@ -91,6 +91,10 @@ loop was used. Independent delivery reviews are not advisor consultations.
 ## Retain the summary without new publication effects
 
 Keep the current roster and summary in the task's existing evidence or handoff.
+At checkpoints and on resumption, use [the task packet](resumption.md) to retain
+completed tasks, accepted revisions, findings, pending effects and the next
+incomplete step alongside this execution summary. Link the same record instead
+of creating a separate roster ledger.
 If project policy or the user already authorizes a durable delivery record,
 update that record and link it from the task. For an authorized public PR or
 tracker update, include only the strategy and relevant role summary, omitting

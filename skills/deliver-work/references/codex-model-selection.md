@@ -37,6 +37,11 @@ A missing stop/resumption capability blocks its affected operation. Never call
 a fresh spawn a resume. Paired workers additionally follow the discovered
 pairing adapter's prerequisites and consultations with the original advisor.
 
+For delivery, include the shared [task packet](resumption.md) or an authorized
+reference in each resumed/replacement brief. Match returned task, assignment and
+source revision before applying a patch, including late messages from a stopped
+worker. Host resumption alone does not establish that its context is current.
+
 ## Map assessment evidence to settings
 
 Read the shared assessment and strategy policy first. Select the least costly

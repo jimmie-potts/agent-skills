@@ -99,6 +99,11 @@ persists at Opus, return the unresolved work and evidence to the original Fable
 coordinator at its existing settings; do not spawn Fable as an implementation
 worker or loop through further unsupported tiers.
 
+For delivery, include the shared [task packet](resumption.md) or an authorized
+reference in each SendMessage resumption or replacement brief. Match returned
+task, assignment and source revision before applying a patch. Retained context
+may be stale; preserve attempt history and unknown identity/effort evidence.
+
 This Sonnet-to-Opus policy is a hypothesis inspired by Anthropic's
 [retry-at-higher-capability measurements](https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence#tune-effort),
 which varied effort within one model, not this exact tier sequence. It needs

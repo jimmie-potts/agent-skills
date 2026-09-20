@@ -5,6 +5,11 @@ readback. Keep the effect's intent, object, expected prior state, guard and know
 identifiers in the task or existing record. Suspend mutations that depend on
 its result; continue independent authorized work.
 
+On checkpoint or restart, retain this evidence and all prior attempts in the
+[task packet](resumption.md). Reconcile the current scope, ownership and source
+state before continuing; a lost response or interrupted context does not reset
+retry history. Preserve required evidence before any authorized artifact cleanup.
+
 Inspect authoritative source history, PRs, refs, checks or other relevant state.
 A cached, delayed or incomplete read does not prove the effect was absent.
 Classify the result before recovery:
