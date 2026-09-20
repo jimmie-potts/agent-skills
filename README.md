@@ -91,7 +91,11 @@ Reusable SDLC workflows also include:
   contributors, model roles and observed settings, active and distinct agent
   counts, planned additional agents, and advisor consultations. See
   [execution reporting](skills/deliver-work/references/execution-reporting.md)
-  for counting rules and an example;
+  for counting rules and an example. Its
+  [resumption packet](skills/deliver-work/references/resumption.md) retains task
+  and artifact revisions, completed work, retry history and pending effects in
+  existing authorized evidence. Resumption checks current scope, ownership and
+  repository state before accepting artifacts or continuing dependent work;
 - the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
   `openspec-apply-change`, `openspec-update-change`, `openspec-sync-specs`, and
   `openspec-archive-change`. They use the consuming repository's pinned CLI.

@@ -91,6 +91,11 @@ with `Agent`, supplying the complete handoff brief and unchanged ownership.
 Do not change session settings to obtain a different effort. A terminal failure
 still requires diagnosis; it is not permission to silently replace a worker.
 
+When composed by deliver-work, use the coordinator-supplied task packet from
+that skill's `references/resumption.md`. Return the assigned task/attempt and
+source revision with the proposal. Retained context and file references still
+need the coordinator's current-state checks; they grant no new write authority.
+
 ## Ownership and delivery
 
 Subagents share the coordinator's working directory and run under the session's

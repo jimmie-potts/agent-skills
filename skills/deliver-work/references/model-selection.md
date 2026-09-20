@@ -114,6 +114,11 @@ across replacements and resumptions; do not pass a new spawn off as a resume.
 Host adapters own stop/spawn/resume mechanics. An unavailable stop or required
 control blocks the affected replacement, not independent authorized work.
 
+When composing delivery, carry this state in the canonical
+[task packet](resumption.md), including task/attempt identity and artifact source
+revisions. Reconcile it before resuming or accepting a late result. A planning
+consumer only proposes the handoff; reading this policy does not start delivery.
+
 For a new advisory attempt, retain the original advisor and re-establish all
 pairing prerequisites and mandatory approach/final consultations. A standalone
 pairing reports the inadequate attempt to its coordinator; the composing

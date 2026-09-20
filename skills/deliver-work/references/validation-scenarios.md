@@ -1,5 +1,12 @@
 # Delivery skill evaluation scenarios
 
+For interrupted delivery, artifact identity and worker replacement, use
+`tests/fixtures/workflow-evaluation/resumption-cases.md`. Withhold
+`resumption-graders.md` and recorded responses from evaluated contexts. Include
+both host brief variants and distinguish simulated recovery from live effects.
+After scoring, inspect the separate `resumption-observations.md` in that fixture
+directory for initial omissions, correction outcomes and evidence limits.
+
 For project-owned guide/publication checkpoints, also use the isolated inputs in
 `tests/fixtures/workflow-evaluation/documentation-cases.md`. Withhold
 `documentation-graders.md` and recorded responses from evaluated contexts.

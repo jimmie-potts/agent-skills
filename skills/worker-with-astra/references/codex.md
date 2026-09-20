@@ -69,6 +69,11 @@ context as `followup_task` resumption. Transfer the complete handoff brief and
 retain the same original advisor. If the old assignment cannot be stopped,
 report that blocker rather than overlap ownership.
 
+When composed by deliver-work, use the coordinator-supplied task packet from
+that skill's `references/resumption.md`. Return the assigned task/attempt and
+source revision with the proposal. Retained context and file references still
+need the coordinator's current-state checks; they grant no new write authority.
+
 ## Ownership and delivery
 
 Agents share the filesystem. State write ownership in the initial brief. Under

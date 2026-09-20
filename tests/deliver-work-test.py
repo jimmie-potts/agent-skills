@@ -52,13 +52,14 @@ class DeliverWorkStructureTest(unittest.TestCase):
                 self.assertIn(path.suffix, {'.md', '.yaml'})
         self.assertFalse((SKILL / 'scripts').exists())
 
-    def test_assessment_resource_is_exposed_to_consumers(self):
-        # Other workflows discover this stable resource without invoking delivery.
-        resource = 'references/work-assessment.md'
-        self.assertTrue((SKILL / resource).is_file())
+    def test_shared_resources_are_exposed_to_consumers(self):
+        # Stable pointers expose the assessment and packet without a copied schema.
         links = re.findall(r'\]\(([^)]+)\)',
                            (SKILL / 'SKILL.md').read_text())
-        self.assertIn(resource, links)
+        for resource in ('references/work-assessment.md',
+                         'references/resumption.md'):
+            self.assertTrue((SKILL / resource).is_file())
+            self.assertIn(resource, links)
 
     def test_selection_resources_are_routed(self):
         entry_links = re.findall(r'\]\(([^)]+)\)',
