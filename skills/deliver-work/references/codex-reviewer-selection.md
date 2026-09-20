@@ -14,4 +14,3 @@ replacement coordinator. Reviewer suitability remains a hypothesis until
 evaluated on comparable work; a model listing is not live review verification.
 Explicit user/project requirements and stronger evidence override these
 defaults. Different models for the two axes remain optional.
-

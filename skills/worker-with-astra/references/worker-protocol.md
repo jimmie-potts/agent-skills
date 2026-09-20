@@ -52,7 +52,6 @@ source; unexposed identity remains unknown. A verified model mismatch stops this
 pairing. A successful spawn or model menu does not prove runtime identity.
 Use the labels below; include actual checks and required checks not run.
 
-
 - Artifact: proposed patch or exact file contents; requested findings or plan
   for read-only work; `none` when no artifact is produced.
 - Changed files: paths, distinguishing proposed from applied changes, or `none`.
@@ -71,4 +70,3 @@ required evidence is missing, return the specific omissions to the same worker
 before accepting completion. If the evidence is complete but extra narrative is
 present, disregard that narrative and evaluate the result normally; do not
 request a cosmetic rewrite or treat format compliance as correctness.
-

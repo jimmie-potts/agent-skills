@@ -103,4 +103,3 @@ attributable usage when exposed. Count failed attempts, review corrections,
 coordination, consultations, and retries in total-work accounting. Separate
 subscription usage from API dollars; unavailable telemetry is not zero cost.
 Do not infer savings from fewer tokens, a successful spawn, or a small trial.
-

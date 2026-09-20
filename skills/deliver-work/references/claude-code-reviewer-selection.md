@@ -17,4 +17,3 @@ The coordinator's model here means a fresh independent reviewer on that model,
 never the coordinating writer's own judgment. These are capability hypotheses,
 not measured review-quality results. Explicit user/project requirements and
 stronger evidence override the defaults; no effort control is added.
-

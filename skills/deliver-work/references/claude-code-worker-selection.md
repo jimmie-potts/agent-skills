@@ -82,4 +82,3 @@ which varied effort within one model, not this exact tier sequence. It needs
 reliable failure detection and may increase latency on failures. Measure cost
 per completed task; the shared reassessment rule still treats a stronger tier
 as a changed approach. High-rated rows and explicit requirements take priority.
-

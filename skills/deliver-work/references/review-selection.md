@@ -25,8 +25,8 @@ from worker attempts and this policy's host-specific correction thresholds.
 Apply the reviewer suitability and impact floors here to task and fix reviews
 as well as final review; a small fix does not establish low impact.
 
-For final review, run separate Standards and Specification contexts on one frozen comparison,
-with raw axis-specific requirements, relevant code/consumers, and evidence.
+For final review, run separate Standards and Specification contexts on one frozen
+comparison, with raw axis-specific requirements, relevant code/consumers, and evidence.
 Do not give initial reviewers implementer/advisor approval narratives, other
 reviewers' conclusions, or instructions to confirm a preferred verdict. They
 may inspect implementation facts and validation outputs. Require independent

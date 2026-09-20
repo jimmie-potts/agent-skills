@@ -27,8 +27,8 @@ required task state and permissions without discarding constraints. Follow
 [task packets](resumption.md) for coordinator reconciliation before acceptance;
 the worker returns task/attempt and source identity in Artifact and Validation.
 This packet policy applies to delivery; planning remains read-only and uses its
-existing planning evidence. Keep small briefs and returns inline; use authorized references for large
-artifacts and verify recipient access. A compact brief never reduces acceptance,
+existing planning evidence. Keep small briefs and returns inline; use authorized
+references for large artifacts and verify recipient access. A compact brief never reduces acceptance,
 permission, identity, consultation or evidence requirements.
 
 ## Return completed or blocked work

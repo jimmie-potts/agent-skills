@@ -39,8 +39,8 @@ to resume this same context. A fresh `Agent` call is a new attempt, not a resume
 Report the model named in your own runtime instructions on every return. Effort
 is inherited unless a verified host override applies; the tool has no per-call
 effort control. Report exposed/stated effective effort or `unknown`, and any
-known mismatch; do not claim to change it. A denied tool call is a refusal to
-report, not permission to retry.
+known mismatch; do not claim to change it. Report a denied tool call as a refusal;
+do not retry it.
 
 Keep the same worker for ordinary corrections and consultations. Only the
 composing coordinator selects a new attempt after ending the old assignment;
@@ -54,7 +54,6 @@ Report requested versus runtime-reported model/reasoning and the evidence
 source; unexposed identity remains unknown. A verified model mismatch stops this
 pairing. A successful spawn or model menu does not prove runtime identity.
 Use the labels below; include actual checks and required checks not run.
-
 
 - Artifact: proposed patch or exact file contents; requested findings or plan
   for read-only work; `none` when no artifact is produced.
@@ -74,4 +73,3 @@ If required evidence is missing, return the specific omissions to the same
 worker before accepting completion. If the evidence is complete but extra
 narrative is present, disregard that narrative and evaluate the result normally;
 do not request a cosmetic rewrite or treat format compliance as correctness.
-
