@@ -22,8 +22,8 @@ separately.
 Include the coordinator's actual canonical agent address, obtained from the
 host, in the brief. Do not hard-code `/root` when the coordinator has another
 address. Retain the returned worker ID or canonical task name for replies.
-Supply the skill and adapter text or accessible paths with an instruction to
-read them. A fresh worker needs the task context as well as those files.
+Supply [the worker protocol](worker-protocol.md), its selected tier boundary
+and task context. Do not require the worker to read coordinator setup files.
 
 Use runtime model information returned by the host when available. A successful
 spawn with the explicit model parameter records the requested selection; it
@@ -69,10 +69,11 @@ context as `followup_task` resumption. Transfer the complete handoff brief and
 retain the same original advisor. If the old assignment cannot be stopped,
 report that blocker rather than overlap ownership.
 
-When composed by deliver-work, use the coordinator-supplied task packet from
-that skill's `references/resumption.md`. Return the assigned task/attempt and
-source revision with the proposal. Retained context and file references still
-need the coordinator's current-state checks; they grant no new write authority.
+When composed by deliver-work, carry relevant fields from the coordinator's
+existing task packet in the brief. The worker returns task/attempt and source
+revision with the proposal without reading the packet policy. The delivery
+coordinator still performs current-state checks; retained context and references
+grant no new write authority.
 
 ## Ownership and delivery
 

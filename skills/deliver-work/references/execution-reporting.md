@@ -1,6 +1,8 @@
 # Report strategy, models, and agents
 
-Read before delivery implementation or delegation. Use the entrypoint's
+Read before creating a non-root delivery agent, reconciling incomplete/resumed
+participation, or publishing a checkpoint/final handoff involving agents. Direct
+work with a verified single coordinator can use the entrypoint fields. Use the entrypoint's
 Strategy, Models, Agents, and Consultations fields for this summary. The task
 conversation is the default output, so the user can see it while work proceeds
 and find it in the final response. These instructions require agent-authored
@@ -22,9 +24,13 @@ reporting; they do not install automatic host telemetry or a dashboard.
    clear. A planned role has no observed runtime settings yet.
 3. Report the counts below before spawning, after confirmed team changes, and
    when a strategy, setting, or fallback changes. Explain what changed and why.
-   At later checkpoints, keep these fields short while retaining their current
-   values. Carry the complete execution summary into the final response, even
-   for direct implementation, a blocker, or a user-imposed delivery limit.
+   Routine updates state changes, blockers and next actions; omit unchanged
+   rosters and settings. Immediately expose consequential strategy, setting,
+   team or authority changes, failed attempts and capability gaps, with reasons
+   and affected counts/history. Keep the complete summary in existing evidence
+   and publish it at substantive checkpoints and final handoff, including blocked
+   or limited delivery. Retaining details in evidence never delays a material
+   change notice. Do not turn missing history or telemetry into zero by omission.
 
 Use settings from the current host records or runtime reports and label their
 source. Distinguish a user-stated setting from a host observation and a worker's
@@ -105,22 +111,3 @@ private runtime identifiers, paths, and raw metadata. Reporting does not
 authorize a new file, tracker comment, PR, service, installation, or paid run.
 If a requested destination is unavailable, output the summary in the task and
 report the destination limit.
-
-## Example during implementation
-
-This synthetic snapshot assumes a verified coordinator identity, one confirmed
-worker creation with a runtime self-report, one completed approach consultation,
-and two reviewers selected but not started. The remaining checkpoint fields
-still carry source, revisions, checks, and delivery status.
-
-- Strategy: advisory pairing because implementation is bounded with two design
-  checkpoints. Coordinator selected it; worker-1's approach input confirmed the
-  test boundary.
-- Models: coordinator/advisor, host-reported gpt-6-astra/high, selection matches;
-  worker-1, selected/requested gpt-5.6-terra/medium, self-reported same, independent
-  runtime metadata unknown. Standards and Specification reviewers are planned,
-  each selected gpt-5.6-terra/high; no request or runtime report yet. Worker-1 is
-  on its initial attempt with 0 corrections, effort increases, or promotions.
-- Agents: active 2, coordinator and worker-1; distinct used 2; planned additional
-  2, standards-reviewer and specification-reviewer. Advisor is the coordinator.
-- Consultations: worker-1 completed 1, total 1; pending 0.

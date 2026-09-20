@@ -85,9 +85,12 @@ under an explicit round, time or spend limit, read
 [review cycles and limits](references/review-cycles.md). Record selected task
 boundaries and limit accounting before dependent work. Task review does not
 replace either final independent review; a limit cannot waive a delivery gate.
-Before selecting implementation or reviewers, read
-[model and strategy selection](references/model-selection.md). Choose settings
-per role, preserve coordinator ownership, and report capability limits. Compose
+Before selecting a worker, changing implementation strategy/settings, or
+selecting reviewers, read [model and strategy selection](references/model-selection.md)
+and only its selected role and host branches. Direct trivial work at the
+coordinator's existing settings needs no worker-selection reads. Preserve
+coordinator ownership, role-specific risk floors and explicit settings; an
+unavailable mandatory setting blocks its step without silent substitution. Compose
 the host's advisory pairing, worker-with-astra with Codex collaboration tools or
 worker-with-fable with Claude Code subagent tools, only when that policy and
 the pairing's prerequisites support it. Record the session's reasoning setting
@@ -95,12 +98,22 @@ in the delivery evidence when the host exposes it or the user states it;
 otherwise record it as unknown. Report when it differs from the setting the
 selection policy chose for a role, and never claim to change it.
 
-Before implementation or delegation, read
-[execution reporting](references/execution-reporting.md) and publish the chosen
-strategy, decision owner and contributors, model roles, and planned versus actual
-agent counts in the task. Refresh these fields when the strategy, settings, or
-team changes, at substantive checkpoints, and in the final response, including
-blocked or limited delivery. Keep unknown settings and counts explicit.
+Before implementation or delegation, publish the complete checkpoint fields
+below. Read [execution reporting](references/execution-reporting.md) before the
+first non-root agent, when reconciling incomplete/resumed participation, and at
+checkpoints or final handoff involving agents. A verified direct-only run can
+use the entrypoint fields: coordinator active/used 1, future agents planned
+separately, consultations not applicable. Incomplete history stays unknown.
+A successful request does not prove runtime settings; distinguish requested,
+reported and independently observed values. Missing usage is unknown, not zero.
+
+For routine updates, report the change, blocker and next action; do not repeat
+unchanged rosters or settings. Immediately expose consequential strategy,
+setting, team or authority changes, failed attempts and capability gaps,
+including their reason and affected counts/history. Retain the complete summary
+in existing task evidence and publish it at substantive checkpoints and final
+handoff, including blocked or limited delivery. Compact updates do not erase
+unknowns, earlier failures, consultations, limits or pending gates.
 
 Before dispatch, substantial artifact exchange, checkpoint or resumption, read
 [task packets and resumption](references/resumption.md). Use its compact packet
@@ -125,27 +138,12 @@ this coordinator; they neither grant nor cancel the user's existing authority.
   instruction changes, inspect the result and exercise representative behavior;
   do not invent executable tests that merely mirror prose.
 
-Include this labeled return format in every implementation or investigation
-worker brief, and require it for completed or blocked results:
-
-- Artifact: proposed patch or exact file contents; requested findings or plan
-  for read-only work; `none` when no artifact is produced.
-- Changed files: paths, distinguishing proposed from applied changes, or `none`.
-- Validation: commands actually run with trimmed outcomes and the revision or
-  state checked; identify required checks not run.
-- Consultations: count for an advisor loop, otherwise `not applicable`.
-- Settings: requested and reported model/reasoning, with `unknown` for
-  unexposed values; retain any host-required identity evidence.
-- Limitations: unresolved gaps or blockers, or `none`.
-- Pending decisions: decision and owner, or `none`.
-
-Exclude surrounding narrative, transcript replay, and restated instructions.
-Keep the requested artifact and required evidence intact. Consultation requests
-keep their decision, evidence, recommendation, and paused-dependency format.
-If required evidence is missing, return the specific omissions to the same
-worker before accepting completion. If the evidence is complete but extra
-narrative is present, disregard that narrative and evaluate the result normally;
-do not request a cosmetic rewrite or treat format compliance as correctness.
+Before dispatching an implementation or investigation worker, read
+[bounded briefs and returns](references/worker-briefs.md). Supply the selected
+role, acceptance mapping, applicable instructions, authority and labeled return
+contract. Require complete evidence for completed or blocked results; send
+specific omissions back to the same worker. Do not require workers to load the
+coordinator's selection, reporting or resumption policies.
 
 Prepare acceptance evidence and dependency-ordered tasks before coding. Apply
 an established start-work tracking update immediately before implementation and
@@ -237,8 +235,9 @@ scope. For an ambiguous or partial effect, suspend dependent mutations and
 reconcile authoritative state before retrying. A stale or delayed read does not
 prove absence. Read [recovery](references/recovery.md) for these cases.
 
-At substantive checkpoints, blockers, handoff and final response, use only these
-fields, including the execution summary even when no workers were used. Write
+At substantive checkpoints, handoff and final response, use these complete
+fields, including the execution summary even when no workers were used.
+Routine updates and immediate change/blocker notices use the delta rule above. Write
 `unknown`, `none`, or `not applicable` where appropriate; never imply that an
 unverified gate passed:
 

@@ -15,9 +15,9 @@ final-review judgment.
 ## Establish the pairing
 
 When composed by deliver-work, retain its assessment, selected worker tier and
-reasoning, and coordinator-only write ownership. Read that workflow's selection
-reference as directed by its coordinator; do not invoke a second delivery
-workflow. When composed by plan-work, the pairing is read-only: the worker
+reasoning, and coordinator-only write ownership. Use the coordinator-supplied
+selection and task state; do not reread its
+selection policy or invoke a second delivery workflow. When composed by plan-work, the pairing is read-only: the worker
 investigates and proposes, and neither agent implements, publishes, or updates
 a tracker. An optional-pairing fallback in either workflow does not change this
 skill's fixed advisor identity.
@@ -30,8 +30,9 @@ available for spawning. If identity or capabilities cannot be established,
 report the gap before delegating. Do not silently substitute models or claim
 that a requested model was actually used without runtime evidence.
 
-Select the worker tier before spawning. Read [worker tiers](references/worker-tiers.md)
-for the tiers, what each may decide alone, and when not to pair at all. An
+For standalone selection or the selected tier's decision boundary, read
+[worker tiers](references/worker-tiers.md). Retain a composing workflow's
+selected tier; read its boundary without reopening strategy selection. An
 explicitly requested worker model has no fallback. A worker on Fable is not a
 pairing; implement directly instead.
 
@@ -52,76 +53,47 @@ worker the scoped implementation writes and avoid concurrent edits to its files.
 
 ## Delegate and consult
 
-Give the worker a self-contained brief with:
+Before dispatch, read [the worker protocol](references/worker-protocol.md).
+Give the worker a self-contained brief with the selected role/tier and decision
+boundary, outcome, acceptance mapping, relevant sources/revision, task/attempt,
+applicable instructions, mode, permissions, write owner and required validation.
+Include the protocol's labeled return contract and the original advisor address
+or conversation. Supply the worker protocol text or an accessible reference it
+must read; do not pass this coordinator setup skill, selection tables or the
+whole host adapter. The worker does not repeat strategy selection.
 
-- the requested outcome, relevant source material, and acceptance criteria;
-- workspace, current revision, applicable instructions, and write ownership;
-- current mode, permissions, constraints, and required validation;
-- the labeled return format in Review and finish;
-- the worker tier's decision boundary and the consultation protocol below.
+Accept a composing workflow's selected configuration without rerunning routing;
+read only the selected tier's decision boundary when preparing its brief. Carry
+relevant packet state and attempt history directly into that brief. Neither the
+worker nor this pairing needs the composing workflow's entire selection,
+reporting or resumption policy. Standalone selection still uses the tier reference.
 
-Pass these instructions and the host adapter to the worker explicitly. Do not
-assume it inherited the conversation or loaded this skill. Ask the worker to
-report the model named in its own runtime instructions, and distinguish an
-unverified identity from a verified mismatch. A mismatch stops this pairing;
-an unverified worker identity must be disclosed rather than reported as proven.
+Enforce the protocol's approach consultation before substantial implementation
+and final-review consultation before completion; both are required on every
+attempt. Answer blocker requests before dependent work resumes. Preserve counts
+and evidence; advice cannot replace missing user authority. Bring user-owned
+decisions to the user while independent authorized work continues.
 
-Two consultations are mandatory on every task, because workers under-consult
-without them: an approach proposal before substantial implementation, after
-any necessary bounded discovery, and a final-review request before the worker
-reports completion. Fable reviews the approach against the task and returns
-concrete direction. The worker then implements and validates, consulting again
-when blocked or when consequential uncertainty affects correctness, scope, or
-the approach. Routine choices within the tier's decision boundary do not
-require a new checkpoint.
+Keep Fable available, inspect relevant sources and prepare review without
+duplicating worker implementation. Reuse the same worker for ordinary corrections
+and advice. A composing workflow may end an inadequate attempt under its shared
+handoff policy; establish the new pairing and both consultations with this same
+advisor. A fresh context is not a resume. No recursive delegation, replacement
+advisor or silent substitution for explicit settings is permitted.
 
-A consultation is the worker ending its turn with the decision needed, relevant
-evidence, its recommended next step, and which work depends on the answer.
-Fable answers by resuming the same worker. The worker pauses dependent work
-until Fable responds and may finish independent authorized work before
-returning. Advice cannot replace missing user authority. Fable brings
-user-owned decisions back to the user while continuing unaffected work.
-
-Prefer the model's default effort for the worker. It inherits the session
-level unless an existing host override applies; this skill cannot set a
-per-worker level. Record the effective level when exposed or stated, otherwise
-unknown, and report a known mismatch with the recommendation. A low-effort
-worker can stop noticing it is stuck; monitor its consultation rate.
-Count consultations per task. If the worker consults on nearly every decision,
-the pairing costs more than direct Fable implementation; finish the current
-task, then report that evidence for the next selection.
-
-Keep Fable available to answer consultations. Fable can inspect relevant
-sources and prepare review while the worker works, without duplicating the
-worker's implementation. Reuse the same worker for corrections and further
-questions; do not recursively delegate the task or create another Fable
-advisor. A composing workflow may explicitly end an inadequate attempt and
-select a new one under its shared handoff contract. Re-establish prerequisites
-and both consultations with the same Fable; a fresh worker is not a resume.
-Explicit model requirements still prohibit silent substitution.
+Monitor consultation rate; nearly every routine decision needing advice is
+evidence to prefer direct implementation next time, not to skip required advice.
+Prefer default worker effort; record inherited/exposed settings or unknown and
+report known mismatches. This skill cannot change per-worker effort. Low effort
+can reduce consultation; retain that limit in the evidence.
 
 ## Review and finish
 
-The worker returns completed or blocked results in this labeled format:
-
-- Artifact: proposed patch or exact file contents; requested findings or plan
-  for read-only work; `none` when no artifact is produced.
-- Changed files: paths, distinguishing proposed from applied changes, or `none`.
-- Validation: commands actually run with trimmed outcomes and the revision or
-  state checked; identify required checks not run.
-- Consultations: count for an advisor loop, otherwise `not applicable`.
-- Settings: requested and reported model/reasoning, with `unknown` for
-  unexposed values; retain any host-required identity evidence.
-- Limitations: unresolved gaps or blockers, or `none`.
-- Pending decisions: decision and owner, or `none`.
-
-Exclude surrounding narrative, transcript replay, and restated instructions.
-Keep the requested artifact and required evidence intact. Consultation requests
-keep their decision, evidence, recommendation, and paused-dependency format.
-If required evidence is missing, return the specific omissions to the same
-worker before accepting completion. If the evidence is complete but extra
-narrative is present, disregard that narrative and evaluate the result normally;
-do not request a cosmetic rewrite or treat format compliance as correctness.
+Require the worker protocol's labeled return for completed or blocked results.
+Return specific evidence omissions to the same worker. Disregard extra narrative
+when evidence is complete; do not demand a cosmetic rewrite or mistake format
+compliance for correctness. Preserve unverified identity as unknown; stop on a
+verified mismatch.
 
 Fable inspects the result against the acceptance criteria and evidence. Return
 actionable corrections to the same worker when needed and review the corrected

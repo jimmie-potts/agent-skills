@@ -394,3 +394,21 @@ independent contexts at requested Sol/medium. Require every mandatory decision
 to pass with zero authority, ownership, or evidence violations. Record requested
 and observable evaluator identity separately. Simulation verifies instruction
 behavior, not lower-tier quality, native lifecycle, or measured savings.
+
+## Conditional loading and reporting evaluation
+
+Use `tests/fixtures/workflow-evaluation/context-reporting-cases.md` for the same
+five branches on Codex and Claude. Freeze inputs before changing instructions.
+Keep `context-reporting-graders.md`, evaluation results, and prior returns out
+of evaluated contexts. Use explicit operating-file reads; do not search reference
+directories recursively where grader or result text may be exposed.
+
+Trace actual coordinator reads and proposed child reads separately. Count whole
+files once per case and role, plus exact brief, return and update text with
+`tests/context-reporting-measure.py`. Preserve raw responses and source hashes;
+report every increase as well as reductions. Grade authority, routing, evidence,
+consultations, history and final gates before accepting a smaller result.
+Text exposure is not a native-host cost, speed or model-quality measurement.
+The recorded comparison, raw returns, corrections, excluded run, receipts and
+behavioral limits are in
+`tests/fixtures/workflow-evaluation/context-reporting-observations.md`.

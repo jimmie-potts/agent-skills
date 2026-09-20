@@ -13,10 +13,10 @@ advisor.
 ## Establish the pairing
 
 When composed by deliver-work, retain its assessment, selected worker tier and
-reasoning, and coordinator-only write ownership. Read that workflow's selection
-reference as directed by its coordinator; do not invoke a second delivery
-workflow. Its optional-pairing fallback does not change this skill's fixed
-advisor identity. When composed by plan-work, the pairing is read-only: the
+reasoning, and coordinator-only write ownership. Use the coordinator-supplied
+selection and task state; do not reread its selection policy or invoke a second
+delivery workflow. Its optional-pairing fallback does not change this skill's
+fixed advisor identity. When composed by plan-work, the pairing is read-only: the
 worker investigates and proposes, and neither agent implements, publishes, or
 updates a tracker.
 
@@ -28,7 +28,8 @@ or capabilities cannot be established, report the gap before delegating. Do not
 silently substitute models or claim that a requested model was actually used
 without runtime evidence.
 
-Before selecting a worker, read [worker tiers](references/worker-tiers.md).
+For standalone selection or the selected tier's decision boundary, read
+[worker tiers](references/worker-tiers.md).
 Preserve a composing workflow's stronger supported selection. Luna is outside
 this pairing; use ordinary scouting for its bounded read-only work.
 
@@ -50,69 +51,44 @@ files.
 
 ## Delegate and consult
 
-Give the worker a self-contained brief with:
+Before dispatch, read [the worker protocol](references/worker-protocol.md).
+Give the worker a self-contained brief with the selected role/tier and decision
+boundary, outcome, acceptance mapping, relevant sources/revision, task/attempt,
+applicable instructions, mode, permissions, write owner and required validation.
+Include the protocol's labeled return contract and the original advisor address
+or conversation. Supply the worker protocol text or an accessible reference it
+must read; do not pass this coordinator setup skill, selection tables or the
+whole host adapter. The worker does not repeat strategy selection.
 
-- the requested outcome, relevant source material, and acceptance criteria;
-- workspace, current revision, applicable instructions, and write ownership;
-- current mode, permissions, constraints, and required validation;
-- the labeled return format in Review and finish;
-- the original Astra agent's address and the consultation protocol below.
+Accept a composing workflow's selected configuration without rerunning routing;
+read only the selected tier's decision boundary when preparing its brief. Carry
+relevant packet state and attempt history directly into that brief. Neither the
+worker nor this pairing needs the composing workflow's entire selection,
+reporting or resumption policy. Standalone selection still uses the tier reference.
 
-Pass these instructions and the applicable host adapter to the worker
-explicitly. Do not assume it inherited the conversation or loaded this skill.
-Ask the worker to report its actual model identity when the host exposes it,
-and distinguish an unverified identity from a verified mismatch. A mismatch
-stops this pairing; an unverified worker identity must be disclosed rather than
-reported as proven.
+Enforce the protocol's approach consultation before substantial implementation
+and final-review consultation before completion; both are required on every
+attempt. Answer blocker requests before dependent work resumes. Preserve counts
+and evidence; advice cannot replace missing user authority. Bring user-owned
+decisions to the user while independent authorized work continues.
 
-Two consultations are mandatory: an approach proposal before substantial
-implementation and a final-review request before reporting completion. After
-any necessary bounded discovery, the worker proposes its approach. Astra
-reviews it against the task and returns concrete direction. The worker then
-implements and validates, consulting again when blocked or when consequential
-uncertainty affects correctness, scope, or the approach. Routine choices within
-the selected tier's boundary need no new checkpoint. Record consultation counts
-and evidence. Missing checkpoints prevent acceptance; consultation on nearly
-every routine decision is evidence to prefer direct implementation on the next
-task, not a reason to omit required advice.
+Keep Astra available, inspect relevant sources and prepare review without
+duplicating worker implementation. Reuse the same worker for ordinary corrections
+and advice. A composing workflow may end an inadequate attempt under its shared
+handoff policy; establish the new pairing and both consultations with this same
+advisor. A fresh context is not a resume. No recursive delegation, replacement
+advisor or silent substitution for explicit settings is permitted.
 
-Each consultation names the decision needed, relevant evidence, the worker's
-recommended next step, and which work depends on the answer. The worker pauses
-that dependent work until Astra responds and may continue independent
-authorized work. Advice cannot replace missing user authority. Astra brings
-user-owned decisions back to the user while continuing unaffected work.
-
-Keep Astra available to receive and answer consultations. Astra can inspect
-relevant sources and prepare review while the worker works, without duplicating
-the worker's implementation. Reuse the same worker for corrections and further
-questions; do not recursively delegate the task or create another Astra
-advisor. A composing workflow may end an inadequate attempt and select a new
-worker under its shared attempt-handoff contract. This is a new attempt, not a
-resume. Re-establish pairing prerequisites and both consultations with the same
-advisor; explicit model requirements still prohibit silent substitution.
+Monitor consultation rate; nearly every routine decision needing advice is
+evidence to prefer direct implementation next time, not to skip required advice.
 
 ## Review and finish
 
-The worker returns completed or blocked results in this labeled format:
-
-- Artifact: proposed patch or exact file contents; requested findings or plan
-  for read-only work; `none` when no artifact is produced.
-- Changed files: paths, distinguishing proposed from applied changes, or `none`.
-- Validation: commands actually run with trimmed outcomes and the revision or
-  state checked; identify required checks not run.
-- Consultations: count for an advisor loop, otherwise `not applicable`.
-- Settings: requested and reported model/reasoning, with `unknown` for
-  unexposed values; retain any host-required identity evidence.
-- Limitations: unresolved gaps or blockers, or `none`.
-- Pending decisions: decision and owner, or `none`.
-
-Exclude surrounding narrative, transcript replay, and restated instructions.
-Keep the requested artifact and required evidence intact. Consultation requests
-keep their decision, evidence, recommendation, and paused-dependency format. If
-required evidence is missing, return the specific omissions to the same worker
-before accepting completion. If the evidence is complete but extra narrative is
-present, disregard that narrative and evaluate the result normally; do not
-request a cosmetic rewrite or treat format compliance as correctness.
+Require the worker protocol's labeled return for completed or blocked results.
+Return specific evidence omissions to the same worker. Disregard extra narrative
+when evidence is complete; do not demand a cosmetic rewrite or mistake format
+compliance for correctness. Preserve unverified identity as unknown; stop on a
+verified mismatch.
 
 Astra inspects the result against the acceptance criteria and evidence. Return
 actionable corrections to the worker when needed and review the corrected

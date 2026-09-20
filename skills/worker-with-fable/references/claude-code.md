@@ -43,9 +43,9 @@ a prompt, so confirm the plan allows Fable before starting one.
 
 Call the `Agent` tool once with the selected `model`, a general-purpose
 subagent type, a distinctive description, and the self-contained brief from
-SKILL.md. Include the skill and adapter text or readable paths with an
-instruction to read them, the worker tier's decision boundary, and the task
-context; a fresh subagent has none of the conversation. Run the spawn in the
+SKILL.md. Include [the worker protocol](worker-protocol.md), the selected tier's
+decision boundary and task context; a fresh subagent has none of the conversation.
+Do not require it to read coordinator setup files. Run the spawn in the
 foreground when the next coordinator step depends on the checkpoint, so the
 coordinating turn stays active.
 
@@ -91,10 +91,11 @@ with `Agent`, supplying the complete handoff brief and unchanged ownership.
 Do not change session settings to obtain a different effort. A terminal failure
 still requires diagnosis; it is not permission to silently replace a worker.
 
-When composed by deliver-work, use the coordinator-supplied task packet from
-that skill's `references/resumption.md`. Return the assigned task/attempt and
-source revision with the proposal. Retained context and file references still
-need the coordinator's current-state checks; they grant no new write authority.
+When composed by deliver-work, carry relevant fields from the coordinator's
+existing task packet in the brief. The worker returns task/attempt and source
+revision with the proposal without reading the packet policy. The delivery
+coordinator still performs current-state checks; retained context and references
+grant no new write authority.
 
 ## Ownership and delivery
 
