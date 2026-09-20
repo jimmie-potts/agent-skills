@@ -10,6 +10,17 @@ On checkpoint or restart, retain this evidence and all prior attempts in the
 state before continuing; a lost response or interrupted context does not reset
 retry history. Preserve required evidence before any authorized artifact cleanup.
 
+An ambiguous check rerun is a pending external effect. Retain candidate head,
+logical check/matrix entry and failure key, allowance, request intent, provider
+IDs and attempt history. Reconcile authoritative run/job attempts before another
+request; a new run ID or resumed context does not reset the allowance.
+
+A lost watch session leaves current monitoring unknown until checked; a
+confirmed stopped session is inactive. Reconcile its owner and last observation
+before restarting or transferring supervision under the existing delivery/watch
+authority. Use [PR supervision](pr-supervision.md) for continuation and requested
+finish lines. An ended session is not evidence that the PR stayed unchanged.
+
 Inspect authoritative source history, PRs, refs, checks or other relevant state.
 A cached, delayed or incomplete read does not prove the effect was absent.
 Classify the result before recovery:
