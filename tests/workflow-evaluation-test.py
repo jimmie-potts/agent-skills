@@ -34,6 +34,7 @@ class ContextMeasurementTest(unittest.TestCase):
             (root / 'AGENTS.md').write_bytes(b'one\r\ntwo\n')
             response = self.response()
             response['sources'].append('external: /not-readable/fixture.md')
+            response['sources'].append(MEASURE.FIXED_INPUT)
             receipt = MEASURE.measure(root, response, 'fixture')
         first = receipt['cases'][0]
         self.assertEqual(first['messages']['brief'], {'bytes': 6, 'words': 2})
@@ -43,6 +44,7 @@ class ContextMeasurementTest(unittest.TestCase):
         self.assertEqual(receipt['combined_union']['bytes'], 9)
         self.assertEqual(receipt['external_sources_excluded'],
                          ['external: /not-readable/fixture.md'])
+        self.assertEqual(receipt['fixed_inputs_excluded'], [MEASURE.FIXED_INPUT])
         self.assertEqual(receipt['source_inventory']['AGENTS.md']['sha256'],
                          hashlib.sha256(b'one\r\ntwo\n').hexdigest())
 
@@ -65,9 +67,11 @@ class ContextMeasurementTest(unittest.TestCase):
             root = Path(directory)
             (root / 'skills').mkdir()
             (root / 'skills/escape.md').symlink_to(root.parent / 'outside.md')
+            (root / 'AGENTS.md').write_text('instructions')
+            (root / 'skills/alias.md').symlink_to(root / 'AGENTS.md')
             for name in ('../outside.md', '/outside.md', 'skills/../AGENTS.md',
                          'skills//x.md', 'skills/x.env', 'other.md',
-                         'skills/escape.md'):
+                         'skills/escape.md', 'skills/alias.md'):
                 with self.subTest(path=name), self.assertRaises(ValueError):
                     MEASURE.source_path(root, name)
 

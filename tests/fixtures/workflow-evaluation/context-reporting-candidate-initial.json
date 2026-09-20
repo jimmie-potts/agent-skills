@@ -1,0 +1,377 @@
+{
+  "cases": [
+    {
+      "id": "L1",
+      "host": "codex",
+      "reads": [
+        "AGENTS.md",
+        "skills/deliver-work/SKILL.md",
+        "skills/deliver-work/references/work-assessment.md",
+        "skills/deliver-work/references/resumption.md",
+        "skills/unslop/SKILL.md"
+      ],
+      "worker_reads": [],
+      "selected": "Direct coordinator implementation at the coordinator's existing settings. Coordinator model and effort are unknown. No worker or advisory configuration is selected.",
+      "decision": "The typo correction has low complexity, low uncertainty, and low impact. Direct root implementation preserves the trivial task boundary. No worker, advisor, or dispatch is useful, so brief and return are empty. Stop at the requested local implementation checkpoint. The local guide correction and check passed at H1, while independent reviews, publication, hosted CI, merge, and issue completion remain pending.",
+      "brief": "",
+      "return": "",
+      "updates": [
+        {
+          "event": "checkpoint",
+          "text": "Source: example/repo#7\nStage: local implementation checkpoint\nStrategy: direct coordinator implementation for one settled typo; decision owner: coordinator; contributing agents: none\nModels: coordinator selected/requested model and reasoning unknown; reported model and reasoning unknown\nAgents: active now 1 coordinator; distinct used to date 1; planned additional agents 2 fresh final reviewers\nConsultations: not applicable\nPlan/spec: accepted issue text\nBranch: work/7\nPR: none\nLast verified revision: H1, corrected guide and local check\nEvidence: corrected guide passed check at H1; independent Standards and Specification reviews pending; publication pending; hosted CI pending; merge pending; issue completion pending; usage unknown\nNext checkpoint: select and run both independent review axes on a frozen comparison\nBlocker: none"
+        }
+      ]
+    },
+    {
+      "id": "L1",
+      "host": "claude",
+      "reads": [
+        "AGENTS.md",
+        "skills/deliver-work/SKILL.md",
+        "skills/deliver-work/references/work-assessment.md",
+        "skills/deliver-work/references/resumption.md",
+        "skills/unslop/SKILL.md"
+      ],
+      "worker_reads": [],
+      "selected": "Direct coordinator implementation at the coordinator's existing settings. Coordinator model and effort are unknown. No worker or advisory configuration is selected.",
+      "decision": "The typo correction has low complexity, low uncertainty, and low impact. Direct root implementation preserves the trivial task boundary. No worker, advisor, or dispatch is useful, so brief and return are empty. Stop at the requested local implementation checkpoint. The local guide correction and check passed at H1, while independent reviews, publication, hosted CI, merge, and issue completion remain pending.",
+      "brief": "",
+      "return": "",
+      "updates": [
+        {
+          "event": "checkpoint",
+          "text": "Source: example/repo#7\nStage: local implementation checkpoint\nStrategy: direct coordinator implementation for one settled typo; decision owner: coordinator; contributing agents: none\nModels: coordinator selected/requested model and reasoning unknown; reported model and reasoning unknown\nAgents: active now 1 coordinator; distinct used to date 1; planned additional agents 2 fresh final reviewers\nConsultations: not applicable\nPlan/spec: accepted issue text\nBranch: work/7\nPR: none\nLast verified revision: H1, corrected guide and local check\nEvidence: corrected guide passed check at H1; independent Standards and Specification reviews pending; publication pending; hosted CI pending; merge pending; issue completion pending; usage unknown\nNext checkpoint: select and run both independent review axes on a frozen comparison\nBlocker: none"
+        }
+      ]
+    },
+    {
+      "id": "L2",
+      "host": "codex",
+      "reads": [
+        "AGENTS.md",
+        "skills/plan-work/SKILL.md",
+        "skills/deliver-work/references/work-assessment.md",
+        "skills/deliver-work/references/task-planning.md",
+        "skills/deliver-work/references/model-selection.md",
+        "skills/deliver-work/references/implementation-selection.md",
+        "skills/deliver-work/references/codex-model-selection.md",
+        "skills/deliver-work/references/codex-worker-selection.md",
+        "skills/deliver-work/references/worker-briefs.md",
+        "skills/unslop/SKILL.md"
+      ],
+      "worker_reads": [
+        "AGENTS.md"
+      ],
+      "selected": "Assigned read-only investigation worker using requested gpt-5.6-terra at medium reasoning. Runtime model identity, runtime effort, and usage are unknown.",
+      "decision": "Use one assigned worker because the bounded source question has medium complexity, uncertainty, and impact and can return exact path and line evidence. Terra at medium is the Codex default for a bounded investigation with reliable evidence. No advisor loop or stronger model is justified. The worker remains read-only. The result informs a response-only proposal and grants no authority to implement, create an issue, publish, or start delivery. No delivery checkpoint update is required, so updates is empty.",
+      "brief": "Role and outcome: assigned read-only investigation worker, no advisor loop. Determine whether parseRecord rejects negative lengths at source H1. Requested settings: gpt-5.6-terra at medium reasoning.\nScope and acceptance: inspect the relevant parser source only and return an exact answer with path and line evidence. Complexity, uncertainty, and impact are medium. No product decision or implementation is requested.\nCurrent state: repository source H1; task L2; attempt 1. Applicable project instructions: AGENTS.md.\nAuthority: read-only inspection. Do not edit files, run tests, create artifacts, publish, create or update issues, start delivery, delegate, or perform external effects.\nReturn exactly these labels:\nArtifact: source-based answer with path and line evidence\nChanged files: none\nValidation: inspections or commands actually used, source revision checked, and tests not run\nConsultations: not applicable\nSettings: requested and reported model/reasoning, using unknown when unexposed\nLimitations: unresolved gaps or none\nPending decisions: decision and owner or none",
+      "return": "Artifact: parseRecord rejects negative lengths at parser.py:12.\nChanged files: none.\nValidation: inspected parser.py at source H1; parser.py:12 contains the negative-length rejection; no tests ran and no artifact or file changed.\nConsultations: not applicable.\nSettings: requested gpt-5.6-terra at medium reasoning; runtime-reported model unknown; runtime-reported reasoning unknown; usage unknown.\nLimitations: source inspection only; runtime behavior was not executed.\nPending decisions: none.",
+      "updates": []
+    },
+    {
+      "id": "L2",
+      "host": "claude",
+      "reads": [
+        "AGENTS.md",
+        "skills/plan-work/SKILL.md",
+        "skills/deliver-work/references/work-assessment.md",
+        "skills/deliver-work/references/task-planning.md",
+        "skills/deliver-work/references/model-selection.md",
+        "skills/deliver-work/references/implementation-selection.md",
+        "skills/deliver-work/references/claude-code-model-selection.md",
+        "skills/deliver-work/references/claude-code-worker-selection.md",
+        "skills/deliver-work/references/worker-briefs.md",
+        "skills/unslop/SKILL.md"
+      ],
+      "worker_reads": [
+        "AGENTS.md"
+      ],
+      "selected": "Assigned read-only investigation worker using explicitly requested sonnet. Claude exposes no per-call effort control, so effective effort is unknown. Runtime model identity and usage are unknown.",
+      "decision": "Use one assigned worker because the bounded source question has medium complexity, uncertainty, and impact and can return exact path and line evidence. Sonnet is the Claude default for a bounded read-only investigation at these ratings. No advisor loop or stronger tier is justified. The worker remains read-only. The result informs a response-only proposal and grants no authority to implement, create an issue, publish, or start delivery. No delivery checkpoint update is required, so updates is empty.",
+      "brief": "Role and outcome: assigned read-only investigation worker, no advisor loop. Determine whether parseRecord rejects negative lengths at source H1. Requested settings: sonnet; per-call effort control is unavailable and effective effort must be reported as unknown unless exposed by the host.\nScope and acceptance: inspect the relevant parser source only and return an exact answer with path and line evidence. Complexity, uncertainty, and impact are medium. No product decision or implementation is requested.\nCurrent state: repository source H1; task L2; attempt 1. Applicable project instructions: AGENTS.md.\nAuthority: read-only inspection. Do not edit files, run tests, create artifacts, publish, create or update issues, start delivery, delegate, or perform external effects.\nReturn exactly these labels:\nArtifact: source-based answer with path and line evidence\nChanged files: none\nValidation: inspections or commands actually used, source revision checked, and tests not run\nConsultations: not applicable\nSettings: requested and reported model/reasoning, using unknown when unexposed\nLimitations: unresolved gaps or none\nPending decisions: decision and owner or none",
+      "return": "Artifact: parseRecord rejects negative lengths at parser.py:12.\nChanged files: none.\nValidation: inspected parser.py at source H1; parser.py:12 contains the negative-length rejection; no tests ran and no artifact or file changed.\nConsultations: not applicable.\nSettings: requested sonnet; runtime-reported model unknown; effective effort unknown because no per-call effort control or independent report is exposed; usage unknown.\nLimitations: source inspection only; runtime behavior was not executed.\nPending decisions: none.",
+      "updates": []
+    },
+    {
+      "id": "L3",
+      "host": "codex",
+      "reads": [
+        "AGENTS.md",
+        "skills/deliver-work/SKILL.md",
+        "skills/deliver-work/references/work-assessment.md",
+        "skills/deliver-work/references/task-planning.md",
+        "skills/deliver-work/references/review-cycles.md",
+        "skills/deliver-work/references/model-selection.md",
+        "skills/deliver-work/references/implementation-selection.md",
+        "skills/deliver-work/references/codex-model-selection.md",
+        "skills/deliver-work/references/codex-worker-selection.md",
+        "skills/deliver-work/references/worker-continuation.md",
+        "skills/deliver-work/references/worker-briefs.md",
+        "skills/deliver-work/references/resumption.md",
+        "skills/deliver-work/references/execution-reporting.md",
+        "skills/deliver-work/references/review-selection.md",
+        "skills/deliver-work/references/codex-reviewer-selection.md",
+        "skills/code-review/SKILL.md",
+        "skills/tdd/SKILL.md",
+        "skills/unslop/SKILL.md"
+      ],
+      "worker_reads": [
+        "AGENTS.md",
+        "skills/tdd/SKILL.md"
+      ],
+      "selected": "Initial assigned implementation worker W1 requests gpt-5.6-terra at medium reasoning. After W1's initial result and one guided correction fail for insufficient reasoning, fresh W2 requests gpt-5.6-terra at high reasoning. Runtime identities and effort remain unexposed. Final Standards and Specification reviewers each request gpt-5.6-terra at high reasoning in separate fresh contexts.",
+      "decision": "The bounded retry change has medium ratings and reliable focused checks, so start one ordinary Terra/medium worker without an advisor loop. Root owns every durable write. W1 may receive one same-worker guided correction at unchanged settings. On Codex, send_message continues a running W1 and followup_task resumes an idle W1; either preserves the same context and does not increase the distinct-agent count. After the initial result and that correction both fail the permanent-error criterion, the diagnosed gap is insufficient reasoning in an otherwise sound approach. Because no effort increase has been used, stop and verify W1, then establish fresh W2 at Terra/high under the one permitted effort increase. Preserve both failures and do not call W2 a resume. An ambiguous spawn with no creation readback remains unresolved, cannot count as a confirmed agent, and blocks retry or ownership transfer until host state is reconciled. If the host rejects a user-required model or effort, the affected assignment is blocked; do not substitute. If a native profile resolves to settings that conflict with an explicit requirement, reject that profile for the assignment and keep the explicit requirement pending. Advisor consultations remain not applicable.",
+      "brief": "Role and outcome: assigned implementation worker W1, no advisor loop. Propose a patch so send retries transient failures at most twice and never retries permanent failures. Requested settings: gpt-5.6-terra at medium reasoning.\nScope and acceptance: retry.py and its tests at source H1. Demonstrate the accepted retry limits through focused test-driven work. Run check retry on the proposed artifact. Required whole-change checks, independent reviews, PR CI, merge, and completion readbacks remain coordinator-owned gates.\nCurrent state: example/repo#7; branch work/7; base B1; source H1; task L3; attempt 1; clean supplied task state. Read AGENTS.md and skills/tdd/SKILL.md.\nAuthority: return a proposed patch and evidence only. Root owns all filesystem, Git, tracker, PR, merge, and completion effects. Do not edit durable files, delegate, publish, or perform external effects.\nReturn exactly these labels:\nArtifact: proposed patch or exact contents\nChanged files: proposed paths, clearly marked unapplied\nValidation: commands actually run, outcomes, checked source or artifact identity, and required checks not run\nConsultations: not applicable\nSettings: requested and reported model/reasoning, using unknown when unexposed\nLimitations: unresolved gaps or none\nPending decisions: decision and owner or none",
+      "return": "Artifact: proposed patch that limits send to two retries for transient failures and prevents retries for permanent failures.\nChanged files: proposed changes to retry.py and its test; no change applied by the worker.\nValidation: check retry passed on the proposed artifact derived from H1; no required whole-change check ran.\nConsultations: not applicable.\nSettings: requested gpt-5.6-terra at medium reasoning; runtime-reported model unknown; runtime-reported reasoning unknown.\nLimitations: the proposal is unapplied; full checks, independent reviews, current-head CI, guarded merge, and completion readbacks remain pending.\nPending decisions: none.",
+      "updates": [
+        {
+          "event": "E0",
+          "text": "Source: example/repo#7\nStage: implementation strategy selected\nStrategy: one assigned worker W1 proposes the bounded retry patch; root applies all writes; decision owner: coordinator; contributing agents: none\nModels: coordinator model/reasoning unknown; W1 requested gpt-5.6-terra/medium, reported identity and effort unknown; fresh Standards and Specification reviewers planned at gpt-5.6-terra/high\nAgents: active now 2, coordinator and W1; distinct used to date 2; planned additional agents 2 final reviewers\nConsultations: not applicable\nPlan/spec: accepted issue text\nBranch: work/7\nPR: none\nLast verified revision: B1 base and H1 source\nEvidence: no worker validation yet; whole-change checks, both final reviews, current-head PR CI, merge, and issue completion pending; usage unknown\nNext checkpoint: W1 returns a proposed patch with check retry evidence\nBlocker: none"
+        },
+        {
+          "event": "E1",
+          "text": "W1 located the permanent-failure predicate. No strategy, setting, team, authority, correction, promotion, or consultation changed. Next action: prepare the bounded retry patch."
+        },
+        {
+          "event": "E2",
+          "text": "W1 added the permanent-failure case to the proposal. No other state changed. Next action: run check retry against the proposed artifact."
+        },
+        {
+          "event": "E3",
+          "text": "Source: example/repo#7\nStage: implementation reassessment after failed attempt\nStrategy: W1's initial result failed the permanent-error criterion; one same-worker guided correction at unchanged settings also failed. Diagnosis: sound approach with insufficient reasoning. W1 is stopped. Fresh W2 now owns the proposal attempt at higher effort. Decision owner: coordinator; contributors: W1's two failed results\nModels: coordinator model/reasoning unknown; W1 requested gpt-5.6-terra/medium, reported identity and effort unknown, correction count 1, failed results 2; W2 requested gpt-5.6-terra/high through the task's single effort increase, reported identity and effort unknown; model promotion count 0; fresh Standards and Specification reviewers remain planned at gpt-5.6-terra/high\nAgents: active now 2, coordinator and W2; distinct used to date 3, coordinator, W1, and W2; planned additional agents 2 final reviewers\nConsultations: not applicable\nPlan/spec: accepted issue text\nBranch: work/7\nPR: none\nLast verified revision: H1 source; no failed proposal applied\nEvidence: permanent-error criterion failed twice on W1's attempt; no full check or independent review ran; usage unknown\nNext checkpoint: W2 returns a corrected proposal that passes check retry, then root inspects and applies it\nBlocker: none"
+        },
+        {
+          "event": "E4",
+          "text": "W2's proposed permanent-error fix passed check retry. No other strategy, setting, team, authority, or consultation state changed. Next action: root inspects the proposal against H1 and applies the accepted patch."
+        },
+        {
+          "event": "E5",
+          "text": "Source: example/repo#7\nStage: delivery complete\nStrategy: W1's Terra/medium attempt and guided correction failed the permanent-error criterion; W2's Terra/high proposal passed its focused check; root inspected, accepted, and applied H2. Decision owner: coordinator; contributors: W1 supplied failed evidence and W2 supplied the accepted proposal\nModels: coordinator model/reasoning unknown; W1 requested gpt-5.6-terra/medium, reported identity and effort unknown, correction count 1, failed results 2; W2 requested gpt-5.6-terra/high, reported identity and effort unknown, effort increases used 1; Standards reviewer and Specification reviewer each requested gpt-5.6-terra/high, reported identities and effort unknown\nAgents: active now 1 coordinator; distinct used to date 5, coordinator, W1, W2, Standards reviewer, and Specification reviewer; W1, W2, and both reviewers finished; planned additional agents 0\nConsultations: not applicable\nPlan/spec: accepted issue text\nBranch: work/7; delivered target includes merge M1\nPR: merged change-review object; identifier not supplied\nLast verified revision: M1 includes accepted candidate H2\nEvidence: check retry passed for W2's proposal; root applied H2; all required local checks passed at H2; fresh independent Standards and Specification axes passed on the final comparison; guarded merge produced M1; required main CI passed for M1; issue completion and closure were read back; usage unknown\nNext checkpoint: none\nBlocker: none"
+        }
+      ]
+    },
+    {
+      "id": "L3",
+      "host": "claude",
+      "reads": [
+        "AGENTS.md",
+        "skills/deliver-work/SKILL.md",
+        "skills/deliver-work/references/work-assessment.md",
+        "skills/deliver-work/references/task-planning.md",
+        "skills/deliver-work/references/review-cycles.md",
+        "skills/deliver-work/references/model-selection.md",
+        "skills/deliver-work/references/implementation-selection.md",
+        "skills/deliver-work/references/claude-code-model-selection.md",
+        "skills/deliver-work/references/claude-code-worker-selection.md",
+        "skills/deliver-work/references/worker-continuation.md",
+        "skills/deliver-work/references/worker-briefs.md",
+        "skills/deliver-work/references/resumption.md",
+        "skills/deliver-work/references/execution-reporting.md",
+        "skills/deliver-work/references/review-selection.md",
+        "skills/deliver-work/references/claude-code-reviewer-selection.md",
+        "skills/code-review/SKILL.md",
+        "skills/tdd/SKILL.md",
+        "skills/unslop/SKILL.md"
+      ],
+      "worker_reads": [
+        "AGENTS.md",
+        "skills/tdd/SKILL.md"
+      ],
+      "selected": "Initial assigned implementation worker W1 requests sonnet. After its first completed bounded attempt fails for a diagnosed capability gap, fresh W2 requests opus. Claude exposes no per-call effort control, so both effective effort levels are unknown. Runtime model identities and usage remain unexposed. Final Standards and Specification reviewers each request sonnet in separate fresh contexts.",
+      "decision": "The bounded retry change has medium ratings and reliable focused checks, so start one ordinary Sonnet worker without an advisor loop. Root owns every durable write. A same-worker W1 resume uses SendMessage with the retained identifier and does not increase the distinct-agent count. The fixture's first completed capability-failed bounded attempt triggers the Claude adapter's Sonnet-to-Opus reassessment. Confirm W1 has ended, then establish fresh W2 at Opus with the full failure handoff. Preserve the failed attempt and do not call W2 a resume. An ambiguous Agent creation with no readback remains unresolved, cannot count as confirmed, and blocks another spawn or ownership transfer until host state is reconciled. If the host rejects an explicitly required model or effort, the affected assignment is blocked; do not substitute. If a native profile resolves to settings that conflict with an explicit requirement, reject that profile for the assignment and keep the explicit requirement pending. Advisor consultations remain not applicable.",
+      "brief": "Role and outcome: assigned implementation worker W1, no advisor loop. Propose a patch so send retries transient failures at most twice and never retries permanent failures. Requested settings: sonnet; per-call effort control is unavailable and effective effort must be reported as unknown unless exposed by the host.\nScope and acceptance: retry.py and its tests at source H1. Demonstrate the accepted retry limits through focused test-driven work. Run check retry on the proposed artifact. Required whole-change checks, independent reviews, PR CI, merge, and completion readbacks remain coordinator-owned gates.\nCurrent state: example/repo#7; branch work/7; base B1; source H1; task L3; attempt 1; clean supplied task state. Read AGENTS.md and skills/tdd/SKILL.md.\nAuthority: return a proposed patch and evidence only. Root owns all filesystem, Git, tracker, PR, merge, and completion effects. Do not edit durable files, delegate, publish, or perform external effects.\nReturn exactly these labels:\nArtifact: proposed patch or exact contents\nChanged files: proposed paths, clearly marked unapplied\nValidation: commands actually run, outcomes, checked source or artifact identity, and required checks not run\nConsultations: not applicable\nSettings: requested and reported model/reasoning, using unknown when unexposed\nLimitations: unresolved gaps or none\nPending decisions: decision and owner or none",
+      "return": "Artifact: proposed patch that limits send to two retries for transient failures and prevents retries for permanent failures.\nChanged files: proposed changes to retry.py and its test; no change applied by the worker.\nValidation: check retry passed on the proposed artifact derived from H1; no required whole-change check ran.\nConsultations: not applicable.\nSettings: requested sonnet; runtime-reported model unknown; effective effort unknown because no per-call effort control or independent report is exposed.\nLimitations: the proposal is unapplied; full checks, independent reviews, current-head CI, guarded merge, and completion readbacks remain pending.\nPending decisions: none.",
+      "updates": [
+        {
+          "event": "E0",
+          "text": "Source: example/repo#7\nStage: implementation strategy selected\nStrategy: one assigned worker W1 proposes the bounded retry patch; root applies all writes; decision owner: coordinator; contributing agents: none\nModels: coordinator model/reasoning unknown; W1 requested sonnet, reported identity unknown, effective effort unknown; fresh Standards and Specification reviewers planned at sonnet with effective effort unknown\nAgents: active now 2, coordinator and W1; distinct used to date 2; planned additional agents 2 final reviewers\nConsultations: not applicable\nPlan/spec: accepted issue text\nBranch: work/7\nPR: none\nLast verified revision: B1 base and H1 source\nEvidence: no worker validation yet; whole-change checks, both final reviews, current-head PR CI, merge, and issue completion pending; usage unknown\nNext checkpoint: W1 returns a proposed patch with check retry evidence\nBlocker: none"
+        },
+        {
+          "event": "E1",
+          "text": "W1 located the permanent-failure predicate. No strategy, setting, team, authority, attempt, or consultation changed. Next action: prepare the bounded retry patch."
+        },
+        {
+          "event": "E2",
+          "text": "W1 added the permanent-failure case to the proposal. No other state changed. Next action: run check retry against the proposed artifact."
+        },
+        {
+          "event": "E3",
+          "text": "Source: example/repo#7\nStage: implementation reassessment after failed attempt\nStrategy: W1's first completed bounded attempt failed the permanent-error criterion. Diagnosis: sound approach with insufficient worker capability. W1 is stopped. Fresh W2 now owns the proposal attempt at the Claude adapter's next tier. Decision owner: coordinator; contributor: W1's failed result\nModels: coordinator model/reasoning unknown; W1 requested sonnet, reported identity unknown, effective effort unknown, correction count 0, failed attempts 1; W2 requested opus, reported identity unknown, effective effort unknown; tier promotions 1; fresh Standards and Specification reviewers remain planned at sonnet\nAgents: active now 2, coordinator and W2; distinct used to date 3, coordinator, W1, and W2; planned additional agents 2 final reviewers\nConsultations: not applicable\nPlan/spec: accepted issue text\nBranch: work/7\nPR: none\nLast verified revision: H1 source; no failed proposal applied\nEvidence: permanent-error criterion failed on W1's completed attempt; no full check or independent review ran; usage unknown\nNext checkpoint: W2 returns a corrected proposal that passes check retry, then root inspects and applies it\nBlocker: none"
+        },
+        {
+          "event": "E4",
+          "text": "W2's proposed permanent-error fix passed check retry. No other strategy, setting, team, authority, or consultation state changed. Next action: root inspects the proposal against H1 and applies the accepted patch."
+        },
+        {
+          "event": "E5",
+          "text": "Source: example/repo#7\nStage: delivery complete\nStrategy: W1's Sonnet attempt failed the permanent-error criterion; W2's Opus proposal passed its focused check; root inspected, accepted, and applied H2. Decision owner: coordinator; contributors: W1 supplied failed evidence and W2 supplied the accepted proposal\nModels: coordinator model/reasoning unknown; W1 requested sonnet, reported identity unknown, effective effort unknown, failed attempts 1; W2 requested opus, reported identity unknown, effective effort unknown, tier promotions 1; Standards reviewer and Specification reviewer each requested sonnet, reported identities and effective effort unknown\nAgents: active now 1 coordinator; distinct used to date 5, coordinator, W1, W2, Standards reviewer, and Specification reviewer; W1, W2, and both reviewers finished; planned additional agents 0\nConsultations: not applicable\nPlan/spec: accepted issue text\nBranch: work/7; delivered target includes merge M1\nPR: merged change-review object; identifier not supplied\nLast verified revision: M1 includes accepted candidate H2\nEvidence: check retry passed for W2's proposal; root applied H2; all required local checks passed at H2; fresh independent Standards and Specification axes passed on the final comparison; guarded merge produced M1; required main CI passed for M1; issue completion and closure were read back; usage unknown\nNext checkpoint: none\nBlocker: none"
+        }
+      ]
+    },
+    {
+      "id": "L4",
+      "host": "codex",
+      "reads": [
+        "AGENTS.md",
+        "skills/deliver-work/references/worker-briefs.md",
+        "skills/deliver-work/references/resumption.md",
+        "skills/deliver-work/references/execution-reporting.md",
+        "skills/worker-with-astra/SKILL.md",
+        "skills/worker-with-astra/references/codex.md",
+        "skills/worker-with-astra/references/worker-protocol.md",
+        "skills/worker-with-astra/references/worker-tiers.md",
+        "skills/tdd/SKILL.md",
+        "skills/unslop/SKILL.md"
+      ],
+      "worker_reads": [
+        "AGENTS.md",
+        "skills/worker-with-astra/references/worker-protocol.md",
+        "skills/tdd/SKILL.md"
+      ],
+      "selected": "Accepted advisory pairing: original coordinator and advisor is independently verified as gpt-6-astra; worker requests gpt-5.6-terra at medium reasoning. Worker runtime identity and effort are unknown. Original advisor address is A0.",
+      "decision": "Retain the already selected Terra/medium advisory strategy. The verified Astra coordinator remains the original advisor and sole durable writer. Use one fresh worker context with explicit model and effort, fork_turns none, the actual A0 address, and the worker protocol. The worker must complete approach and final-review consultations and request blocker advice when a consequential decision arises. One approach consultation completed. The audit-event question is product authority owned by the user, so dependent implementation pauses. Independent useful read-only work may continue. The pending blocker consultation is not completed advice, and advisor review cannot replace the two final independent delivery reviews.",
+      "brief": "Role and outcome: advisory implementation worker for a bounded parser repair. Requested settings: gpt-5.6-terra at medium reasoning. Original Astra advisor: A0. Use the worker-with-astra protocol; no recursive delegation.\nScope and acceptance: propose changes to parser.py so malformed records and valid records meet the accepted cases. Use focused TDD, run check parser on the proposed artifact, and identify the remaining required check. Two design checkpoints benefit from advice.\nCurrent state: example/repo#7; branch work/7; base B1; source H1; task L4; attempt 1. Read AGENTS.md, skills/worker-with-astra/references/worker-protocol.md, and skills/tdd/SKILL.md. Terra may make routine implementation and test choices within the accepted interface. Consult before changing interfaces, scope, ownership, acceptance, or resolving consequential uncertainty.\nAuthority: root owns every durable write and all Git, tracker, PR, merge, and completion effects. Return proposed content and evidence only. Complete the mandatory approach consultation before substantial implementation and request final review before completion. For a blocker, send A0 the decision, evidence, recommendation, and paused dependency, then wait for the answer.\nReturn exactly these labels:\nArtifact: proposed patch or none when blocked\nChanged files: proposed paths or none\nValidation: commands actually run and required checks not run\nConsultations: completed count plus pending requests\nSettings: requested and reported model/reasoning, using unknown when unexposed\nLimitations: unresolved gaps or blockers\nPending decisions: decision and owner",
+      "return": "Artifact: none; blocked before the dependent parser change.\nChanged files: none.\nValidation: no check ran.\nConsultations: 1 completed approach consultation; 1 blocker consultation requested and awaiting an answer; mandatory final-review consultation not completed.\nSettings: requested gpt-5.6-terra at medium reasoning; runtime-reported model unknown; runtime-reported reasoning unknown.\nLimitations: implementation that depends on malformed-record audit behavior is paused. Independent useful read-only work may continue.\nPending decisions: whether a malformed record must retain an audit event; owner: user.",
+      "updates": [
+        {
+          "event": "blocker",
+          "text": "Source: example/repo#7\nStage: advisory implementation blocked on a product decision\nStrategy: accepted worker-with-astra pairing; Terra/medium proposes the parser repair and original Astra advisor A0 owns advice and all durable writes; decision owner for the strategy: coordinator\nModels: coordinator independently observed as gpt-6-astra, effort unknown; worker requested gpt-5.6-terra/medium, reported identity and effort unknown\nAgents: active now 2, coordinator/advisor and worker; distinct used to date 2; planned additional agents 2 final independent reviewers\nConsultations: worker completed 1 approach consultation; blocker consultation pending; final-review consultation not completed; total completed 1\nPlan/spec: accepted issue text\nBranch: work/7\nPR: none\nLast verified revision: H1 source\nEvidence: no check ran; no proposal was applied; both final independent review axes, CI, merge, and completion remain pending; usage unknown\nNext checkpoint: user decides whether malformed records retain an audit event; independent useful read-only work may continue meanwhile\nBlocker: malformed-record audit-event behavior requires the user's product decision"
+        }
+      ]
+    },
+    {
+      "id": "L4",
+      "host": "claude",
+      "reads": [
+        "AGENTS.md",
+        "skills/deliver-work/references/worker-briefs.md",
+        "skills/deliver-work/references/resumption.md",
+        "skills/deliver-work/references/execution-reporting.md",
+        "skills/worker-with-fable/SKILL.md",
+        "skills/worker-with-fable/references/claude-code.md",
+        "skills/worker-with-fable/references/worker-protocol.md",
+        "skills/worker-with-fable/references/worker-tiers.md",
+        "skills/tdd/SKILL.md",
+        "skills/unslop/SKILL.md"
+      ],
+      "worker_reads": [
+        "AGENTS.md",
+        "skills/worker-with-fable/references/worker-protocol.md",
+        "skills/tdd/SKILL.md"
+      ],
+      "selected": "Accepted advisory pairing: original coordinator and advisor is independently verified as Claude Fable 5.1; worker requests sonnet. Claude exposes no per-call effort control, so effective worker effort is unknown. Runtime worker identity is unknown. Original advisor address is A0.",
+      "decision": "Retain the already selected Sonnet advisory strategy. The verified Fable coordinator remains the original advisor and sole durable writer. Use one foreground Agent call with explicit sonnet and retain its identifier for SendMessage continuation. The worker must complete approach and final-review consultations and request blocker advice when a consequential decision arises. One approach consultation completed. The audit-event question is product authority owned by the user, so dependent implementation pauses. Independent useful read-only work may continue. The pending blocker return is not completed advice, and advisor review cannot replace the two final independent delivery reviews.",
+      "brief": "Role and outcome: advisory implementation worker for a bounded parser repair. Requested settings: sonnet. Claude exposes no per-call effort control, so report effective effort as unknown unless the host exposes it. Original Fable advisor: A0. Use the worker-with-fable protocol; no recursive delegation.\nScope and acceptance: propose changes to parser.py so malformed records and valid records meet the accepted cases. Use focused TDD, run check parser on the proposed artifact, and identify the remaining required check. Two design checkpoints benefit from advice.\nCurrent state: example/repo#7; branch work/7; base B1; source H1; task L4; attempt 1. Read AGENTS.md, skills/worker-with-fable/references/worker-protocol.md, and skills/tdd/SKILL.md. Sonnet may make routine implementation choices within the approved approach. Return to Fable for the approach, blockers, and final review.\nAuthority: root owns every durable write and all Git, tracker, PR, merge, and completion effects. Return proposed content and evidence only. Complete the mandatory approach consultation before substantial implementation and return a final-review request before completion. For a blocker, end the turn with the decision, evidence, recommendation, and paused dependency so A0 can resume this same worker through SendMessage.\nReturn exactly these labels:\nArtifact: proposed patch or none when blocked\nChanged files: proposed paths or none\nValidation: commands actually run and required checks not run\nConsultations: completed count plus pending requests\nSettings: requested and reported model/reasoning, using unknown when unexposed\nLimitations: unresolved gaps or blockers\nPending decisions: decision and owner",
+      "return": "Artifact: none; blocked before the dependent parser change.\nChanged files: none.\nValidation: no check ran.\nConsultations: 1 completed approach consultation; 1 blocker consultation requested and awaiting an answer; mandatory final-review consultation not completed.\nSettings: requested sonnet; runtime-reported model unknown; effective effort unknown because no per-call effort control or independent report is exposed.\nLimitations: implementation that depends on malformed-record audit behavior is paused. Independent useful read-only work may continue.\nPending decisions: whether a malformed record must retain an audit event; owner: user.",
+      "updates": [
+        {
+          "event": "blocker",
+          "text": "Source: example/repo#7\nStage: advisory implementation blocked on a product decision\nStrategy: accepted worker-with-fable pairing; Sonnet proposes the parser repair and original Fable advisor A0 owns advice and all durable writes; decision owner for the strategy: coordinator\nModels: coordinator independently observed as Claude Fable 5.1, effective session effort unknown; worker requested sonnet, reported identity unknown, effective effort unknown\nAgents: active now 2, coordinator/advisor and worker; distinct used to date 2; planned additional agents 2 final independent reviewers\nConsultations: worker completed 1 approach consultation; blocker consultation pending; final-review consultation not completed; total completed 1\nPlan/spec: accepted issue text\nBranch: work/7\nPR: none\nLast verified revision: H1 source\nEvidence: no check ran; no proposal was applied; both final independent review axes, CI, merge, and completion remain pending; usage unknown\nNext checkpoint: user decides whether malformed records retain an audit event; independent useful read-only work may continue meanwhile\nBlocker: malformed-record audit-event behavior requires the user's product decision"
+        }
+      ]
+    },
+    {
+      "id": "L5",
+      "host": "codex",
+      "reads": [
+        "AGENTS.md",
+        "skills/deliver-work/SKILL.md",
+        "skills/deliver-work/references/work-assessment.md",
+        "skills/deliver-work/references/review-cycles.md",
+        "skills/deliver-work/references/model-selection.md",
+        "skills/deliver-work/references/review-selection.md",
+        "skills/deliver-work/references/codex-model-selection.md",
+        "skills/deliver-work/references/codex-reviewer-selection.md",
+        "skills/deliver-work/references/resumption.md",
+        "skills/deliver-work/references/execution-reporting.md",
+        "skills/code-review/SKILL.md",
+        "skills/unslop/SKILL.md"
+      ],
+      "worker_reads": [
+        "AGENTS.md",
+        "skills/code-review/SKILL.md",
+        "skills/unslop/SKILL.md"
+      ],
+      "selected": "Fresh independent Specification reviewer requesting gpt-6-astra at high reasoning, the strongest relevant Codex choice exposed for this high-impact change. Runtime reviewer identity and effort are unknown. A separate fresh Standards reviewer at the same high-impact floor remains mandatory.",
+      "decision": "Impact is high because the one-line change controls authorization on a destructive endpoint. Low complexity and uncertainty do not lower the reviewer floor. Select a fresh Astra/high Specification reviewer and separately require a fresh Standards context on the same frozen B1/H1 comparison. The coordinator and implementer cannot fill either role. Give the Specification reviewer raw scope and acceptance evidence, the frozen comparison, and validation facts without implementer, advisor, or other-reviewer approval narratives. The supplied test evidence supports coverage but cannot produce a verdict before source inspection. Do not merge while either axis or current-head hosted CI is pending. No pairing, implementation promotion, or worker replacement is selected.",
+      "brief": "Role: fresh independent Specification reviewer. Requested settings: gpt-6-astra at high reasoning. You are neither the coordinator nor the implementer. Review only the Specification axis; a separate fresh context owns Standards.\nFrozen comparison: base B1; head H1; merge-base B1; clean worktree; command git diff B1 H1.\nScope and acceptance: one-line authorization fix on a destructive endpoint. The owner role must be allowed. Every other role must be denied. Missing identity must fail closed. Complexity low, uncertainty low, impact high.\nSupplied validation facts: negative authorization check passed at H1; positive owner check passed at H1; check passed at H1; hosted current-head CI is pending. Treat these as supplied evidence, not commands you ran.\nInstructions: read AGENTS.md, skills/code-review/SKILL.md, and skills/unslop/SKILL.md. Inspect the actual B1/H1 source and relevant tests before issuing a verdict. Cover every criterion and negative case. Report concrete findings with file and tight line evidence, failure mode, severity, reproducibility, and likely frequency. State coverage and evidence limits. Do not edit, comment, label, publish, merge, or perform tracker effects. Do not use implementer or advisor approval narratives.\nReturn: a Specification section with findings or no findings, coverage, evidence limits, verdict, the fixed comparison, and verification commands actually used. A verdict remains pending if source inspection is incomplete.",
+      "return": "Specification review\nComparison: base B1; head H1; merge-base B1; git diff B1 H1; clean worktree.\nCoverage evidence: supplied results cover denial for non-owner roles, allowance for the owner role, and fail-closed behavior for missing identity. The supplied check also passed at H1.\nSource inspection: not performed in this proposed report.\nFindings: none issued because the actual source and tests have not been inspected.\nVerdict: pending. Supplied checks alone do not establish Specification approval.\nEvidence limits: hosted current-head CI is pending; verification commands used by this reviewer: none.",
+      "updates": [
+        {
+          "event": "checkpoint",
+          "text": "Source: example/repo#7\nStage: final independent review selection\nStrategy: fresh independent Specification reviewer at the high-impact floor, plus a separate mandatory Standards context; decision owner: coordinator; contributing agents: none\nModels: coordinator and implementer settings unknown; Specification reviewer requested gpt-6-astra/high, reported identity and effort unknown; Standards reviewer planned in a separate fresh context at the same high-impact floor\nAgents: active now 1 coordinator before confirmed reviewer creation; distinct used to date includes coordinator and implementer but the exact count is unknown; planned additional agents 2 independent reviewers\nConsultations: not applicable\nPlan/spec: accepted issue text\nBranch: work/7\nPR: none\nLast verified revision: frozen B1/H1 comparison with merge-base B1 and clean worktree\nEvidence: supplied negative, positive, and missing-identity checks plus check passed at H1; reviewer source inspection pending; both independent verdicts pending; hosted current-head CI pending; merge blocked; usage unknown\nNext checkpoint: obtain independent initial Specification and Standards findings on the same frozen comparison\nBlocker: final review and hosted CI gates remain pending"
+        }
+      ]
+    },
+    {
+      "id": "L5",
+      "host": "claude",
+      "reads": [
+        "AGENTS.md",
+        "skills/deliver-work/SKILL.md",
+        "skills/deliver-work/references/work-assessment.md",
+        "skills/deliver-work/references/review-cycles.md",
+        "skills/deliver-work/references/model-selection.md",
+        "skills/deliver-work/references/review-selection.md",
+        "skills/deliver-work/references/claude-code-model-selection.md",
+        "skills/deliver-work/references/claude-code-reviewer-selection.md",
+        "skills/deliver-work/references/resumption.md",
+        "skills/deliver-work/references/execution-reporting.md",
+        "skills/code-review/SKILL.md",
+        "skills/unslop/SKILL.md"
+      ],
+      "worker_reads": [
+        "AGENTS.md",
+        "skills/code-review/SKILL.md",
+        "skills/unslop/SKILL.md"
+      ],
+      "selected": "Fresh independent Specification reviewer requesting opus, the strongest explicit Claude reviewer tier selected for this high-impact change. Claude exposes no per-call effort control, so effective effort is unknown. Runtime reviewer identity is unknown. A separate fresh Standards reviewer at the same high-impact floor remains mandatory.",
+      "decision": "Impact is high because the one-line change controls authorization on a destructive endpoint. Low complexity and uncertainty do not lower the reviewer floor. Select a fresh Opus Specification reviewer and separately require a fresh Standards context on the same frozen B1/H1 comparison. The coordinator and implementer cannot fill either role. Give the Specification reviewer raw scope and acceptance evidence, the frozen comparison, and validation facts without implementer, advisor, or other-reviewer approval narratives. The supplied test evidence supports coverage but cannot produce a verdict before source inspection. Do not merge while either axis or current-head hosted CI is pending. No pairing, implementation promotion, or worker replacement is selected.",
+      "brief": "Role: fresh independent Specification reviewer. Requested settings: opus. Claude exposes no per-call effort control, so report effective effort as unknown unless exposed by the host. You are neither the coordinator nor the implementer. Review only the Specification axis; a separate fresh context owns Standards.\nFrozen comparison: base B1; head H1; merge-base B1; clean worktree; command git diff B1 H1.\nScope and acceptance: one-line authorization fix on a destructive endpoint. The owner role must be allowed. Every other role must be denied. Missing identity must fail closed. Complexity low, uncertainty low, impact high.\nSupplied validation facts: negative authorization check passed at H1; positive owner check passed at H1; check passed at H1; hosted current-head CI is pending. Treat these as supplied evidence, not commands you ran.\nInstructions: read AGENTS.md, skills/code-review/SKILL.md, and skills/unslop/SKILL.md. Inspect the actual B1/H1 source and relevant tests before issuing a verdict. Cover every criterion and negative case. Report concrete findings with file and tight line evidence, failure mode, severity, reproducibility, and likely frequency. State coverage and evidence limits. Do not edit, comment, label, publish, merge, or perform tracker effects. Do not use implementer or advisor approval narratives.\nReturn: a Specification section with findings or no findings, coverage, evidence limits, verdict, the fixed comparison, and verification commands actually used. A verdict remains pending if source inspection is incomplete.",
+      "return": "Specification review\nComparison: base B1; head H1; merge-base B1; git diff B1 H1; clean worktree.\nCoverage evidence: supplied results cover denial for non-owner roles, allowance for the owner role, and fail-closed behavior for missing identity. The supplied check also passed at H1.\nSource inspection: not performed in this proposed report.\nFindings: none issued because the actual source and tests have not been inspected.\nVerdict: pending. Supplied checks alone do not establish Specification approval.\nEvidence limits: hosted current-head CI is pending; verification commands used by this reviewer: none.",
+      "updates": [
+        {
+          "event": "checkpoint",
+          "text": "Source: example/repo#7\nStage: final independent review selection\nStrategy: fresh independent Specification reviewer at the high-impact floor, plus a separate mandatory Standards context; decision owner: coordinator; contributing agents: none\nModels: coordinator and implementer settings unknown; Specification reviewer requested opus, reported identity unknown, effective effort unknown; Standards reviewer planned in a separate fresh context at the same high-impact floor\nAgents: active now 1 coordinator before confirmed reviewer creation; distinct used to date includes coordinator and implementer but the exact count is unknown; planned additional agents 2 independent reviewers\nConsultations: not applicable\nPlan/spec: accepted issue text\nBranch: work/7\nPR: none\nLast verified revision: frozen B1/H1 comparison with merge-base B1 and clean worktree\nEvidence: supplied negative, positive, and missing-identity checks plus check passed at H1; reviewer source inspection pending; both independent verdicts pending; hosted current-head CI pending; merge blocked; usage unknown\nNext checkpoint: obtain independent initial Specification and Standards findings on the same frozen comparison\nBlocker: final review and hosted CI gates remain pending"
+        }
+      ]
+    }
+  ],
+  "sources": [
+    "AGENTS.md",
+    "tests/fixtures/workflow-evaluation/context-reporting-cases.md",
+    "skills/deliver-work/SKILL.md",
+    "skills/plan-work/SKILL.md",
+    "skills/deliver-work/references/work-assessment.md",
+    "skills/deliver-work/references/task-planning.md",
+    "skills/deliver-work/references/model-selection.md",
+    "skills/deliver-work/references/implementation-selection.md",
+    "skills/deliver-work/references/codex-worker-selection.md",
+    "skills/deliver-work/references/claude-code-worker-selection.md",
+    "skills/deliver-work/references/worker-briefs.md",
+    "skills/deliver-work/references/codex-model-selection.md",
+    "skills/deliver-work/references/claude-code-model-selection.md",
+    "skills/deliver-work/references/worker-continuation.md",
+    "skills/deliver-work/references/resumption.md",
+    "skills/deliver-work/references/execution-reporting.md",
+    "skills/deliver-work/references/review-cycles.md",
+    "skills/deliver-work/references/review-selection.md",
+    "skills/deliver-work/references/codex-reviewer-selection.md",
+    "skills/deliver-work/references/claude-code-reviewer-selection.md",
+    "skills/code-review/SKILL.md",
+    "skills/tdd/SKILL.md",
+    "skills/worker-with-astra/SKILL.md",
+    "skills/worker-with-astra/references/codex.md",
+    "skills/worker-with-astra/references/worker-protocol.md",
+    "skills/worker-with-astra/references/worker-tiers.md",
+    "skills/worker-with-fable/SKILL.md",
+    "skills/worker-with-fable/references/claude-code.md",
+    "skills/worker-with-fable/references/worker-protocol.md",
+    "skills/worker-with-fable/references/worker-tiers.md",
+    "skills/unslop/SKILL.md",
+    "external:<installed unslop entrypoint>"
+  ],
+  "validation": "Checked source revision with git rev-parse HEAD and obtained f36e6a0dc0f1953b42e3941f9da234faffee9cd6. Read AGENTS.md and the fixed case input with sed -n. Listed filenames only with find skills/deliver-work skills/plan-work skills/worker-with-astra skills/worker-with-fable skills/code-review skills/tdd skills/unslop -type f -name '*.md' -print, then opened each explicit source listed above with sed -n. Compared skills/unslop/SKILL.md and <installed unslop entrypoint> with sha256sum; both were 05f22133d91c539803936b2d1c7617b87030d73cebf547ee8544d2a2c5f5fc4c, so case reads identify the canonical catalog counterpart while sources retain the external read separately. No test, fixture check, catalog script, case effect, network operation, write, Git mutation, or live agent operation ran.",
+  "settings": "The requested evaluator setting was Sol/high. The evaluator's actual model and effort were not independently exposed and remain unknown. Every model and effort value inside a case record is a simulated role-selection decision from the supplied host facts, not evaluator identity evidence.",
+  "limitations": "All worker, reviewer, consultation, validation, CI, merge, and tracking outcomes in the case records are proposed or supplied fixture facts. No child context executed them. The fixture's passing checks were not rerun. Runtime identities, effective effort, and usage remain unknown unless the fixture explicitly supplied host evidence. No validation-scenarios.md, evaluator result, grader, rubric, observation, evaluation-results file, unrelated fixture, unrelated temporary artifact, or other agent message was read."
+}

@@ -10,6 +10,8 @@ import hashlib
 import json
 from pathlib import Path, PurePosixPath
 
+FIXED_INPUT = "tests/fixtures/workflow-evaluation/context-reporting-cases.md"
+
 
 def size(text):
     return {"bytes": len(text.encode("utf-8")), "words": len(text.split())}
@@ -26,9 +28,9 @@ def source_path(root, name):
             or not (name == "AGENTS.md" or name.startswith("skills/"))
             or path.suffix != ".md"):
         raise ValueError(f"Not a canonical instruction path: {name}")
-    candidate = root / name
-    if not candidate.resolve().is_relative_to(root.resolve()):
-        raise ValueError(f"Instruction leaves checkout: {name}")
+    candidate = root.resolve() / name
+    if candidate.resolve() != candidate:
+        raise ValueError(f"Instruction is not a canonical file path: {name}")
     return candidate
 
 
@@ -65,7 +67,9 @@ def measure(root, response, revision):
                         "worker_proposed": exposure(case["worker_reads"]),
                         "messages": messages})
     external = [name for name in response["sources"] if name.startswith("external:")]
-    actual_union = exposure([name for name in response["sources"] if name not in external])
+    fixed_inputs = [name for name in response["sources"] if name == FIXED_INPUT]
+    actual_union = exposure([name for name in response["sources"]
+                             if name not in external + fixed_inputs])
     proposed_union = exposure([name for case in cases for name in case["worker_reads"]])
     return {
         "source_revision": revision,
@@ -73,6 +77,7 @@ def measure(root, response, revision):
         "cases": records,
         "actual_union": actual_union,
         "external_sources_excluded": external,
+        "fixed_inputs_excluded": fixed_inputs,
         "worker_proposed_union": proposed_union,
         "combined_union": exposure(list(inventory)),
         "source_inventory": dict(sorted(inventory.items())),

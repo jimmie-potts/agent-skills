@@ -409,3 +409,6 @@ files once per case and role, plus exact brief, return and update text with
 report every increase as well as reductions. Grade authority, routing, evidence,
 consultations, history and final gates before accepting a smaller result.
 Text exposure is not a native-host cost, speed or model-quality measurement.
+The recorded comparison, raw returns, corrections, excluded run, receipts and
+behavioral limits are in
+`tests/fixtures/workflow-evaluation/context-reporting-observations.md`.

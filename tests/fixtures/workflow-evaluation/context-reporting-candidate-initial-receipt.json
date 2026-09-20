@@ -1,0 +1,744 @@
+{
+  "source_revision": "f36e6a0dc0f1953b42e3941f9da234faffee9cd6",
+  "method": "UTF-8 bytes and len(text.split()); whole files; deduplicate per case/role",
+  "cases": [
+    {
+      "id": "L1",
+      "host": "codex",
+      "coordinator_actual": {
+        "paths": [
+          "AGENTS.md",
+          "skills/deliver-work/SKILL.md",
+          "skills/deliver-work/references/resumption.md",
+          "skills/deliver-work/references/work-assessment.md",
+          "skills/unslop/SKILL.md"
+        ],
+        "bytes": 44531,
+        "words": 6018
+      },
+      "worker_proposed": {
+        "paths": [],
+        "bytes": 0,
+        "words": 0
+      },
+      "messages": {
+        "brief": {
+          "bytes": 0,
+          "words": 0
+        },
+        "return": {
+          "bytes": 0,
+          "words": 0
+        },
+        "updates": [
+          {
+            "event": "checkpoint",
+            "bytes": 837,
+            "words": 109
+          }
+        ]
+      }
+    },
+    {
+      "id": "L1",
+      "host": "claude",
+      "coordinator_actual": {
+        "paths": [
+          "AGENTS.md",
+          "skills/deliver-work/SKILL.md",
+          "skills/deliver-work/references/resumption.md",
+          "skills/deliver-work/references/work-assessment.md",
+          "skills/unslop/SKILL.md"
+        ],
+        "bytes": 44531,
+        "words": 6018
+      },
+      "worker_proposed": {
+        "paths": [],
+        "bytes": 0,
+        "words": 0
+      },
+      "messages": {
+        "brief": {
+          "bytes": 0,
+          "words": 0
+        },
+        "return": {
+          "bytes": 0,
+          "words": 0
+        },
+        "updates": [
+          {
+            "event": "checkpoint",
+            "bytes": 837,
+            "words": 109
+          }
+        ]
+      }
+    },
+    {
+      "id": "L2",
+      "host": "codex",
+      "coordinator_actual": {
+        "paths": [
+          "AGENTS.md",
+          "skills/deliver-work/references/codex-model-selection.md",
+          "skills/deliver-work/references/codex-worker-selection.md",
+          "skills/deliver-work/references/implementation-selection.md",
+          "skills/deliver-work/references/model-selection.md",
+          "skills/deliver-work/references/task-planning.md",
+          "skills/deliver-work/references/work-assessment.md",
+          "skills/deliver-work/references/worker-briefs.md",
+          "skills/plan-work/SKILL.md",
+          "skills/unslop/SKILL.md"
+        ],
+        "bytes": 54224,
+        "words": 7271
+      },
+      "worker_proposed": {
+        "paths": [
+          "AGENTS.md"
+        ],
+        "bytes": 3233,
+        "words": 380
+      },
+      "messages": {
+        "brief": {
+          "bytes": 1081,
+          "words": 145
+        },
+        "return": {
+          "bytes": 495,
+          "words": 59
+        },
+        "updates": []
+      }
+    },
+    {
+      "id": "L2",
+      "host": "claude",
+      "coordinator_actual": {
+        "paths": [
+          "AGENTS.md",
+          "skills/deliver-work/references/claude-code-model-selection.md",
+          "skills/deliver-work/references/claude-code-worker-selection.md",
+          "skills/deliver-work/references/implementation-selection.md",
+          "skills/deliver-work/references/model-selection.md",
+          "skills/deliver-work/references/task-planning.md",
+          "skills/deliver-work/references/work-assessment.md",
+          "skills/deliver-work/references/worker-briefs.md",
+          "skills/plan-work/SKILL.md",
+          "skills/unslop/SKILL.md"
+        ],
+        "bytes": 53592,
+        "words": 7223
+      },
+      "worker_proposed": {
+        "paths": [
+          "AGENTS.md"
+        ],
+        "bytes": 3233,
+        "words": 380
+      },
+      "messages": {
+        "brief": {
+          "bytes": 1170,
+          "words": 160
+        },
+        "return": {
+          "bytes": 526,
+          "words": 66
+        },
+        "updates": []
+      }
+    },
+    {
+      "id": "L3",
+      "host": "codex",
+      "coordinator_actual": {
+        "paths": [
+          "AGENTS.md",
+          "skills/code-review/SKILL.md",
+          "skills/deliver-work/SKILL.md",
+          "skills/deliver-work/references/codex-model-selection.md",
+          "skills/deliver-work/references/codex-reviewer-selection.md",
+          "skills/deliver-work/references/codex-worker-selection.md",
+          "skills/deliver-work/references/execution-reporting.md",
+          "skills/deliver-work/references/implementation-selection.md",
+          "skills/deliver-work/references/model-selection.md",
+          "skills/deliver-work/references/resumption.md",
+          "skills/deliver-work/references/review-cycles.md",
+          "skills/deliver-work/references/review-selection.md",
+          "skills/deliver-work/references/task-planning.md",
+          "skills/deliver-work/references/work-assessment.md",
+          "skills/deliver-work/references/worker-briefs.md",
+          "skills/deliver-work/references/worker-continuation.md",
+          "skills/tdd/SKILL.md",
+          "skills/unslop/SKILL.md"
+        ],
+        "bytes": 108702,
+        "words": 14762
+      },
+      "worker_proposed": {
+        "paths": [
+          "AGENTS.md",
+          "skills/tdd/SKILL.md"
+        ],
+        "bytes": 6711,
+        "words": 902
+      },
+      "messages": {
+        "brief": {
+          "bytes": 1309,
+          "words": 179
+        },
+        "return": {
+          "bytes": 650,
+          "words": 85
+        },
+        "updates": [
+          {
+            "event": "E0",
+            "bytes": 876,
+            "words": 116
+          },
+          {
+            "event": "E1",
+            "bytes": 176,
+            "words": 22
+          },
+          {
+            "event": "E2",
+            "bytes": 136,
+            "words": 21
+          },
+          {
+            "event": "E3",
+            "bytes": 1310,
+            "words": 175
+          },
+          {
+            "event": "E4",
+            "bytes": 212,
+            "words": 30
+          },
+          {
+            "event": "E5",
+            "bytes": 1479,
+            "words": 195
+          }
+        ]
+      }
+    },
+    {
+      "id": "L3",
+      "host": "claude",
+      "coordinator_actual": {
+        "paths": [
+          "AGENTS.md",
+          "skills/code-review/SKILL.md",
+          "skills/deliver-work/SKILL.md",
+          "skills/deliver-work/references/claude-code-model-selection.md",
+          "skills/deliver-work/references/claude-code-reviewer-selection.md",
+          "skills/deliver-work/references/claude-code-worker-selection.md",
+          "skills/deliver-work/references/execution-reporting.md",
+          "skills/deliver-work/references/implementation-selection.md",
+          "skills/deliver-work/references/model-selection.md",
+          "skills/deliver-work/references/resumption.md",
+          "skills/deliver-work/references/review-cycles.md",
+          "skills/deliver-work/references/review-selection.md",
+          "skills/deliver-work/references/task-planning.md",
+          "skills/deliver-work/references/work-assessment.md",
+          "skills/deliver-work/references/worker-briefs.md",
+          "skills/deliver-work/references/worker-continuation.md",
+          "skills/tdd/SKILL.md",
+          "skills/unslop/SKILL.md"
+        ],
+        "bytes": 108258,
+        "words": 14733
+      },
+      "worker_proposed": {
+        "paths": [
+          "AGENTS.md",
+          "skills/tdd/SKILL.md"
+        ],
+        "bytes": 6711,
+        "words": 902
+      },
+      "messages": {
+        "brief": {
+          "bytes": 1398,
+          "words": 194
+        },
+        "return": {
+          "bytes": 681,
+          "words": 92
+        },
+        "updates": [
+          {
+            "event": "E0",
+            "bytes": 895,
+            "words": 121
+          },
+          {
+            "event": "E1",
+            "bytes": 162,
+            "words": 21
+          },
+          {
+            "event": "E2",
+            "bytes": 136,
+            "words": 21
+          },
+          {
+            "event": "E3",
+            "bytes": 1224,
+            "words": 166
+          },
+          {
+            "event": "E4",
+            "bytes": 212,
+            "words": 30
+          },
+          {
+            "event": "E5",
+            "bytes": 1420,
+            "words": 191
+          }
+        ]
+      }
+    },
+    {
+      "id": "L4",
+      "host": "codex",
+      "coordinator_actual": {
+        "paths": [
+          "AGENTS.md",
+          "skills/deliver-work/references/execution-reporting.md",
+          "skills/deliver-work/references/resumption.md",
+          "skills/deliver-work/references/worker-briefs.md",
+          "skills/tdd/SKILL.md",
+          "skills/unslop/SKILL.md",
+          "skills/worker-with-astra/SKILL.md",
+          "skills/worker-with-astra/references/codex.md",
+          "skills/worker-with-astra/references/worker-protocol.md",
+          "skills/worker-with-astra/references/worker-tiers.md"
+        ],
+        "bytes": 51713,
+        "words": 7233
+      },
+      "worker_proposed": {
+        "paths": [
+          "AGENTS.md",
+          "skills/tdd/SKILL.md",
+          "skills/worker-with-astra/references/worker-protocol.md"
+        ],
+        "bytes": 11122,
+        "words": 1511
+      },
+      "messages": {
+        "brief": {
+          "bytes": 1620,
+          "words": 211
+        },
+        "return": {
+          "bytes": 609,
+          "words": 74
+        },
+        "updates": [
+          {
+            "event": "blocker",
+            "bytes": 1162,
+            "words": 148
+          }
+        ]
+      }
+    },
+    {
+      "id": "L4",
+      "host": "claude",
+      "coordinator_actual": {
+        "paths": [
+          "AGENTS.md",
+          "skills/deliver-work/references/execution-reporting.md",
+          "skills/deliver-work/references/resumption.md",
+          "skills/deliver-work/references/worker-briefs.md",
+          "skills/tdd/SKILL.md",
+          "skills/unslop/SKILL.md",
+          "skills/worker-with-fable/SKILL.md",
+          "skills/worker-with-fable/references/claude-code.md",
+          "skills/worker-with-fable/references/worker-protocol.md",
+          "skills/worker-with-fable/references/worker-tiers.md"
+        ],
+        "bytes": 57534,
+        "words": 8177
+      },
+      "worker_proposed": {
+        "paths": [
+          "AGENTS.md",
+          "skills/tdd/SKILL.md",
+          "skills/worker-with-fable/references/worker-protocol.md"
+        ],
+        "bytes": 11322,
+        "words": 1545
+      },
+      "messages": {
+        "brief": {
+          "bytes": 1696,
+          "words": 229
+        },
+        "return": {
+          "bytes": 640,
+          "words": 81
+        },
+        "updates": [
+          {
+            "event": "blocker",
+            "bytes": 1180,
+            "words": 153
+          }
+        ]
+      }
+    },
+    {
+      "id": "L5",
+      "host": "codex",
+      "coordinator_actual": {
+        "paths": [
+          "AGENTS.md",
+          "skills/code-review/SKILL.md",
+          "skills/deliver-work/SKILL.md",
+          "skills/deliver-work/references/codex-model-selection.md",
+          "skills/deliver-work/references/codex-reviewer-selection.md",
+          "skills/deliver-work/references/execution-reporting.md",
+          "skills/deliver-work/references/model-selection.md",
+          "skills/deliver-work/references/resumption.md",
+          "skills/deliver-work/references/review-cycles.md",
+          "skills/deliver-work/references/review-selection.md",
+          "skills/deliver-work/references/work-assessment.md",
+          "skills/unslop/SKILL.md"
+        ],
+        "bytes": 77919,
+        "words": 10586
+      },
+      "worker_proposed": {
+        "paths": [
+          "AGENTS.md",
+          "skills/code-review/SKILL.md",
+          "skills/unslop/SKILL.md"
+        ],
+        "bytes": 15685,
+        "words": 2197
+      },
+      "messages": {
+        "brief": {
+          "bytes": 1473,
+          "words": 205
+        },
+        "return": {
+          "bytes": 607,
+          "words": 87
+        },
+        "updates": [
+          {
+            "event": "checkpoint",
+            "bytes": 1242,
+            "words": 159
+          }
+        ]
+      }
+    },
+    {
+      "id": "L5",
+      "host": "claude",
+      "coordinator_actual": {
+        "paths": [
+          "AGENTS.md",
+          "skills/code-review/SKILL.md",
+          "skills/deliver-work/SKILL.md",
+          "skills/deliver-work/references/claude-code-model-selection.md",
+          "skills/deliver-work/references/claude-code-reviewer-selection.md",
+          "skills/deliver-work/references/execution-reporting.md",
+          "skills/deliver-work/references/model-selection.md",
+          "skills/deliver-work/references/resumption.md",
+          "skills/deliver-work/references/review-cycles.md",
+          "skills/deliver-work/references/review-selection.md",
+          "skills/deliver-work/references/work-assessment.md",
+          "skills/unslop/SKILL.md"
+        ],
+        "bytes": 78533,
+        "words": 10672
+      },
+      "worker_proposed": {
+        "paths": [
+          "AGENTS.md",
+          "skills/code-review/SKILL.md",
+          "skills/unslop/SKILL.md"
+        ],
+        "bytes": 15685,
+        "words": 2197
+      },
+      "messages": {
+        "brief": {
+          "bytes": 1557,
+          "words": 219
+        },
+        "return": {
+          "bytes": 607,
+          "words": 87
+        },
+        "updates": [
+          {
+            "event": "checkpoint",
+            "bytes": 1245,
+            "words": 160
+          }
+        ]
+      }
+    }
+  ],
+  "actual_union": {
+    "paths": [
+      "AGENTS.md",
+      "skills/code-review/SKILL.md",
+      "skills/deliver-work/SKILL.md",
+      "skills/deliver-work/references/claude-code-model-selection.md",
+      "skills/deliver-work/references/claude-code-reviewer-selection.md",
+      "skills/deliver-work/references/claude-code-worker-selection.md",
+      "skills/deliver-work/references/codex-model-selection.md",
+      "skills/deliver-work/references/codex-reviewer-selection.md",
+      "skills/deliver-work/references/codex-worker-selection.md",
+      "skills/deliver-work/references/execution-reporting.md",
+      "skills/deliver-work/references/implementation-selection.md",
+      "skills/deliver-work/references/model-selection.md",
+      "skills/deliver-work/references/resumption.md",
+      "skills/deliver-work/references/review-cycles.md",
+      "skills/deliver-work/references/review-selection.md",
+      "skills/deliver-work/references/task-planning.md",
+      "skills/deliver-work/references/work-assessment.md",
+      "skills/deliver-work/references/worker-briefs.md",
+      "skills/deliver-work/references/worker-continuation.md",
+      "skills/plan-work/SKILL.md",
+      "skills/tdd/SKILL.md",
+      "skills/unslop/SKILL.md",
+      "skills/worker-with-astra/SKILL.md",
+      "skills/worker-with-astra/references/codex.md",
+      "skills/worker-with-astra/references/worker-protocol.md",
+      "skills/worker-with-astra/references/worker-tiers.md",
+      "skills/worker-with-fable/SKILL.md",
+      "skills/worker-with-fable/references/claude-code.md",
+      "skills/worker-with-fable/references/worker-protocol.md",
+      "skills/worker-with-fable/references/worker-tiers.md"
+    ],
+    "bytes": 166107,
+    "words": 22847
+  },
+  "external_sources_excluded": [
+    "external:<installed unslop entrypoint>"
+  ],
+  "fixed_inputs_excluded": [
+    "tests/fixtures/workflow-evaluation/context-reporting-cases.md"
+  ],
+  "worker_proposed_union": {
+    "paths": [
+      "AGENTS.md",
+      "skills/code-review/SKILL.md",
+      "skills/tdd/SKILL.md",
+      "skills/unslop/SKILL.md",
+      "skills/worker-with-astra/references/worker-protocol.md",
+      "skills/worker-with-fable/references/worker-protocol.md"
+    ],
+    "bytes": 28185,
+    "words": 3971
+  },
+  "combined_union": {
+    "paths": [
+      "AGENTS.md",
+      "skills/code-review/SKILL.md",
+      "skills/deliver-work/SKILL.md",
+      "skills/deliver-work/references/claude-code-model-selection.md",
+      "skills/deliver-work/references/claude-code-reviewer-selection.md",
+      "skills/deliver-work/references/claude-code-worker-selection.md",
+      "skills/deliver-work/references/codex-model-selection.md",
+      "skills/deliver-work/references/codex-reviewer-selection.md",
+      "skills/deliver-work/references/codex-worker-selection.md",
+      "skills/deliver-work/references/execution-reporting.md",
+      "skills/deliver-work/references/implementation-selection.md",
+      "skills/deliver-work/references/model-selection.md",
+      "skills/deliver-work/references/resumption.md",
+      "skills/deliver-work/references/review-cycles.md",
+      "skills/deliver-work/references/review-selection.md",
+      "skills/deliver-work/references/task-planning.md",
+      "skills/deliver-work/references/work-assessment.md",
+      "skills/deliver-work/references/worker-briefs.md",
+      "skills/deliver-work/references/worker-continuation.md",
+      "skills/plan-work/SKILL.md",
+      "skills/tdd/SKILL.md",
+      "skills/unslop/SKILL.md",
+      "skills/worker-with-astra/SKILL.md",
+      "skills/worker-with-astra/references/codex.md",
+      "skills/worker-with-astra/references/worker-protocol.md",
+      "skills/worker-with-astra/references/worker-tiers.md",
+      "skills/worker-with-fable/SKILL.md",
+      "skills/worker-with-fable/references/claude-code.md",
+      "skills/worker-with-fable/references/worker-protocol.md",
+      "skills/worker-with-fable/references/worker-tiers.md"
+    ],
+    "bytes": 166107,
+    "words": 22847
+  },
+  "source_inventory": {
+    "AGENTS.md": {
+      "bytes": 3233,
+      "words": 380,
+      "sha256": "ce2c311a36ea4b3753cbaf3a6110fa165bf3760f1942f8ce3aecaef60f51319a"
+    },
+    "skills/code-review/SKILL.md": {
+      "bytes": 4430,
+      "words": 649,
+      "sha256": "a74e9acbe6207700841ff4e57bb4689793e315c6d60e04008fba2c2c5c8305ac"
+    },
+    "skills/deliver-work/SKILL.md": {
+      "bytes": 17839,
+      "words": 2346,
+      "sha256": "06885ca40d55808149432c65faa8f2d602a1ddde8c022c686d5889c30fd29ebf"
+    },
+    "skills/deliver-work/references/claude-code-model-selection.md": {
+      "bytes": 2184,
+      "words": 295,
+      "sha256": "f0ec72cf84b1e8c46c3a1e70feb59a48f4d2c6bdc7ae94d7e3c0f81d4679b6e8"
+    },
+    "skills/deliver-work/references/claude-code-reviewer-selection.md": {
+      "bytes": 1291,
+      "words": 182,
+      "sha256": "505b4a56b4514b885c0f3f592480ab8afed4043f5ab4bc4a68915f57647e417c"
+    },
+    "skills/deliver-work/references/claude-code-worker-selection.md": {
+      "bytes": 6219,
+      "words": 882,
+      "sha256": "4dd01ba1f674c5b8f3129b374208e130fd6e290f34305f7f0f1f10f7ca63328b"
+    },
+    "skills/deliver-work/references/codex-model-selection.md": {
+      "bytes": 1758,
+      "words": 228,
+      "sha256": "0c4cf46224e3d625b45e674fd087afff03782e906376ccc24067bd1d93f7aaa8"
+    },
+    "skills/deliver-work/references/codex-reviewer-selection.md": {
+      "bytes": 1103,
+      "words": 163,
+      "sha256": "89868d7a7a4385f0abb24f8387acd2521613082f98f92384a5d7387cc7f90e57"
+    },
+    "skills/deliver-work/references/codex-worker-selection.md": {
+      "bytes": 7277,
+      "words": 997,
+      "sha256": "2c7e908bd0db0b7868493dc40da78e38e8ab0f08f7fc21b373790d50f385a1d4"
+    },
+    "skills/deliver-work/references/execution-reporting.md": {
+      "bytes": 7440,
+      "words": 1069,
+      "sha256": "77d83c7008a89da6aa0a926906632533e9fbba54b22d63a09a6e7855c9ef0e63"
+    },
+    "skills/deliver-work/references/implementation-selection.md": {
+      "bytes": 4144,
+      "words": 548,
+      "sha256": "6834e7045e35198871920380fc9d2d8203048f7fdcbd28cdbefd109ce1d8165e"
+    },
+    "skills/deliver-work/references/model-selection.md": {
+      "bytes": 3477,
+      "words": 464,
+      "sha256": "980f6632cb7200393ddc772069be5332c0e95c0daff2b6cee4277eb7f203a14b"
+    },
+    "skills/deliver-work/references/resumption.md": {
+      "bytes": 9188,
+      "words": 1268,
+      "sha256": "ce37df72500065a4151e459ea1ee22edb75018d5891f2fb4b32d78aab17c3a79"
+    },
+    "skills/deliver-work/references/review-cycles.md": {
+      "bytes": 11615,
+      "words": 1541,
+      "sha256": "da5433c52f172abd5bef8e00694474734a2b6c74a52aa46d3bf4950756c12aa3"
+    },
+    "skills/deliver-work/references/review-selection.md": {
+      "bytes": 3565,
+      "words": 454,
+      "sha256": "9f69c4f1a5d39defc2f1ad819283d90d20b25d46de58c1d01bad693aca052c51"
+    },
+    "skills/deliver-work/references/task-planning.md": {
+      "bytes": 8597,
+      "words": 1141,
+      "sha256": "6fcb3a5cf735f87686332bb732d128e37eb597588da58c463027bc431c1dc31b"
+    },
+    "skills/deliver-work/references/work-assessment.md": {
+      "bytes": 6249,
+      "words": 856,
+      "sha256": "d194d1a05794598926461884c08ebf772c5a99c2290483a578b7549cb29cb7e7"
+    },
+    "skills/deliver-work/references/worker-briefs.md": {
+      "bytes": 3427,
+      "words": 453,
+      "sha256": "cdb2fc5eb858af4aea2dfe0ce78f9a24aa58042007ac4e94579f34e8e5cfbfbd"
+    },
+    "skills/deliver-work/references/worker-continuation.md": {
+      "bytes": 3860,
+      "words": 515,
+      "sha256": "9bc3050d5bb476a780649f1d31df5e618e581672414cd619ec4b4335fe3e30b2"
+    },
+    "skills/plan-work/SKILL.md": {
+      "bytes": 8040,
+      "words": 1036,
+      "sha256": "b551083ccc7b6b26c812dfb7eb1a036e738824b2154eaaee783c0157fbdde166"
+    },
+    "skills/tdd/SKILL.md": {
+      "bytes": 3478,
+      "words": 522,
+      "sha256": "4ad8acc848b889169040b7f02fea8435187f325f36663a2b9cca6a1aa6f82926"
+    },
+    "skills/unslop/SKILL.md": {
+      "bytes": 8022,
+      "words": 1168,
+      "sha256": "05f22133d91c539803936b2d1c7617b87030d73cebf547ee8544d2a2c5f5fc4c"
+    },
+    "skills/worker-with-astra/SKILL.md": {
+      "bytes": 6018,
+      "words": 837,
+      "sha256": "ffbe1a275b9db503e0210e3deb4fed9dbcdb18a5d83fab57a8b26457d182872f"
+    },
+    "skills/worker-with-astra/references/codex.md": {
+      "bytes": 4879,
+      "words": 692,
+      "sha256": "a9fe68fdd312276b430397706cfeb86234b20bd5439488a3f56e866c813e58d7"
+    },
+    "skills/worker-with-astra/references/worker-protocol.md": {
+      "bytes": 4411,
+      "words": 609,
+      "sha256": "ff1cac609aeac44fe042135382fbac33b3691fc0d49c16e3937aa0b31c170248"
+    },
+    "skills/worker-with-astra/references/worker-tiers.md": {
+      "bytes": 1617,
+      "words": 235,
+      "sha256": "07cd430b39c00a90c8f802e739dde7ff993023cae892db5c949a30f7341cda7f"
+    },
+    "skills/worker-with-fable/SKILL.md": {
+      "bytes": 6608,
+      "words": 923,
+      "sha256": "e73ea9edf651dc85ae3cf7217e80cbce02ba7fce90211146e52aab7235ae3f1f"
+    },
+    "skills/worker-with-fable/references/claude-code.md": {
+      "bytes": 6898,
+      "words": 1049,
+      "sha256": "47fdf5a5c3ac00ce91d7ced30dcf687761660fc453395299bbadfc81ca2dce73"
+    },
+    "skills/worker-with-fable/references/worker-protocol.md": {
+      "bytes": 4611,
+      "words": 643,
+      "sha256": "cc9734ac2f0dab7722c8733892118397f94b397b2614be3d799c94716beefe1f"
+    },
+    "skills/worker-with-fable/references/worker-tiers.md": {
+      "bytes": 4629,
+      "words": 702,
+      "sha256": "04962116f947a994904d38a2f4c8876139642649cb91e2949ca1ea171e834354"
+    }
+  },
+  "exclusions": "Fixed inputs, JSON keys, bookkeeping, and host/system/tool text; see raw response for external reads",
+  "limitations": "Source revision is caller supplied; inspect Git state independently. Proposed child reads and simulated messages are not native host measurements."
+}
