@@ -4,6 +4,8 @@ For PR feedback, check failures, retry accounting and supervision boundaries, us
 `tests/fixtures/workflow-evaluation/supervision-cases.md`. Withhold
 `supervision-graders.md` and recorded responses from evaluated contexts. Keep
 simulated watching, actual provider effects and live session ownership distinct.
+After scoring, read `supervision-observations.md` in that fixture directory for
+the initial trial, supplemental case and evidence limits.
 
 For interrupted delivery, artifact identity and worker replacement, use
 `tests/fixtures/workflow-evaluation/resumption-cases.md`. Withhold
