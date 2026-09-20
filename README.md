@@ -89,7 +89,12 @@ Reusable SDLC workflows also include:
   inspection never replaces its two independent delivery reviews. Shared
   [task planning](skills/deliver-work/references/task-planning.md) maps acceptance
   to verifiable tasks, distinguishes input dependencies from coordination, and
-  checks contracts, resources and ownership before parallel dispatch. Its task
+  checks contracts, resources and ownership before parallel dispatch.
+  [Review cycles](skills/deliver-work/references/review-cycles.md) selects task
+  reviews at dependency or risk boundaries, retains finding and correction
+  history, and honors explicit round, time and spending limits. Productive
+  rounds have no universal cap; exhausted limits leave unmet gates pending.
+  Task reviews never replace the two final independent reviews. Its task
   updates and final handoff include the chosen strategy and reason, decision
   contributors, model roles and observed settings, active and distinct agent
   counts, planned additional agents, and advisor consultations. See

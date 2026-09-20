@@ -1,5 +1,10 @@
 # Evaluate planning behavior
 
+For explicit future delivery limits and planning/publication/deferred boundaries,
+use `tests/fixtures/workflow-evaluation/review-cycles-cases.md`, especially RC16.
+Withhold `review-cycles-graders.md`, observations and prior returns. A published
+limit is a future requirement, not consumed budget or authority to implement.
+
 For shared task boundaries, coverage, dependency meanings and planning authority,
 use `tests/fixtures/workflow-evaluation/task-planning-cases.md`. Withhold the
 separate `task-planning-graders.md`, observations and prior returns. Planning

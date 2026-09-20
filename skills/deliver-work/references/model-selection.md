@@ -130,6 +130,12 @@ and history without replaying transcripts. Advice never expands authority.
 
 ## Review independently and verify tests
 
+For task-review selection, round/finding history, fix verification and explicit
+limits, read [review cycles](review-cycles.md). Its round accounting is separate
+from worker attempts and this policy's host-specific correction thresholds.
+Apply the reviewer suitability and impact floors here to task and fix reviews
+as well as final review; a small fix does not establish low impact.
+
 Run separate Standards and Specification contexts on one frozen comparison,
 with raw axis-specific requirements, relevant code/consumers, and evidence.
 Do not give initial reviewers implementer/advisor approval narratives, other
@@ -161,6 +167,11 @@ authority. Evidence must cover the candidate being merged, followed by required
 merged-revision checks and operational/human handoffs.
 
 ## Reassess and report
+
+Use the review-cycle diagnosis when a blocker survives a correction or new
+blockers reveal misunderstood behavior. Keep findings and rounds in existing
+evidence; read the host adapter below for worker escalation, without resetting
+its allowance when the reviewer, finding wording or candidate changes.
 
 Reassess on material scope changes, disproved assumptions, repeated failure
 without new progress, or blocking findings exposing misunderstood behavior.

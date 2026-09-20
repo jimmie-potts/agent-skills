@@ -69,6 +69,9 @@ promotion that creates a fresh worker adds one distinct agent. Call a replacemen
 a promotion only when the recorded settings establish an increase. State known
 correction and effort-increase counts explicitly; keep missing history unknown.
 Preserve failure history and the task's effort-increase history across handoffs.
+Keep [review-round and finding history](review-cycles.md) in Evidence, with any
+explicit limit's scope, consumption and accounting gaps. Two perspectives on
+one candidate do not double the round count; corrections are counted separately.
 For a new advisory attempt, report required consultations as still outstanding
 until evidenced, and pause the work they govern under the pairing protocol.
 Include exposed attributable usage in Evidence, retaining failed attempts and keeping subscription

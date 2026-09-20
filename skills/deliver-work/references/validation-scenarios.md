@@ -1,5 +1,12 @@
 # Delivery skill evaluation scenarios
 
+For conditional task reviews, stable findings, correction diagnosis and explicit
+limits, use `tests/fixtures/workflow-evaluation/review-cycles-cases.md`. Withhold
+`review-cycles-graders.md`, observations and other returns from two fresh
+independent read-only evaluations. Require every variant to pass with no
+gate-waiver or authority violations. Keep simulation distinct from native host
+quality, actual budget enforcement and paid benchmarks.
+
 For task boundaries, acceptance coverage, dependencies and safe dispatch, use
 `tests/fixtures/workflow-evaluation/task-planning-cases.md`. Withhold
 `task-planning-graders.md` and recorded responses from evaluated contexts.

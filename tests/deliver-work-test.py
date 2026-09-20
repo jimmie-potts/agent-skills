@@ -59,7 +59,8 @@ class DeliverWorkStructureTest(unittest.TestCase):
         for resource in ('references/work-assessment.md',
                          'references/resumption.md',
                          'references/pr-supervision.md',
-                         'references/task-planning.md'):
+                         'references/task-planning.md',
+                         'references/review-cycles.md'):
             self.assertTrue((SKILL / resource).is_file())
             self.assertIn(resource, links)
 

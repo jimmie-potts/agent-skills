@@ -34,6 +34,12 @@ the record link in Plan/spec or Evidence. Keep execution counts in the existing
 Strategy, Models, Agents and Consultations fields. Do not demand a second copy
 of every field in each response.
 
+For a review/correction cycle or explicit delivery budget, retain the
+[review-cycle record](review-cycles.md) in Progress and evidence and Execution
+history: round identities/comparisons, stable findings and correction outcomes,
+dispositions, limits, consumed allowance and unknown or in-flight accounting.
+Reconcile these before dependent work; a resumed session gets no fresh allowance.
+
 ## Exchange artifacts within existing authority
 
 Keep small briefs, patches and reports inline. For substantial artifacts, use

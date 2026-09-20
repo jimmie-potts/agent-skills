@@ -107,7 +107,9 @@ when changed settings require a fresh worker. Keep model promotion distinct from
 same-worker correction and restore mandatory consultations for a new pairing.
 
 This threshold governs investigation/implementation worker configurations, not
-the number of independent delivery review rounds. Reviewer selection remains
+the number of independent delivery review rounds. Use the shared
+[review-cycle contract](review-cycles.md) for finding continuity and explicit
+limits. Reviewer selection remains
 separate, and no retry allowance waives an acceptance or review gate. Claude's
 first-failed-bounded-attempt Sonnet-to-Opus policy remains in its own adapter.
 

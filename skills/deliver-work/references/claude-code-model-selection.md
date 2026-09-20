@@ -113,6 +113,10 @@ as a changed approach. High-rated rows and explicit requirements take priority.
 
 ## Map impact to independent reviewers
 
+Worker attempt thresholds are separate from review-round accounting. Use the
+shared [review-cycle contract](review-cycles.md) for finding continuity,
+productive rounds and explicit limits; worker replacement resets none of them.
+
 Use this mapping for both Standards and Specification, independently of the
 implementation row. Complexity or uncertainty may warrant stronger settings.
 
