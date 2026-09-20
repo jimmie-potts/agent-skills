@@ -4,6 +4,8 @@ For explicit future delivery limits and planning/publication/deferred boundaries
 use `tests/fixtures/workflow-evaluation/review-cycles-cases.md`, especially RC16.
 Withhold `review-cycles-graders.md`, observations and prior returns. A published
 limit is a future requirement, not consumed budget or authority to implement.
+Keep both skills' evaluation-only validation references out of evaluated contexts;
+read `review-cycles-observations.md` in that fixture directory only after scoring.
 
 For shared task boundaries, coverage, dependency meanings and planning authority,
 use `tests/fixtures/workflow-evaluation/task-planning-cases.md`. Withhold the
