@@ -43,6 +43,13 @@ discovered package's `references/documentation.md` for its planning checkpoint.
 Keep project paths and commands in that policy. An unavailable required resource
 leaves its dependent synchronization pending; continue independent planning.
 
+When the user or project sets review-round, time or spending limits, read the
+discovered package's `references/review-cycles.md` section on explicit limits.
+Carry the limit's scope, proposed observable accounting and stop/handoff evidence
+into acceptance and delivery requirements. Distinguish review rounds from worker
+retry budgets. Keep unknown accounting visible; do not invent a default allowance.
+This records future delivery constraints without starting delivery or agents.
+
 ## Settle decisions and define items
 
 For material unresolved decisions, compose grill-with-docs using the available

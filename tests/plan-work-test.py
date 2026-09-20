@@ -43,7 +43,8 @@ class PlanWorkStructureTest(unittest.TestCase):
     def test_canonical_shared_dependencies(self):
         for resource in ('references/work-assessment.md',
                          'references/model-selection.md',
-                         'references/task-planning.md'):
+                         'references/task-planning.md',
+                         'references/review-cycles.md'):
             with self.subTest(resource=resource):
                 self.assertTrue((ROOT / 'skills/deliver-work' / resource).is_file())
                 self.assertFalse((SKILL / resource).exists())

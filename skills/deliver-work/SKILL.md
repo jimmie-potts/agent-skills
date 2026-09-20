@@ -80,6 +80,11 @@ reviews and operational handoffs. Preserve the project's mandatory gates.
 Before decomposing work, ordering tasks or dispatching, read
 [task planning and dispatch](references/task-planning.md). Keep its compact
 definitions and dependency evidence in the existing task record.
+Before selecting task reviews, starting a review/correction cycle, or working
+under an explicit round, time or spend limit, read
+[review cycles and limits](references/review-cycles.md). Record selected task
+boundaries and limit accounting before dependent work. Task review does not
+replace either final independent review; a limit cannot waive a delivery gate.
 Before selecting implementation or reviewers, read
 [model and strategy selection](references/model-selection.md). Choose settings
 per role, preserve coordinator ownership, and report capability limits. Compose
@@ -182,6 +187,9 @@ pass; preserve the user's local-only, ready-PR-only or explicit watch limits.
    Disputed findings need evidence and reviewer reassessment. Read every page of
    provider reviews, change requests and discussion threads. Resolve blockers
    through fixes or accepted dispositions, never dismissal just to enable merge.
+   Use the review-cycle contract to preserve finding identity, diagnose failed
+   corrections, verify fixes and stop at explicit limits. Both perspectives on
+   the frozen comparison belong to one review round.
 4. Enumerate required hosted jobs from candidate CI configuration and protection
    rules, including matrix expansions. Require successful applicable results for
    this PR's current head. Missing, pending, failed, skipped or cancelled required

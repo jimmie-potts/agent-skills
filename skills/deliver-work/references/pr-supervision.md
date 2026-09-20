@@ -20,6 +20,11 @@ Keep these facts in that same record:
 - each retry key, allowance, attempts, outcome and provider identifiers;
 - watcher or polling owner, session state, last observation and unknown history.
 
+For review feedback and correction cycles, read [review cycles](review-cycles.md).
+Carry its stable finding history, frozen comparisons and explicit limit accounting
+in this record. Review rounds, worker corrections and check reruns have separate
+counts; the check-rerun fallback below does not cap review rounds.
+
 Read all pages and required sources before declaring feedback clear. Pending,
 draft or otherwise unpublished reviews and their comments must remain eligible
 for later publication; do not act on them or mark them processed. Deduplicate
