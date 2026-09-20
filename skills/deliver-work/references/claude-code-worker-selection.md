@@ -65,7 +65,7 @@ workflow selects a new attempt; never pass a fresh spawn off as a resume or
 replace the advisor. Each new pairing must establish its prerequisites and
 retain both mandatory consultations and coordinator-owned writes.
 
-Use the [shared attempt-handoff contract](implementation-selection.md) for replacement
+Use the [shared attempt-handoff contract](worker-continuation.md) for replacement
 and the pairing adapter for host mechanics. If the diagnosed capability gap
 persists at Opus, return the unresolved work and evidence to the original Fable
 coordinator at its existing settings; do not spawn Fable as an implementation

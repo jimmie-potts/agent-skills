@@ -10,7 +10,7 @@ returned identifier. Use `list_agents` when state is unclear. Use
 worker needing a correction or answer; a queued message does not resume an
 idle worker. A correction keeps the same worker and settings.
 
-When reassessment selects a new attempt, follow the [attempt-handoff contract](implementation-selection.md). Stop an active old assignment with `interrupt_agent` and verify its
+When reassessment selects a new attempt, follow the [attempt-handoff contract](worker-continuation.md). Stop an active old assignment with `interrupt_agent` and verify its
 state before spawning a replacement; a completed assignment is already stopped.
 Start a fresh context with supported selected settings and the complete handoff.
 A missing stop/resumption capability blocks its affected operation. Never call
@@ -82,7 +82,7 @@ after the task's effort increase was already used.
 
 A new independent task gets a fresh cheaper-start assessment; rephrasing,
 resuming, or replacing workers on unresolved work preserves failure history.
-Use the [attempt-handoff contract](implementation-selection.md) and the continuation mechanics above
+Use the [attempt-handoff contract](worker-continuation.md) and the continuation mechanics above
 when changed settings require a fresh worker. Keep model promotion distinct from
 same-worker correction and restore mandatory consultations for a new pairing.
 
