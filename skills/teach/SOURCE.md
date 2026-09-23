@@ -13,7 +13,7 @@ The upstream explicit-invocation setting moves from Cursor-only frontmatter to
 `agents/openai.yaml`. The local workflow retains the composition of `how`,
 `why`, and `unslop`, along with progressive teaching and selective visuals. It
 removes automatic parallel execution and tool-specific image instructions.
-Delegation now requires a separate explicit user request.
+Delegation follows the host's delegation policy.
 
 An authority boundary makes companion skill use read-only unless the original
 task grants broader access. The visual guidance follows the host's rule that a

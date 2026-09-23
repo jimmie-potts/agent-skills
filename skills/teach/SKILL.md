@@ -27,8 +27,8 @@ authority.
 3. Load and follow `how` to trace what the implementation does. Load and follow
    `why` when historical intent or constraints matter. For a small question,
    one may be enough. Preserve `why`'s confidence language and source gaps.
-4. Investigate directly unless the user separately requests delegation or
-   parallel reviewers. Do not repeat the same exploration after the companion
+4. Investigate directly unless parallel reviewers are available and the host's
+   policy permits delegation for this request. Do not repeat the same exploration after the companion
    skills have established it.
 5. Start with the smallest complete explanation. Name the thing in ordinary
    technical language, connect it to this codebase, then walk through its

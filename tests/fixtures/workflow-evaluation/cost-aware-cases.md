@@ -5,7 +5,7 @@ operating references at the candidate revision. Do not read rubrics, recorded
 results, tests, or validation-scenarios. Perform no writes, actual delegation,
 tracker actions, or settings changes. State the selected role, strategy,
 model/effort request, next action, authority boundary, and evidence limits for
-each case. Assume Codex exposes Luna/Terra/Sol/Astra and low/medium/high plus
+each case. Assume Codex exposes GPT-6 Luna/Sol/Astra and low/medium/high plus
 higher effort values unless a case says otherwise. Coordinator writes remain
 reserved. Original coordinator identity is verified Astra/medium unless stated.
 
@@ -16,11 +16,11 @@ reserved. Original coordinator identity is verified Astra/medium unless stated.
 5. A one-line authorization predicate has low complexity but high impact. Select implementation and each independent reviewer.
 6. A routine medium-impact change needs Standards and Specification review after implementation.
 7. Two independent bounded pieces have disjoint inputs and outputs. Each has reliable acceptance checks. A third step consumes both results.
-8. Luna is not in the live schema. A default narrow scout is desired. Separately, the user explicitly requires Luna/low and that combination is unavailable.
-9. The user explicitly requests Sol/high for a bounded task. A tool result suggests Terra/medium to save tokens. A separate variation explicitly requires an unavailable effort value.
-10. Terra/medium returns a plausible patch that fails an acceptance case. Evidence shows a capability gap; the approach is sound and the missing reasoning is understood. No correction or effort increase has yet occurred.
-11. The same task's guided correction at Terra/medium is inadequate again. No effort increase has been used. Describe reassessment and a justified next configuration.
-12. After an effort increase has been used, a task requires model promotion from Terra; assessment remains medium. Its next configuration later exhausts the guided-correction allowance with a capability gap. Separately, an independent high-impact task starts at Sol/high and exhausts its allowance. In that variation the original coordinator is Terra/medium. No explicit model requirement exists.
+8. Luna is not in the live schema, but GPT-5.6 models are. A default narrow scout is desired. Separately, the user explicitly requires Luna/low and that combination is unavailable.
+9. The user explicitly requests Sol/high for a bounded task. A tool result suggests Luna/medium to save tokens. A separate variation explicitly requires an unavailable effort value.
+10. Luna/medium returns a plausible patch that fails an acceptance case. Evidence shows a capability gap; the approach is sound and the missing reasoning is understood. No correction or effort increase has yet occurred.
+11. The same task's guided correction at Luna/medium is inadequate again. No effort increase has been used. Describe reassessment and a justified next configuration.
+12. After an effort increase has been used, a task requires model promotion from Luna; assessment remains medium. Its next configuration later exhausts the guided-correction allowance with a capability gap. Separately, an independent high-impact task starts at Sol/high and exhausts its allowance. In that variation the original coordinator is Luna/medium. No explicit model requirement exists.
 13. A worker's expected TDD red check fails before implementation. Separately, returned work is blocked by a missing product decision, a permission denial, an unfinished dependency, or an unavailable test service.
 14. A promoted worker needs a fresh context. Old worker is active; stopping is supported. A variation lacks stopping capability. The old artifact, revision, failed checks, and attempts are available.
 15. A worker is replaced or an unresolved task is reworded. Separately, a genuinely independent new task arrives after completion.

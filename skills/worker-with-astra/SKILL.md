@@ -1,11 +1,11 @@
 ---
 name: worker-with-astra
-description: Delegate a task to a Terra or Sol worker with the original Astra agent as its advisor in Codex. Use when explicitly invoked, requested by the user, or deliberately composed by deliver-work or plan-work after assessment; do not select for ordinary delegation or on hosts without Codex collaboration tools.
+description: Delegate a task to a Luna or Sol worker with the original Astra agent as its advisor in Codex. Use when explicitly invoked, requested by the user, or deliberately composed by deliver-work or plan-work after assessment; do not select for ordinary delegation or on hosts without Codex collaboration tools.
 ---
 
 # Worker with Astra
 
-Keep the original Astra agent as coordinator and advisor. Give one Terra or Sol
+Keep the original Astra agent as coordinator and advisor. Give one Luna or Sol
 worker responsibility for implementation and validation within the user's task.
 The worker consults that same Astra agent rather than creating a separate
 advisor.
@@ -21,7 +21,7 @@ worker investigates and proposes, and neither agent implements, publishes, or
 updates a tracker.
 
 Verify from host-provided runtime evidence that the current coordinator is
-`gpt-6-astra`, that the selected Terra or Sol model can be selected, and that
+`gpt-6-astra`, that the selected Luna or Sol model can be selected, and that
 the worker can communicate with its parent. Do not infer identity from a
 persona prompt or from the list of models available for spawning. If identity
 or capabilities cannot be established, report the gap before delegating. Do not
@@ -30,8 +30,8 @@ without runtime evidence.
 
 For standalone selection or the selected tier's decision boundary, read
 [worker tiers](references/worker-tiers.md).
-Preserve a composing workflow's stronger supported selection. Luna is outside
-this pairing; use ordinary scouting for its bounded read-only work.
+Preserve a composing workflow's stronger supported selection. Narrow read-only
+scouting at Luna/low stays outside this pairing.
 
 For Codex collaboration tools, read [the Codex adapter](references/codex.md)
 before spawning or messaging. On another host, use only verified equivalent

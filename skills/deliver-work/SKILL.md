@@ -235,8 +235,10 @@ scope. For an ambiguous or partial effect, suspend dependent mutations and
 reconcile authoritative state before retrying. A stale or delayed read does not
 prove absence. Read [recovery](references/recovery.md) for these cases.
 
-At substantive checkpoints, handoff and final response, use these complete
-fields, including the execution summary even when no workers were used.
+At substantive checkpoints, handoff and final response, open with one or two
+plain sentences on what is delivered, what is blocked and what happens next.
+Then use these complete fields, including the execution summary even when no
+workers were used.
 Routine updates and immediate change/blocker notices use the delta rule above. Write
 `unknown`, `none`, or `not applicable` where appropriate; never imply that an
 unverified gate passed:
@@ -268,8 +270,8 @@ unverified gate passed:
 - Next checkpoint: next action and its completion evidence.
 - Blocker: concrete blocker and owner, or `none`.
 
-Keep each field short; omit narrative, transcript replay, and restated
-instructions. Preserve required evidence even when it needs more than one line.
+Keep each field short; omit transcript replay and restated instructions.
+Preserve required evidence even when it needs more than one line.
 Monitoring another coordinator is read-only. Use `unslop` for substantial style issues in user-facing
 prose while preserving artifacts, authoritative text, and evidence.
 

@@ -33,7 +33,7 @@ Enter explore mode. Think deeply. Visualize freely. Follow the conversation wher
 
 - **Curious, not prescriptive** - Ask questions that emerge naturally, don't follow a script
 - **Open threads, not interrogations** - Surface multiple interesting directions and let the user follow what resonates. Don't funnel them through a single path of questions.
-- **Visual** - Use ASCII diagrams liberally when they'd help clarify thinking
+- **Visual** - Draw an ASCII diagram when a structure, flow, or comparison is clearer seen than read
 - **Adaptive** - Follow interesting threads, pivot when new information emerges
 - **Patient** - Don't rush to conclusions, let the shape of the problem emerge
 - **Grounded** - Explore the actual codebase when relevant, don't just theorize
@@ -87,22 +87,7 @@ Depending on what the user brings, you might:
 - Recommend a path (if asked)
 
 **Visualize**
-```
-+------------------------------------------+
-|     Use ASCII diagrams liberally         |
-+------------------------------------------+
-|                                          |
-|   [State A] -------> [State B]           |
-|       |                                  |
-|       v                                  |
-|   [State C]                              |
-|                                          |
-|   System diagrams, state machines,       |
-|   data flows, architecture sketches,     |
-|   dependency graphs, comparison tables   |
-|                                          |
-+------------------------------------------+
-```
+- System diagrams, state machines, data flows, architecture sketches, dependency graphs, and comparison tables, when one clarifies the discussion
 
 **Draw with plain ASCII only** — borders `+` `-` `|`, arrows `-->` `<--` `^` `v`, markers `*` `x`.
 Unicode diagram glyphs can render at different widths across terminals, fonts, and locales, so padded boxes and aligned tables can drift. Keep every diagram character ASCII.
@@ -200,105 +185,14 @@ If the user mentions a change or you detect one is relevant:
 
 ## Handling Different Entry Points
 
-**User brings a vague idea:**
-```
-User: I'm thinking about adding real-time collaboration
+Match the opening to where the user is:
 
-You: Real-time collab is a big space. Let me think about this...
+- **A vague idea** - map the space and its tradeoffs, then ask where their interest lies.
+- **A specific problem** - read the relevant code first and show what you found before proposing where the trouble is.
+- **Stuck mid-implementation** - read the change artifacts, relate the blocker to the current task, and offer to update the design or add a spike task.
+- **Comparing options** - ask for the constraints that decide the choice, then recommend one and say what would change the recommendation.
 
-      COLLABORATION SPECTRUM
-      ============================================
-
-      Awareness          Coordination         Sync
-          |                   |                 |
-          v                   v                 v
-      +--------+         +--------+        +--------+
-      |Presence|         |Cursors |        |  CRDT  |
-      |  "3    |         | Multi  |        |Conflict|
-      |online" |         | select |        |  free  |
-      +--------+         +--------+        +--------+
-          |                   |                 |
-       trivial            moderate           complex
-
-      Where's your head at?
-```
-
-**User brings a specific problem:**
-```
-User: The auth system is a mess
-
-You: [reads codebase]
-
-     +---------------------------------------------+
-     |              CURRENT AUTH FLOW              |
-     +---------------------------------------------+
-                        |
-          +-------------+-------------+
-          v             v             v
-     +---------+  +---------+  +---------+
-     | Google  |  |  GitHub |  |  Email  |
-     |  OAuth  |  |  OAuth  |  |  Magic  |
-     +----+----+  +----+----+  +----+----+
-          |             |             |
-          +-------------+-------------+
-                        v
-                  +-----------+
-                  |  Session  |
-                  +-----+-----+
-                        |
-                        v
-                  +-----------+
-                  |   Perms   |
-                  +-----------+
-
-     I see three tangles. Which one's burning?
-```
-
-**User is stuck mid-implementation:**
-```
-User: openspec-explore add-auth-system
-      The OAuth integration is more complex than expected
-
-You: [reads change artifacts]
-
-     You're on task 4: "Implement OAuth flow"
-
-     Let me trace what's involved...
-
-     [draws diagram, explores options, suggests paths]
-
-     Want to update the design to reflect this?
-     Or add a spike task to investigate?
-```
-
-**User wants to compare options:**
-```
-User: Should we use Postgres or SQLite?
-
-You: Generic answer is boring. What's the context?
-
-User: A CLI tool that tracks local dev environments
-
-You: That changes everything.
-
-     +-------------------------------------------------+
-     |          CLI TOOL DATA STORAGE                  |
-     +-------------------------------------------------+
-
-     Key constraints:
-     - No daemon running
-     - Must work offline
-     - Single user
-
-                  SQLite          Postgres
-     Deployment   embedded        needs server
-     Offline      yes             no
-     Single file  yes             no
-
-     SQLite. Not even close.
-
-     Unless... is there a sync component?
-```
+The example under Planning a Change shows the grounded style.
 
 ---
 

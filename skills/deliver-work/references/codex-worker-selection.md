@@ -30,16 +30,18 @@ requirements. These are task-suitability hypotheses, not measured cost or
 quality results. Verify current model identifiers, descriptions, effort enums,
 and context controls from the live host schema. A supported request may be
 attempted without a prior recorded spawn; availability is not runtime identity.
-A rejected default permits a disclosed suitable fallback under shared policy;
-an unavailable explicitly required model/effort blocks that selection.
+A rejected default permits a disclosed suitable fallback under shared policy,
+limited to the GPT-6 models named here or the original coordinator, never a
+GPT-5.x model; an unavailable explicitly required model/effort blocks that
+selection.
 
 | Work evidence | Worker default | Strategy and limits |
 | --- | --- | --- |
-| Narrow read-only lookup, extraction, classification, structured transformation | Luna (`gpt-5.6-luna`) at `low` | Assigned scout; parallel only for independent questions; no advisory loop |
-| Bounded investigation or implementation; low/medium complexity and impact, reliable acceptance checks, no unresolved material requirement | Terra (`gpt-5.6-terra`) at `medium` | Assigned worker, or worker-with-astra when approach/blocker advice helps |
-| Open-ended implementation requiring additional design judgment | Sol (`gpt-5.6-sol`) at `medium` | Assigned worker or advisory pairing at separable decision points |
+| Narrow read-only lookup, extraction, classification, structured transformation | Luna (`gpt-6-luna`) at `low` | Assigned scout; parallel only for independent questions; no advisory loop |
+| Bounded investigation or implementation; low/medium complexity and impact, reliable acceptance checks, no unresolved material requirement | Luna (`gpt-6-luna`) at `medium` | Assigned worker, or worker-with-astra when approach/blocker advice helps |
+| Open-ended implementation requiring additional design judgment | Sol (`gpt-6-sol`) at `medium` | Assigned worker or advisory pairing at separable decision points |
 | High complexity or impact | Sol at `high`, or original coordinator | Stronger implementation floor; direct coordination when difficult reasoning is continuous |
-| High uncertainty or missing material facts | Investigate before dependent implementation | Luna for a narrow fact lookup; Terra for bounded read-only investigation with checks; Sol when open-ended reasoning warrants it; user owns product decisions |
+| High uncertainty or missing material facts | Investigate before dependent implementation | Luna at `low` for a narrow fact lookup and at `medium` for bounded read-only investigation with checks; Sol when open-ended reasoning warrants it; user owns product decisions |
 | Many independent pieces | Select each piece using the rows above | Parallel workers only where pieces are independent; coordinator integrates |
 
 Scouting is a read-only role, orchestration is the coordinator's activity, and
@@ -48,7 +50,7 @@ work or implementation into advice loops. Keep leaf workers from spawning
 further agents and respect the current host concurrency limit. Direct work by
 the original coordinator remains the baseline for trivial or continuously hard
 work. Preserve its settings; Astra (`gpt-6-astra`) is not spawned as an
-implementation worker. Luna is outside worker-with-astra's supported tiers.
+implementation worker. Luna/low scouting is outside worker-with-astra.
 
 ## Bound corrections and promotion
 
@@ -63,7 +65,7 @@ their own resolution, not automatic model promotion.
 
 When capability is the diagnosed gap, permit one effort increase up to `high`
 for an otherwise sound approach that needs deeper reasoning. Otherwise promote
-Luna to Terra to Sol, skipping rungs when the assessment justifies it. Start a
+Luna to Sol, or start at Sol when the assessment justifies it. Start a
 promoted model at `medium` unless the assessment requires `high`; preserve any
 stronger explicit requirement. The one effort increase applies per unresolved
 task, not again at every new worker. After it is used, further capability gaps
