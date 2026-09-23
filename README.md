@@ -41,7 +41,7 @@ The catalog currently contains:
   functional delivery-slice workflow;
 - [`research`](skills/research/SKILL.md), source-backed investigation with
   claim-level citations;
-- [`worker-with-astra`](skills/worker-with-astra/SKILL.md), a Terra or Sol worker with the
+- [`worker-with-astra`](skills/worker-with-astra/SKILL.md), a Luna or Sol worker with the
   original Astra agent providing approach feedback, blocker advice, and final
   review through a verified host adapter;
 - [`teach`](skills/teach/SKILL.md), a layered code and design lesson workflow;
@@ -430,8 +430,9 @@ workers.
 ## Codex worker routing
 
 The [Codex selection adapter](skills/deliver-work/references/codex-model-selection.md)
-uses Luna/low for narrow read-only work, Terra/medium for bounded investigation
-or implementation with reliable checks, and Sol/medium or high for harder work.
+uses GPT-6 models: Luna/low for narrow read-only work, Luna/medium for bounded
+investigation or implementation with reliable checks, and Sol/medium or high
+for harder work.
 Verify live host support and preserve explicit stronger settings. Strategy is a
 separate choice: direct work, one assigned worker, independent parallel workers,
 or worker-with-astra advice at useful checkpoints.
@@ -439,7 +440,7 @@ or worker-with-astra advice at useful checkpoints.
 An initial result plus one guided correction at unchanged settings triggers
 reassessment if still inadequate. Diagnose missing facts, authority, or broken
 infrastructure before promoting capability. These are bounded defaults, not
-measured savings. Routine independent reviewers remain Terra/high. Claude keeps
+measured savings. Routine independent reviewers use Luna/high. Claude keeps
 its own first-failed-attempt escalation and effort-inheritance rules.
 
 ## Shared and domain skill ownership

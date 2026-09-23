@@ -4,7 +4,7 @@ Read when selecting task, fix, or final reviewers, after
 [the common policy](model-selection.md). Load only the selected host's reviewer
 adapter. Implementation settings and retry thresholds do not select reviewers.
 
-Start from impact: capable mid-tier reviewers for low and medium impact, and the
+Start from impact: capable lower-cost reviewers for low and medium impact, and the
 strongest evidenced relevant reviewers at high reasoning for high impact, even
 with a tiny diff. Complexity and uncertainty may raise this floor. Inspect
 interactions, concurrency, invariants and recovery for interacting-state work;

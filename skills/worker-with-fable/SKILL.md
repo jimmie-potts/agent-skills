@@ -1,6 +1,6 @@
 ---
 name: worker-with-fable
-description: Delegate a task to a Haiku, Sonnet, or Opus worker with the original Fable agent as its advisor in Claude Code. Use when explicitly invoked, requested by the user, or deliberately composed by deliver-work or plan-work after assessment; do not select for ordinary delegation or on hosts without Claude Code subagent tools.
+description: Delegate a task to a Sonnet or Opus worker with the original Fable agent as its advisor in Claude Code. Use when explicitly invoked, requested by the user, or deliberately composed by deliver-work or plan-work after assessment; do not select for ordinary delegation or on hosts without Claude Code subagent tools.
 ---
 
 # Worker with Fable
@@ -100,8 +100,10 @@ actionable corrections to the same worker when needed and review the corrected
 result. If work is blocked, report the concrete blocker instead of treating it
 as done.
 
-Keep the coordinating turn active until the worker's result and consultations
-are resolved or a blocker requires user input. Fable gives the final user
+Fable owns the task until the worker's result and consultations are resolved
+or a blocker requires user input. While a background worker runs, continue
+independent work or end the turn; its return or consultation resumes Fable.
+Fable gives the final user
 response with the outcome, validation, requested and reported worker settings,
 and remaining limitations. Do not count this advisor review as an independent
 review required by another workflow.

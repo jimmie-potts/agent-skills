@@ -48,8 +48,6 @@ Continue to apply only when the underlying request authorizes implementation and
 
    From their description, derive a kebab-case name (e.g., "add user authentication" → `add-user-auth`).
 
-   **IMPORTANT**: Do NOT proceed without understanding what the user wants to build.
-
    If the request contains ambiguity that would materially affect scope, externally observable behavior, compatibility, or acceptance criteria, ask the user before creating the change. For minor details, make a reasonable assumption and record it in the planning artifacts.
 
 2. **Determine the workflow schema**
@@ -149,9 +147,7 @@ After completing all artifacts, summarize:
 - The schema defines what each artifact should contain - follow it
 - Read dependency artifacts for context before creating new ones
 - Use `template` as the structure for your output file - fill in its sections
-- **IMPORTANT**: `context` and `rules` are constraints for YOU, not content for the file
-  - Do NOT copy `<context>`, `<rules>`, `<project_context>` blocks into the artifact
-  - These guide what you write, but should never appear in the output
+- `context` and `rules` constrain what you write; they are not artifact content, so do not copy `<context>`, `<rules>`, or `<project_context>` blocks into the artifact
 
 **Guardrails**
 - Do not implement product code inside this planning substep. Preserve existing implementation authority when returning to the coordinator; direct planning-only requests stop at their requested boundary.

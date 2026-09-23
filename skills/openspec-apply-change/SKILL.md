@@ -164,10 +164,7 @@ All tasks complete! You can archive this change with `openspec-archive-change`.
 ### Issue Encountered
 <description of the issue>
 
-**Options:**
-1. <option 1>
-2. <option 2>
-3. Other approach
+**Options:** <the concrete options this issue allows, with your recommendation>
 
 What would you like to do?
 ```

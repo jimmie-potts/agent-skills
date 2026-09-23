@@ -167,6 +167,6 @@ to pass a proposal.
 ## Follow-on for Claude Code
 
 The same tasks, arms, and rules apply to worker-with-fable with Fable as A1,
-Sonnet and Opus as workers, and Haiku on T4. Run it only in a session that
+Sonnet and Opus as workers, and Sonnet on T4. Run it only in a session that
 exposes the resumption tool, because the pairing arms cannot complete without
 it.

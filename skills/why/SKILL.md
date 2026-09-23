@@ -59,8 +59,8 @@ Use these confidence levels:
 7. Separate direct findings, supported inferences, competing hypotheses, and
    unknowns. Calibrate every conclusion to the strongest evidence behind it.
 
-Run searches directly unless the user explicitly requests delegation or
-parallel investigation. If parallel reviewers are authorized, give each one a
+Run searches directly unless parallel reviewers are available and the host's
+policy permits delegation for this request. If parallel reviewers are used, give each one a
 distinct evidence category and keep their work read-only. Verify their
 citations before synthesis.
 

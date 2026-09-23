@@ -12,8 +12,8 @@
 The portable frontmatter keeps only `name` and `description`. Codex selection
 policy lives in `agents/openai.yaml`. The workflow preserves explain, placement,
 and critique modes but removes Cursor-specific model names, task APIs, and
-automatic delegation. Parallel exploration now requires explicit user authority
-and host support. The prompt templates were folded into concise, host-neutral
+automatic delegation. Parallel exploration requires host support and follows the
+host's delegation policy. The prompt templates were folded into concise, host-neutral
 instructions, so unused upstream reference files are not vendored.
 
 An authority boundary prevents an explanation request from silently fetching

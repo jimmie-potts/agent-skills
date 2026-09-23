@@ -23,3 +23,4 @@ Do not generate or vendor shared integrations in consuming product repositories.
 Authority adaptations also reconcile update/explore capture, grouped questioning,
 issue-linked selection, and archive warnings with consuming repository policy.
 Routine authorized steps do not add confirmation rounds.
+Emphasis on the scoping and context-copying rules is stated once, plainly.

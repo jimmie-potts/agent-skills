@@ -19,8 +19,8 @@ cannot be established.
 Subagent model precedence in Claude Code is the per-call `model` parameter,
 then the subagent definition's `model` field, then the
 `CLAUDE_CODE_SUBAGENT_MODEL` environment variable, then the coordinator's
-model. Always pass `model` explicitly with the selected tier alias (`haiku`,
-`sonnet`, or `opus`). Omitting it inherits Fable, which is not a pairing. Do
+model. Always pass `model` explicitly with the selected tier alias (`sonnet` or
+`opus`). Omitting it inherits Fable, which is not a pairing. Do
 not create or edit `.claude/agents/*.md` definitions or settings to obtain a
 model; report the gap if the parameter is unavailable. Do not use a skill's
 `context: fork` frontmatter for this pairing: it runs the skill content as a

@@ -40,9 +40,9 @@ implementation is available.
    instead of guessing.
 
 For a narrow question, investigate directly. For a broad subsystem, split the
-inspection into distinct angles only when parallel reviewers are available and
-the user has explicitly requested delegation or parallel work. Otherwise trace
-the slices sequentially.
+inspection into distinct read-only angles when parallel reviewers are
+available and the host's policy permits delegation for this request. Otherwise
+trace the slices sequentially.
 
 ## Placement workflow
 
