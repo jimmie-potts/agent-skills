@@ -45,5 +45,5 @@ Research returns evidence. It does not implement, publish, transition, comment,
 commit, merge, close, or change trackers, repositories, delivery records, or
 other external state.
 
-Apply the `unslop` skill to the narrative findings without changing quotations,
+Use `unslop` for substantial style issues in the narrative findings without changing quotations,
 citations, dates, version identifiers, or source qualifications.

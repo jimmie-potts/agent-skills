@@ -270,7 +270,7 @@ unverified gate passed:
 
 Keep each field short; omit narrative, transcript replay, and restated
 instructions. Preserve required evidence even when it needs more than one line.
-Monitoring another coordinator is read-only. Apply `unslop` to user-facing
+Monitoring another coordinator is read-only. Use `unslop` for substantial style issues in user-facing
 prose while preserving artifacts, authoritative text, and evidence.
 
 When evaluating or revising this skill, read the synthetic

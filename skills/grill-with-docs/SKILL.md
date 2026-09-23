@@ -49,5 +49,5 @@ and delivery. Do not transition, commit, merge, close, publish, or implement
 inside this substep. When composed by an authorized workflow, return the
 accepted decisions to its coordinator without discarding existing authority.
 
-Apply the `unslop` skill to questions and proposals without changing accepted wording,
+Use `unslop` for substantial style issues in questions and proposals without changing accepted wording,
 evidence, citations, or authority boundaries.

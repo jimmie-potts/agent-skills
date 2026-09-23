@@ -79,5 +79,5 @@ dependencies, planning, and delivery. When composed by another authorized
 workflow, return control to its coordinator; questioning neither grants nor
 cancels the underlying request's authority.
 
-Apply the `unslop` skill to the user-facing questions and summary without changing
+Use `unslop` for substantial style issues in the user-facing questions and summary without changing
 accepted wording, evidence, or authority boundaries.

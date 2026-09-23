@@ -1,6 +1,6 @@
 interface:
   display_name: "Unslop"
-  short_description: "Remove AI writing patterns without changing facts"
+  short_description: "Edit prose with recurring filler, jargon, or dense wording"
   default_prompt: "$unslop"
 
 policy:

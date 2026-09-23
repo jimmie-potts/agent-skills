@@ -64,6 +64,6 @@ one or two sentences that define the subject and its role here. Add the runtime
 flow, design reasons, and edge cases in layers. Cite real paths and sources so
 the user can inspect the evidence.
 
-Apply the `unslop` skill to every human-facing response. Preserve `why`'s
+Use `unslop` for substantial style issues in human-facing responses. Preserve `why`'s
 confidence language, technical facts, citations, code, commands, and
 identifiers.

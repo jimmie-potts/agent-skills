@@ -122,8 +122,9 @@ or next action. A planning proposal never becomes implemented behavior.
 Report verified references, ready items, blockers, clarification needs, skipped
 or pending writes, guide synchronization, public publication/live verification
 where applicable, and evidence limits. Do not describe published unresolved
-work as ready or launch deliver-work automatically. Apply unslop to narrative
-prose while preserving criteria, source wording, commands, and evidence.
+work as ready or launch deliver-work automatically. Use `unslop` for substantial
+style issues in narrative prose while preserving criteria, source wording,
+commands, and evidence.
 
 When evaluating or changing this skill, read
 [validation scenarios](references/validation-scenarios.md). Separate structural

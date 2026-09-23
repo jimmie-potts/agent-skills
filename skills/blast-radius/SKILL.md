@@ -69,5 +69,5 @@ Treat any load-bearing fact that does not reach step 4 as unproven.
 - **Before merge.** Give the cheapest test or repro that would catch the real
   failure.
 
-Apply the `unslop` skill to the final narrative prose, cite real code, and
-remove private information before anything is shared publicly.
+Use `unslop` for substantial style issues in the final narrative prose. Cite real
+code, and remove private information before anything is shared publicly.

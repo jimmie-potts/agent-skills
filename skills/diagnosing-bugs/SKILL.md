@@ -92,5 +92,5 @@ skill does not grant that authority. Follow the repository's authoritative
 scope, change records, and delivery workflow. Diagnosing bugs returns evidence;
 it does not publish, transition, commit, merge, close, or implement on its own.
 
-Apply the `unslop` skill to the human-facing diagnosis without changing commands,
+Use `unslop` for substantial style issues in the human-facing diagnosis without changing commands,
 outputs, measurements, redactions, or evidence.

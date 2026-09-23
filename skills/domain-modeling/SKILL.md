@@ -62,5 +62,5 @@ and delivery. This skill does not publish, transition, commit, merge, close,
 or implement. Return proposals to an authorized coordinating workflow when
 one composed this step.
 
-Apply the `unslop` skill to human-facing proposals without changing authoritative terms,
+Use `unslop` for substantial style issues in human-facing proposals without changing authoritative terms,
 quotations, citations, or accepted decisions.

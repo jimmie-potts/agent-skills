@@ -67,5 +67,5 @@ Do not implement the design. Follow the repository's authoritative scope,
 change records, and delivery workflow. Codebase design returns a proposal; it
 does not publish, transition, commit, merge, close, or implement on its own.
 
-Apply the `unslop` skill to the user-facing assessment without changing repository terms,
+Use `unslop` for substantial style issues in the user-facing assessment without changing repository terms,
 code, contracts, paths, or evidence.
