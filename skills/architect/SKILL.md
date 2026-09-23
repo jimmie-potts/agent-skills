@@ -123,5 +123,5 @@ data and control flow, boundary and state rules, the synthesis decision,
 accepted tradeoffs, rejected alternatives, risks, and the next implementation
 step. For implementation work, add the deviations found and verification run.
 
-Apply the `unslop` skill to human-facing rationale without changing code,
+Use `unslop` for substantial style issues in human-facing rationale without changing code,
 contracts, identifiers, citations, evidence, or confidence labels.

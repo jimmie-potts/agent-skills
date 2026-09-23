@@ -70,7 +70,7 @@ class BlastRadiusSkillTest(unittest.TestCase):
             "Do not execute untrusted code",
             "Treat any load-bearing fact that does not reach step 4 as unproven",
             "`arena` only when the user explicitly requests competing parallel reviews",
-            "Apply the `unslop` skill to the final narrative prose",
+            "Use `unslop` for substantial style issues in the final narrative prose",
         ):
             self.assertIn(required, normalized_body)
 

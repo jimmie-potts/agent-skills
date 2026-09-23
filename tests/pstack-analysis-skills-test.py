@@ -76,7 +76,7 @@ class PstackAnalysisSkillsTest(unittest.TestCase):
         }
         for body in bodies.values():
             self.assertIn("grants no authority", " ".join(body.split()))
-            self.assertIn("the `unslop` skill", body)
+            self.assertIn("Use `unslop` for substantial style issues", body)
             for cursor_specific in (
                 "generalPurpose",
                 "grok-4.6",

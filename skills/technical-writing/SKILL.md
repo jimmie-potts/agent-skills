@@ -18,7 +18,6 @@ commands, symbols, paths, outputs, measurements, or rationale.
 
 Preserve authoritative text, exact quotations, code, schemas, contracts,
 acceptance criteria, identifiers, logs, citations, and required terminology.
-Apply the `unslop` skill as the final editorial pass.
 
 ## Rules above the method
 

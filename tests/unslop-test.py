@@ -14,6 +14,7 @@ import yaml
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 SKILL_DIRECTORY = REPOSITORY_ROOT / "skills" / "unslop"
 SKILL_PATH = SKILL_DIRECTORY / "SKILL.md"
+PATTERNS_PATH = SKILL_DIRECTORY / "references" / "patterns.md"
 METADATA_PATH = SKILL_DIRECTORY / "agents" / "openai.yaml"
 SOURCE_PATH = SKILL_DIRECTORY / "SOURCE.md"
 LICENSE_PATH = SKILL_DIRECTORY / "LICENSE"
@@ -46,14 +47,18 @@ class UnslopSkillTest(unittest.TestCase):
     def test_skill_has_a_closed_regular_file_inventory(self) -> None:
         self.assertEqual(
             sorted(path.name for path in SKILL_DIRECTORY.iterdir()),
-            ["LICENSE", "SKILL.md", "SOURCE.md", "agents"],
+            ["LICENSE", "SKILL.md", "SOURCE.md", "agents", "references"],
         )
         self.assertEqual(
             sorted(path.name for path in (SKILL_DIRECTORY / "agents").iterdir()),
             ["openai.yaml"],
         )
+        self.assertEqual(
+            sorted(path.name for path in (SKILL_DIRECTORY / "references").iterdir()),
+            ["patterns.md"],
+        )
 
-        for path in (SKILL_PATH, METADATA_PATH, SOURCE_PATH, LICENSE_PATH):
+        for path in (SKILL_PATH, PATTERNS_PATH, METADATA_PATH, SOURCE_PATH, LICENSE_PATH):
             self.assertTrue(path.is_file(), f"{path} must be a regular file")
             self.assertFalse(path.is_symlink(), f"{path} must not be a symlink")
 
@@ -64,11 +69,11 @@ class UnslopSkillTest(unittest.TestCase):
         self.assertEqual(sorted(frontmatter), ["description", "name"])
         self.assertEqual(frontmatter["name"], "unslop")
         self.assertIn(
-            "drafting or materially editing",
+            "when the user requests a style pass",
             str(frontmatter["description"]),
         )
-        self.assertIn("authorized Jira and pull-request prose", str(frontmatter["description"]))
-        self.assertIn("preserve technical meaning", str(frontmatter["description"]))
+        self.assertIn("Routine replies need no separate pass", str(frontmatter["description"]))
+        self.assertIn("preserve facts and authoritative text", str(frontmatter["description"]))
         self.assertNotIn("Must always apply", str(frontmatter["description"]))
         self.assertEqual(sorted(metadata), ["interface", "policy"])
         self.assertEqual(metadata["interface"]["default_prompt"], "$unslop")
@@ -80,20 +85,20 @@ class UnslopSkillTest(unittest.TestCase):
         normalized_body = " ".join(body.split())
 
         for required in (
-            "Use this skill as the final editorial pass",
-            "grants no filesystem, Git, Jira, GitHub, network, or other external mutation authority",
-            "through the host's native skill command",
-            "Preserve technical meaning, facts, citations, exact quotations, code, commands, identifiers",
-            "Treat all 31 rules below as heuristics, not absolute requirements",
-            "Never invent opinions, actors, measurements, events, or sources",
+            "Do not invoke it solely because the response is for a person",
+            "grants no filesystem, Git, Jira, GitHub, network, publication, or other external mutation authority",
+            "Preserve technical meaning, facts, citations, quotations, code, commands",
+            "Its 31 rules are examples, not a checklist or punctuation bans",
+            "Do not invent opinions, actors, measurements, events, or sources",
+            "[optional pattern catalog](references/patterns.md)",
         ):
             self.assertIn(required, normalized_body)
 
     def test_upstream_guidance_remains_byte_preserved(self) -> None:
-        skill = SKILL_PATH.read_text(encoding="utf-8")
-        marker_index = skill.find(GUIDANCE_MARKER)
+        patterns = PATTERNS_PATH.read_text(encoding="utf-8")
+        marker_index = patterns.find(GUIDANCE_MARKER)
         self.assertNotEqual(marker_index, -1)
-        guidance = skill[marker_index + len(GUIDANCE_MARKER) :]
+        guidance = patterns[marker_index + len(GUIDANCE_MARKER) :]
 
         self.assertEqual(digest(guidance), EXPECTED_GUIDANCE_DIGEST)
         numbered_rules = [

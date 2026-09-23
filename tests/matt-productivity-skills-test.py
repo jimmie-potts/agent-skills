@@ -59,7 +59,7 @@ EXPECTED_UPSTREAM_FILES = {
 
 EXPECTED_TEACH_DIGESTS = {
     "LICENSE": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e",
-    "SKILL.md": "40d6beaf69e7790b2472d2010d0685738a9be05b7d0dbd53f00d5be7eb1f64af",
+    "SKILL.md": "aa7253f81b26c6d3823837578c055576f79581ef333255c300e808b93e5ded31",
     "SOURCE.md": "4af2279d1a000bb47801deb6fb030e25773ecaaf7764127b2818220786b26618",
     "agents/openai.yaml": "cf6a8b25789ca5dc538b30618c587d33377e4bca6fa9d3ce2e709d87f6b31e5f",
 }
@@ -230,10 +230,14 @@ class MattProductivitySkillsTest(unittest.TestCase):
             "learning-workspace": {"how", "teach", "unslop"},
         }
         for dependency in dependencies["handoff"]:
-            self.assertIn(f"`{dependency}` skill", handoff_body)
+            self.assertIn(f"Use `{dependency}` for substantial style issues", handoff_body)
             self.assertTrue((SKILLS_ROOT / dependency / "SKILL.md").is_file())
         for dependency in dependencies["learning-workspace"]:
-            marker = f"`{dependency}` skill" if dependency == "unslop" else f"`{dependency}`"
+            marker = (
+                f"Use `{dependency}` for substantial style issues"
+                if dependency == "unslop"
+                else f"`{dependency}`"
+            )
             self.assertIn(marker, learning_body)
             self.assertTrue((SKILLS_ROOT / dependency / "SKILL.md").is_file())
 

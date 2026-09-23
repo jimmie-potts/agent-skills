@@ -64,5 +64,5 @@ Follow the repository's authoritative scope, change records, and delivery
 workflow. Prototype does not publish, transition, commit, merge, close, or
 change external systems on its own.
 
-Apply the `unslop` skill to human-facing labels and the result summary without changing
+Use `unslop` for substantial style issues in human-facing labels and the result summary without changing
 code, commands, measurements, acceptance criteria, or authority boundaries.

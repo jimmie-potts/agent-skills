@@ -125,5 +125,6 @@ no-change result or rejected candidate can complete the review. Return control
 to the user or consuming workflow without starting implementation.
 
 For evaluation or revision of this skill, read
-[validation scenarios](references/validation-scenarios.md). Apply `unslop` to
-human-facing prose while preserving source terms, contracts, paths, and evidence.
+[validation scenarios](references/validation-scenarios.md). Use `unslop` for
+substantial style issues in human-facing prose while preserving source terms,
+contracts, paths, and evidence.

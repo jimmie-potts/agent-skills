@@ -80,5 +80,5 @@ Do not comment, label, transition, fix, branch, commit, merge, close, publish,
 or update a tracker. The consuming repository defines the owners of scope,
 dependencies, planning, and delivery. Code review returns evidence only.
 
-Apply the `unslop` skill to the narrative findings without changing code quotations,
+Use `unslop` for substantial style issues in the narrative findings without changing code quotations,
 paths, line numbers, standards, specification text, or evidence.

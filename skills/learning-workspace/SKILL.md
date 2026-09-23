@@ -86,5 +86,5 @@ Report the approved root, files read or changed, lesson outcome, cited sources,
 evidence of understanding, unresolved gaps, and suggested next lesson. Do not
 claim learning from exposure alone.
 
-Apply the `unslop` skill to human-facing lessons and summaries without changing
+Use `unslop` for substantial style issues in human-facing lessons and summaries without changing
 citations, accepted terminology, evidence, exercises, or authority boundaries.

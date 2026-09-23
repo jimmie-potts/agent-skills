@@ -155,5 +155,5 @@ Produce the smallest document set that preserves scope, authority, triggers,
 steps, references, and completion evidence. Summarize what moved behind a
 pointer, what stayed inline, and how the behavior was verified.
 
-Apply the `unslop` skill to human-maintained prose without changing authoritative rules,
+Use `unslop` for substantial style issues in human-maintained prose without changing authoritative rules,
 commands, citations, identifiers, or host mechanics.

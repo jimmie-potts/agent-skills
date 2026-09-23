@@ -205,8 +205,8 @@ class GrillingSkillsTest(unittest.TestCase):
         self.assertIn("$grilling", grill_me)
         self.assertIn("$grilling", grill_with_docs)
         self.assertIn("$domain-modeling", grill_with_docs)
-        self.assertIn("`unslop` skill", grilling)
-        self.assertIn("`unslop` skill", grill_with_docs)
+        self.assertIn("Use `unslop` for substantial style issues", grilling)
+        self.assertIn("Use `unslop` for substantial style issues", grill_with_docs)
 
     def test_grill_me_dependency_check_fails_in_an_incomplete_catalog(self) -> None:
         with tempfile.TemporaryDirectory(prefix="grill-me-catalog-") as temporary:

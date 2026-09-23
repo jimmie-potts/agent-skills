@@ -77,7 +77,6 @@ class PstackWorkflowSkillsTest(unittest.TestCase):
 
         for body in bodies.values():
             self.assertIn("grants no authority", body)
-            self.assertIn("the `unslop` skill", body)
             for cursor_specific in (
                 "disable-model-invocation",
                 "generalPurpose",
@@ -85,6 +84,10 @@ class PstackWorkflowSkillsTest(unittest.TestCase):
                 "~/.cursor",
             ):
                 self.assertNotIn(cursor_specific, body)
+
+        for name in ("teach", "tdd"):
+            self.assertIn("Use `unslop` for substantial style issues", bodies[name])
+        self.assertNotIn("`unslop`", bodies["technical-writing"])
 
         for dependency in ("how", "why", "unslop"):
             self.assertIn(f"`{dependency}`", bodies["teach"])

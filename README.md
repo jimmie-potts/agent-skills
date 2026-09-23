@@ -49,7 +49,7 @@ The catalog currently contains:
   TDD for bugs and features;
 - [`technical-writing`](skills/technical-writing/SKILL.md), an explicit technical
   prose drafting and review standard;
-- [`unslop`](skills/unslop/SKILL.md), an editorial workflow for narrative prose;
+- [`unslop`](skills/unslop/SKILL.md), an optional editorial pass for prose that needs it;
 - [`why`](skills/why/SKILL.md), an evidence-based design-rationale investigator;
 - [`worker-with-fable`](skills/worker-with-fable/SKILL.md), a Haiku, Sonnet, or
   Opus worker with the original Fable agent providing approach feedback,

@@ -55,5 +55,5 @@ Do not create a temporary file automatically. Do not transition an issue,
 comment, label, branch, commit, merge, publish, close, install, or start the
 next workflow merely because it appears in the handoff.
 
-Apply the `unslop` skill to the narrative snapshot without changing identifiers,
+Use `unslop` for substantial style issues in the narrative snapshot without changing identifiers,
 commands, paths, evidence, redactions, or authority boundaries.
