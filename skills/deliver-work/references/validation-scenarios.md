@@ -22,7 +22,8 @@ For scope fit at drafting and pickup, use
 `tests/fixtures/workflow-evaluation/scope-assessment-cases.md`. Withhold
 `scope-assessment-graders.md` and recorded responses from evaluated contexts.
 Worked assessments are simulated decisions; they do not prove native-host
-behavior or faster delivery.
+behavior or faster delivery. After scoring, read
+`scope-assessment-observations.md` in that fixture directory.
 
 For PR feedback, check failures, retry accounting and supervision boundaries, use
 `tests/fixtures/workflow-evaluation/supervision-cases.md`. Withhold

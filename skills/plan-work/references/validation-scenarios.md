@@ -10,7 +10,8 @@ read `review-cycles-observations.md` in that fixture directory only after scorin
 For scope fit while drafting, including cuts that need the scope owner's
 decision, use `tests/fixtures/workflow-evaluation/scope-assessment-cases.md`.
 Withhold `scope-assessment-graders.md` and recorded responses. A drafted cut is
-a proposal, not accepted scope or authority to implement.
+a proposal, not accepted scope or authority to implement. Read
+`scope-assessment-observations.md` there only after scoring.
 
 For shared task boundaries, coverage, dependency meanings and planning authority,
 use `tests/fixtures/workflow-evaluation/task-planning-cases.md`. Withhold the
