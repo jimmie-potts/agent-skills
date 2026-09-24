@@ -33,8 +33,12 @@ implicit explicit-only skill was observed. The 2 drafting row initially
 diverged from the rubric's literal expectation to publish settled content:
 the participant held publication instead. That behavior follows plan-work's
 rule to proceed only when material decisions are settled, so the rubric was
-corrected after scoring to accept either choice. No instruction change followed
-from the trial and no correction round was needed.
+corrected after scoring to accept either choice. Independent review later led
+to a second rubric clarification: S3's owner or trigger applies to every cut,
+including removals. The return already gave one for every cut. No instruction
+change followed from the trial and no correction round was needed. Later
+review clarified the contract's trigger wording and defined the scope owner;
+those changes were checked against this return, not rerun.
 
 These are bounded simulated decisions from one context. They do not establish
 native skill discovery, host behavior, tracker execution, reviewer or worker

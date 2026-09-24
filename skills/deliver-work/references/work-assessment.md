@@ -25,7 +25,9 @@ Start from a direct implementation using existing components and bounded
 manual steps. Add a platform, service, abstraction, automation or hardening
 only for a named current requirement or concrete failure it addresses.
 
-Classify each meaningful proposed cut, not every removed bullet:
+The scope owner is the requesting user or the owner that project policy names,
+never the assessing agent, a worker or a reviewer. Classify each meaningful
+proposed cut, not every removed bullet:
 
 | Cut | Meaning | Disposition |
 | --- | --- | --- |
@@ -42,13 +44,12 @@ not a new ticket; do not create speculative follow-up tickets.
 Preserve accepted functionality and applicable protections. When a cut would
 change requested behavior, an accepted criterion or failure consequences,
 record needs clarification for the affected work and escalate the choice to
-the scope owner: the requesting user or the owner that project policy names,
-never the assessing agent, a worker or a reviewer. Continue independent work.
-Routine implementation choices within existing authority need no renewed
-approval. Before treating a cut as accepted, reconcile affected consumers and
-acceptance criteria and update the stored assessment. Scope assessment waives
-no repository review, CI, UI, installation or physical-acceptance requirement
-and grants no tracker, runtime or deployment authority.
+the scope owner; continue independent work. Routine implementation choices
+within existing authority need no renewed approval. Before treating a cut as
+accepted, reconcile affected consumers and acceptance criteria and update the
+stored assessment. Scope assessment waives no repository review, CI, UI,
+installation or physical-acceptance requirement and grants no tracker, runtime
+or deployment authority.
 
 ## Rate three dimensions separately
 
