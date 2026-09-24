@@ -64,7 +64,8 @@ input dependencies into each proposed work item. An epic or list of chores
 alone is not implementation-ready. Include the assessment, evidence, unknowns,
 readiness and conditional specialist/human review or operational handoffs.
 
-Apply the assessment contract without embedding model names in planning ratings.
+Apply the assessment contract, including scope fit while drafting, without
+embedding model names in planning ratings.
 Record the session's reasoning setting in the planning evidence when the host
 exposes it or the user states it; otherwise record it as unknown. Report a
 known mismatch with documented workflow guidance or a composed skill's

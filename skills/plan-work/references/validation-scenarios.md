@@ -7,6 +7,12 @@ limit is a future requirement, not consumed budget or authority to implement.
 Keep both skills' evaluation-only validation references out of evaluated contexts;
 read `review-cycles-observations.md` in that fixture directory only after scoring.
 
+For scope fit while drafting, including cuts that need the scope owner's
+decision, use `tests/fixtures/workflow-evaluation/scope-assessment-cases.md`.
+Withhold `scope-assessment-graders.md` and recorded responses. A drafted cut is
+a proposal, not accepted scope or authority to implement. Read
+`scope-assessment-observations.md` there only after scoring.
+
 For shared task boundaries, coverage, dependency meanings and planning authority,
 use `tests/fixtures/workflow-evaluation/task-planning-cases.md`. Withhold the
 separate `task-planning-graders.md`, observations and prior returns. Planning

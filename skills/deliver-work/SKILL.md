@@ -75,8 +75,9 @@ modifies itself. The candidate cannot waive the gates used to approve it.
 
 Before deciding readiness and checks, read [work assessment](references/work-assessment.md).
 Assess unclassified work or refresh its planning assessment against current
-sources. Map acceptance criteria to verification and identify conditional
-reviews and operational handoffs. Preserve the project's mandatory gates.
+sources, including scope fit at pickup. Map acceptance criteria to verification
+and identify conditional reviews and operational handoffs. Preserve the
+project's mandatory gates.
 Before decomposing work, ordering tasks or dispatching, read
 [task planning and dispatch](references/task-planning.md). Keep its compact
 definitions and dependency evidence in the existing task record.
