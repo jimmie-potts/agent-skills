@@ -31,23 +31,24 @@ Classify each meaningful proposed cut, not every removed bullet:
 | --- | --- | --- |
 | Duplicated ceremony | Repeats evidence, approval or process a retained gate already provides | Remove; name the retained gate |
 | Unnecessary capability | No current requirement, consumer or failure needs it | Remove |
-| Deferred capability | Useful later, not needed for this outcome | Defer with an existing owning issue or a concrete revisit trigger |
+| Deferred capability | Useful later, not needed for this outcome | Defer |
 | Required protection | Supported use depends on it for ownership, concurrency, data, credentials, authorization or recovery | Retain; removal needs the scope owner's decision |
 
-For each cut, state the lost behavior or reduced assurance and any manual
-alternative. Name an existing owning issue or a concrete revisit trigger, such
-as a second consumer or an observed failure; do not create speculative
-follow-up tickets.
+For each cut, state the lost behavior or reduced assurance, any manual
+alternative, and an existing owning issue or a concrete revisit trigger, such
+as a second consumer or an observed failure. A trigger is a recorded condition,
+not a new ticket; do not create speculative follow-up tickets.
 
 Preserve accepted functionality and applicable protections. When a cut would
 change requested behavior, an accepted criterion or failure consequences,
 record needs clarification for the affected work and escalate the choice to
-the scope owner; continue independent work. Routine implementation choices
-within existing authority need no renewed approval. Before treating a cut as
-accepted, reconcile affected consumers and acceptance criteria and update the
-stored assessment. Scope assessment waives no repository review, CI, UI,
-installation or physical-acceptance requirement and grants no tracker, runtime
-or deployment authority.
+the scope owner: the requesting user or the owner that project policy names,
+never the assessing agent, a worker or a reviewer. Continue independent work.
+Routine implementation choices within existing authority need no renewed
+approval. Before treating a cut as accepted, reconcile affected consumers and
+acceptance criteria and update the stored assessment. Scope assessment waives
+no repository review, CI, UI, installation or physical-acceptance requirement
+and grants no tracker, runtime or deployment authority.
 
 ## Rate three dimensions separately
 

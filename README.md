@@ -85,8 +85,9 @@ Reusable SDLC workflows also include:
   [work assessment](skills/deliver-work/references/work-assessment.md), also
   used by `plan-work`, fits scope to the owning project's actual needs at
   drafting and pickup: cuts must name what they lose, and required protections
-  stay unless the scope owner decides otherwise. It may compose the host's advisory pairing
-  for bounded implementation with checkpoints, `worker-with-astra` under Codex
+  stay unless the scope owner decides otherwise. It may compose the host's
+  advisory pairing for bounded implementation with checkpoints,
+  `worker-with-astra` under Codex
   collaboration tools or `worker-with-fable` under Claude Code subagent tools,
   choosing by verified host tooling rather than by request wording; install the
   applicable skill separately when using the optional pairing. Advisory
