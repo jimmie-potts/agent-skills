@@ -1,8 +1,52 @@
 # Assess work and its verification
 
-Read before deciding readiness or verification for planning or delivery. This
-is the canonical contract for both workflows. It describes work, not models.
+Read before deciding scope, readiness or verification for planning or delivery.
+This is the canonical contract for both workflows. It describes work, not models.
 Explicit user/project requirements and existing delivery gates remain floors.
+
+## Fit scope to actual needs
+
+Assess scope when drafting an item, at delivery pickup, and after a material
+scope or assumption change, not on every turn. Refresh the stored assessment
+instead of writing another. This adds no skill invocation; explicit-only skills
+still need their own explicit request.
+
+Before choosing scope, establish the intended user outcome, supported
+installation or deployment, affected consumers and meaningful failure
+consequences. Take these operating assumptions, with their sources, from the
+owning repository's guidance and the work item. An assumption stated for one
+project, such as a single-user personal default, does not carry to another
+repository. Record missing assumptions as unknown and keep them visible.
+"Personal project" alone never establishes low impact: one owner's device,
+data or credentials can still suffer destructive or hard-to-recover failures.
+
+Start from a direct implementation using existing components and bounded
+manual steps. Add a platform, service, abstraction, automation or hardening
+only for a named current requirement or concrete failure it addresses.
+
+Classify each meaningful proposed cut, not every removed bullet:
+
+| Cut | Meaning | Disposition |
+| --- | --- | --- |
+| Duplicated ceremony | Repeats evidence, approval or process a retained gate already provides | Remove; name the retained gate |
+| Unnecessary capability | No current requirement, consumer or failure needs it | Remove |
+| Deferred capability | Useful later, not needed for this outcome | Defer with an existing owning issue or a concrete revisit trigger |
+| Required protection | Supported use depends on it for ownership, concurrency, data, credentials, authorization or recovery | Retain; removal needs the scope owner's decision |
+
+For each cut, state the lost behavior or reduced assurance and any manual
+alternative. Name an existing owning issue or a concrete revisit trigger, such
+as a second consumer or an observed failure; do not create speculative
+follow-up tickets.
+
+Preserve accepted functionality and applicable protections. When a cut would
+change requested behavior, an accepted criterion or failure consequences,
+record needs clarification for the affected work and escalate the choice to
+the scope owner; continue independent work. Routine implementation choices
+within existing authority need no renewed approval. Before treating a cut as
+accepted, reconcile affected consumers and acceptance criteria and update the
+stored assessment. Scope assessment waives no repository review, CI, UI,
+installation or physical-acceptance requirement and grants no tracker, runtime
+or deployment authority.
 
 ## Rate three dimensions separately
 
@@ -47,10 +91,10 @@ criterion coverage, task acceptance and the distinction between required
 inputs, shared-file coordination and preferred order. Planning consumers use
 those meanings for proposals without dispatching implementation.
 
-For every acceptance criterion identify a planned test or other evidence,
-the behavior it must observe, and any limitation. Cover relevant success and
-failure cases: retries, timeouts, ordering, recovery, authorization, consumer
-compatibility, and critical user journeys. Choose test levels proportionate to
+For every retained acceptance criterion identify a planned test or other
+evidence, the behavior it must observe, and any limitation. Cover relevant
+success and failure cases: retries, timeouts, ordering, stop and recovery,
+authorization, consumer compatibility, and critical user journeys. Choose test levels proportionate to
 the claim; do not require every technique for every change. Planned commands
 and proposed paths are not executed checks. Delivery records actual commands,
 results, and candidate revision against this mapping.
@@ -74,6 +118,9 @@ compact assessment section in the issue description or existing authoritative
 work document, with:
 
 - source/revision or observation date, and planning or delivery stage;
+- operating assumptions with their sources and unknowns, and each meaningful
+  cut with its class, lost behavior or assurance, manual alternative, and
+  owning issue or revisit trigger;
 - each rating, rationale, evidence, and unknowns;
 - readiness, blockers, unresolved decisions, and bounded investigations;
 - acceptance-to-verification mapping and conditional review/handoff needs;
@@ -88,6 +135,8 @@ current copies. If tracker writes are not authorized, report the assessment in
 the response or existing permitted task evidence.
 
 Delivery assesses unclassified work itself; no planning migration is required.
+At pickup, check the stored scope and operating assumptions against current
+sources and refresh only what changed.
 Refresh on material scope/base changes, disproved assumptions, repeated failure
 without new progress, or blocking findings that expose misunderstood behavior.
 Record what changed, why, and which verification/review requirements it affects.
