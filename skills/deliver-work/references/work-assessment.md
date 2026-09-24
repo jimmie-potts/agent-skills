@@ -1,8 +1,9 @@
 # Assess work and its verification
 
-Read before deciding scope, readiness or verification for planning or delivery.
-This is the canonical contract for both workflows. It describes work, not models.
-Explicit user/project requirements and existing delivery gates remain floors.
+Read before deciding scope, readiness or verification for planning or
+delivery. This is the canonical contract for both workflows. It describes
+work, not models. Explicit user/project requirements and existing delivery
+gates remain floors.
 
 ## Fit scope to actual needs
 
@@ -94,10 +95,10 @@ those meanings for proposals without dispatching implementation.
 For every retained acceptance criterion identify a planned test or other
 evidence, the behavior it must observe, and any limitation. Cover relevant
 success and failure cases: retries, timeouts, ordering, stop and recovery,
-authorization, consumer compatibility, and critical user journeys. Choose test levels proportionate to
-the claim; do not require every technique for every change. Planned commands
-and proposed paths are not executed checks. Delivery records actual commands,
-results, and candidate revision against this mapping.
+authorization, consumer compatibility, and critical user journeys. Choose test
+levels proportionate to the claim; do not require every technique for every
+change. Planned commands and proposed paths are not executed checks. Delivery
+records actual commands, results, and candidate revision against this mapping.
 
 Name additional security, concurrency, migration, performance, accessibility,
 or other specialist review when the affected behavior needs that expertise.
