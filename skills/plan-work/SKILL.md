@@ -68,10 +68,12 @@ Apply the assessment contract, including scope fit while drafting, without
 embedding model names in planning ratings.
 For every item, read [execution recommendations](references/execution-recommendations.md)
 and recommend a starting model and reasoning/effort level for both Claude Code
-and Codex alongside the assessment. Identify whether the user should start an
-implementation or orchestration session, explain the choice, and distinguish
-proposed worker settings when delegation would help. Include both host choices
-in proposals and authorized saved work items, even when planning on only one host.
+and Codex alongside the assessment. Name the session type the user should start
+(`One-shot`, `Pair`, `Orchestrate` or `Investigate first`), explain the choice,
+and distinguish proposed worker settings when delegation would help. Write the
+reference's start line, two-host table and paste-ready prompts, or its
+insufficient status. Include both host choices in proposals and authorized
+saved work items, even when planning on only one host.
 Record the session's reasoning setting in the planning evidence when the host
 exposes it or the user states it; otherwise record it as unknown. Report a
 known mismatch with documented workflow guidance or a composed skill's

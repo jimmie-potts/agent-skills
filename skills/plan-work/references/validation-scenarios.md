@@ -67,6 +67,15 @@ check planning decisions, not measured model performance or runtime identity.
 | Planner runs on Codex; Claude availability and inherited effort are unexposed | Still recommend a Claude model and effort, mark availability provisional, and leave actual effort unknown; do not invent a per-call control. |
 | User requires a model or effort unavailable in the named host | Preserve the requirement, report the selection gap and any conditional alternative explicitly; no silent substitution or settings changes. |
 | GitHub/Jira tracker-only request with no matching model fields | Save both choices in one description section and verify readback; create no custom fields and start no delivery. |
+| Simple bounded item, both hosts | Section opens with `**Start with:**` naming `One-shot` first; table has Model, Thinking level, Session type, Subagents, Reviewers and Availability; both prompt blocks follow, each implementing without workers and authorizing two Sonnet or Luna/high reviewers. |
+| High-impact one-line fix | `One-shot` at the stronger floor with a Checkpoints row when decisions need a stop; prompts state Opus/high and Sol/high as the user's selection; Reviewers row keeps the high-impact reviewer floor. |
+| Parent needing coordination across dependent children | `Orchestrate` first in the start line; Subagents row gives each host's worker model and level; prompts state the subagent settings. |
+| Any implementing prompt | Authorizes the required reviewers by count and model; never says "without subagents" unqualified. |
+| Evidence cannot support a choice | `**Status:** insufficient` and `**Missing:**` replace the answer, table and prompts; Why, Reassess when and Assessed remain; no guessed default. |
+| Bounded worker implementation that canonical selection routes to the host's advisory pairing | `Pair` first; Subagents row names the worker's model and level on each host; the Codex and Claude Code prompts name their own pairing only where host tooling supports it. |
+| Open technical question blocks implementation | `Investigate first` with read-only prompts that name the question and request no writes. |
+| Any generated prompt | Names the live URL, states the selected model and level, asks to confirm only the model and stop if it differs, takes the level as stated, never asks the agent to report its effort, names the recommendation's assessment date and ends with the deliver-work availability sentence. |
+| Recommended model unavailable or budget constrained | Optional `**Cheaper start:**` line with its own two prompt blocks, or an explicit statement that none is recorded. |
 
 ## Documentation checkpoints
 

@@ -56,6 +56,43 @@ class PlanWorkStructureTest(unittest.TestCase):
             if path.is_file():
                 self.assertIn(path.suffix, {'.md', '.yaml'})
 
+    def test_execution_recommendation_shape(self):
+        reference = (SKILL / 'references/execution-recommendations.md').read_text()
+        entry = (SKILL / 'SKILL.md').read_text()
+        scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
+        for session_type in ('One-shot', 'Pair', 'Orchestrate',
+                             'Investigate first'):
+            with self.subTest(session_type=session_type):
+                self.assertIn(f'| `{session_type}` |', reference)
+                self.assertIn(f'`{session_type}`', entry)
+                self.assertIn(f'`{session_type}`', scenarios)
+        for label in ('**Start with:**', '**Prompt (Claude Code):**',
+                      '**Prompt (Codex):**', '**Cheaper start:**',
+                      '**Cheaper prompt (Claude Code):**',
+                      '**Cheaper prompt (Codex):**', '**Why:**',
+                      '**Reassess when:**', '**Assessed:**',
+                      '**Status:** insufficient', '**Missing:**'):
+            with self.subTest(label=label):
+                self.assertIn(label, reference)
+        for row in ('Model', 'Thinking level', 'Session type', 'Subagents',
+                    'Reviewers', 'Availability', 'Checkpoints'):
+            with self.subTest(row=row):
+                self.assertIn(f'`{row}`', reference)
+        self.assertIn('| Work to start | Claude Code model / effort | '
+                      'Codex model / reasoning | Session role |', reference)
+        prompts = re.findall(r'```text\n(.+?)\n```', reference, re.DOTALL)
+        self.assertEqual(len(prompts), 1)
+        prompt = prompts[0]
+        self.assertTrue(prompt.endswith(
+            "If deliver-work isn't available here, say so and stop."))
+        self.assertIn('stop if it is not', prompt)
+        self.assertIn('take the effort as stated rather than guessing it', prompt)
+        self.assertIn('Execution recommendation (assessed', prompt)
+        self.assertIn('without worker subagents', prompt)
+        self.assertRegex(prompt, r'two fresh read-only \w+ reviewers')
+        self.assertNotIn('without subagents', prompt)
+        self.assertNotRegex(prompt.lower(), r'(report|verify|confirm)\w* (your|its) effort')
+
     def test_check_wiring(self):
         for path in (ROOT / 'README.md', ROOT / 'AGENTS.md',
                      ROOT / '.github/workflows/validate.yml'):

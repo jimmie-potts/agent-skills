@@ -62,9 +62,11 @@ Reusable SDLC workflows also include:
 
 - [`plan-work`](skills/plan-work/SKILL.md), explicit requirements definition and
   authorized GitHub/Jira publication with assessments and acceptance evidence.
-  Each item recommends a starting model and reasoning/effort level for both
-  Claude Code and Codex, with a rationale and implementation or orchestration
-  role. See [execution recommendations](skills/plan-work/references/execution-recommendations.md).
+  Each item's Execution recommendation starts with the session type to open
+  (`One-shot`, `Pair`, `Orchestrate` or `Investigate first`), then gives both
+  hosts' model and reasoning/effort level, worker subagents and required
+  reviewers in a table, and a paste-ready prompt per host. See
+  [execution recommendations](skills/plan-work/references/execution-recommendations.md).
   It follows project-owned guide and publication checkpoints within the user's
   authority, including a pending-documentation report for tracker-only work.
   It reads the installed `deliver-work` package's canonical assessment and
@@ -389,12 +391,17 @@ every model that supports effort except Opus 4.7, unless an organization
 default applies; see the [model configuration docs](https://code.claude.com/docs/en/model-config).
 The [skill substitutions reference](https://code.claude.com/docs/en/skills#available-string-substitutions)
 describes `${CLAUDE_EFFORT}` inside skill text to read the level. The portable
-entrypoints here do not use it. `plan-work` and `deliver-work` record the level
-they can observe or that you state, otherwise unknown, and never claim to
-change it.
+entrypoints here do not use it, and an agent cannot reliably read its own
+effort: on 2026-09-24 an Opus session set to `high` reported `low`. The
+[Claude Code adapter](skills/deliver-work/references/claude-code-model-selection.md)
+records why a host-reported value does not replace your statement.
+`plan-work` and `deliver-work` record the level you state, beside any
+host-reported value, otherwise unknown, and never claim to change it.
 
-Set effort per session rather than per skill. When starting planned work, use
-the item's model and effort recommendation. Simple implementation may suit a
+Set effort per session rather than per skill. When starting planned work,
+choose the model and effort in the host first, then paste the item's prompt for
+that host. The prompt states your choice; the agent confirms only the model and
+takes the level as stated. Simple implementation may suit a
 lower level; difficult reasoning or orchestration may warrant a stronger model
 at `high`. Verify support in the chosen host. For example, these launch flags
 select a level for one Claude Code session:

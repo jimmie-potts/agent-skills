@@ -51,19 +51,92 @@ give its conditional recommendation and name what the user must check before
 starting. If a required policy resource is missing, report the recommendation
 gap and continue independent planning without reconstructing that policy.
 
+## Name the session type
+
+Describe the starting session with exactly one of these types. `One-shot` and
+`Orchestrate` come from the table's session role above. `Pair` comes from the
+canonical implementation selection's advisory-pairing strategy, and
+`Investigate first` from the high-uncertainty guidance under the table:
+
+| Session type | Session role it expresses | What the session does |
+| --- | --- | --- |
+| `One-shot` | Implement directly, including with design checkpoints or the stronger capability floor | Implements directly without worker subagents; a Checkpoints row names decisions where it stops to ask |
+| `Pair` | Implement through the host's advisory pairing, when canonical implementation selection chooses it | One worker implements under the pairing while the session advises at approach, blockers and final review |
+| `Orchestrate` | Orchestrate bounded workers | Breaks the work down, delegates bounded pieces to worker subagents and owns every write and review |
+| `Investigate first` | Investigation or clarification before dependent coding | A read-only session answers a named question; the item is then reassessed |
+
+The type is a presentation label, not another selection table. It governs
+implementation only. Every implementing type also runs the two independent
+Standards and Specification reviewers that delivery requires; the Reviewers row
+and each prompt authorize them. `Investigate first` has no reviewers.
+
 ## Record the recommendation beside the assessment
 
-Use one compact "Execution recommendation" section in the existing proposal,
-issue description or authoritative work document. Include:
+Use one compact `## Execution recommendation` section in the existing proposal,
+issue description or authoritative work document, in this order:
 
-- **Claude Code:** starting model/alias, recommended effort, and session role.
-- **Codex:** starting model/identifier, recommended reasoning, and session role.
-- **Why:** the assessment evidence, checks and task boundaries supporting those
-  choices; name the condition that would require reassessment.
-- **Workers, when useful:** proposed implementation model/effort for each host,
-  using its canonical worker policy. Otherwise state direct implementation.
-- **Availability:** evidence source/date, unverified options, and any conflict
-  with explicit requirements. Keep the planner's observed settings separate.
+1. `**Start with:**` one line giving the answer: the session type first, then
+   each host's model and thinking level, then which prompt to paste.
+2. A two-host table with columns `Claude Code` and `Codex` and the rows
+   `Model`, `Thinking level`, `Session type`, `Subagents`, `Reviewers` and
+   `Availability`. Add a `Checkpoints` row only when the session should stop at
+   named decisions. `Subagents` gives each proposed implementation worker's
+   model and level from the canonical worker policy, or `None`. `Reviewers`
+   gives the two fresh read-only final reviewers per host from the canonical
+   reviewer policy for the item's impact, or `None` for `Investigate first`.
+   `Availability` gives the evidence
+   source and the date the host's options were checked, labels each host
+   verified or provisional, and notes any
+   conflict with explicit requirements. Keep the planner's own observed
+   settings out of the table.
+3. `**Prompt (Claude Code):**` and `**Prompt (Codex):**`, each followed by one
+   fenced `text` block written from the template below.
+4. Optionally `**Cheaper start:**` when the recommended model or budget may be
+   unavailable: one line naming what it covers, its session type and each
+   host's model and level, followed by `**Cheaper prompt (Claude Code):**` and
+   `**Cheaper prompt (Codex):**` blocks. Otherwise state that none is recorded
+   and why.
+5. `**Why:**` the assessment evidence, checks and task boundaries behind the
+   choice. `**Reassess when:**` the condition that invalidates it.
+   `**Assessed:**` the date, the policy revision (`agent-skills@<sha>` or the
+   installed package's revision), evidence links, and a fingerprint slot. Use
+   a fingerprint only when the owning project defines one, such as a hash of
+   the item body without this section; otherwise write `not used`.
+
+When the evidence cannot support a choice, replace the answer, table and
+prompts with `**Status:** insufficient` and `**Missing:**` naming the exact
+input and the next question or evidence; keep the `Why`, `Reassess when` and
+`Assessed` lines. Never fill an insufficient item with a guessed default.
+
+### Write each prompt
+
+Each implementation prompt is one paragraph that:
+
+- asks the agent to use the deliver-work skill on the live work-item URL;
+- states the model and thinking level the user selected, using the host's
+  term (effort for Claude Code, reasoning for Codex);
+- asks the agent to state its model and stop if it differs;
+- tells it to take the level as stated rather than guess it, because an agent
+  cannot reliably read its own effort; never ask it to report or verify its
+  level;
+- states the session type, the worker subagent settings, and authorizes the
+  required reviewers by count and model;
+- points at the item's Execution recommendation with its assessment date and
+  asks the agent to say so before changing strategy;
+- ends with "If deliver-work isn't available here, say so and stop."
+
+For example:
+
+```text
+Use the deliver-work skill to deliver <work-item URL>. I started this session on Sonnet at medium effort. State the model you are running and stop if it is not Sonnet; take the effort as stated rather than guessing it. Run as a one-shot session: implement it yourself without worker subagents, and use two fresh read-only Sonnet reviewers for deliver-work's required Standards and Specification reviews. The issue's Execution recommendation (assessed <date>) is the basis; if what you find no longer fits it, say so before changing strategy. If deliver-work isn't available here, say so and stop.
+```
+
+`Investigate first` prompts replace deliver-work with a read-only request: name
+the work-item URL and the question, the evidence to return and the authority
+limit, and ask for no writes. Keep the model, level and recommendation rules
+above, and end by asking the agent to say so and stop if a named skill it needs
+is unavailable. Keep the prompts in the section itself so readers and guides
+copy the saved text.
 
 A recommendation never claims the current session changed models, effort was
 applied, workers ran, or acceptance passed. In particular, a recommended Claude
