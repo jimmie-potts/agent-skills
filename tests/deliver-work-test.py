@@ -15,17 +15,19 @@ RECORD_ROWS = ('Issue', 'Recommended', 'Coordinator model',
 PROVENANCE = ('host-observed', 'user-stated', 'self-reported', 'unknown')
 SESSION_TYPE = r'(?:One-shot|Pair|Orchestrate|Investigate first)'
 COUNT = r'(?:\d+|at least \d+|unknown)'
-ITEM = r'(?:unknown \(unknown\)|[\w.-]+ \((?:host-observed|user-stated|self-reported)\))'
-SOURCED = rf'(?:unknown \(unknown\)|{ITEM}(?: \+ {ITEM})*)'
-AGENT = (rf'[a-z0-9]+(?:-[a-z0-9]+)*: requested [\w.-]+/[\w.-]+, '
+TOKEN = r'[^\s|()+,;]+'
+LABEL = r'[a-z0-9]+(?:-[a-z0-9]+)*'
+KNOWN = rf'(?!unknown ){TOKEN} \((?:host-observed|user-stated|self-reported)\)'
+SOURCED = rf'(?:unknown \(unknown\)|{KNOWN}(?: \+ {KNOWN})*)'
+AGENT = (rf'{LABEL}: requested {TOKEN} at {TOKEN}, '
          rf'model {SOURCED}, level {SOURCED}')
 RECORD_CELLS = {
     'Issue': r'[\w.-]+/[\w.-]+#\d+|[A-Z][A-Z0-9]*-\d+|https?://\S+',
-    'Recommended': rf'{SESSION_TYPE}, [\w.-]+, [\w.-]+|insufficient|none',
+    'Recommended': rf'{SESSION_TYPE}, {TOKEN}, {TOKEN}|insufficient|none',
     'Coordinator model': SOURCED,
     'Coordinator level': SOURCED,
     'Session type': SESSION_TYPE,
-    'Session label': r'[\w.-]+',
+    'Session label': LABEL,
     'Workers': rf'none|{AGENT}(?:; {AGENT})*',
     'Reviewers': rf'none|{AGENT}(?:; {AGENT})*',
     'Agents': COUNT,
@@ -41,7 +43,7 @@ def parse_execution_record(text):
     match = re.fullmatch(
         r'## Execution record\n\n\| Field \| Value \|\n\| --- \| --- \|\n'
         r'((?:\|[^\n]*\|\n)+)'
-        r'(?:\n\*\*Fixes delivery:\*\* ([\w.-]+/[\w.-]+#\d+)\n)?'
+        r'(?:\n\*\*Fixes delivery:\*\* ([\w.-]+/[\w.-]+(?:#\d+|@[0-9a-f]{7,40}))\n)?'
         r'\n\*\*Recorded:\*\* (\d{4}-\d{2}-\d{2}), '
         r'(agent-skills@[0-9a-f]{7,40}|unknown)\n?', text)
     if not match:
@@ -158,6 +160,14 @@ class DeliverWorkStructureTest(unittest.TestCase):
             'unknown vocabulary': ('(host-observed)', '(requested)'),
             'unknown with value': ('level unknown (unknown)', 'level medium (unknown)'),
             'bare unknown': ('level unknown (unknown)', 'level unknown'),
+            'unknown mixed with a source': ('high (user-stated) + high (host-observed)',
+                                            'unknown (unknown) + high (host-observed)'),
+            'repeated unknown': ('high (user-stated) + high (host-observed)',
+                                 'unknown (unknown) + unknown (unknown)'),
+            'unknown value with a source': ('high (user-stated) + ', 'unknown (user-stated) + '),
+            'display name with a space': ('gpt-6-astra (user-stated) + ',
+                                          'GPT 6 Astra (user-stated) + '),
+            'old requested shape': ('requested gpt-6-luna at medium', 'requested gpt-6-luna/medium'),
             'missing row': ('| Corrections | 1 |\n', ''),
             'row order': ('| Agents | 5 |\n| Consultations | not applicable |',
                           '| Consultations | not applicable |\n| Agents | 5 |'),
@@ -165,7 +175,7 @@ class DeliverWorkStructureTest(unittest.TestCase):
                                       '| Session type | Solo |'),
             'raw session path': ('| Session label | example-app-42 |',
                                  '| Session label | /home/me/.codex/sessions/1 |'),
-            'missing recorded line': ('\n**Recorded:** 2026-09-25, agent-skills@3746fab\n', ''),
+            'missing recorded line': ('\n**Recorded:** 2026-09-25, agent-skills@1a2b3c4\n', ''),
             'extra prose': ('| Corrections | 1 |\n', '| Corrections | 1 |\n\nNotes.\n'),
         }
         for name, (old, new) in mutations.items():
@@ -175,10 +185,12 @@ class DeliverWorkStructureTest(unittest.TestCase):
                     parse_execution_record(example.replace(old, new, 1))
 
     def test_execution_record_is_wired_into_delivery(self):
-        entry = (SKILL / 'SKILL.md').read_text()
-        self.assertIn("Execution record's\n`Recommended` row", entry)
-        self.assertIn('Keep the `## Execution record` section', entry)
-        self.assertIn('include the section in the final response', entry)
+        entry = ' '.join((SKILL / 'SKILL.md').read_text().split())
+        self.assertIn("Execution record's `Recommended` row", entry)
+        self.assertIn('`## Execution record` section', entry)
+        self.assertIn('in the final response without one', entry)
+        links = re.findall(r'\]\(([^)]+)\)', entry)
+        self.assertIn('references/execution-reporting.md', links)
         scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
         self.assertIn('`**Fixes delivery:**`', scenarios)
         readme = (ROOT / 'README.md').read_text()

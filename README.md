@@ -114,7 +114,8 @@ Reusable SDLC workflows also include:
   parse the recommended and actual model, level and session type, the workers
   and reviewers, and the review rounds, findings and corrections. Every model
   and level carries its source: `host-observed`, `user-stated`,
-  `self-reported` or `unknown`. Routine updates report changes, blockers and next actions;
+  `self-reported` or `unknown`. Routine updates report changes, blockers and
+  next actions;
   consequential strategy, setting, team and authority changes are reported
   immediately. [Selection](skills/deliver-work/references/model-selection.md)
   loads only the chosen role and host. Workers receive a bounded brief and,
@@ -399,9 +400,9 @@ describes `${CLAUDE_EFFORT}` inside skill text to read the level. The portable
 entrypoints here do not use it, and an agent cannot reliably read its own
 effort: on 2026-09-24 an Opus session set to `high` reported `low`. The
 [Claude Code adapter](skills/deliver-work/references/claude-code-model-selection.md)
-records why a host-reported value does not replace your statement.
+records why a host-observed value does not replace your statement.
 `plan-work` and `deliver-work` record the level you state, beside any
-host-reported value, otherwise unknown, and never claim to change it.
+host-observed value, otherwise unknown, and never claim to change it.
 
 Set effort per session rather than per skill. When starting planned work,
 choose the model and effort in the host first, then paste the item's prompt for

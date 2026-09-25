@@ -78,9 +78,8 @@ Assess unclassified work or refresh its planning assessment against current
 sources, including scope fit at pickup. Map acceptance criteria to verification
 and identify conditional reviews and operational handoffs. Preserve the
 project's mandatory gates.
-At pickup, read the item's Execution recommendation when present and copy its
-session type, model and level for this host into the Execution record's
-`Recommended` row; write `none` when the item has no such section. Treat the
+At pickup, read the item's Execution recommendation when present and copy it
+into the Execution record's `Recommended` row. Treat the
 model, level, session type, worker and reviewer settings stated in the user's
 prompt as explicit requirements; a later user instruction overrides them. Confirm
 only the model from your runtime instructions; stop when it differs.
@@ -284,10 +283,8 @@ unverified gate passed:
 - Next checkpoint: next action and its completion evidence.
 - Blocker: concrete blocker and owner, or `none`.
 
-Keep the `## Execution record` section from execution reporting in the
-authorized durable delivery record, such as the PR body: refresh it at
-substantive checkpoints, complete it before merge and read it back at final
-handoff. Without such a record, include the section in the final response.
+Keep the `## Execution record` section from execution reporting current in the
+authorized delivery record, or in the final response without one.
 
 Keep each field short; omit transcript replay and restated instructions.
 Preserve required evidence even when it needs more than one line.

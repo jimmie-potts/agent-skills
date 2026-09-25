@@ -1,10 +1,10 @@
 # Report strategy, models, and agents
 
-Read before creating a non-root delivery agent, reconciling incomplete/resumed
-participation, or publishing a checkpoint/final handoff involving agents. Direct
-work with a verified single coordinator can use the entrypoint fields, but
-every delivery keeps the [Execution record](#write-the-execution-record)
-section from pickup to final handoff. Use the entrypoint's
+Read at pickup, before creating a non-root delivery agent, when reconciling
+incomplete/resumed participation, and before any substantive checkpoint or final
+handoff. Direct work with a verified single coordinator can use the entrypoint
+fields for the summary; every delivery also keeps the
+[Execution record](#write-the-execution-record). Use the entrypoint's
 Strategy, Models, Agents, and Consultations fields for this summary. The task
 conversation is the default output, so the user can see it while work proceeds
 and find it in the final response. These instructions require agent-authored
@@ -130,70 +130,90 @@ the existing section rather than adding another.
 
 ### Rows
 
-Write a table with the header `| Field | Value |` and these rows in this order.
-Add `Session label` directly after `Session type` only when it applies.
+Write a table with the header `| Field | Value |` and these rows in this order,
+with bare field names as in the examples. Add `Session label` directly after
+`Session type` only when it applies.
 
 | Field | Value |
 | --- | --- |
 | `Issue` | The resolved work reference: `owner/repo#<n>`, a Jira key or a document URL |
 | `Recommended` | `<session type>, <model>, <level>` copied from the item's `## Execution recommendation` for the executing host: its `Session type`, the backticked identifier in `Model`, and `Thinking level`. `insufficient` when it records `**Status:** insufficient`; `none` when the item has no such section. Never retype a recommendation from other prose |
-| `Coordinator model` | Sourced values, as defined under the cell grammar |
-| `Coordinator level` | Sourced values |
+| `Coordinator model` | Sourced values for the coordinator that completes the section, as defined under the cell grammar |
+| `Coordinator level` | Sourced values for the same coordinator |
 | `Session type` | The session type delivery ended with: `One-shot`, `Pair`, `Orchestrate` or `Investigate first`. Strategy explains any change |
-| `Session label` | Optional. The neutral label the coordinator set on its session in a project-defined session index. Never a raw session ID, path or account name |
+| `Session label` | Optional. The neutral label, in lowercase letters, digits and hyphens, that the coordinator set on its session in a project-defined session index. Never a raw session ID, path or account name |
 | `Workers` | `none`, or one agent entry per implementation or investigation worker context, including failed and replaced attempts, in creation order |
 | `Reviewers` | `none`, or one agent entry per independent task, fix or final reviewer context |
-| `Agents` | A count of distinct agent contexts used, including the coordinator and advisors |
+| `Agents` | A count of distinct agent contexts used, including every coordinator and advisor |
 | `Consultations` | A count of completed advisor consultations, or `not applicable` without an advisory pairing |
 | `Review rounds` | `final <count>; task <count>`, following [review cycles](review-cycles.md) |
-| `Findings` | `P0 <count>; P1 <count>; P2 <count>; P3 <count>`: distinct independent-review findings by stable identity. A regression reopens its finding and does not count again |
-| `Corrections` | A count of correction passes: each new candidate made to resolve review findings or failed acceptance, by a worker's guided correction or by the coordinator. Fixes batched before the next review count once |
+| `Findings` | `P0 <count>; P1 <count>; P2 <count>; P3 <count>`: distinct findings from independent task, fix and final reviews, by stable identity. A regression reopens its finding and does not count again |
+| `Corrections` | A count of correction passes: each new candidate made to resolve review findings or failed acceptance, by a worker's guided correction or by the coordinator. Fixes batched before the next review count once. Models keeps the separate per-worker correction count, so the two can differ |
 
 After the table, add these lines, each as its own paragraph:
 
 - `**Fixes delivery:** <reference>` only when this change repairs a merged
-  delivery. Name that delivery's merged PR as `owner/repo#<n>`.
+  delivery. Name that delivery's merged PR as `owner/repo#<n>`, or its merge
+  commit as `owner/repo@<sha>` when it merged without a PR.
 - `**Recorded:** <YYYY-MM-DD>, <policy revision>` always. The date is the
   latest update. The revision is the deliver-work package whose convention
   the section follows, as `agent-skills@<sha>`, or `unknown`.
 
 Keep narrative in the Strategy, Models and Evidence fields, outside the section.
+When the coordinator changed on resumption, report earlier coordinators in
+Models; `Agents` counts them.
 
 ### Cell grammar
 
+- A token contains no spaces and none of `|`, `(`, `)`, `+`, `,` or `;`. Write
+  a model as its identifier or alias, such as `claude-opus-5-5`, `opus[1m]` or
+  `gpt-6-luna`. When a source gives only a display name, join its words with
+  hyphens, such as `Opus-5.5`.
 - A count is a non-negative integer, `at least <n>` for a known minimum, or
   `unknown`. Missing history is never zero.
-- Sourced values are one or more items joined by ` + `. Each item is
-  `<value> (<provenance>)`. Write the value as its source gave it, such as
-  `opus`, `claude-opus-5-5`, `gpt-6-luna` or `medium`. Give every source that
-  exposed the value; a conflict between them is a known mismatch to report,
-  not a reason to drop either item.
-- An agent entry is `<label>: requested <model>/<level>, model <sourced values>,
-  level <sourced values>`, with entries joined by `; `. Use the stable task-local
-  label from the roster, such as `worker-1` or `standards-reviewer-1`. The
-  requested part is what the coordinator passed to the host; write `default`
-  for a part the request left to the host, such as effort on a Claude Code
-  subagent. A request is not evidence of the executing value. List every
-  verified context; when earlier contexts cannot be recovered, `Agents` gives
-  a known minimum.
+- Sourced values are either exactly `unknown (unknown)`, or one or more items
+  joined by ` + `, each `<token> (<provenance>)` with a provenance other than
+  `unknown` and a token other than `unknown`. Give every source that exposed
+  the value; a conflict between them is a known mismatch to report, not a
+  reason to drop either item.
+- An agent entry is `<label>: requested <model> at <level>, model <sourced
+  values>, level <sourced values>`, with entries joined by `; `. Use the stable
+  task-local label from the roster, in lowercase letters, digits and hyphens,
+  such as `worker-1` or `standards-reviewer-1`. The requested model and level
+  are tokens giving what the coordinator passed to the host: `default` for a
+  part the request left to the host, such as effort on a Claude Code subagent,
+  or `unknown` when the request is no longer known. A request is not evidence
+  of the executing value. List every verified context; when earlier contexts
+  cannot be recovered, `Agents` gives a known minimum.
 
-Provenance uses exactly one of these terms:
+Provenance uses exactly one of these terms. Each names a source, not an
+independent verification of what executed:
 
 | Term | Meaning |
 | --- | --- |
-| `host-observed` | Read from a host record or host-provided value, not the model's own account: a Claude Code hook's `effort.level`, `CLAUDE_EFFORT`, or a Codex rollout's `turn_context` |
+| `host-observed` | Read from a host record or host-provided value rather than the model's own account, where the host exposes it and reading it is authorized: for example a Claude Code hook's `effort.level`, `CLAUDE_EFFORT`, or a Codex rollout's `turn_context` |
 | `user-stated` | The user stated it for this delivery, including in a pasted recommendation prompt |
 | `self-reported` | An agent named it from its own runtime instructions or return. Never ask an agent for its own level |
-| `unknown` | No source exposed the value. Write exactly `unknown (unknown)` as the only item |
+| `unknown` | No source exposed the value. Write exactly `unknown (unknown)` |
 
 Never record a value without a provenance term you can name, and never replace
 `unknown (unknown)` with a default, a requested value or a guess.
 
-The rows map to the evaluation measures in agent-skills#44 E5.
-`Review rounds`, `Findings` and `Corrections` give first-submission acceptance,
-acceptance after correction and rework. `Agents` and `Consultations` give the
-agent and consultation counts. Outcome scoring, elapsed time and attributable
-usage are outside the section; keep exposed usage in Evidence.
+### Map rows to evaluation measures
+
+The rows supply the per-delivery measures in agent-skills#44 E5 without
+renaming:
+
+- First-submission acceptance: the delivery merged with `Corrections` 0.
+- Acceptance after correction: the delivery merged with `Corrections` of 1 or
+  more; the count is its rework.
+- Agent and consultation counts: `Agents` and `Consultations`.
+- Review effort: `Reviewers`, `Review rounds` and `Findings`.
+
+Any `unknown` or `at least` count leaves the derived measure unknown. Missed
+defects, false-positive blockers and gate violations need independent scoring;
+elapsed time and attributable usage stay outside the section, with exposed
+usage in Evidence.
 
 ### Examples
 
@@ -210,8 +230,8 @@ A complete record for a Codex delivery that repairs an earlier merge:
 | Coordinator level | high (user-stated) + high (host-observed) |
 | Session type | Orchestrate |
 | Session label | example-app-42 |
-| Workers | worker-1: requested gpt-6-luna/medium, model gpt-6-luna (self-reported), level unknown (unknown); worker-2: requested gpt-6-luna/high, model gpt-6-luna (self-reported), level unknown (unknown) |
-| Reviewers | standards-reviewer-1: requested gpt-6-luna/medium, model gpt-6-luna (self-reported), level unknown (unknown); specification-reviewer-1: requested gpt-6-luna/medium, model gpt-6-luna (self-reported), level unknown (unknown) |
+| Workers | worker-1: requested gpt-6-luna at medium, model gpt-6-luna (self-reported), level unknown (unknown); worker-2: requested gpt-6-luna at high, model gpt-6-luna (self-reported), level unknown (unknown) |
+| Reviewers | standards-reviewer-1: requested gpt-6-luna at medium, model gpt-6-luna (self-reported), level unknown (unknown); specification-reviewer-1: requested gpt-6-luna at medium, model gpt-6-luna (self-reported), level unknown (unknown) |
 | Agents | 5 |
 | Consultations | not applicable |
 | Review rounds | final 2; task 0 |
@@ -220,7 +240,7 @@ A complete record for a Codex delivery that repairs an earlier merge:
 
 **Fixes delivery:** example-org/example-app#40
 
-**Recorded:** 2026-09-25, agent-skills@3746fab
+**Recorded:** 2026-09-25, agent-skills@1a2b3c4
 ```
 
 A resumed Claude Code delivery with an incomplete history:
@@ -236,7 +256,7 @@ A resumed Claude Code delivery with an incomplete history:
 | Coordinator level | unknown (unknown) |
 | Session type | One-shot |
 | Workers | none |
-| Reviewers | standards-reviewer-2: requested sonnet/default, model unknown (unknown), level unknown (unknown); specification-reviewer-2: requested sonnet/default, model sonnet (self-reported), level unknown (unknown) |
+| Reviewers | standards-reviewer-2: requested sonnet at default, model unknown (unknown), level unknown (unknown); specification-reviewer-2: requested unknown at unknown, model sonnet (self-reported), level unknown (unknown) |
 | Agents | at least 3 |
 | Consultations | not applicable |
 | Review rounds | final at least 1; task unknown |
