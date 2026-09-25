@@ -54,5 +54,8 @@ selection. Unavailable optional controls remain unavailable, not simulated.
 For Codex collaboration tools, read the
 [Codex adapter](codex-model-selection.md). For Claude Code subagent tools, read
 the [Claude Code adapter](claude-code-model-selection.md). Read only the active
-host and selected role. These adapters own concrete settings and controls; do
-not duplicate their tables or infer unavailable controls from another host.
+host and selected role for execution. A planning workflow recommending future
+work on both hosts may read both adapters for the proposed roles without
+dispatching agents. These adapters own concrete settings and controls for
+dispatched agents; do not duplicate their tables or infer unavailable controls
+from another host.
