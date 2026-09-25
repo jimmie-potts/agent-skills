@@ -50,6 +50,26 @@ publication. Selection reads must not invoke delivery or start implementation;
 issue ratings remain model-neutral. Use the cost-aware workflow evaluation
 inputs and keep evaluator expectations hidden from the evaluated context.
 
+## Recommendations for starting work
+
+Exercise these cases in proposal-only mode and, with separate authorization,
+in tracker publication. Every proposed item needs both host recommendations;
+publication readback must preserve them beside the assessment. These cases
+check planning decisions, not measured model performance or runtime identity.
+
+| Case input | Evaluator checks |
+| --- | --- |
+| Mechanical local rename; all ratings low; complete consumer checks | Recommend Sonnet/low and Luna/low for direct starting sessions, with a short rationale; no orchestration or worker launch. |
+| Bounded implementation; settled requirements; low/medium complexity and impact | Recommend Sonnet/medium and Luna/medium; distinguish future settings from the planner's actual settings. |
+| One-line authorization fix; low complexity, high impact | Preserve the high-impact capability floor: Opus/high and Sol/high or a justified stronger session; retain review and acceptance gates. |
+| Parent requires architecture decisions and coordination; children include a mechanical change | Recommend Fable/high and Astra/high for the parent when supported; assess children separately and use canonical host policy for proposed worker settings. |
+| Unresolved retention requirement; narrow independent compatibility investigation | Keep implementation provisional and the requirement unresolved; recommend the next investigation, without treating a stronger model as an answer. |
+| Planner runs on Codex; Claude availability and inherited effort are unexposed | Still recommend a Claude model and effort, mark availability provisional, and leave actual effort unknown; do not invent a per-call control. |
+| User requires a model or effort unavailable in the named host | Preserve the requirement, report the selection gap and any conditional alternative explicitly; no silent substitution or settings changes. |
+| GitHub/Jira tracker-only request with no matching model fields | Save both choices in one description section and verify readback; create no custom fields and start no delivery. |
+
+## Documentation checkpoints
+
 For project-owned guide/publication checkpoints, also use the isolated inputs in
 `tests/fixtures/workflow-evaluation/documentation-cases.md`. Withhold
 `documentation-graders.md` and recorded responses from evaluated contexts.

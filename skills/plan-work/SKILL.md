@@ -66,6 +66,12 @@ readiness and conditional specialist/human review or operational handoffs.
 
 Apply the assessment contract, including scope fit while drafting, without
 embedding model names in planning ratings.
+For every item, read [execution recommendations](references/execution-recommendations.md)
+and recommend a starting model and reasoning/effort level for both Claude Code
+and Codex alongside the assessment. Identify whether the user should start an
+implementation or orchestration session, explain the choice, and distinguish
+proposed worker settings when delegation would help. Include both host choices
+in proposals and authorized saved work items, even when planning on only one host.
 Record the session's reasoning setting in the planning evidence when the host
 exposes it or the user states it; otherwise record it as unknown. Report a
 known mismatch with documented workflow guidance or a composed skill's
@@ -98,17 +104,18 @@ within existing edit authority; do not invent a specification framework.
 ## Publish within authority and verify
 
 Present the concrete proposed items, exact authorized changes, dependencies,
-assessments, and unresolved questions. When publication is already authorized
-and material decisions are settled, proceed without another approval round.
-Otherwise return the proposals at the user's requested boundary.
+assessments, execution recommendations, and unresolved questions. When publication
+is already authorized and material decisions are settled, proceed without another
+approval round. Otherwise return the proposals at the user's requested boundary.
 
 Before each write, refresh the target and record intent, expected prior state,
 and available guards in existing permitted task evidence. Reuse matching work
 instead of duplicating it. Apply only authorized fields and links, preserving
 unrelated status, assignments, labels, estimates, and sprint membership.
 
-Read back each effect and compare the saved scope, criteria, assessment, and
-dependency endpoints with the proposal. An API acknowledgment alone is not
+Read back each effect and compare the saved scope, criteria, assessment,
+execution recommendations, and dependency endpoints with the proposal.
+An API acknowledgment alone is not
 publication verification. After a timeout or partial response, suspend dependent
 writes and reconcile authoritative issue/history records before retrying. A stale
 search miss does not prove absence. Repair a verified no-effect failure within

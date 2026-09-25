@@ -62,6 +62,9 @@ Reusable SDLC workflows also include:
 
 - [`plan-work`](skills/plan-work/SKILL.md), explicit requirements definition and
   authorized GitHub/Jira publication with assessments and acceptance evidence.
+  Each item recommends a starting model and reasoning/effort level for both
+  Claude Code and Codex, with a rationale and implementation or orchestration
+  role. See [execution recommendations](skills/plan-work/references/execution-recommendations.md).
   It follows project-owned guide and publication checkpoints within the user's
   authority, including a pending-documentation report for tracker-only work.
   It reads the installed `deliver-work` package's canonical assessment and
@@ -390,8 +393,11 @@ entrypoints here do not use it. `plan-work` and `deliver-work` record the level
 they can observe or that you state, otherwise unknown, and never claim to
 change it.
 
-Set effort per session rather than per skill. Start a planning session at a
-lower level and a delivery session at `high`, the Fable default:
+Set effort per session rather than per skill. When starting planned work, use
+the item's model and effort recommendation. Simple implementation may suit a
+lower level; difficult reasoning or orchestration may warrant a stronger model
+at `high`. Verify support in the chosen host. For example, these launch flags
+select a level for one Claude Code session:
 
 ```bash
 claude --effort medium
@@ -411,7 +417,7 @@ their default ahead of saved settings until an interactive effort choice
 ends that hold; `--effort` overrides it for one launch. Check the session
 header or `/effort` to confirm the effective level.
 
-The recommendation follows Anthropic's published effort measurements
+The earlier planning-versus-delivery guidance drew on Anthropic's effort measurements
 ([Optimizing for cost and intelligence](https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence),
 read September 2026). On four knowledge-work benchmarks run with Claude
 Fable 5, `medium` matched the default's accuracy at about 70 to 87 percent
@@ -419,7 +425,9 @@ of its cost, and `low` gave up one to three points for a third to a half
 off. On SWE-bench Pro with Claude Opus 5, `medium` gave up about two points
 for half the cost and `low` about eight for a quarter. This note treats
 planning with `plan-work` as knowledge work and delivery with `deliver-work`
-as coding. The source advises sweeping levels on your own traffic, so measure
+as coding. The per-item recommendations now distinguish task difficulty and
+session role; these measurements do not validate that model-selection table.
+The source advises sweeping levels on your own traffic, so measure
 before relying on it; the decision to accept whatever loss appears on
 planning work is recorded in
 [issue 24](https://github.com/jimmie-potts/agent-skills/issues/24).
