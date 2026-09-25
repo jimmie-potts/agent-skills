@@ -53,8 +53,10 @@ gap and continue independent planning without reconstructing that policy.
 
 ## Name the session type
 
-Describe the starting session with exactly one of these types, keeping the
-table's session role as the source of the choice:
+Describe the starting session with exactly one of these types. `One-shot` and
+`Orchestrate` come from the table's session role above. `Pair` comes from the
+canonical implementation selection's advisory-pairing strategy, and
+`Investigate first` from the high-uncertainty guidance under the table:
 
 | Session type | Session role it expresses | What the session does |
 | --- | --- | --- |
@@ -83,7 +85,8 @@ issue description or authoritative work document, in this order:
    gives the two fresh read-only final reviewers per host from the canonical
    reviewer policy for the item's impact, or `None` for `Investigate first`.
    `Availability` gives the evidence
-   source and date, labels each host verified or provisional, and notes any
+   source and the date the host's options were checked, labels each host
+   verified or provisional, and notes any
    conflict with explicit requirements. Keep the planner's own observed
    settings out of the table.
 3. `**Prompt (Claude Code):**` and `**Prompt (Codex):**`, each followed by one
@@ -96,8 +99,9 @@ issue description or authoritative work document, in this order:
 5. `**Why:**` the assessment evidence, checks and task boundaries behind the
    choice. `**Reassess when:**` the condition that invalidates it.
    `**Assessed:**` the date, the policy revision (`agent-skills@<sha>` or the
-   installed package's revision), evidence links, and a fingerprint slot that
-   records a project-defined freshness fingerprint or `not used`.
+   installed package's revision), evidence links, and a fingerprint slot. Use
+   a fingerprint only when the owning project defines one, such as a hash of
+   the item body without this section; otherwise write `not used`.
 
 When the evidence cannot support a choice, replace the answer, table and
 prompts with `**Status:** insufficient` and `**Missing:**` naming the exact
@@ -131,8 +135,8 @@ Use the deliver-work skill to deliver <work-item URL>. I started this session on
 the work-item URL and the question, the evidence to return and the authority
 limit, and ask for no writes. Keep the model, level and recommendation rules
 above, and end by asking the agent to say so and stop if a named skill it needs
-is unavailable. Keep the prompts in the section itself so readers and guides copy the saved
-text.
+is unavailable. Keep the prompts in the section itself so readers and guides
+copy the saved text.
 
 A recommendation never claims the current session changed models, effort was
 applied, workers ran, or acceptance passed. In particular, a recommended Claude
