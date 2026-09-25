@@ -109,9 +109,14 @@ Reusable SDLC workflows also include:
   contributors, model roles and observed settings, active and distinct agent
   counts, planned additional agents, and advisor consultations. See
   [execution reporting](skills/deliver-work/references/execution-reporting.md)
-  for counting rules. Routine updates report changes, blockers and next actions;
-  consequential strategy, setting, team and authority changes are reported
-  immediately. [Selection](skills/deliver-work/references/model-selection.md)
+  for counting rules. Each delivery keeps one `## Execution record` section in
+  its PR body, or in the final response without one, so a project guide can
+  parse the recommended and actual model, level and session type, the workers
+  and reviewers, and the review rounds, findings and corrections. Every model
+  and level carries its source: `host-observed`, `user-stated`,
+  `self-reported` or `unknown`. Routine updates report changes, blockers and
+  next actions; consequential strategy, setting, team and authority changes
+  are reported immediately. [Selection](skills/deliver-work/references/model-selection.md)
   loads only the chosen role and host. Workers receive a bounded brief and,
   for a pairing, its worker protocol rather than the coordinator's setup rules. Its
   [resumption packet](skills/deliver-work/references/resumption.md) retains task
@@ -394,9 +399,9 @@ describes `${CLAUDE_EFFORT}` inside skill text to read the level. The portable
 entrypoints here do not use it, and an agent cannot reliably read its own
 effort: on 2026-09-24 an Opus session set to `high` reported `low`. The
 [Claude Code adapter](skills/deliver-work/references/claude-code-model-selection.md)
-records why a host-reported value does not replace your statement.
+records why a host-observed value does not replace your statement.
 `plan-work` and `deliver-work` record the level you state, beside any
-host-reported value, otherwise unknown, and never claim to change it.
+host-observed value, otherwise unknown, and never claim to change it.
 
 Set effort per session rather than per skill. When starting planned work,
 choose the model and effort in the host first, then paste the item's prompt for

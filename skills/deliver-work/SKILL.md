@@ -78,11 +78,12 @@ Assess unclassified work or refresh its planning assessment against current
 sources, including scope fit at pickup. Map acceptance criteria to verification
 and identify conditional reviews and operational handoffs. Preserve the
 project's mandatory gates.
-At pickup, read the item's Execution recommendation when present. Treat the
+At pickup, read the item's Execution recommendation when present and copy it
+into the Execution record's `Recommended` row. Treat the
 model, level, session type, worker and reviewer settings stated in the user's
 prompt as explicit requirements; a later user instruction overrides them. Confirm
 only the model from your runtime instructions; stop when it differs.
-Record the stated level as user-stated; never ask an agent, including
+Record the stated level as `user-stated`; never ask an agent, including
 yourself, to verify its own effort. Keep reassessment authority: when current
 sources no longer fit the recommendation, say so before changing strategy.
 The session type governs implementation; the prompt's reviewer clause
@@ -110,9 +111,10 @@ otherwise record it as unknown. Report when it differs from the setting the
 selection policy chose for a role, and never claim to change it.
 
 Before implementation or delegation, publish the complete checkpoint fields
-below. Read [execution reporting](references/execution-reporting.md) before the
-first non-root agent, when reconciling incomplete/resumed participation, and at
-checkpoints or final handoff involving agents. A verified direct-only run can
+below. Read [execution reporting](references/execution-reporting.md) at pickup,
+before the first non-root agent, when reconciling incomplete/resumed
+participation, and at substantive checkpoints and final handoff, which carry its
+Execution record. A verified direct-only run can
 use the entrypoint fields: coordinator active/used 1, future agents planned
 separately, consultations not applicable. Incomplete history stays unknown.
 A successful request does not prove runtime settings; distinguish requested,
@@ -280,6 +282,9 @@ unverified gate passed:
   next action. Reuse these fields rather than adding another status ledger.
 - Next checkpoint: next action and its completion evidence.
 - Blocker: concrete blocker and owner, or `none`.
+
+Keep the `## Execution record` section from execution reporting current in the
+authorized delivery record, or in the final response without one.
 
 Keep each field short; omit transcript replay and restated instructions.
 Preserve required evidence even when it needs more than one line.
