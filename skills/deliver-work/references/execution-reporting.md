@@ -201,8 +201,7 @@ Never record a value without a provenance term you can name, and never replace
 
 ### Map rows to evaluation measures
 
-The rows supply the per-delivery measures in agent-skills#44 E5 without
-renaming:
+The rows supply per-delivery workflow evaluation measures without renaming:
 
 - First-submission acceptance: the delivery merged with `Corrections` 0.
 - Acceptance after correction: the delivery merged with `Corrections` of 1 or
@@ -217,7 +216,8 @@ usage in Evidence.
 
 ### Examples
 
-A complete record for a Codex delivery that repairs an earlier merge:
+A complete record for a Codex delivery that repairs an earlier merge, with a
+placeholder policy revision:
 
 ```markdown
 ## Execution record

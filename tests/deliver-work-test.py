@@ -39,7 +39,10 @@ RECORD_CELLS = {
 
 
 def parse_execution_record(text):
-    """Read an Execution record strictly; reject anything outside the shape."""
+    """Read an Execution record's shape strictly: rows, order and cell grammar.
+
+    Cross-row consistency, such as Agents against listed contexts, is not checked.
+    """
     match = re.fullmatch(
         r'## Execution record\n\n\| Field \| Value \|\n\| --- \| --- \|\n'
         r'((?:\|[^\n]*\|\n)+)'
