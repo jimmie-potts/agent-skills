@@ -64,8 +64,9 @@ Reusable SDLC workflows also include:
   authorized GitHub/Jira publication with assessments and acceptance evidence.
   Each item's Execution recommendation starts with the session type to open
   (`One-shot`, `Pair`, `Orchestrate` or `Investigate first`), then gives both
-  hosts' model and reasoning/effort level in a table and a paste-ready prompt
-  per host. See [execution recommendations](skills/plan-work/references/execution-recommendations.md).
+  hosts' model and reasoning/effort level, worker subagents and required
+  reviewers in a table, and a paste-ready prompt per host. See
+  [execution recommendations](skills/plan-work/references/execution-recommendations.md).
   It follows project-owned guide and publication checkpoints within the user's
   authority, including a pending-documentation report for tracker-only work.
   It reads the installed `deliver-work` package's canonical assessment and

@@ -58,14 +58,15 @@ table's session role as the source of the choice:
 
 | Session type | Session role it expresses | What the session does |
 | --- | --- | --- |
-| `One-shot` | Implement directly, including with design checkpoints or the stronger capability floor | Implements directly without subagents; a Checkpoints row names decisions where it stops to ask |
+| `One-shot` | Implement directly, including with design checkpoints or the stronger capability floor | Implements directly without worker subagents; a Checkpoints row names decisions where it stops to ask |
 | `Pair` | Implement through the host's advisory pairing, when canonical implementation selection chooses it | One worker implements under the pairing while the session advises at approach, blockers and final review |
-| `Orchestrate` | Orchestrate bounded workers | Breaks the work down, delegates bounded pieces to subagents and owns every write and review |
+| `Orchestrate` | Orchestrate bounded workers | Breaks the work down, delegates bounded pieces to worker subagents and owns every write and review |
 | `Investigate first` | Investigation or clarification before dependent coding | A read-only session answers a named question; the item is then reassessed |
 
-The type is a presentation label, not another selection table. Independent
-final reviewers that delivery requires are not the session's subagents; the
-type governs implementation, not delivery's review gates.
+The type is a presentation label, not another selection table. It governs
+implementation only. Every implementing type also runs the two independent
+Standards and Specification reviewers that delivery requires; the Reviewers row
+and each prompt authorize them. `Investigate first` has no reviewers.
 
 ## Record the recommendation beside the assessment
 
@@ -75,10 +76,13 @@ issue description or authoritative work document, in this order:
 1. `**Start with:**` one line giving the answer: the session type first, then
    each host's model and thinking level, then which prompt to paste.
 2. A two-host table with columns `Claude Code` and `Codex` and the rows
-   `Model`, `Thinking level`, `Session type`, `Subagents` and `Availability`.
-   Add a `Checkpoints` row only when the session should stop at named
-   decisions. `Subagents` gives each proposed worker's model and level from
-   the canonical worker policy, or `None`. `Availability` gives the evidence
+   `Model`, `Thinking level`, `Session type`, `Subagents`, `Reviewers` and
+   `Availability`. Add a `Checkpoints` row only when the session should stop at
+   named decisions. `Subagents` gives each proposed implementation worker's
+   model and level from the canonical worker policy, or `None`. `Reviewers`
+   gives the two fresh read-only final reviewers per host from the canonical
+   reviewer policy for the item's impact, or `None` for `Investigate first`.
+   `Availability` gives the evidence
    source and date, labels each host verified or provisional, and notes any
    conflict with explicit requirements. Keep the planner's own observed
    settings out of the table.
@@ -111,7 +115,8 @@ Each implementation prompt is one paragraph that:
 - tells it to take the level as stated rather than guess it, because an agent
   cannot reliably read its own effort; never ask it to report or verify its
   level;
-- states the session type and the subagent settings;
+- states the session type, the worker subagent settings, and authorizes the
+  required reviewers by count and model;
 - points at the item's Execution recommendation with its assessment date and
   asks the agent to say so before changing strategy;
 - ends with "If deliver-work isn't available here, say so and stop."
@@ -119,7 +124,7 @@ Each implementation prompt is one paragraph that:
 For example:
 
 ```text
-Use the deliver-work skill to deliver <work-item URL>. I started this session on Sonnet at medium effort. State the model you are running and stop if it is not Sonnet; take the effort as stated rather than guessing it. Run as a one-shot session without subagents. The issue's Execution recommendation (assessed <date>) is the basis; if what you find no longer fits it, say so before changing strategy. If deliver-work isn't available here, say so and stop.
+Use the deliver-work skill to deliver <work-item URL>. I started this session on Sonnet at medium effort. State the model you are running and stop if it is not Sonnet; take the effort as stated rather than guessing it. Run as a one-shot session: implement it yourself without worker subagents, and use two fresh read-only Sonnet reviewers for deliver-work's required Standards and Specification reviews. The issue's Execution recommendation (assessed <date>) is the basis; if what you find no longer fits it, say so before changing strategy. If deliver-work isn't available here, say so and stop.
 ```
 
 `Investigate first` prompts replace deliver-work with a read-only request: name

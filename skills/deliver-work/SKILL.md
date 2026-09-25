@@ -79,14 +79,15 @@ sources, including scope fit at pickup. Map acceptance criteria to verification
 and identify conditional reviews and operational handoffs. Preserve the
 project's mandatory gates.
 At pickup, read the item's Execution recommendation when present. Treat the
-model, level, session type and subagent settings stated in the user's prompt
-as explicit requirements; a later user instruction overrides them. Confirm
+model, level, session type, worker and reviewer settings stated in the user's
+prompt as explicit requirements; a later user instruction overrides them. Confirm
 only the model from your runtime instructions; stop when it differs.
 Record the stated level as user-stated; never ask an agent, including
 yourself, to verify its own effort. Keep reassessment authority: when current
 sources no longer fit the recommendation, say so before changing strategy.
-A no-subagent session type governs implementation; when it would prevent the
-required independent reviews, report that conflict before the review stage.
+The session type governs implementation; the prompt's reviewer clause
+authorizes the required independent reviewers. When the user forbids all
+subagents, say at pickup that delivery stops at a ready PR with review pending.
 Before decomposing work, ordering tasks or dispatching, read
 [task planning and dispatch](references/task-planning.md). Keep its compact
 definitions and dependency evidence in the existing task record.

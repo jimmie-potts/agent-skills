@@ -75,7 +75,7 @@ class PlanWorkStructureTest(unittest.TestCase):
             with self.subTest(label=label):
                 self.assertIn(label, reference)
         for row in ('Model', 'Thinking level', 'Session type', 'Subagents',
-                    'Availability', 'Checkpoints'):
+                    'Reviewers', 'Availability', 'Checkpoints'):
             with self.subTest(row=row):
                 self.assertIn(f'`{row}`', reference)
         self.assertIn('| Work to start | Claude Code model / effort | '
@@ -88,6 +88,9 @@ class PlanWorkStructureTest(unittest.TestCase):
         self.assertIn('stop if it is not', prompt)
         self.assertIn('take the effort as stated rather than guessing it', prompt)
         self.assertIn('Execution recommendation (assessed', prompt)
+        self.assertIn('without worker subagents', prompt)
+        self.assertRegex(prompt, r'two fresh read-only \w+ reviewers')
+        self.assertNotIn('without subagents', prompt)
         self.assertNotRegex(prompt.lower(), r'(report|verify|confirm)\w* (your|its) effort')
 
     def test_check_wiring(self):
