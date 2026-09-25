@@ -217,7 +217,7 @@ usage in Evidence.
 ### Examples
 
 A complete record for a Codex delivery that repairs an earlier merge, with a
-placeholder policy revision:
+made-up policy revision:
 
 ```markdown
 ## Execution record
