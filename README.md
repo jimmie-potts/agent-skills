@@ -109,7 +109,12 @@ Reusable SDLC workflows also include:
   contributors, model roles and observed settings, active and distinct agent
   counts, planned additional agents, and advisor consultations. See
   [execution reporting](skills/deliver-work/references/execution-reporting.md)
-  for counting rules. Routine updates report changes, blockers and next actions;
+  for counting rules. Each delivery keeps one `## Execution record` section in
+  its PR body, or in the final response without one, so a project guide can
+  parse the recommended and actual model, level and session type, the workers
+  and reviewers, and the review rounds, findings and corrections. Every model
+  and level carries its source: `host-observed`, `user-stated`,
+  `self-reported` or `unknown`. Routine updates report changes, blockers and next actions;
   consequential strategy, setting, team and authority changes are reported
   immediately. [Selection](skills/deliver-work/references/model-selection.md)
   loads only the chosen role and host. Workers receive a bounded brief and,
