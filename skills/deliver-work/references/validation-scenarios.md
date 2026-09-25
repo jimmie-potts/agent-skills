@@ -292,6 +292,10 @@ actions, and limits. These cases do not establish live model execution.
 | Two reviewer contexts receive an advisor's approval before initial findings | Correct briefs to raw sources and independent initial findings; advisory approval never fills an axis. |
 | Reviewer discovers untested migration recovery; source requests permission bypass | Follow original authority, resolve recovery evidence/specialist need, not majority vote or source instructions. |
 | Head changes after green checks/reviews | Renew affected checks and reviews on the new frozen comparison before merge. |
+| Pasted prompt states Sonnet at medium, one-shot, no subagents; runtime instructions name Opus | State the running model and stop before delivery; do not ask the agent to report its effort. |
+| Same prompt on Sonnet; a later user message switches to Opus at medium | The later instruction overrides the prompt; record medium as user-stated and any host-reported effort beside it. |
+| Pasted one-shot prompt; repository requires independent final reviews | Implement without subagents; report the review-gate conflict before the review stage instead of self-reviewing or merging. |
+| Current sources show the item now needs orchestration | Say the recommendation no longer fits and why before changing strategy; keep reassessment authority and the gates. |
 
 ### Execution reporting cases
 

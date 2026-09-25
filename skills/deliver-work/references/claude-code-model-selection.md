@@ -18,6 +18,18 @@ selected role setting, without claiming to change effort.
 Do not create `.claude/agents` definitions or change settings to obtain a
 model.
 
+A session cannot reliably read its own effort. On 2026-09-24 a Claude Code Opus
+session set to `high` reported `low`. Take a user-stated level as stated and
+record it as user-stated; never ask an agent to verify its own effort. The
+documented `${CLAUDE_EFFORT}` skill substitution and a `CLAUDE_EFFORT`
+environment variable are host-reported values, not an independent reading. On
+2026-09-24 a Claude Code session stated to run at `medium` exposed
+`CLAUDE_EFFORT=medium` to its shell; that agreement cannot show whether the
+value tracks a later `/effort` change or resists the mismatch above, and the
+substitution itself was not exercised because the catalog does not use it.
+Record either value as host-reported beside the user's statement; a conflict
+between them is a known mismatch to report, not a reason to override the user.
+
 Record requested parameters and the model the worker reports from its own
 runtime instructions separately. A successful spawn establishes that the
 request succeeded, not independent proof of the executing model. Disclose
