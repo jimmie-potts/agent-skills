@@ -18,11 +18,12 @@ These hold at every step. The references this skill reads never relax them.
   changes, deployment, or installation, or launches deliver-work. Preserve
   narrower user limits and applicable project policy.
 - Existing systems: use the project's tracker, fields, planning method and
-  documentation. Create no tracker, planning framework, board, custom field or
-  documentation system to fit this workflow.
+  documentation. Create no tracker, planning or specification framework,
+  board, custom field or documentation system to fit this workflow.
 - Shared resources: when a required resource or skill is absent or unreadable,
-  report the gap before the step that depends on it and continue independent
-  discovery. Never silently install, fetch, copy or reconstruct a substitute.
+  report the gap before the step that depends on it, leave that step pending
+  and continue independent discovery. Never silently install, fetch, copy or
+  reconstruct a substitute.
 - Evidence: keep planned commands and paths explicitly unexecuted and unknowns
   visible. A planning proposal never becomes implemented behavior, and
   published unresolved work is not ready.

@@ -62,7 +62,8 @@ These hold at every step. References elaborate them and never relax them.
    Identify maintained guides, roadmap and architecture inputs, their owning
    repositories/coordinator, and any publication procedure. When such policy
    applies, read [documentation checkpoints](references/documentation.md) and
-   follow it at implementation, merge and completion; without one, add none.
+   follow it at implementation, merge and completion; without one, add no
+   documentation system.
    For unfamiliar projects, conflicting sources or incomplete resumed records,
    read [project discovery](references/project-discovery.md).
 4. Resolve material scope, acceptance, target or policy conflicts before the work
@@ -99,7 +100,7 @@ prompt's reviewer clause authorizes the required independent reviewers. When
 the user forbids all subagents, say at pickup that delivery stops at a ready
 PR with review pending.
 
-Read each reference below at its trigger, and only its selected branches:
+Read each reference below at its trigger:
 
 - [Task planning and dispatch](references/task-planning.md): before decomposing
   work, ordering tasks or dispatching.
@@ -108,8 +109,8 @@ Read each reference below at its trigger, and only its selected branches:
   round, time or spend limit.
 - [Model and strategy selection](references/model-selection.md): before
   selecting a worker, changing implementation strategy/settings, or selecting
-  reviewers. Direct trivial work at the coordinator's existing settings needs
-  no worker-selection reads. Compose the host's advisory pairing,
+  reviewers, reading only its selected role and host branches. Direct trivial
+  work at the coordinator's existing settings needs no worker-selection reads. Compose the host's advisory pairing,
   worker-with-astra with Codex collaboration tools or worker-with-fable with
   Claude Code subagent tools, only when that policy and the pairing's
   prerequisites support it.
