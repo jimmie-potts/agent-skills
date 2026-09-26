@@ -3,7 +3,8 @@
 Read at pickup, before creating a non-root delivery agent, when reconciling
 incomplete/resumed participation, and before any substantive checkpoint or final
 handoff. Direct work with a verified single coordinator can use the entrypoint
-fields for the summary; every delivery also keeps the
+fields for the summary: coordinator active and used 1, future agents planned
+separately, consultations not applicable. Every delivery also keeps the
 [Execution record](#write-the-execution-record). Use the entrypoint's
 Strategy, Models, Agents, and Consultations fields for this summary. The task
 conversation is the default output, so the user can see it while work proceeds

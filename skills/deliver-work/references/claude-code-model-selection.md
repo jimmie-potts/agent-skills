@@ -38,8 +38,12 @@ unknown identity; handle a verified mismatch against explicit requirements
 before dependent work. Spawn options alone never prove that the current
 coordinator is Fable; read the coordinator's own runtime instructions.
 A flagged message can switch a Claude Code session to an older model
-automatically, and the user switches back with `/model`; the session
-transcript's per-message model is host-observed evidence of such a change
+automatically, and the user switches back with `/model`. The "Switch models
+when a message is flagged" setting under `/config` controls that switch
+([Getting the most out of Opus 5.5](https://claude.dev/blog/getting-the-most-out-of-opus-5-5/),
+read 2026-09-26). A delivery whose Execution record must name one coordinator
+model should ask the user to set it to ask first. When the session did switch,
+the transcript's per-message model is the host-observed evidence of the change
 where reading it is authorized.
 Report a model change during a delivery as a known mismatch in Models, naming
 each model and the stage at which it changed; the Execution record's

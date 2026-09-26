@@ -45,6 +45,11 @@ For project-owned guide/publication checkpoints, also use the isolated inputs in
 Exercise candidate preparation, acceptance waiting, architecture impact,
 publication verification, and recovery separately from live execution.
 
+For changes to the entrypoint's boundaries or routing, rerun the cases listed in
+`tests/fixtures/workflow-evaluation/entrypoint-rightsizing-deliver-cases.md` and
+its round-2 file. Withhold the `entrypoint-rightsizing-graders*.md` files; read
+`entrypoint-rightsizing-observations.md` only after scoring.
+
 For recorded integrated trials and their limits, read
 [bounded evaluation results](evaluation-results.md) only after scoring a trial.
 Reusable inputs and evaluator rubric live under

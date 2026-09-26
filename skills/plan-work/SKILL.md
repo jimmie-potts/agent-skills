@@ -6,11 +6,27 @@ description: Define one or more implementation-ready work items using the reposi
 # Define work before delivery
 
 Turn an outcome into scoped work with acceptance evidence and dependencies.
-An explicit request to define and publish work authorizes scoped tracker
-creation/update after requirements are settled. Planning-only returns proposals.
-Invoking this skill alone does not authorize publication. Neither mode starts
-implementation, delivery agents, sprint lifecycle changes, deployment, or
-installation. Preserve narrower user limits and applicable project policy.
+
+## Boundaries
+
+These hold at every step. The references this skill reads never relax them.
+
+- Authority: an explicit request to define and publish work authorizes scoped
+  tracker creation/update after requirements are settled. Planning-only returns
+  proposals, and invoking this skill alone does not authorize publication.
+  Neither mode starts implementation, delivery agents, sprint lifecycle
+  changes, deployment, or installation, or launches deliver-work. Preserve
+  narrower user limits and applicable project policy.
+- Existing systems: use the project's tracker, fields, planning method and
+  documentation. Create no tracker, planning or specification framework,
+  board, custom field or documentation system to fit this workflow.
+- Shared resources: when a required resource or skill is absent or unreadable,
+  report the gap before the step that depends on it, leave that step pending
+  and continue independent discovery. Never silently install, fetch, copy or
+  reconstruct a substitute.
+- Evidence: keep planned commands and paths explicitly unexecuted and unknowns
+  visible. A planning proposal never becomes implemented behavior, and
+  published unresolved work is not ready.
 
 ## Ground the outcome
 
@@ -19,44 +35,39 @@ publication boundary. Read applicable instructions, planning conventions,
 implementation, tests, contracts, and authoritative specifications. Discover
 facts before asking. Distinguish delivered behavior from proposed additions.
 Identify any project-owned guides, roadmap, architecture inputs, and publication
-procedure, including their coordinator and repository. Do not invent a
-documentation system when none is defined.
+procedure, including their coordinator and repository.
 Search existing work, including completed or active implementation, before
 proposing new items; preserve others' ownership and intervening changes.
 
 For GitHub work, read [GitHub planning](references/github.md). For Jira, read
 [Jira planning](references/jira.md). For document-only work use the named source
-and return proposals unless exact document edits are authorized. Do not create
-a tracker, planning framework, board, or custom fields to fit this workflow.
+and return proposals unless exact document edits are authorized.
 
-Discover the installed canonical deliver-work skill through supported host
-discovery and read its `references/work-assessment.md` and
-`references/task-planning.md`. These are required resource dependencies, not an
-invocation of delivery. Use the task-planning definition, boundary and dependency
-sections to propose work; they grant no implementation dispatch authority.
-Do not guess personal paths or duplicate either contract here. If a resource is
-absent or unreadable, report the gap before its dependent planning step and
-continue independent discovery. Never silently install or reconstruct it.
+Discover the installed canonical deliver-work package through supported host
+discovery; do not guess personal paths or duplicate its contracts here. Read
+these resources from it. They are resource dependencies, not an invocation of
+delivery, and grant no implementation dispatch authority:
 
-When project documentation or publication policy applies, read the same
-discovered package's `references/documentation.md` for its planning checkpoint.
-Keep project paths and commands in that policy. An unavailable required resource
-leaves its dependent synchronization pending; continue independent planning.
-
-When the user or project sets review-round, time or spending limits, read the
-discovered package's `references/review-cycles.md` section on explicit limits.
-Carry the limit's scope, proposed observable accounting and stop/handoff evidence
-into acceptance and delivery requirements. Distinguish review rounds from worker
-retry budgets. Keep unknown accounting visible; do not invent a default allowance.
-This records future delivery constraints without starting delivery or agents.
+- `references/work-assessment.md` and `references/task-planning.md` for every
+  item. Use the task-planning definition, boundary and dependency sections to
+  propose work.
+- `references/documentation.md` when project documentation or publication
+  policy applies, for its planning checkpoint.
+- `references/review-cycles.md`, its section on explicit limits, when the user
+  or project sets review-round, time or spending limits. Carry each limit's
+  scope, proposed observable accounting and stop/handoff evidence into
+  acceptance and delivery requirements, and distinguish review rounds from
+  worker retry budgets.
+- `references/model-selection.md`, its implementation-selection branch and only
+  the selected host's worker adapter before selecting workers for bounded
+  investigation, then `references/worker-briefs.md` before dispatch.
 
 ## Settle decisions and define items
 
 For material unresolved decisions, compose grill-with-docs using the available
 canonical skill. Its questioning phase is read-only. Reuse accepted decisions
 and existing authority; after questioning, return control here for authorized
-planning operations. A missing required skill blocks that substep, not unrelated
-discovery. Do not silently fetch, copy, or replace it.
+planning operations.
 
 Define one item or decompose a larger outcome using the shared task-planning
 meanings. Carry outcomes, exclusions, acceptance/verification coverage and true
@@ -81,30 +92,22 @@ Record the session's reasoning setting in the planning evidence when the host
 exposes it or the user states it; otherwise record it as unknown. Report a
 known mismatch with documented workflow guidance or a composed skill's
 reasoning requirement, such as a pairing worker that would inherit a reduced
-level, and never claim to change it. Keep planned commands and
-paths explicitly unexecuted.
+level, and never claim to change it.
 
-Before selecting workers for bounded investigation, discover the installed
-canonical deliver-work package as above and read its
-`references/model-selection.md`, its implementation-selection branch, and only
-the selected host's worker adapter. Read `references/worker-briefs.md` before
-dispatch and supply the selected role, criteria, relevant instructions, read-only
-authority and return contract. Do not load reviewer, delivery-reporting or
-unselected pairing rules for an assigned investigation. This reads selection
-policy without invoking delivery or authorizing implementation. Keep assessment
-ratings model-neutral. If that resource is unavailable, report the dependent
-selection gap; continue the planner's own authorized read-only discovery.
 Use a bounded investigation when it can resolve technical uncertainty; a
-missing product decision remains a question. A bounded investigation may compose the host's advisory pairing in planning-only
-mode, selected from verified host tooling: worker-with-astra with Codex
+missing product decision remains a question. Supply the worker the selected
+role, criteria, relevant instructions, read-only authority and return contract.
+Load no reviewer, delivery-reporting or unselected pairing rules for an
+assigned investigation. A bounded
+investigation may compose the host's advisory pairing in planning-only mode,
+selected from verified host tooling: worker-with-astra with Codex
 collaboration tools, worker-with-fable with Claude Code subagent tools,
 neither elsewhere. An explicit request naming the other host's pairing is
 reported as a host mismatch, not substituted. The worker reads and proposes
 without writes, and a missing pairing does not block this planner's own
 investigation. Link specifications and decision records without copying their
-content.
-When repository policy requires specification artifacts, use its canonical method
-within existing edit authority; do not invent a specification framework.
+content. When repository policy requires specification artifacts, use its
+canonical method within existing edit authority.
 
 ## Publish within authority and verify
 
@@ -126,17 +129,13 @@ writes and reconcile authoritative issue/history records before retrying. A stal
 search miss does not prove absence. Repair a verified no-effect failure within
 scope; leave unresolved effects pending without duplicating them.
 
-After verified planning publication, apply the documentation checkpoint within
-the user's edit/publication authority. Reconcile represented scope, dependencies,
-roadmap order, and proposed architecture from saved sources. Tracker-only requests
-stop at tracker effects and report pending guide/publication work with its owner
-or next action. A planning proposal never becomes implemented behavior.
+After verified planning publication, apply the documentation checkpoint when it
+applies, within the user's edit/publication authority.
 
 Report clarification needs and decisions the user owns first, then verified
 references, ready items, blockers, skipped or pending writes, guide
 synchronization, public publication/live verification where applicable, and
-evidence limits. Do not describe published unresolved work as ready or launch
-deliver-work automatically. Use `unslop` for substantial
+evidence limits. Use `unslop` for substantial
 style issues in narrative prose while preserving criteria, source wording,
 commands, and evidence.
 

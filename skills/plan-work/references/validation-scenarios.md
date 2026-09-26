@@ -19,6 +19,11 @@ separate `task-planning-graders.md`, observations and prior returns. Planning
 proposals and tracker-only publication must not become implementation dispatch.
 Read `task-planning-observations.md` there only after scoring a fresh trial.
 
+For changes to the entrypoint's boundaries or routing, rerun the cases in
+`tests/fixtures/workflow-evaluation/entrypoint-rightsizing-plan-cases.md` and its
+round-2 file. Withhold the `entrypoint-rightsizing-graders*.md` files; read
+`entrypoint-rightsizing-observations.md` only after scoring.
+
 Use isolated read-only simulations with case inputs separated from evaluator
 checks below. Supply entrypoint and available operating resources, not expected
 answers. Record actual decisions, proposed effects, sources read, failures, and
