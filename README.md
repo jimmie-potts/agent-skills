@@ -66,7 +66,8 @@ Reusable SDLC workflows also include:
   (`One-shot`, `Pair`, `Orchestrate` or `Investigate first`) and records the
   work surface (`UI`, `Backend` or `Unknown`), then gives both hosts' model and
   reasoning/effort level, worker subagents and required reviewers in a table,
-  and a paste-ready prompt per host. See
+  a paste-ready prompt per host, and a cheaper start; on Claude Code that is
+  usually Sonnet, which is not itself a starting recommendation. See
   [execution recommendations](skills/plan-work/references/execution-recommendations.md).
   It follows project-owned guide and publication checkpoints within the user's
   authority, including a pending-documentation report for tracker-only work.
@@ -113,11 +114,11 @@ Reusable SDLC workflows also include:
   for counting rules. Each delivery keeps one `## Execution record` section in
   its PR body, or in the final response without one, so a project guide can
   parse the recommended and actual model, level and session type, the workers
-  and reviewers, and the review rounds, findings and corrections. Every model
-  and level carries its source: `host-observed`, `user-stated`,
-  `self-reported` or `unknown`. Routine updates report changes, blockers and
-  next actions; consequential strategy, setting, team and authority changes
-  are reported immediately. [Selection](skills/deliver-work/references/model-selection.md)
+  and reviewers, and the review rounds, findings, finding causes and
+  corrections. Every model and level carries its source: `host-observed`,
+  `user-stated`, `self-reported` or `unknown`. Routine updates report
+  changes, blockers and next actions; consequential strategy, setting, team
+  and authority changes are reported immediately. [Selection](skills/deliver-work/references/model-selection.md)
   loads only the chosen role and host. Workers receive a bounded brief and,
   for a pairing, its worker protocol rather than the coordinator's setup rules. Its
   [resumption packet](skills/deliver-work/references/resumption.md) retains task
@@ -393,8 +394,8 @@ catalog's shared frontmatter stays portable with only `name` and
 `description`, and the catalog ships no `.claude/agents` definitions. The
 Agent tool has no per-call effort parameter, and a subagent inherits the
 session level by default. Claude Code's documented default is `high` on
-every model that supports effort except Opus 4.7, unless an organization
-default applies; see the [model configuration docs](https://code.claude.com/docs/en/model-config).
+every model that supports effort except Opus 4.7 (`xhigh`) and Opus 5.5
+(`medium`), unless an organization default applies; see the [model configuration docs](https://code.claude.com/docs/en/model-config).
 The [skill substitutions reference](https://code.claude.com/docs/en/skills#available-string-substitutions)
 describes `${CLAUDE_EFFORT}` inside skill text to read the level. The portable
 entrypoints here do not use it, and an agent cannot reliably read its own

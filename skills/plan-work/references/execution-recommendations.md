@@ -21,9 +21,9 @@ they do not change the current coordinator or replace worker-selection policy.
 
 | Work to start | Claude Code model / effort | Codex model / reasoning | Session role |
 | --- | --- | --- | --- |
-| Trivial, mechanical, low complexity/uncertainty/impact, with reliable checks | Sonnet (`sonnet`) / `low` | Luna (`gpt-6-luna`) / `low` | Implement directly |
-| Bounded implementation, low/medium complexity and impact, settled requirements and reliable checks | Sonnet (`sonnet`) / `medium` | Luna (`gpt-6-luna`) / `medium` | Implement directly |
-| Several interfaces or meaningful design judgment within a bounded outcome | Sonnet (`sonnet`) / `high` | Sol (`gpt-6-sol`) / `medium` | Implement; identify design checkpoints |
+| Trivial, mechanical, low complexity/uncertainty/impact, with reliable checks | Opus (`opus`) / `low` | Luna (`gpt-6-luna`) / `low` | Implement directly |
+| Bounded implementation, low/medium complexity and impact, settled requirements and reliable checks | Opus (`opus`) / `medium` | Luna (`gpt-6-luna`) / `medium` | Implement directly |
+| Several interfaces or meaningful design judgment within a bounded outcome | Opus (`opus`) / `medium` | Sol (`gpt-6-sol`) / `medium` | Implement; identify design checkpoints |
 | High complexity or impact within a bounded outcome | Opus (`opus`) / `high` | Sol (`gpt-6-sol`) / `high` | Implement with the stronger capability floor |
 | Sustained difficult reasoning, architecture tradeoffs, or substantial coordination across dependent work | Fable (`fable`) / `high` | Astra (`gpt-6-astra`) / `high` | Orchestrate bounded workers, or implement directly when reasoning cannot be separated |
 
@@ -36,6 +36,81 @@ For decomposed work, assess each item separately; use a stronger parent session
 only when its coordination or reasoning warrants it. Do not assign every child
 the parent's model. Above-high effort needs a task-specific reason or an explicit
 requirement and verified support; it is not the default for every hard task.
+
+On Claude Code, every starting row uses Opus or Fable, and effort is the cost
+lever. Anthropic's published guidance, read 2026-09-25, is the basis. Claude
+Code's model configuration documents Opus 5.5 at its `medium` default as
+matching or exceeding Opus 5 at `high` on coding and knowledge-work
+evaluations. The cost guidance reports that a multi-model configuration which
+looked cheaper than a single model cost more than that same model run at lower
+effort, and its SWE-bench Pro measurements put Opus 5.5 at `medium` about 2.5
+points below `high` for about 70% of the cost, `low` about 8 points below for
+about a third, and `xhigh` about 1.4 points above for 2.5 times the cost.
+Well-specified items with reliable checks therefore start at `low` or
+`medium`; when a checkable outcome fails, rerun at the next level rather than
+starting every item high. Fable is for sustained reasoning and long-horizon
+coordination, or when Opus at `high` still falls short.
+
+Effort buys verification, edge-case testing and independent judgment, not a
+better approach. Claude Code's
+[Spending your effort](https://claude.dev/blog/spending-your-effort/)
+(2026-09-25) found that on a fully specified task the levels produced
+similar work, that on an underspecified task higher effort made more
+assumptions on the user's behalf, and that on Terminal-Bench 3.0 higher
+effort cut failures from missed edge cases but not from a wrong approach.
+So a settled, well-written item starts at `medium` even when it needs design
+judgment, with checkpoints to keep the user in the loop; a missing decision
+or unknown approach is uncertainty, which `Investigate first` resolves.
+On Claude Code only, raise the start to at least Opus (`opus`) at `high`
+when acceptance turns on hidden edge cases or verification, whatever the
+ratings:
+a bug fix from a report in existing code, input sanitizing or parsing,
+security, concurrency, data migration, or performance work. The Codex column
+keeps its row; this rule is a Claude Code adapter, not a change to the shared
+table. That article reserves `max` for unattended end-to-end building and
+verification of difficult work, which is the task-specific reason above-high
+effort needs. Sources:
+[Optimizing for cost and intelligence](https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence),
+[Claude Code model configuration](https://code.claude.com/docs/en/model-config),
+the article above and
+[Getting the most out of Opus 5.5](https://claude.dev/blog/getting-the-most-out-of-opus-5-5/).
+These describe general effort curves; this repository has not yet measured
+its own, so the rows are hypotheses to reassess against delivery records.
+
+### Record the cheaper start
+
+Sonnet is not a Claude Code starting recommendation unless the user or the
+project requires it; it is the cheaper start. Map it from the recommended
+row, at the same effort:
+
+| Recommended Claude Code start | Cheaper Claude Code start |
+| --- | --- |
+| Opus (`opus`) / `low` | Sonnet (`sonnet`) / `low` |
+| Opus (`opus`) / `medium` | Sonnet (`sonnet`) / `medium` |
+| Opus (`opus`) / `high`, impact below high | Sonnet (`sonnet`) / `high` |
+| Opus (`opus`) / `high`, impact high | None; the impact floor holds |
+| Opus (`opus`) above `high` | Opus (`opus`) / `high` |
+| Fable (`fable`) / `high` | Opus (`opus`) / `high` |
+
+For Codex, record a cheaper start only when the recommended model or budget
+may be unavailable; otherwise write `none` for that host. The cheaper start
+keeps the session type, the reviewers and every gate; it trades capability
+for cost on the implementation alone, and a failed check on the cheaper start
+is the signal to rerun at the recommended start.
+
+### Recommend the reviewers
+
+On Claude Code, the `Reviewers` row names `opus` for both axes, or the
+coordinator's model at high impact, following the canonical Claude reviewer
+adapter, which also owns how reviewer effort is inherited from the session or
+set by a subagent definition. Write the level as the session's level unless
+host evidence shows a read-only reviewer definition with `effort: high`, and
+then name that definition in the row. Verification is where effort pays, so
+when the project wants reviews at `high` and no definition exists, add a
+`Checkpoints` entry that stops before the final reviews so the user can run
+`/effort high`, which the effort article above says applies mid-session
+without breaking the prompt cache. On Codex, use that host's reviewer
+adapter.
 
 Verify model identifiers or aliases and supported effort levels from available
 host evidence. When that is insufficient, consult current official
@@ -93,11 +168,11 @@ issue description or authoritative work document, in this order:
    settings out of the table.
 4. `**Prompt (Claude Code):**` and `**Prompt (Codex):**`, each followed by one
    fenced `text` block written from the template below.
-5. Optionally `**Cheaper start:**` when the recommended model or budget may be
-   unavailable: one line naming what it covers, its session type and each
-   host's model and level, followed by `**Cheaper prompt (Claude Code):**` and
-   `**Cheaper prompt (Codex):**` blocks. Otherwise state that none is recorded
-   and why.
+5. `**Cheaper start:**` one line naming what it covers, its session type and
+   each host's model and level from [the cheaper-start mapping](#record-the-cheaper-start),
+   followed by `**Cheaper prompt (Claude Code):**` and
+   `**Cheaper prompt (Codex):**` blocks for each host that has one. Write
+   `none` for a host without one and say why, such as the high-impact floor.
 6. `**Why:**` the assessment evidence, checks and task boundaries behind the
    choice. `**Reassess when:**` the condition that invalidates it.
    `**Assessed:**` the date, the policy revision (`agent-skills@<sha>` or the
@@ -117,7 +192,7 @@ For example, the section of a bounded instruction change opens:
 ```markdown
 ## Execution recommendation
 
-**Start with:** a one-shot session. Claude Code on Sonnet (`sonnet`) at `medium` effort, or Codex on Luna (`gpt-6-luna`) at `medium` reasoning. Paste that host's prompt below.
+**Start with:** a one-shot session. Claude Code on Opus (`opus`) at `medium` effort, or Codex on Luna (`gpt-6-luna`) at `medium` reasoning. Paste that host's prompt below.
 **Work surface:** Backend
 ```
 
@@ -150,7 +225,8 @@ Each implementation prompt is one paragraph that:
   cannot reliably read its own effort; never ask it to report or verify its
   level;
 - states the session type, the worker subagent settings, and authorizes the
-  required reviewers by count and model;
+  required reviewers by count and model; a cheaper prompt states the cheaper
+  start's model and level in the same way;
 - points at the item's Execution recommendation with its assessment date and
   asks the agent to say so before changing strategy;
 - ends with "If deliver-work isn't available here, say so and stop."
@@ -158,7 +234,7 @@ Each implementation prompt is one paragraph that:
 For example:
 
 ```text
-Use the deliver-work skill to deliver <work-item URL>. I started this session on Sonnet at medium effort. State the model you are running and stop if it is not Sonnet; take the effort as stated rather than guessing it. Run as a one-shot session: implement it yourself without worker subagents, and use two fresh read-only Sonnet reviewers for deliver-work's required Standards and Specification reviews. The issue's Execution recommendation (assessed <date>) is the basis; if what you find no longer fits it, say so before changing strategy. If deliver-work isn't available here, say so and stop.
+Use the deliver-work skill to deliver <work-item URL>. I started this session on Opus at medium effort. State the model you are running and stop if it is not Opus; take the effort as stated rather than guessing it. Run as a one-shot session: implement it yourself without worker subagents, and use two fresh read-only Opus reviewers for deliver-work's required Standards and Specification reviews. The issue's Execution recommendation (assessed <date>) is the basis; if what you find no longer fits it, say so before changing strategy. If deliver-work isn't available here, say so and stop.
 ```
 
 `Investigate first` prompts replace deliver-work with a read-only request: name

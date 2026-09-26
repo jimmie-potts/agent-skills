@@ -11,7 +11,7 @@ SKILL = ROOT / 'skills' / 'deliver-work'
 RECORD_ROWS = ('Issue', 'Recommended', 'Coordinator model',
                'Coordinator level', 'Session type', 'Session label', 'Workers',
                'Reviewers', 'Agents', 'Consultations', 'Review rounds',
-               'Findings', 'Corrections')
+               'Findings', 'Finding causes', 'Corrections')
 PROVENANCE = ('host-observed', 'user-stated', 'self-reported', 'unknown')
 SESSION_TYPE = r'(?:One-shot|Pair|Orchestrate|Investigate first)'
 COUNT = r'(?:\d+|at least \d+|unknown)'
@@ -34,6 +34,8 @@ RECORD_CELLS = {
     'Consultations': rf'{COUNT}|not applicable',
     'Review rounds': rf'final {COUNT}; task {COUNT}',
     'Findings': rf'P0 {COUNT}; P1 {COUNT}; P2 {COUNT}; P3 {COUNT}',
+    'Finding causes': (rf'edge-case {COUNT}; untested-bug {COUNT}; '
+                       rf'wrong-approach {COUNT}; other {COUNT}'),
     'Corrections': COUNT,
 }
 
@@ -172,6 +174,8 @@ class DeliverWorkStructureTest(unittest.TestCase):
                                           'GPT 6 Astra (user-stated) + '),
             'old requested shape': ('requested gpt-6-luna at medium', 'requested gpt-6-luna/medium'),
             'missing row': ('| Corrections | 1 |\n', ''),
+            'missing finding causes': (
+                '| Finding causes | edge-case 1; untested-bug 0; wrong-approach 0; other 0 |\n', ''),
             'row order': ('| Agents | 5 |\n| Consultations | not applicable |',
                           '| Consultations | not applicable |\n| Agents | 5 |'),
             'invented session type': ('| Session type | Orchestrate |',
