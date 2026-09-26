@@ -38,8 +38,11 @@ focused security, concurrency, migration, performance, accessibility, or other
 specialist when assessment identifies an uncovered risk. Require qualified human
 acceptance where policy or an unresolved automated-evidence gap calls for it;
 do not invent routine approval gates. Findings need concrete failure conditions
-and source evidence. Resolve disagreements through reproduction or reasoned
-reassessment, never vote count or pressure to approve.
+and source evidence. Brief each reviewer to list first the problems it would
+block the merge for, each with the file and line, why it is wrong and how to
+show it fails, and to keep non-blocking observations in a separate short list.
+Resolve disagreements through reproduction or reasoned reassessment, never
+vote count or pressure to approve.
 
 Check each criterion's actual evidence. Inspect assertions removed or weakened,
 skipped tests, fixture/mocking changes, and CI changes. Ask whether checks reject

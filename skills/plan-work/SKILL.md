@@ -60,7 +60,9 @@ discovery. Do not silently fetch, copy, or replace it.
 
 Define one item or decompose a larger outcome using the shared task-planning
 meanings. Carry outcomes, exclusions, acceptance/verification coverage and true
-input dependencies into each proposed work item. An epic or list of chores
+input dependencies into each proposed work item. Where the repository has a
+test, fixture, contract or mockup that states a criterion, link it as the
+acceptance reference rather than restating it in prose. An epic or list of chores
 alone is not implementation-ready. Include the assessment, evidence, unknowns,
 readiness and conditional specialist/human review or operational handoffs.
 
@@ -72,8 +74,8 @@ and Codex alongside the assessment. Name the session type the user should start
 (`One-shot`, `Pair`, `Orchestrate` or `Investigate first`), explain the choice,
 and distinguish proposed worker settings when delegation would help. Classify
 the item's work surface as `UI`, `Backend` or `Unknown`. Write the reference's
-start line, work surface line, two-host table and paste-ready prompts, or its
-insufficient status. Include both host choices in proposals and authorized
+start line, work surface line, two-host table, paste-ready prompts and cheaper
+start, or its insufficient status. Include both host choices in proposals and authorized
 saved work items, even when planning on only one host.
 Record the session's reasoning setting in the planning evidence when the host
 exposes it or the user states it; otherwise record it as unknown. Report a
@@ -130,9 +132,10 @@ roadmap order, and proposed architecture from saved sources. Tracker-only reques
 stop at tracker effects and report pending guide/publication work with its owner
 or next action. A planning proposal never becomes implemented behavior.
 
-Report verified references, ready items, blockers, clarification needs, skipped
-or pending writes, guide synchronization, public publication/live verification
-where applicable, and evidence limits. Do not describe published unresolved
+Report clarification needs and decisions the user owns first, then verified
+references, ready items, blockers, skipped or pending writes, guide
+synchronization, public publication/live verification where applicable, and
+evidence limits. Do not describe published unresolved
 work as ready or launch deliver-work automatically. Use `unslop` for substantial
 style issues in narrative prose while preserving criteria, source wording,
 commands, and evidence.

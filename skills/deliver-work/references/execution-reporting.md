@@ -148,6 +148,7 @@ with bare field names as in the examples. Add `Session label` directly after
 | `Consultations` | A count of completed advisor consultations, or `not applicable` without an advisory pairing |
 | `Review rounds` | `final <count>; task <count>`, following [review cycles](review-cycles.md) |
 | `Findings` | `P0 <count>; P1 <count>; P2 <count>; P3 <count>`: distinct findings from independent task, fix and final reviews, by stable identity. A regression reopens its finding and does not count again |
+| `Finding causes` | `edge-case <count>; untested-bug <count>; wrong-approach <count>; other <count>`: the same distinct P0 to P2 findings classified by cause, so the counts sum to the P0 to P2 total. `edge-case` is behavior the candidate missed on an input or state it did not consider; `untested-bug` is a defect its own checks would have caught had they been run or written; `wrong-approach` is a design or interpretation that no amount of verification would have fixed; `other` is a finding outside the candidate's control, such as a wrong specification, environment or permission. Classify from the reviewer's stated failure condition; P3 findings are not classified |
 | `Corrections` | A count of correction passes: each new candidate made to resolve review findings or failed acceptance, by a worker's guided correction or by the coordinator. Fixes batched before the next review count once. Models keeps the separate per-worker correction count, so the two can differ |
 
 After the table, add these lines, each as its own paragraph:
@@ -208,6 +209,9 @@ The rows supply per-delivery workflow evaluation measures without renaming:
   more; the count is its rework.
 - Agent and consultation counts: `Agents` and `Consultations`.
 - Review effort: `Reviewers`, `Review rounds` and `Findings`.
+- Effort fit: `Finding causes`. Edge-case and untested-bug findings are what
+  a higher effort level buys down; wrong-approach findings are not, and point
+  at uncertainty or specification instead.
 
 Any `unknown` or `at least` count leaves the derived measure unknown. Missed
 defects, false-positive blockers and gate violations need independent scoring;
@@ -236,6 +240,7 @@ made-up policy revision:
 | Consultations | not applicable |
 | Review rounds | final 2; task 0 |
 | Findings | P0 0; P1 0; P2 1; P3 2 |
+| Finding causes | edge-case 1; untested-bug 0; wrong-approach 0; other 0 |
 | Corrections | 1 |
 
 **Fixes delivery:** example-org/example-app#40
@@ -261,6 +266,7 @@ A resumed Claude Code delivery with an incomplete history:
 | Consultations | not applicable |
 | Review rounds | final at least 1; task unknown |
 | Findings | P0 unknown; P1 unknown; P2 unknown; P3 unknown |
+| Finding causes | edge-case unknown; untested-bug unknown; wrong-approach unknown; other unknown |
 | Corrections | unknown |
 
 **Recorded:** 2026-09-25, unknown

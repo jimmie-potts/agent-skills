@@ -59,15 +59,19 @@ check planning decisions, not measured model performance or runtime identity.
 
 | Case input | Evaluator checks |
 | --- | --- |
-| Mechanical local rename; all ratings low; complete consumer checks | Recommend Sonnet/low and Luna/low for direct starting sessions, with a short rationale; no orchestration or worker launch. |
-| Bounded implementation; settled requirements; low/medium complexity and impact | Recommend Sonnet/medium and Luna/medium; distinguish future settings from the planner's actual settings. |
-| One-line authorization fix; low complexity, high impact | Preserve the high-impact capability floor: Opus/high and Sol/high or a justified stronger session; retain review and acceptance gates. |
-| Parent requires architecture decisions and coordination; children include a mechanical change | Recommend Fable/high and Astra/high for the parent when supported; assess children separately and use canonical host policy for proposed worker settings. |
+| Mechanical local rename; all ratings low; complete consumer checks | Recommend Opus/low and Luna/low for direct starting sessions, with a Sonnet/low cheaper start and a short rationale; no orchestration or worker launch. |
+| Bounded implementation; settled requirements; low/medium complexity and impact | Recommend Opus/medium and Luna/medium with a Sonnet/medium cheaper start; distinguish future settings from the planner's actual settings. |
+| One-line authorization fix; low complexity, high impact | Preserve the high-impact capability floor: Opus/high and Sol/high or a justified stronger session; no Claude Code cheaper start; retain review and acceptance gates. |
+| Parent requires architecture decisions and coordination; children include a mechanical change | Recommend Fable/high and Astra/high for the parent when supported, with Opus/high as the parent's cheaper Claude Code start; assess children separately and use canonical host policy for proposed worker settings. |
+| Any Claude Code recommendation | The starting model is `opus` or `fable`, never `sonnet`; Sonnet appears only in the cheaper start. Reviewers are `opus` for both axes at the session's inherited level. |
+| Settled, fully specified item needing design judgment across several interfaces; impact medium | Opus/medium with design checkpoints, not `high`; a Sonnet/medium cheaper start. |
+| Bug fix from a crash report in existing code, or an input sanitizer; ratings low or medium | Opus/high because acceptance turns on hidden edge cases and verification; effort is not raised for a missing decision, which stays `Investigate first`. |
+| Project wants final reviews at `high` while the start is Opus/medium | Reviewers row says the level is inherited; a Checkpoints entry stops before the final reviews for `/effort high`; no claim that the session sets reviewer effort. |
 | Unresolved retention requirement; narrow independent compatibility investigation | Keep implementation provisional and the requirement unresolved; recommend the next investigation, without treating a stronger model as an answer. |
 | Planner runs on Codex; Claude availability and inherited effort are unexposed | Still recommend a Claude model and effort, mark availability provisional, and leave actual effort unknown; do not invent a per-call control. |
 | User requires a model or effort unavailable in the named host | Preserve the requirement, report the selection gap and any conditional alternative explicitly; no silent substitution or settings changes. |
 | GitHub/Jira tracker-only request with no matching model fields | Save both choices in one description section and verify readback; create no custom fields and start no delivery. |
-| Simple bounded item, both hosts | Section opens with `**Start with:**` naming `One-shot` first; table has Model, Thinking level, Session type, Subagents, Reviewers and Availability; both prompt blocks follow, each implementing without workers and authorizing two Sonnet or Luna/high reviewers. |
+| Simple bounded item, both hosts | Section opens with `**Start with:**` naming `One-shot` first; table has Model, Thinking level, Session type, Subagents, Reviewers and Availability; both prompt blocks follow, each implementing without workers and authorizing two Opus or Luna/high reviewers. |
 | High-impact one-line fix | `One-shot` at the stronger floor with a Checkpoints row when decisions need a stop; prompts state Opus/high and Sol/high as the user's selection; Reviewers row keeps the high-impact reviewer floor. |
 | Parent needing coordination across dependent children | `Orchestrate` first in the start line; Subagents row gives each host's worker model and level; prompts state the subagent settings. |
 | Any implementing prompt | Authorizes the required reviewers by count and model; never says "without subagents" unqualified. |
@@ -75,7 +79,7 @@ check planning decisions, not measured model performance or runtime identity.
 | Bounded worker implementation that canonical selection routes to the host's advisory pairing | `Pair` first; Subagents row names the worker's model and level on each host; the Codex and Claude Code prompts name their own pairing only where host tooling supports it. |
 | Open technical question blocks implementation | `Investigate first` with read-only prompts that name the question and request no writes. |
 | Any generated prompt | Names the live URL, states the selected model and level, asks to confirm only the model and stop if it differs, takes the level as stated, never asks the agent to report its effort, names the recommendation's assessment date and ends with the deliver-work availability sentence. |
-| Recommended model unavailable or budget constrained | Optional `**Cheaper start:**` line with its own two prompt blocks, or an explicit statement that none is recorded. |
+| Any item with a mapped cheaper start | `**Cheaper start:**` line naming Sonnet at the row's level, or Opus/high below a Fable start, with its own Claude Code prompt block; Codex names a cheaper option only when the recommended model or budget may be unavailable, otherwise `none` with the reason. |
 | Item changes a settings page's layout only | `**Work surface:** UI` directly after the start line; no added approval gate beyond project policy. |
 | Item changes an API handler and its tests only | `**Work surface:** Backend`. |
 | Item adds an API field and the page that displays it | `**Work surface:** UI`, because any UI part makes the item UI. |

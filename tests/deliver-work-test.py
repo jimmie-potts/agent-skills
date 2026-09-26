@@ -11,7 +11,7 @@ SKILL = ROOT / 'skills' / 'deliver-work'
 RECORD_ROWS = ('Issue', 'Recommended', 'Coordinator model',
                'Coordinator level', 'Session type', 'Session label', 'Workers',
                'Reviewers', 'Agents', 'Consultations', 'Review rounds',
-               'Findings', 'Corrections')
+               'Findings', 'Finding causes', 'Corrections')
 PROVENANCE = ('host-observed', 'user-stated', 'self-reported', 'unknown')
 SESSION_TYPE = r'(?:One-shot|Pair|Orchestrate|Investigate first)'
 COUNT = r'(?:\d+|at least \d+|unknown)'
@@ -34,6 +34,8 @@ RECORD_CELLS = {
     'Consultations': rf'{COUNT}|not applicable',
     'Review rounds': rf'final {COUNT}; task {COUNT}',
     'Findings': rf'P0 {COUNT}; P1 {COUNT}; P2 {COUNT}; P3 {COUNT}',
+    'Finding causes': (rf'edge-case {COUNT}; untested-bug {COUNT}; '
+                       rf'wrong-approach {COUNT}; other {COUNT}'),
     'Corrections': COUNT,
 }
 

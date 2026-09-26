@@ -80,6 +80,19 @@ class PlanWorkStructureTest(unittest.TestCase):
                 self.assertIn(f'`{row}`', reference)
         self.assertIn('| Work to start | Claude Code model / effort | '
                       'Codex model / reasoning | Session role |', reference)
+        table = reference.split('| Work to start |', 1)[1].split('\n\n', 1)[0]
+        rows = [line for line in table.splitlines()
+                if line.startswith('| ') and not line.startswith('| ---')]
+        self.assertGreaterEqual(len(rows), 4)
+        for row in rows:
+            claude = row.split('|')[2]
+            with self.subTest(row=row[:40]):
+                self.assertNotIn('sonnet', claude.lower())
+                self.assertRegex(claude, r'`(opus|fable)`')
+        self.assertIn('| Recommended Claude Code start | '
+                      'Cheaper Claude Code start |', reference)
+        self.assertIn('| Opus (`opus`) / `medium` | Sonnet (`sonnet`) / `medium` |',
+                      reference)
         prompts = re.findall(r'```text\n(.+?)\n```', reference, re.DOTALL)
         self.assertEqual(len(prompts), 1)
         prompt = prompts[0]

@@ -37,6 +37,11 @@ request succeeded, not independent proof of the executing model. Disclose
 unknown identity; handle a verified mismatch against explicit requirements
 before dependent work. Spawn options alone never prove that the current
 coordinator is Fable; read the coordinator's own runtime instructions.
+A flagged message can switch a Claude Code session to an older model
+automatically, and the user switches back with `/model`; the session
+transcript's per-message model is host-observed evidence of such a change.
+Report a model change during a delivery as a known mismatch in Models and the
+Execution record, listing every model that served.
 
 Read [worker settings and continuation](claude-code-worker-selection.md) only
 for investigation/implementation, correction or replacement; it routes the
