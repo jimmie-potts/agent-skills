@@ -117,8 +117,8 @@ Reusable SDLC workflows also include:
   and reviewers, and the review rounds, findings, finding causes and
   corrections. Every model and level carries its source: `host-observed`,
   `user-stated`, `self-reported` or `unknown`. Routine updates report
-  changes, blockers and next actions; consequential strategy, setting, team and authority changes
-  are reported immediately. [Selection](skills/deliver-work/references/model-selection.md)
+  changes, blockers and next actions; consequential strategy, setting, team
+  and authority changes are reported immediately. [Selection](skills/deliver-work/references/model-selection.md)
   loads only the chosen role and host. Workers receive a bounded brief and,
   for a pairing, its worker protocol rather than the coordinator's setup rules. Its
   [resumption packet](skills/deliver-work/references/resumption.md) retains task
