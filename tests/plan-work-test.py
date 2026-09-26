@@ -93,6 +93,29 @@ class PlanWorkStructureTest(unittest.TestCase):
         self.assertNotIn('without subagents', prompt)
         self.assertNotRegex(prompt.lower(), r'(report|verify|confirm)\w* (your|its) effort')
 
+    def test_work_surface_line(self):
+        reference = (SKILL / 'references/execution-recommendations.md').read_text()
+        entry = (SKILL / 'SKILL.md').read_text()
+        scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
+        values = ('UI', 'Backend', 'Unknown')
+        for value in values:
+            with self.subTest(value=value):
+                self.assertIn(f'| `{value}` |', reference)
+                self.assertIn(f'`{value}`', entry)
+                self.assertIn(f'**Work surface:** {value}', scenarios)
+        examples = re.findall(r'```markdown\n(.+?)\n```', reference, re.DOTALL)
+        self.assertEqual(len(examples), 1)
+        lines = examples[0].splitlines()
+        starts = [index for index, line in enumerate(lines)
+                  if line.startswith('**Start with:** ')]
+        self.assertEqual(len(starts), 1)
+        following = lines[starts[0] + 1:starts[0] + 2] or ['']
+        self.assertRegex(following[0], r'^\*\*Work surface:\*\* \S')
+        for text in (reference, scenarios):
+            for value in re.findall(r'\*\*Work surface:\*\* (\w+)', text):
+                with self.subTest(found=value):
+                    self.assertIn(value, values)
+
     def test_check_wiring(self):
         for path in (ROOT / 'README.md', ROOT / 'AGENTS.md',
                      ROOT / '.github/workflows/validate.yml'):

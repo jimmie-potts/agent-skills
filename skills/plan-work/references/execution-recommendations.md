@@ -77,7 +77,9 @@ issue description or authoritative work document, in this order:
 
 1. `**Start with:**` one line giving the answer: the session type first, then
    each host's model and thinking level, then which prompt to paste.
-2. A two-host table with columns `Claude Code` and `Codex` and the rows
+2. `**Work surface:**` on the next line, with exactly one value from
+   [the work surface](#classify-the-work-surface).
+3. A two-host table with columns `Claude Code` and `Codex` and the rows
    `Model`, `Thinking level`, `Session type`, `Subagents`, `Reviewers` and
    `Availability`. Add a `Checkpoints` row only when the session should stop at
    named decisions. `Subagents` gives each proposed implementation worker's
@@ -89,14 +91,14 @@ issue description or authoritative work document, in this order:
    verified or provisional, and notes any
    conflict with explicit requirements. Keep the planner's own observed
    settings out of the table.
-3. `**Prompt (Claude Code):**` and `**Prompt (Codex):**`, each followed by one
+4. `**Prompt (Claude Code):**` and `**Prompt (Codex):**`, each followed by one
    fenced `text` block written from the template below.
-4. Optionally `**Cheaper start:**` when the recommended model or budget may be
+5. Optionally `**Cheaper start:**` when the recommended model or budget may be
    unavailable: one line naming what it covers, its session type and each
    host's model and level, followed by `**Cheaper prompt (Claude Code):**` and
    `**Cheaper prompt (Codex):**` blocks. Otherwise state that none is recorded
    and why.
-5. `**Why:**` the assessment evidence, checks and task boundaries behind the
+6. `**Why:**` the assessment evidence, checks and task boundaries behind the
    choice. `**Reassess when:**` the condition that invalidates it.
    `**Assessed:**` the date, the policy revision (`agent-skills@<sha>` or the
    installed package's revision), evidence links, and a fingerprint slot. Use
@@ -105,8 +107,35 @@ issue description or authoritative work document, in this order:
 
 When the evidence cannot support a choice, replace the answer, table and
 prompts with `**Status:** insufficient` and `**Missing:**` naming the exact
-input and the next question or evidence; keep the `Why`, `Reassess when` and
-`Assessed` lines. Never fill an insufficient item with a guessed default.
+input and the next question or evidence; keep the `Work surface`, `Why`,
+`Reassess when` and `Assessed` lines. Never fill an insufficient item with a
+guessed default.
+
+For example, the section of a bounded instruction change opens:
+
+```markdown
+## Execution recommendation
+
+**Start with:** a one-shot session. Claude Code on Sonnet (`sonnet`) at `medium` effort, or Codex on Luna (`gpt-6-luna`) at `medium` reasoning. Paste that host's prompt below.
+**Work surface:** Backend
+```
+
+### Classify the work surface
+
+Record whether the item changes an interface people see or operate:
+
+| Value | Meaning |
+| --- | --- |
+| `UI` | Any part of the work changes pages, screens, windows, visual styling, interactions or generated HTML views, even when it also changes backend code |
+| `Backend` | No part of the work changes such an interface |
+| `Unknown` | The evidence cannot settle it; a `**Missing:**` line names the evidence needed |
+
+When the owning project defines UI, such as in a UI approval policy, classify
+by that definition. Otherwise command-line output, APIs, prose documentation
+and agent instructions are `Backend`. Classify from the item's scope and affected sources, not from
+the repository's usual kind of work. The line records a fact for readers and
+consumers such as project guides. It adds and waives no gate: project policy
+alone decides UI review and human approval.
 
 ### Write each prompt
 

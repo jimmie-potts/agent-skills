@@ -76,6 +76,11 @@ check planning decisions, not measured model performance or runtime identity.
 | Open technical question blocks implementation | `Investigate first` with read-only prompts that name the question and request no writes. |
 | Any generated prompt | Names the live URL, states the selected model and level, asks to confirm only the model and stop if it differs, takes the level as stated, never asks the agent to report its effort, names the recommendation's assessment date and ends with the deliver-work availability sentence. |
 | Recommended model unavailable or budget constrained | Optional `**Cheaper start:**` line with its own two prompt blocks, or an explicit statement that none is recorded. |
+| Item changes a settings page's layout only | `**Work surface:** UI` directly after the start line; no added approval gate beyond project policy. |
+| Item changes an API handler and its tests only | `**Work surface:** Backend`. |
+| Item adds an API field and the page that displays it | `**Work surface:** UI`, because any UI part makes the item UI. |
+| Scope names a "status view" without saying whether it is a page or an API | `**Work surface:** Unknown` with `**Missing:**` naming the evidence needed; no guessed value. |
+| Project policy defines UI to include command-line output | Classify a command-output change by the project definition as `UI`; without such a definition it is `Backend`. |
 
 ## Documentation checkpoints
 
