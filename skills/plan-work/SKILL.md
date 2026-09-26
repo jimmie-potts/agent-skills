@@ -70,8 +70,9 @@ For every item, read [execution recommendations](references/execution-recommenda
 and recommend a starting model and reasoning/effort level for both Claude Code
 and Codex alongside the assessment. Name the session type the user should start
 (`One-shot`, `Pair`, `Orchestrate` or `Investigate first`), explain the choice,
-and distinguish proposed worker settings when delegation would help. Write the
-reference's start line, two-host table and paste-ready prompts, or its
+and distinguish proposed worker settings when delegation would help. Classify
+the item's work surface as `UI`, `Backend` or `Unknown`. Write the reference's
+start line, work surface line, two-host table and paste-ready prompts, or its
 insufficient status. Include both host choices in proposals and authorized
 saved work items, even when planning on only one host.
 Record the session's reasoning setting in the planning evidence when the host
