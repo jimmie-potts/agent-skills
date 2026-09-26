@@ -111,6 +111,7 @@ class PlanWorkStructureTest(unittest.TestCase):
         self.assertEqual(len(starts), 1)
         following = lines[starts[0] + 1:starts[0] + 2] or ['']
         self.assertRegex(following[0], r'^\*\*Work surface:\*\* \S')
+        self.assertIn('at most one `**Missing:**` line', reference)
         for text in (reference, scenarios):
             for value in re.findall(r'\*\*Work surface:\*\* (\w+)', text):
                 with self.subTest(found=value):

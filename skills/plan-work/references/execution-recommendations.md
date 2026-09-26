@@ -109,7 +109,8 @@ When the evidence cannot support a choice, replace the answer, table and
 prompts with `**Status:** insufficient` and `**Missing:**` naming the exact
 input and the next question or evidence; keep the `Work surface`, `Why`,
 `Reassess when` and `Assessed` lines. Never fill an insufficient item with a
-guessed default.
+guessed default. A section has at most one `**Missing:**` line; when the work
+surface is also `Unknown`, name its evidence in that same line.
 
 For example, the section of a bounded instruction change opens:
 
@@ -126,9 +127,9 @@ Record whether the item changes an interface people see or operate:
 
 | Value | Meaning |
 | --- | --- |
-| `UI` | Any part of the work changes pages, screens, windows, visual styling, interactions or generated HTML views, even when it also changes backend code |
+| `UI` | Any part of the work changes pages, screens, windows, visual styling, on-screen interactions or generated HTML views, even when it also changes backend code |
 | `Backend` | No part of the work changes such an interface |
-| `Unknown` | The evidence cannot settle it; a `**Missing:**` line names the evidence needed |
+| `Unknown` | The evidence cannot settle it; the `**Missing:**` line names the evidence needed |
 
 When the owning project defines UI, such as in a UI approval policy, classify
 by that definition. Otherwise command-line output, APIs, prose documentation

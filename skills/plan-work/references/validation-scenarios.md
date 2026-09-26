@@ -80,6 +80,7 @@ check planning decisions, not measured model performance or runtime identity.
 | Item changes an API handler and its tests only | `**Work surface:** Backend`. |
 | Item adds an API field and the page that displays it | `**Work surface:** UI`, because any UI part makes the item UI. |
 | Scope names a "status view" without saying whether it is a page or an API | `**Work surface:** Unknown` with `**Missing:**` naming the evidence needed; no guessed value. |
+| Insufficient item whose work surface is also unclear | `**Status:** insufficient`, `**Work surface:** Unknown` and one `**Missing:**` line naming both the recommendation input and the work-surface evidence. |
 | Project policy defines UI to include command-line output | Classify a command-output change by the project definition as `UI`; without such a definition it is `Backend`. |
 
 ## Documentation checkpoints
