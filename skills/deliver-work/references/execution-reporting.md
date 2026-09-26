@@ -212,8 +212,9 @@ The rows supply per-delivery workflow evaluation measures without renaming:
 - Effort fit: `Finding causes`. Edge-case and untested-bug findings are what
   a higher effort level buys down; wrong-approach findings are not, and point
   at uncertainty instead; `other` findings point at the specification or the
-  environment. Records recorded before 2026-09-26 have no `Finding causes`
-  row, so a consumer should accept both shapes.
+  environment. Records made under a policy revision before this row was added
+  have no `Finding causes` row; the `**Recorded:**` revision tells the shapes
+  apart, and a consumer should accept both.
 
 Any `unknown` or `at least` count leaves the derived measure unknown. Missed
 defects, false-positive blockers and gate violations need independent scoring;

@@ -66,8 +66,8 @@ Reusable SDLC workflows also include:
   (`One-shot`, `Pair`, `Orchestrate` or `Investigate first`) and records the
   work surface (`UI`, `Backend` or `Unknown`), then gives both hosts' model and
   reasoning/effort level, worker subagents and required reviewers in a table,
-  a paste-ready prompt per host, and a cheaper start, which on Claude Code is
-  usually Sonnet and never a starting recommendation. See
+  a paste-ready prompt per host, and a cheaper start; on Claude Code that is
+  usually Sonnet, which is not itself a starting recommendation. See
   [execution recommendations](skills/plan-work/references/execution-recommendations.md).
   It follows project-owned guide and publication checkpoints within the user's
   authority, including a pending-documentation report for tracker-only work.
@@ -116,9 +116,8 @@ Reusable SDLC workflows also include:
   parse the recommended and actual model, level and session type, the workers
   and reviewers, and the review rounds, findings, finding causes and
   corrections. Every model and level carries its source: `host-observed`,
-  `user-stated`,
-  `self-reported` or `unknown`. Routine updates report changes, blockers and
-  next actions; consequential strategy, setting, team and authority changes
+  `user-stated`, `self-reported` or `unknown`. Routine updates report
+  changes, blockers and next actions; consequential strategy, setting, team and authority changes
   are reported immediately. [Selection](skills/deliver-work/references/model-selection.md)
   loads only the chosen role and host. Workers receive a bounded brief and,
   for a pairing, its worker protocol rather than the coordinator's setup rules. Its

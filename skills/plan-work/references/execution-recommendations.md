@@ -61,8 +61,9 @@ effort cut failures from missed edge cases but not from a wrong approach.
 So a settled, well-written item starts at `medium` even when it needs design
 judgment, with checkpoints to keep the user in the loop; a missing decision
 or unknown approach is uncertainty, which `Investigate first` resolves.
-On Claude Code only, raise the start to Opus (`opus`) at `high` when
-acceptance turns on hidden edge cases or verification, whatever the ratings:
+On Claude Code only, raise the start to at least Opus (`opus`) at `high`
+when acceptance turns on hidden edge cases or verification, whatever the
+ratings:
 a bug fix from a report in existing code, input sanitizing or parsing,
 security, concurrency, data migration, or performance work. The Codex column
 keeps its row; this rule is a Claude Code adapter, not a change to the shared
@@ -78,8 +79,9 @@ its own, so the rows are hypotheses to reassess against delivery records.
 
 ### Record the cheaper start
 
-Sonnet is never a Claude Code starting recommendation; it is the cheaper
-start. Map it from the recommended row, at the same effort:
+Sonnet is not a Claude Code starting recommendation unless the user or the
+project requires it; it is the cheaper start. Map it from the recommended
+row, at the same effort:
 
 | Recommended Claude Code start | Cheaper Claude Code start |
 | --- | --- |
