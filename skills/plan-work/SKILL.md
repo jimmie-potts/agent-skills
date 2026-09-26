@@ -75,8 +75,8 @@ and Codex alongside the assessment. Name the session type the user should start
 and distinguish proposed worker settings when delegation would help. Classify
 the item's work surface as `UI`, `Backend` or `Unknown`. Write the reference's
 start line, work surface line, two-host table, paste-ready prompts and cheaper
-start, or its insufficient status. Include both host choices in proposals and authorized
-saved work items, even when planning on only one host.
+start, or its insufficient status. Include both host choices in proposals and
+authorized saved work items, even when planning on only one host.
 Record the session's reasoning setting in the planning evidence when the host
 exposes it or the user states it; otherwise record it as unknown. Report a
 known mismatch with documented workflow guidance or a composed skill's
@@ -135,8 +135,8 @@ or next action. A planning proposal never becomes implemented behavior.
 Report clarification needs and decisions the user owns first, then verified
 references, ready items, blockers, skipped or pending writes, guide
 synchronization, public publication/live verification where applicable, and
-evidence limits. Do not describe published unresolved
-work as ready or launch deliver-work automatically. Use `unslop` for substantial
+evidence limits. Do not describe published unresolved work as ready or launch
+deliver-work automatically. Use `unslop` for substantial
 style issues in narrative prose while preserving criteria, source wording,
 commands, and evidence.
 

@@ -174,6 +174,8 @@ class DeliverWorkStructureTest(unittest.TestCase):
                                           'GPT 6 Astra (user-stated) + '),
             'old requested shape': ('requested gpt-6-luna at medium', 'requested gpt-6-luna/medium'),
             'missing row': ('| Corrections | 1 |\n', ''),
+            'missing finding causes': (
+                '| Finding causes | edge-case 1; untested-bug 0; wrong-approach 0; other 0 |\n', ''),
             'row order': ('| Agents | 5 |\n| Consultations | not applicable |',
                           '| Consultations | not applicable |\n| Agents | 5 |'),
             'invented session type': ('| Session type | Orchestrate |',

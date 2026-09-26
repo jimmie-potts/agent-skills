@@ -85,8 +85,9 @@ transcripts or private runtime metadata do not require a reset.
 Fix P0-P2 defects and all project-defined blockers. Retain accepted or deferred
 P3 dispositions with reason and owner; do not leave minor findings unaccounted
 for. A round that returns only P3 findings does not start a correction pass by
-itself: disposition them in one pass and fold accepted ones into a later
-candidate only when one is needed for another reason. Disputes need concrete evidence and independent reviewer reassessment.
+itself: disposition them in one pass, and fold any fixes among them into a
+later candidate only when one is needed for another reason. Disputes need
+concrete evidence and independent reviewer reassessment.
 Implementer assertions, model votes and exhausted budgets cannot resolve findings.
 
 ## Diagnose a surviving blocker

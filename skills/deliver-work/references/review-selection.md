@@ -4,9 +4,10 @@ Read when selecting task, fix, or final reviewers, after
 [the common policy](model-selection.md). Load only the selected host's reviewer
 adapter. Implementation settings and retry thresholds do not select reviewers.
 
-Start from impact: capable lower-cost reviewers for low and medium impact, and the
-strongest evidenced relevant reviewers at high reasoning for high impact, even
-with a tiny diff. Complexity and uncertainty may raise this floor. Inspect
+Start from impact: the host adapter's routine reviewers for low and medium
+impact, and the strongest evidenced relevant reviewers at high reasoning for
+high impact, even with a tiny diff. Complexity and uncertainty may raise this
+floor. Inspect
 interactions, concurrency, invariants and recovery for interacting-state work;
 examine assumptions, omissions and conflicting evidence when uncertainty is
 high. Specification review must cover each criterion, exclusions and negative
@@ -39,8 +40,9 @@ specialist when assessment identifies an uncovered risk. Require qualified human
 acceptance where policy or an unresolved automated-evidence gap calls for it;
 do not invent routine approval gates. Findings need concrete failure conditions
 and source evidence. Brief each reviewer to list first the problems it would
-block the merge for, each with the file and line, why it is wrong and how to
-show it fails, and to keep non-blocking observations in a separate short list.
+block the merge for (P0 to P2 and project-defined blockers), each with the
+file and line, why it is wrong and how to show it fails, and to keep
+non-blocking P3 observations in a separate short list.
 Resolve disagreements through reproduction or reasoned reassessment, never
 vote count or pressure to approve.
 

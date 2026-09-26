@@ -40,8 +40,9 @@ coordinator is Fable; read the coordinator's own runtime instructions.
 A flagged message can switch a Claude Code session to an older model
 automatically, and the user switches back with `/model`; the session
 transcript's per-message model is host-observed evidence of such a change.
-Report a model change during a delivery as a known mismatch in Models and the
-Execution record, listing every model that served.
+Report a model change during a delivery as a known mismatch in Models, naming
+each model and the stage at which it changed; the Execution record's
+coordinator rows keep the coordinator that completes the section.
 
 Read [worker settings and continuation](claude-code-worker-selection.md) only
 for investigation/implementation, correction or replacement; it routes the

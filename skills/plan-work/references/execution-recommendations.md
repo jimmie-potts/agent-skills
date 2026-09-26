@@ -24,7 +24,7 @@ they do not change the current coordinator or replace worker-selection policy.
 | Trivial, mechanical, low complexity/uncertainty/impact, with reliable checks | Opus (`opus`) / `low` | Luna (`gpt-6-luna`) / `low` | Implement directly |
 | Bounded implementation, low/medium complexity and impact, settled requirements and reliable checks | Opus (`opus`) / `medium` | Luna (`gpt-6-luna`) / `medium` | Implement directly |
 | Several interfaces or meaningful design judgment within a bounded outcome | Opus (`opus`) / `medium` | Sol (`gpt-6-sol`) / `medium` | Implement; identify design checkpoints |
-| High complexity or impact within a bounded outcome, or acceptance that turns on hidden edge cases or verification | Opus (`opus`) / `high` | Sol (`gpt-6-sol`) / `high` | Implement with the stronger capability floor |
+| High complexity or impact within a bounded outcome | Opus (`opus`) / `high` | Sol (`gpt-6-sol`) / `high` | Implement with the stronger capability floor |
 | Sustained difficult reasoning, architecture tradeoffs, or substantial coordination across dependent work | Fable (`fable`) / `high` | Astra (`gpt-6-astra`) / `high` | Orchestrate bounded workers, or implement directly when reasoning cannot be separated |
 
 These are planning heuristics, not benchmark results or guaranteed savings.
@@ -38,18 +38,18 @@ the parent's model. Above-high effort needs a task-specific reason or an explici
 requirement and verified support; it is not the default for every hard task.
 
 On Claude Code, every starting row uses Opus or Fable, and effort is the cost
-lever. Anthropic's published guidance, read 2026-09-25, is the basis: Claude
-Code documents Opus 5.5 at its `medium` default as matching or exceeding Opus 5
-at `high` on coding and knowledge-work evaluations, and the cost guidance
-measured a multi-model configuration that looked cheaper than one model
-costing more than that same model at lower effort. On SWE-bench Pro, Opus 5.5
-at `medium` scored about 2.5 points below `high` for about 70% of the cost,
-`low` about 8 points below for about a third, and `xhigh` about 1.4 points
-above for 2.5 times the cost. Well-specified items with reliable checks
-therefore start at `low` or `medium`; when a checkable outcome fails, rerun
-at the next level rather than starting every item high. Fable is for
-sustained reasoning and long-horizon coordination, or when Opus at `high`
-still falls short.
+lever. Anthropic's published guidance, read 2026-09-25, is the basis. Claude
+Code's model configuration documents Opus 5.5 at its `medium` default as
+matching or exceeding Opus 5 at `high` on coding and knowledge-work
+evaluations. The cost guidance reports that a multi-model configuration which
+looked cheaper than a single model cost more than that same model run at lower
+effort, and its SWE-bench Pro measurements put Opus 5.5 at `medium` about 2.5
+points below `high` for about 70% of the cost, `low` about 8 points below for
+about a third, and `xhigh` about 1.4 points above for 2.5 times the cost.
+Well-specified items with reliable checks therefore start at `low` or
+`medium`; when a checkable outcome fails, rerun at the next level rather than
+starting every item high. Fable is for sustained reasoning and long-horizon
+coordination, or when Opus at `high` still falls short.
 
 Effort buys verification, edge-case testing and independent judgment, not a
 better approach. Claude Code's
@@ -61,17 +61,20 @@ effort cut failures from missed edge cases but not from a wrong approach.
 So a settled, well-written item starts at `medium` even when it needs design
 judgment, with checkpoints to keep the user in the loop; a missing decision
 or unknown approach is uncertainty, which `Investigate first` resolves.
-Raise the start to `high` when acceptance turns on hidden edge cases or
-verification, whatever the ratings: a bug fix from a report in existing code,
-input sanitizing or parsing, security, concurrency, data migration, or
-performance work. That article reserves `max` for unattended end-to-end
-building and verification of difficult work, which is the task-specific
-reason above-high effort needs. Sources:
+On Claude Code only, raise the start to Opus (`opus`) at `high` when
+acceptance turns on hidden edge cases or verification, whatever the ratings:
+a bug fix from a report in existing code, input sanitizing or parsing,
+security, concurrency, data migration, or performance work. The Codex column
+keeps its row; this rule is a Claude Code adapter, not a change to the shared
+table. That article reserves `max` for unattended end-to-end building and
+verification of difficult work, which is the task-specific reason above-high
+effort needs. Sources:
 [Optimizing for cost and intelligence](https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence),
-[Claude Code model configuration](https://code.claude.com/docs/en/model-config)
-and the article above. These describe general effort curves; this repository
-has not yet measured its own, so the rows are hypotheses to reassess against
-delivery records.
+[Claude Code model configuration](https://code.claude.com/docs/en/model-config),
+the article above and
+[Getting the most out of Opus 5.5](https://claude.dev/blog/getting-the-most-out-of-opus-5-5/).
+These describe general effort curves; this repository has not yet measured
+its own, so the rows are hypotheses to reassess against delivery records.
 
 ### Record the cheaper start
 
@@ -84,6 +87,7 @@ start. Map it from the recommended row, at the same effort:
 | Opus (`opus`) / `medium` | Sonnet (`sonnet`) / `medium` |
 | Opus (`opus`) / `high`, impact below high | Sonnet (`sonnet`) / `high` |
 | Opus (`opus`) / `high`, impact high | None; the impact floor holds |
+| Opus (`opus`) above `high` | Opus (`opus`) / `high` |
 | Fable (`fable`) / `high` | Opus (`opus`) / `high` |
 
 For Codex, record a cheaper start only when the recommended model or budget
@@ -94,20 +98,17 @@ is the signal to rerun at the recommended start.
 
 ### Recommend the reviewers
 
-On Claude Code, the `Reviewers` row names `opus` for both axes at every
-impact, following the canonical Claude reviewer adapter; for high impact,
-that adapter may select the coordinator's model instead. Reviewer subagents
-inherit the session's effort because the Agent tool has no per-call effort
-control and the catalog ships no subagent definitions, so write the level as
-the session's level. A session at `low` or `medium` therefore reviews at that
-level. Verification is where effort pays, so when the project wants reviews at
-`high`, prefer a read-only reviewer subagent definition with `effort: high`
-in the project's or the user's `.claude/agents/`, which the Agent tool selects
-by name at spawn time; name it in the row when host evidence shows it.
-Without one, add a `Checkpoints` entry that stops before the final reviews
-so the user can run `/effort high`; Claude Code applies that change
-mid-session without breaking the prompt cache. On Codex, use that host's
-reviewer adapter.
+On Claude Code, the `Reviewers` row names `opus` for both axes, or the
+coordinator's model at high impact, following the canonical Claude reviewer
+adapter, which also owns how reviewer effort is inherited from the session or
+set by a subagent definition. Write the level as the session's level unless
+host evidence shows a read-only reviewer definition with `effort: high`, and
+then name that definition in the row. Verification is where effort pays, so
+when the project wants reviews at `high` and no definition exists, add a
+`Checkpoints` entry that stops before the final reviews so the user can run
+`/effort high`, which the effort article above says applies mid-session
+without breaking the prompt cache. On Codex, use that host's reviewer
+adapter.
 
 Verify model identifiers or aliases and supported effort levels from available
 host evidence. When that is insufficient, consult current official

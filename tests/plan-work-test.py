@@ -93,6 +93,10 @@ class PlanWorkStructureTest(unittest.TestCase):
                       'Cheaper Claude Code start |', reference)
         self.assertIn('| Opus (`opus`) / `medium` | Sonnet (`sonnet`) / `medium` |',
                       reference)
+        before, cheaper = reference.split('### Record the cheaper start', 1)
+        cheaper, after = cheaper.split('\n### ', 1)
+        self.assertIn('sonnet', cheaper.lower())
+        self.assertNotIn('sonnet', (before + after).lower())
         prompts = re.findall(r'```text\n(.+?)\n```', reference, re.DOTALL)
         self.assertEqual(len(prompts), 1)
         prompt = prompts[0]
