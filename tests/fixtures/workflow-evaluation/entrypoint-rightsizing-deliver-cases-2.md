@@ -291,4 +291,3 @@ the raw requirements. Variant B: Standards passes, but Specification cannot
 obtain the authoritative acceptance criteria. Variant C: both independent axes
 pass at the current comparison, but a required current-head hosted job is
 pending. Decide whether each variant can merge and what next action is needed.
-

@@ -95,7 +95,7 @@ The evaluated candidate was `30f5ddc27e216468d24b144de15e966ea48e7010`.
 
 | Input | SHA-256 |
 | --- | --- |
-| `entrypoint-rightsizing-deliver-cases-2.md` | `583161af17025c03d26c9f46681516de7e560ca23b7cfa4dd60e107f507ef4f4` |
+| `entrypoint-rightsizing-deliver-cases-2.md` | `9753603d7cfa450cce02644ac1a0e9d5c2eebe9312605dd85365eb21748c16ae` as committed; the evaluated bytes, `583161af17025c03d26c9f46681516de7e560ca23b7cfa4dd60e107f507ef4f4`, had one more trailing blank line |
 | `entrypoint-rightsizing-plan-cases-2.md` | `3e0f3c63103d92005669915187509947cd6d8235601de3b7a0c423bbd60b0246` |
 | `entrypoint-rightsizing-graders-2.md` | `9d14df07f385bbfb1fca7b1def35f38720d89bbba8c100ca35ba9c7896e96db9` |
 | `resumption-graders.md` | `0af0e9b0e1a450e98e4e56773006c1e7b6d14c01cda781946cc55c0dbdd46485` |
