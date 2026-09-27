@@ -160,9 +160,9 @@ Reusable SDLC workflows also include:
   project declares installation or deployment as a completion condition and
   defines its procedure, delivery offers that procedure at a checkpoint after
   verified merge and post-merge CI and runs it only on the owner's approval
-  there or on authorization in the request that names the step, which covers
-  only installing or updating that delivery's own change, never an uninstall,
-  rename or retirement; otherwise it never improvises one and keeps
+  of the presented step there, or on authorization in the request that names
+  the step, which covers only installing or updating that delivery's own
+  change, never an uninstall, rename or retirement; otherwise it never improvises one and keeps
   a step the item still requires pending with its owner. Every delivery ends
   with a cleanup outcome for the temporary resources it created: removed where
   the owning project's policy allows, otherwise retained with a reason, owner

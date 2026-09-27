@@ -398,15 +398,20 @@ class DeliverWorkStructureTest(unittest.TestCase):
         completion = flat(section(entry, '## Merge and verify completion'))
         for rule in ('declares installation or deployment as a completion '
                      'condition', 'at a checkpoint after verified merge and '
-                     "post-merge CI", "only on the owner's approval at that "
-                     'checkpoint or explicit authorization in the request that '
-                     'names the step', 'either covers only installing or '
-                     'updating this change, never an uninstall, rename or '
-                     'retirement', 'never improvise one', 'If a required '
+                     "post-merge CI", "only on the owner's approval of the "
+                     'presented step at that checkpoint, or on explicit '
+                     'authorization in the request that names the step, which '
+                     'covers only installing or updating this change, never an '
+                     'uninstall, rename or retirement', 'never improvise one',
+                     'If a required '
                      'deployment, installation',
                      '(references/project-discovery.md#declared-completion-steps)'):
             with self.subTest(rule=rule):
                 self.assertIn(rule, completion)
+        # Only the request's authorization is limited; the owner's approval
+        # covers whatever step the checkpoint presented.
+        self.assertIn("the owner's approval of the presented step", completion)
+        self.assertNotIn('either covers only', completion)
         discovery = (SKILL / 'references/project-discovery.md').read_text()
         row = next(line for line in discovery.splitlines()
                    if line.startswith('| Completion |'))
@@ -537,6 +542,7 @@ class DeliverWorkStructureTest(unittest.TestCase):
         self.assertIn("covers only installing or updating that delivery's own "
                       'change, never an uninstall, rename or retirement',
                       catalog)
+        self.assertIn("the owner's approval of the presented step", catalog)
         for path in (ROOT / 'AGENTS.md',
                      SKILL / 'references/project-discovery.md'):
             with self.subTest(path=path.name):

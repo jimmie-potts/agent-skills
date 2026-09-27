@@ -229,13 +229,13 @@ or merge acceptance alone is not a verified merge.
 Evaluate all completion conditions. When the owning project declares
 installation or deployment as a completion condition and defines its
 procedure, offer that procedure at a checkpoint after verified merge and
-post-merge CI. Perform it only on the owner's approval at that checkpoint or
-explicit authorization in the request that names the step; either covers only
-installing or updating this change, never an uninstall, rename or retirement.
-Without a declared procedure, never improvise one; report the step to its
-owner, pending while the item or project policy still requires it. Before
-offering, skipping or recording such a step, read
-[declared completion steps](references/project-discovery.md#declared-completion-steps).
+post-merge CI. Perform it only on the owner's approval of the presented step
+at that checkpoint, or on explicit authorization in the request that names the
+step, which covers only installing or updating this change, never an
+uninstall, rename or retirement. Without a declared procedure, never
+improvise one; report the step to its owner, pending while the item or
+project policy still requires it. Before offering, skipping or recording such
+a step, read [declared completion steps](references/project-discovery.md#declared-completion-steps).
 If a required deployment, installation, physical check or human acceptance
 remains, retain the established waiting/current tracking state and report its
 owner and next action. Settle the temporary resources this delivery created
