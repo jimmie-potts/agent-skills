@@ -84,6 +84,11 @@ complexity or impact alone does not prevent readiness.
   observable result, and dependent-work boundary. A separately deliverable
   investigation can be ready while the feature remains blocked.
 
+Planning compares each item with the owning project's accepted direction,
+architecture and related backlog before calling it ready. An unsettled
+conflict with an accepted decision leaves the affected work needing
+clarification. Delivery does not repeat that comparison.
+
 These are meanings, not mandated tracker statuses. If both a blocker and a
 clarification exist, report both. Unknown evidence affecting scope, acceptance,
 or a mandatory gate prevents declaring that affected work ready. Publication
@@ -126,6 +131,8 @@ work document, with:
   owning issue or revisit trigger;
 - each rating, rationale, evidence, and unknowns;
 - readiness, blockers, unresolved decisions, and bounded investigations;
+- when planning supplied one, the alignment result with its sources,
+  observation dates and remaining uncertainty;
 - acceptance-to-verification mapping and conditional review/handoff needs;
 - reassessment triggers.
 

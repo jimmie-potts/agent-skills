@@ -70,6 +70,24 @@ Discover the installed canonical review-work package the same way and read its
 propose each item's review needs and reviewer settings. Delivery refreshes them
 at pickup; reading them dispatches no reviewer.
 
+## Check alignment before readiness
+
+Before calling any item ready, compare it with current evidence from the owning
+project: implementation and contracts at its seam, accepted architecture and
+decisions, stated style or design rules, and related open, closed and active
+work. Check its ownership and integration seam, reuse of established patterns,
+duplicate, conflicting or superseded backlog items, genuine input dependencies,
+and whether it advances or deliberately changes an accepted direction. Use only
+sources that exist, scaled to the item; no new document, field or
+repository-wide audit. Accepted decisions and stated rules bind; a pattern
+observed only in code does not. Explain a departure rather than rejecting it.
+An unauthorized conflict with an accepted decision leaves the affected work
+needing clarification; other items continue. Record a compact alignment result
+with sources and remaining uncertainty in the assessment. For a small local
+item, record what was inspected and why that suffices. When the item touches a
+shared seam, an accepted decision or rule, or related backlog work, read
+[alignment](references/alignment.md).
+
 ## Settle decisions and define items
 
 For material unresolved decisions, compose grill-with-docs using the available
