@@ -71,10 +71,12 @@ against behavior and evidence before reporting it. Missing transcripts or
 private runtime metadata do not require a reset.
 
 P0 to P2 findings and project-defined blockers make their axis
-`action-required`. Record a disposition for every P3 finding with its reason and
-owner. A round that returns only P3 findings starts no correction round by
-itself; the caller disposes of them in one pass and folds any fixes into a
-later candidate only when one is needed for another reason.
+`action-required`, except findings from a failed return, which leave it
+`incomplete` as [reviewer execution](reviewer-execution.md) describes. Record a
+disposition for every P3 finding with its reason and owner. A round that returns
+only P3 findings starts no correction round by itself; the caller disposes of
+them in one pass and folds any fixes into a later candidate only when one is
+needed for another reason.
 
 ## Settle disagreements with evidence
 
