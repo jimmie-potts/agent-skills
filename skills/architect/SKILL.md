@@ -56,8 +56,11 @@ shape, or migration strategy.
 ### Explore
 
 Read [the candidate design discipline](references/design-review.md) before
-generating candidates. Write the caller's usage first, then derive data types,
-function signatures, module boundaries, and data flow.
+generating candidates. Read [caller examples and invariant
+boundaries](references/caller-examples.md) before writing caller usage for a
+consequential interface or encoding an invariant in types. Write the caller's
+usage first, then derive data types, function signatures, module boundaries,
+and data flow.
 
 Load and follow `arena` to produce at least two structurally different candidate
 designs when independent candidates are available. Give each candidate the
@@ -85,6 +88,19 @@ Screen each candidate against the red flags in
 - state ownership, idempotency, and failure recovery;
 - migration cost and compatibility risk;
 - testability and the cost of likely future changes.
+
+Do not endorse a candidate before its caller example shows the caller, owner,
+success path, and failure and recovery path.
+
+Choose directly when one candidate clearly wins or no real alternative needs
+investigation. When a consequential choice between viable candidates stays
+unresolved and a bounded experiment could settle it, write a comparison brief
+before any artifact exists: the question, the decision it informs, evaluation
+criteria and how each is observed, and the plausible alternatives, normally
+two. Run it with `prototype` only when the user explicitly invokes prototype
+for this task; otherwise return the brief as the proposed next step. When the
+choice belongs to the user, such as a product preference, scope, or accepted
+risk, present the evidence and keep the decision open until the user answers.
 
 Choose one coherent base. Port only compatible ideas from losing candidates.
 Do not average designs with conflicting ownership or data models. Write the
@@ -120,8 +136,11 @@ return to Explore. Remove the mistaken assumption before adding more machinery.
 
 Return one design package with caller usage, types and signatures, a module map,
 data and control flow, boundary and state rules, the synthesis decision,
-accepted tradeoffs, rejected alternatives, risks, and the next implementation
-step. For implementation work, add the deviations found and verification run.
+accepted tradeoffs, rejected alternatives, risks, open user decisions, any
+comparison brief or prototype result, and the next implementation step. Open
+with the short owner explanation described in [the caller-example
+reference](references/caller-examples.md). For implementation work, add the
+deviations found and verification run.
 
 Use `unslop` for substantial style issues in human-facing rationale without changing code,
 contracts, identifiers, citations, evidence, or confidence labels.

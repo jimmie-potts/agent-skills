@@ -13,7 +13,9 @@ rather than DOM wiring.
 State the question visibly. Render the relevant state after every action. Give
 the user free-play controls and deterministic scenarios for the happy path, a
 difficult edge case, and an action that should be rejected. Use domain language
-in labels and expected outcomes.
+in labels and expected outcomes. When comparing state models, run the same
+scenarios against each model and record the resulting state traces side by
+side.
 
 Stub persistence and external effects unless the question specifically concerns
 them and the user authorizes a disposable local substitute. Never use production

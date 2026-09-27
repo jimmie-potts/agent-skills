@@ -5,8 +5,9 @@ Use this discipline for every candidate and again before synthesis.
 ## Build the candidate
 
 Write realistic caller usage before defining types. Show what callers import,
-what they provide, what they receive, and how errors appear. Derive the public
-contract from that usage. When usage and types disagree, fix the design rather
+what they provide, what they receive, and how errors appear. For a
+consequential interface, follow [the caller-example
+contract](caller-examples.md). Derive the public contract from that usage. When usage and types disagree, fix the design rather
 than forcing callers through the type sketch.
 
 Model core data before orchestration. Trace dominant reads, writes, lookups, and
@@ -59,7 +60,9 @@ translation, lifecycle, ownership, or a distinct contract.
 
 Repeated casts, broad optional fields, unbounded maps, and generic payloads may
 hide an unresolved invariant. Require the candidate to name why the state is
-valid and where invalid states become impossible or are rejected.
+valid and where invalid states become impossible or are rejected. Encode such
+an invariant in types only as [selectively as the caller-example
+reference](caller-examples.md#encode-invariants-selectively) allows.
 
 ### Accidental shared state
 

@@ -652,15 +652,33 @@ class MattEngineeringSkillsTest(unittest.TestCase):
             "define observable acceptance behavior before editing",
             "Do not promote a disposable experiment into production",
             "Promotion is a separate implementation decision",
+            "report that answer and its evidence instead of building an artifact",
+            "write the comparison brief before building any artifact",
+            "evaluation criteria, and how each one will be observed",
+            "the plausible alternatives, normally two",
+            "Build each alternative against the same inputs, data, and scenarios",
+            "Record observations per criterion in a form someone else can inspect",
+            "Stop when the evidence supports a decision",
+            "leave the decision open until the owner answers",
+            "either the supported decision or the explicit remaining question",
+            "Choosing a disposable variant does not approve the production candidate or its UI",
         ):
             self.assertIn(required, body)
+        self.assertLess(
+            body.index("## Compare bounded alternatives"),
+            body.index("## Bound the artifact"),
+        )
 
         logic = normalized(SKILLS_ROOT / "prototype" / "references" / "logic.md")
         ui = normalized(SKILLS_ROOT / "prototype" / "references" / "ui.md")
         self.assertIn("Render the relevant state after every action", logic)
         self.assertIn("Never use production credentials or data", logic)
+        self.assertIn("run the same scenarios against each model", logic)
         self.assertIn("Variants must differ in structure or primary interaction", ui)
         self.assertIn("Do not add a production route", ui)
+        self.assertIn("Prefer the owning project's disposable preview or capture tools", ui)
+        self.assertIn("explain the choice in the project's vocabulary", ui)
+        self.assertIn("A selected variant is exploration evidence, not approval of the production UI", ui)
 
     def test_prompt_level_selection_matrix_matches_descriptions_and_policies(self) -> None:
         positive_description_evidence = {
