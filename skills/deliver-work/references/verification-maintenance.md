@@ -1,8 +1,9 @@
 # Maintain verification with changed behavior
 
-Read when changed behavior has a maintained check, when such a check or a
-required verification fails unexpectedly or cannot run, and before adding a
-check for a repeated or observed failure. A maintained check here is a feature
+Read when changed behavior has a maintained check or a high-value changed
+criterion needs a negative control, when such a check or a required
+verification fails unexpectedly or cannot run, and before adding a check for a
+repeated or observed failure. A maintained check here is a feature
 map, recipe, driver or check that the project documents and that names this
 behavior's expected observations. A deliberate TDD red run that fails for its
 expected reason is not a failed verification; it can serve as the known bad
@@ -41,16 +42,20 @@ needed update to that owner instead of editing it.
 
 ## Classify a failed or unavailable verification
 
-Before repairing, classify the result from evidence. Report the class's
-outcome until a rerun of the check passes:
+Report every verification outcome as `passed`, `failed`, `unverified`,
+`unavailable` or `pending`. Before repairing, classify a result from evidence
+and report its class's outcome until the evidence the class lacks exists: a
+passing rerun after the product fix, entry update, restored harness capability
+or available environment, or for `acceptance` the owner's acceptance evidence.
+
 
 | Class | Supporting evidence | Reported outcome | Next action |
 | --- | --- | --- | --- |
-| `product` | A working harness, or independent evidence such as a unit test or log, shows the behavior misses its criterion | failed | Fix the product within scope and rerun. Never change the check or recipe to make it pass |
-| `harness` | The driver, fixture, tool or check is broken or lacks a needed capability while product evidence is sound | unverified | Report the missing capability. Repair it only when the task owns the harness, otherwise route it to its owner |
-| `stale-instructions` | The map, recipe or check describes behavior that an accepted change deliberately altered | unverified | Update the affected entry from the accepted criterion and rerun the check. When an earlier change caused it, repair it here only when it blocks this delivery's verification; otherwise route it to its owner |
-| `environment` | A needed host, browser build, service, device or credential is unavailable | unavailable | Report the missing piece and its owner. Do not switch environments silently |
-| `acceptance` | Checks pass but do not establish an accepted criterion, such as a required physical, human or uncovered scenario check | pending | Keep the criterion with its owner. Do not report it accepted or complete |
+| `product` | A working harness, or independent evidence such as a unit test or log, shows the behavior misses its criterion | `failed` | Fix the product within scope and rerun. Never change the check or recipe to make it pass |
+| `harness` | The driver, fixture, tool or check is broken or lacks a needed capability while product evidence is sound | `unverified` | Report the missing capability. Repair it only when the task owns the harness, otherwise route it to its owner |
+| `stale-instructions` | The map, recipe or check describes behavior that an accepted change deliberately altered | `unverified` | Update the affected entry from the accepted criterion and rerun the check. When an earlier change caused it, repair it here only when it blocks this delivery's verification; otherwise route it to its owner |
+| `environment` | A needed host, browser build, service, device or credential is unavailable | `unavailable` | Report the missing piece and its owner. Do not switch environments silently |
+| `acceptance` | Checks pass but do not establish an accepted criterion, such as a required physical, human or uncovered scenario check | `pending` | Keep the criterion with its owner. Do not report it accepted or complete |
 
 When the evidence does not separate two classes, record the candidate classes
 and the evidence that would separate them, and obtain it before choosing a
@@ -71,16 +76,18 @@ the check can fail. Run it against a known bad result, such as the pre-change
 behavior, a deliberately broken fixture or the evidenced bad revision: the
 check must fail for the expected reason. Run it against the correct reference:
 the check must pass. Record both results with their revisions. A recorded TDD
-red run that failed for the expected reason before the fix is the known bad
-control; do not rerun it against the pre-change revision. Keep a temporary
-mutation out of the committed change unless the project retains such fixtures.
+red run of the committed check, unchanged since that run, that failed for the
+expected reason is the known bad control; no rerun against the pre-change
+revision is needed. If the check changed after the red run, rerun it against
+the known bad result. Keep a temporary mutation out of the committed change
+unless the project retains such fixtures.
 
 A check that passes on the known bad result is not evidence. Strengthen it or
 report the gap. Select controls by assessed risk. Do not mutate every edit,
 start a mutation-testing program or copy implementation details into tests.
-Documentation and instruction changes follow the entrypoint's rule instead:
-inspect the result and exercise representative behavior, without executable
-tests that merely mirror prose.
+Low-impact wording, documentation and instruction changes follow the
+entrypoint's rule instead: inspect the result and exercise representative
+behavior, without executable tests that merely mirror prose.
 
 ## Prevent repeated mistakes structurally
 
@@ -121,12 +128,12 @@ regression evidence, never an unseen holdout result.
 ## Report evidence truthfully
 
 - A check that did not run, a missing artifact and an interrupted capture are
-  unknown, unavailable or failed, never passed.
+  `failed`, `unverified` or `unavailable`, never `passed`.
 - Screenshots and videos supplement assertions. The assertion outcome is the
   result; an image without its assertion log does not establish a pass.
 - Simulated transport, fakes and emulators establish simulated behavior only,
   never physical acceptance. Physical acceptance needs its own authorized
-  device evidence and owner; report it pending until then.
+  device evidence and owner; report it `pending` until then.
 - Report each result's class, check, revision and outcome in the checkpoint's
   Evidence field, keeping product defects, harness gaps, stale instructions,
   unavailable environments and unmet acceptance distinct.

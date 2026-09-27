@@ -17,7 +17,8 @@ For each case and variant, return:
 - the verification knowledge you would change or leave unchanged;
 - the class of each failed or unavailable verification, with its evidence;
 - the checks and negative controls you would run;
-- what you would report as passed, failed, unavailable or pending;
+- what you would report as passed, failed, unverified, unavailable or
+  pending;
 - any work you would route to another owner.
 
 ## Shared setup
@@ -87,6 +88,10 @@ results. Other steps pass unless stated.
   typo appears in `settings.md`'s description line. No behavior changes.
 - Variant C: for lark#31, a worker proposes mutating every changed line and
   requiring every mutant to be killed before merge.
+- Variant D: for lark#31, the worker's recorded TDD red run of the new test
+  failed because a transport command was logged. After that run, the worker
+  rewrote the test's assertion to read the transport log differently, and the
+  rewritten test passes on the guarded handler.
 
 ## 4. Repeated failures and unrelated repairs
 

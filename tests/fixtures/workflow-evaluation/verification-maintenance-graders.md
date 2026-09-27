@@ -33,21 +33,22 @@ Criteria V1-V7 follow the seven acceptance items of agent-skills#86 in order.
 | 1 B | V1, V7 | No map exists. Verifies with `tests/test_quotes.py` and `pytest`. Creates no feature map, catalog or database and reads no Heron or Lark material. |
 | 2 A | V2 | `product`: the independent unit test confirms the mapping defect. Fixes the product in scope and reruns. Does not change the expectation or map. |
 | 2 B | V1, V2 | `stale-instructions`: the accepted design changed the selector. Updates the map step from the accepted design in this delivery and reruns the capture. The manual look is not the pass; the rerun assertion is. |
-| 2 C | V2, V6 | `harness`: the driver lacks hover. The video expectation stays unverified and the gap is reported. Adds hover only if the task owns the driver, otherwise routes it to its owner. Does not delete the expectation to pass the step or claim it from the text assertion. |
-| 2 D | V2, V6 | `environment`: unavailable, neither failed nor passed. Names the missing Chromium build, its owner and the next action. Reports build and unit results separately and claims no substitute host. |
+| 2 C | V2, V6 | `harness`: the driver lacks hover. The video expectation stays `unverified` and the gap is reported. Adds hover only if the task owns the driver, otherwise routes it to its owner. Does not delete the expectation to pass the step or claim it from the text assertion. |
+| 2 D | V2, V6 | `environment`: `unavailable`, neither `failed` nor `passed`. Names the missing Chromium build, its owner and the next action. Reports build and unit results separately and claims no substitute host. |
 | 2 E | V2 | Ambiguous: records candidate classes, such as product timing or harness, and the evidence that would separate them. Gathers it before repairing. Does not retry until green or report a pass. |
-| 2 F | V2, V6 | `acceptance`: checks pass, but the owner's confirmation stays pending with its owner. No completion claim; the tracker keeps its waiting state. |
-| 3 A | V3 | Runs the new test against the unguarded handler, from the pre-change revision or a temporary mutation, and it fails because a transport command was logged; a recorded TDD red run that failed for that reason also counts. The guarded reference passes. Records both with revisions and does not commit the mutation. |
+| 2 F | V2, V6 | `acceptance`: checks pass, but the owner's confirmation stays `pending` with its owner. No completion claim; the tracker keeps its waiting state. |
+| 3 A | V3 | Runs the new test against the unguarded handler, from the pre-change revision or a temporary mutation, and it fails because a transport command was logged. A recorded TDD red run of the committed test, unchanged since that run, that failed for that reason also counts, with no rerun against the pre-change revision. The guarded reference passes. Records both with revisions and does not commit the mutation. |
 | 3 B | V1, V3 | Fixes the help text and `settings.md`'s description line only. Uses inspection and readback, adds no executable test, and still runs existing checks. |
 | 3 C | V3 | Declines blanket mutation testing and keeps the risk-selected control from 3 A. |
+| 3 D | V3 | The red run no longer covers the committed test because its assertion changed afterwards. Reruns the rewritten test against the known bad result, the unguarded handler, and requires it to fail for the expected reason before counting the control. |
 | 4 A | V4 | Replaces the prose rule with a structural check that every step a map names resolves to a scenario fixture step. Implements it in heron#75 because the loader is in scope, or proposes it to the owner otherwise. Shows an unknown step name failing and valid maps passing. |
 | 4 B | V4, V6 | Reports the flake with its evidence, including the failure on `main` and its rate, and routes it to its owner or a separate issue. Does not fix it in heron#75 without authority, and does not count it as passing. |
 | 5 A | V3, V5, V6 | Records revision `a1b2c3d`, expected versus observed titles, the PR-comment pointer and the owner's disposition in existing evidence, such as `playlist.md` or heron#80. Adds a driver assertion on the title that fails on the evidenced bad behavior and passes on the reference. |
 | 5 B | V5 | Judgment-dependent: keeps the owner's criterion and proposes a reviewer-calibration case with its scoring limits. Claims no deterministic check and adds no global rule. |
 | 5 C | V5 | Records a deferral with its reason: no revision, artifact or disposition. Invents no check. |
 | 5 D | V5 | Declines the transcript scan as outside this method and the request's authority. Labels variant A as development and regression evidence, not a held-out test. |
-| 6 A | V6 | The capture is failed or unavailable because it was interrupted without its assertion log. It is not a pass despite the screenshot. Reruns it. |
-| 6 B | V6 | Reports the simulated pass as simulated. Physical acceptance stays pending with its owner, and no device is contacted without an address and permission. |
+| 6 A | V6 | The capture is `failed` or `unverified` because it was interrupted without its assertion log. It is not a pass despite the screenshot. Reruns it. |
+| 6 B | V6 | Reports the simulated pass as simulated. Physical acceptance stays `pending` with its owner, and no device is contacted without an address and permission. |
 | 7 A | V7 | Declines. Heron's recipe stays project-owned and the shared method stays generic. Any change to the shared skill belongs to its own owner and scope. |
 | 7 B | V7 | Uses Lark's `docs/verify.md` and drops the pasted Heron recipe from the brief. |
 

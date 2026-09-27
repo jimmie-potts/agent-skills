@@ -330,12 +330,14 @@ FAILURE_CLASSES = ('product', 'harness', 'stale-instructions', 'environment',
 UNPASSED_OUTCOMES = ('failed', 'unverified', 'unavailable', 'pending')
 # What these checks detect, and no more: the class table's structure, a
 # removed no-effect boundary that the rubric treats as an automatic failure,
-# a proof sentence that pairs missing proof, an image or a simulation with a
-# pass or acceptance claim without "never" or "not", and code fences or
-# inline code containing a space or slash, such as a pasted command or path.
-# They do not understand prose: a reworded contradiction that keeps a
-# negation, a one-word command, or a weakened sentence outside these anchors
-# passes. Inspection, review and the unrun scenario rubric cover the rest.
+# a sentence in "Report evidence truthfully" that pairs missing proof, an
+# image or a simulation with a pass or acceptance claim without "never" or
+# "not", and code fences or inline code containing a space or slash, such as
+# a pasted command or path; a span starting with "#" names a heading and is
+# allowed. They do not understand prose: a reworded contradiction that keeps
+# a negation, a contradiction outside that section, a one-word command, or a
+# weakened sentence outside these anchors passes. Inspection, review and the
+# unrun scenario rubric cover the rest.
 BOUNDARIES = {
     'no granted authority': ('grants no write, tracker, runtime, device, '
                              'transcript or model-call authority'),
@@ -372,20 +374,24 @@ def maintenance_gaps(text):
         gaps.append('failure classes')
     if any(len(cells) != 3 or not all(cells) for _, cells in rows):
         gaps.append('class row incomplete')
-    if any(len(cells) > 1 and cells[1] not in UNPASSED_OUTCOMES
+    if any(len(cells) > 1 and cells[1].strip('`') not in UNPASSED_OUTCOMES
            for _, cells in rows):
         gaps.append('class outcome')
     if not any(label == 'product' and PRODUCT_GUARD in cells[-1].lower()
                for label, cells in rows):
         gaps.append('product guard')
-    sentences = re.split(r'(?<=[.;:])\s+|\s*\|\s*', folded)
+    truthful = re.search(r'^## Report evidence truthfully\n(.*?)(?=^## |\Z)',
+                         text, re.DOTALL | re.MULTILINE)
+    sentences = re.split(r'(?<=[.;:])\s+',
+                         ' '.join(truthful.group(1).split()).lower()
+                         if truthful else '')
     for name, (subject, claim) in PROOF_RULES.items():
         claims = [sentence for sentence in sentences
                   if re.search(subject, sentence) and re.search(claim, sentence)]
         if not claims or any(not NEGATION.search(re.sub(subject, '', sentence))
                              for sentence in claims):
             gaps.append(name)
-    if any(span == '' or re.search(r'[\s/]', span)
+    if any(span == '' or (not span.startswith('#') and re.search(r'[\s/]', span))
            for span in CODE_SPAN.findall(text)):
         gaps.append('copied project command')
     return gaps
@@ -445,6 +451,7 @@ class VerificationMaintenanceTest(unittest.TestCase):
         self.assertIn('[Verification maintenance](references/verification-maintenance.md): '
                       'when changed behavior has a project-documented feature map', entry)
         self.assertIn('not a deliberate TDD red run', entry)
+        self.assertIn('or a high-value changed criterion needs a negative control', entry)
         planning = ' '.join((SKILL / 'references/task-planning.md').read_text().split())
         self.assertIn('[verification maintenance](verification-maintenance.md)', planning)
 
@@ -456,8 +463,8 @@ class VerificationMaintenanceTest(unittest.TestCase):
         controls.update({
             'failure classes': reference.replace('| `stale-instructions` |',
                                                  '| `other` |'),
-            'class outcome': reference.replace('| unavailable |', '| passed |'),
-            'class row incomplete': reference.replace('| pending |', '|  |'),
+            'class outcome': reference.replace('| `unavailable` |', '| `passed` |'),
+            'class row incomplete': reference.replace('| `pending` |', '|  |'),
             'product guard': remove_phrase(reference, PRODUCT_GUARD),
             'missing proof': reference + '\nA check that did not run counts as passed.\n',
             'screenshot proof': reference + '\n- A screenshot alone establishes a pass.\n',
@@ -477,6 +484,15 @@ class VerificationMaintenanceTest(unittest.TestCase):
                 self.assertIn(name, maintenance_gaps(mutated))
         path_like = reference + '\nSee `docs/verification/map.md`.\n'
         self.assertIn('copied project command', maintenance_gaps(path_like))
+        # Known false positives of an unscoped scan stay accepted.
+        section = '\n## Choose negative controls by risk\n'
+        for accepted in ('Rerun the simulated check until it passes, then '
+                         'request physical acceptance from its owner.',
+                         'Keep the `## Execution record` current.'):
+            with self.subTest(accepted=accepted):
+                self.assertIn(section, reference)
+                self.assertEqual(maintenance_gaps(reference.replace(
+                    section, f'{section}\n{accepted}\n', 1)), [])
 
     def test_cases_are_scored_and_withheld(self):
         scenarios = ' '.join((SKILL / 'references/validation-scenarios.md').read_text().split())

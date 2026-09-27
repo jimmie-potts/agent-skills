@@ -114,9 +114,10 @@ Read each reference below at its trigger:
   an explicit round, time or spend limit.
 - [Verification maintenance](references/verification-maintenance.md): when
   changed behavior has a project-documented feature map, recipe, driver or
-  check naming its expected observations; when such a check or a required
-  verification fails unexpectedly or cannot run, not a deliberate TDD red run;
-  and before adding a check for a repeated or observed failure.
+  check naming its expected observations, or a high-value changed criterion
+  needs a negative control; when such a check or a required verification fails
+  unexpectedly or cannot run, not a deliberate TDD red run; and before adding
+  a check for a repeated or observed failure.
 - [Model and strategy selection](references/model-selection.md): before
   selecting a worker or changing implementation strategy/settings, reading only
   its selected role and host branches. Direct trivial
