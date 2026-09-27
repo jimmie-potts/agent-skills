@@ -349,10 +349,10 @@ class DeliverWorkStructureTest(unittest.TestCase):
                      'passes', 'source-only, with a reason and a link to the '
                      'install issue', 'Ask the owner at a checkpoint before '
                      'the fast-forward or install, unless the delivery request '
-                     'names that step', 'covers only the step for its own '
-                     'change', 'Present the step at the checkpoint anyway '
-                     'when it would also install, uninstall or retire any '
-                     'other skill',
+                     'names that step', 'covers only a step that installs or '
+                     "updates its own change's skills", 'Present the step at '
+                     'the checkpoint anyway when it would uninstall, rename or '
+                     "retire any skill, including the change's own",
                      'the issue stays open'):
             with self.subTest(rule=rule):
                 self.assertIn(rule, declaration)
@@ -376,8 +376,8 @@ class DeliverWorkStructureTest(unittest.TestCase):
                      'catalog before the fast-forward',
                      "Rerun step 2's checks just before the uninstall",
                      'A local change inside a skill the update changes or adds',
-                     'never when it installs, uninstalls or retires any skill '
-                     "other than that change's own",
+                     "Run it under a delivery request's authorization instead "
+                     'only where `AGENTS.md` allows.',
                      '`git merge --ff-only origin/main`', '--dry-run',
                      '`worker-with-fable` for Claude Code',
                      '`worker-with-astra` for Codex',
@@ -398,14 +398,20 @@ class DeliverWorkStructureTest(unittest.TestCase):
         completion = flat(section(entry, '## Merge and verify completion'))
         for rule in ('declares installation or deployment as a completion '
                      'condition', 'at a checkpoint after verified merge and '
-                     "post-merge CI", "only on the owner's approval at that "
-                     'checkpoint or explicit authorization in the request that '
-                     'names the step', 'either covers only the step for this '
-                     'change', 'never improvise one', 'If a required '
+                     "post-merge CI", "only on the owner's approval of the "
+                     'presented step at that checkpoint, or on explicit '
+                     'authorization in the request that names the step, which '
+                     'covers only installing or updating this change, never an '
+                     'uninstall, rename or retirement', 'never improvise one',
+                     'If a required '
                      'deployment, installation',
                      '(references/project-discovery.md#declared-completion-steps)'):
             with self.subTest(rule=rule):
                 self.assertIn(rule, completion)
+        # Only the request's authorization is limited; the owner's approval
+        # covers whatever step the checkpoint presented.
+        self.assertIn("the owner's approval of the presented step", completion)
+        self.assertNotIn('either covers only', completion)
         discovery = (SKILL / 'references/project-discovery.md').read_text()
         row = next(line for line in discovery.splitlines()
                    if line.startswith('| Completion |'))
@@ -416,10 +422,11 @@ class DeliverWorkStructureTest(unittest.TestCase):
         for rule in ('**Declared:**', 'Present it at the checkpoint and wait',
                      '**Pre-authorized:**',
                      'a finish line such as "through completion" does not',
-                     "It covers only the step for this delivery's own change",
+                     'It covers only a step that installs or updates this '
+                     "delivery's own change",
                      'Present the prepared step at the checkpoint anyway when '
-                     'it would also install, uninstall or retire other '
-                     'resources',
+                     'it would uninstall, rename or retire any resource, '
+                     "including this change's own",
                      'run exactly the step presented or authorized and nothing '
                      'else',
                      '**Declined, or the owner is unavailable:** keep the item '
@@ -523,6 +530,24 @@ class DeliverWorkStructureTest(unittest.TestCase):
                          [f'D{n}' for n in range(1, 11)])
         self.assertRegex(flat(section(cases, '## IC03: Pre-authorization')),
                          r' 3\. .*removes the skill')
+        # A named request never covers an uninstall, rename or retirement,
+        # even the change's own (owner decision, #99).
+        pre_authorized = next(line for line in graders.splitlines()
+                              if line.startswith('| IC03 |'))
+        self.assertIn('Variant 4:', pre_authorized)
+        rename = pre_authorized.split('Variant 4:', 1)[1]
+        self.assertIn('at the checkpoint and wait', rename)
+        self.assertNotIn('without a checkpoint', rename)
+        catalog = flat((ROOT / 'README.md').read_text())
+        self.assertIn("covers only installing or updating that delivery's own "
+                      'change, never an uninstall, rename or retirement',
+                      catalog)
+        self.assertIn("the owner's approval of the presented step", catalog)
+        for path in (ROOT / 'AGENTS.md',
+                     SKILL / 'references/project-discovery.md'):
+            with self.subTest(path=path.name):
+                self.assertNotIn('that change adds, renames or removes',
+                                 flat(path.read_text()))
         self.assertRegex(flat(section(cases, '## IC05: Another project with '
                                       'no declaration')),
                          r" 2\. The issue's acceptance says: .Installed")

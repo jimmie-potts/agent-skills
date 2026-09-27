@@ -70,11 +70,11 @@ After verified merge and post-merge CI:
   checkout brings. Present it at the checkpoint and wait.
 - **Pre-authorized:** authorization in the request must name the step, such
   as "install it after merge"; a finish line such as "through completion"
-  does not. It covers only the step for this delivery's own change,
-  including the resources that change adds, renames or removes. Present the
-  prepared step at the checkpoint anyway when it would also install,
-  uninstall or retire other resources, or bring other work's changes that
-  need the owner's action, and follow any narrower project rule.
+  does not. It covers only a step that installs or updates this delivery's
+  own change. Present the prepared step at the checkpoint anyway when it
+  would uninstall, rename or retire any resource, including this change's
+  own, install other resources, or bring other work's changes that need the
+  owner's action, and follow any narrower project rule.
 - **Approved, or within the pre-authorization:** run exactly the step
   presented or authorized and nothing else, then read back its evidence and
   record it with the item's delivery evidence. The approval covers only that

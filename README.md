@@ -160,12 +160,13 @@ Reusable SDLC workflows also include:
   project declares installation or deployment as a completion condition and
   defines its procedure, delivery offers that procedure at a checkpoint after
   verified merge and post-merge CI and runs it only on the owner's approval
-  there or on authorization in the request that names the step, which covers
-  only that delivery's own change; otherwise it never improvises one and keeps
-  a step the item still requires pending with its owner. Every delivery ends
-  with a cleanup outcome for the temporary resources it created: removed where
-  the owning project's policy allows, otherwise retained with a reason, owner
-  and next action;
+  of the presented step there, or on authorization in the request that names
+  the step, which covers only installing or updating that delivery's own
+  change, never an uninstall, rename or retirement; otherwise it never
+  improvises one and keeps a step the item still requires pending with its
+  owner. Every delivery ends with a cleanup outcome for the temporary
+  resources it created: removed where the owning project's policy allows,
+  otherwise retained with a reason, owner and next action;
 - the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
   `openspec-apply-change`, `openspec-update-change`, `openspec-sync-specs`, and
   `openspec-archive-change`. They use the consuming repository's pinned CLI.
@@ -595,8 +596,7 @@ read this section from the target revision, for example
    update; the fast-forward brings every merged change at once.
 4. Prepare the complete step and present it at the owner's checkpoint. Run it
    under a delivery request's authorization instead only where `AGENTS.md`
-   allows: never when it installs, uninstalls or retires any skill other than
-   that change's own.
+   allows.
    - For each renamed or removed skill, uninstall its owned links with the
      current, older catalog before the fast-forward, dry-run first, as the
      retirement paragraph below describes. Rerun step 2's checks just before

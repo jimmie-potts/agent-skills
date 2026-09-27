@@ -35,14 +35,14 @@ organization-wide governance are out of scope.
   reason and a link to the install issue that batches it; that issue then
   closes at merge, and the install issue carries the installation.
 - Ask the owner at a checkpoint before the fast-forward or install, unless the
-  delivery request names that step. Such a request covers only the step for
-  its own change, including links for skills that change adds, renames or
-  removes. Present the step at the checkpoint anyway when it would also
-  install, uninstall or retire any other skill, or bring other merged skill
-  changes whose installation still awaits an owner's decision. Approval covers
-  only the step presented. If the owner declines or is unavailable, the issue
-  stays open, with installation pending and its owner and next action
-  recorded.
+  delivery request names that step. Such a request covers only a step that
+  installs or updates its own change's skills. Present the step at the
+  checkpoint anyway when it would uninstall, rename or retire any skill,
+  including the change's own, install any other skill, or bring other merged
+  skill changes whose installation still awaits an owner's decision. Approval
+  covers only the step presented. If the owner declines or is unavailable,
+  the issue stays open, with installation pending and its owner and next
+  action recorded.
 - Before updating, installing or checking the installed catalog, read the
   README's installed-catalog update section,
   [Update the installed catalog](README.md#update-the-installed-catalog).
