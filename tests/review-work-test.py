@@ -2,6 +2,7 @@
 """Structural and result-contract checks; behavior uses held-out scenarios."""
 from pathlib import Path
 import hashlib
+import importlib.util
 import re
 import tomllib
 import unittest
@@ -11,6 +12,21 @@ ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ROOT / 'skills'
 SKILL = SKILLS / 'review-work'
 FIXTURES = ROOT / 'tests/fixtures/workflow-evaluation'
+BULLETS_SPEC = importlib.util.spec_from_file_location(
+    'labelled_bullets', ROOT / 'tests/labelled-bullets.py')
+BULLETS = importlib.util.module_from_spec(BULLETS_SPEC)
+BULLETS_SPEC.loader.exec_module(BULLETS)
+
+# Each protection class keeps its label and the anchors that carry its core
+# commitment; any other wording may change. A weakened sentence that keeps its
+# anchors passes, so inspection and review cover the rest.
+BOUNDARIES = {
+    'Authority': ('grants no authority', 'belongs to the caller'),
+    'Ownership': ('reviewers are read-only', 'launch no agents'),
+    'Independence': ('fresh read-only context', 'never fills an axis'),
+    'Evidence': ('never approved', 'gates are a floor'),
+    'Scope': ('do not invent acceptance criteria', 'scope owner'),
+}
 
 ROWS = ('Work', 'Round', 'Comparison', 'Requirements', 'Policy', 'Standards',
         'Specification', 'Reviewers', 'Open findings')
@@ -234,6 +250,10 @@ class ReviewWorkStructureTest(unittest.TestCase):
                 if path.relative_to(SKILL).parts[0] == 'assets':
                     allowed = {'.md', '.toml'}
                 self.assertIn(path.suffix, allowed, str(path))
+
+    def test_each_protection_class_keeps_its_commitment(self):
+        BULLETS.assert_guarded(self, (SKILL / 'SKILL.md').read_text(),
+                               '## Boundaries', BOUNDARIES)
 
     def test_canonical_check_wiring(self):
         for path in (ROOT / 'AGENTS.md', ROOT / 'README.md',
