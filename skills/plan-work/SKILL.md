@@ -117,11 +117,10 @@ known mismatch with documented workflow guidance or a composed skill's
 reasoning requirement, such as a pairing worker that would inherit a reduced
 level, and never claim to change it.
 
-Route an unresolved question that governs an item's scope, approach or
-acceptance through uncertainty routing before detailing the work it governs.
 Use a bounded investigation when it can resolve technical uncertainty; a
-missing product decision remains a question. Planning runs no experiment whose
-effects the user has not authorized. Supply the worker the selected
+missing product decision remains a question. Planning installs nothing and
+runs no experiment whose other effects the user has not authorized. Supply the
+worker the selected
 role, criteria, relevant instructions, read-only authority and return contract.
 Load no reviewer, delivery-reporting or unselected pairing rules for an
 assigned investigation. A bounded

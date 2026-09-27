@@ -666,7 +666,8 @@ class MattEngineeringSkillsTest(unittest.TestCase):
             "either the supported decision or the explicit remaining question",
             "Choosing a disposable variant does not approve the production candidate or its UI",
             "An authorized workflow may compose this skill for a disposable experiment or comparison",
-            "names the question, the isolated destination and the allowed effects, and composition adds no authority",
+            "That workflow's request is the underlying request, and composition adds no authority",
+            "Its brief names the question, the isolated destination and the allowed effects within that authority",
             "functional slices remain its own implementation",
         ):
             self.assertIn(required, body)

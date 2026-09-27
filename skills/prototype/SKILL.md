@@ -21,10 +21,10 @@ server-start, browser, Git, tracker, production-route, or publication authority.
 Use only the locations and actions authorized by the underlying request.
 
 An authorized workflow may compose this skill for a disposable experiment or
-comparison. The workflow's brief is the underlying request: it names the
-question, the isolated destination and the allowed effects, and composition
-adds no authority. Return the result to that workflow; functional slices
-remain its own implementation.
+comparison. That workflow's request is the underlying request, and composition
+adds no authority. Its brief names the question, the isolated destination and
+the allowed effects within that authority. Return the result to that workflow;
+functional slices remain its own implementation.
 
 For a disposable experiment or a comparison, first check whether the question
 is already answered. If existing code, documentation, or a single obvious

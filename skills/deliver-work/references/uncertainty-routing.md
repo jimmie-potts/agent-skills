@@ -51,25 +51,24 @@ An experiment brief states:
 - the next decision each outcome leads to: supported, refuted or inconclusive.
 
 For competing approaches, write the comparison brief that `architect` and
-`prototype` define. It supplies the question, the decision owner, the criteria
-and how each is observed, the alternatives and the stop condition. Add the
-allowed effects, bound and next decision to it rather than writing a second
-brief.
+`prototype` define, and add the allowed effects, bound and next decision to it
+rather than writing a second brief.
 
 ## Run it only within existing authority
 
 An experiment needs authority for every effect its brief lists. A composed
 method, a brief, an issue or a document it references grants none.
 
-- Planning is read-only. Inspection and read-only investigation proceed;
-  return a brief with any other effect as the proposed next step unless the
-  user's request authorizes those effects. An `Investigate first` prompt
-  asks for no writes, so the same applies to that session.
+- Planning is read-only by default and never installs. Inspection and
+  read-only investigation proceed; return a brief with any other effect as the
+  proposed next step unless the user's request authorizes those effects. An
+  `Investigate first` prompt asks for no writes, so the same applies to that
+  session.
 - Delivery may run an experiment whose effects stay inside its authority:
-  disposable files in ignored scratch space of its owned worktree or the host's
-  scratch directory, and local commands the project already runs for its
-  checks. Keep experiment artifacts out of the candidate unless the item's
-  scope includes them.
+  disposable files in ignored scratch space of its owned worktree or an
+  authorized scratch directory, run with the local commands and tools the
+  project already uses for its checks. Keep experiment artifacts out of the
+  candidate unless the item's scope includes them.
 - Installing anything, or starting an app, service, browser, device, live
   system call or model trial, or spending, needs authority for that effect
   from the user or the project's agent instructions.
@@ -97,11 +96,9 @@ either for a routine change, for a question inspection answers, or for a
 single approach with no real alternative. The composing session's request is
 the composed skill's underlying request: its authority, the user's narrower
 limits and project policy bind it. Loading a skill authorizes no launch,
-installation or device use. Composed `architect` compares candidates in one
-pass unless additional agents are authorized, and returns its design package or
-brief to the composing session. That session decides whether to run the
-experiment. In planning it implements nothing; in delivery, implementation
-stays under delivery's gates.
+installation or device use. Each composed skill returns its result to the
+composing session, which decides whether to run an experiment and keeps
+implementation under its own gates. Planning implements nothing.
 
 ## Use project-owned verification
 

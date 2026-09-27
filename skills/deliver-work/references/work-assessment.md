@@ -10,7 +10,8 @@ gates remain floors.
 Assess scope when drafting an item, at delivery pickup, and after a material
 scope or assumption change, not on every turn. Refresh the stored assessment
 instead of writing another. This adds no skill invocation; explicit-only skills
-still need their own explicit request.
+still need their own explicit request or deliberate composition by an
+authorized workflow.
 
 Before choosing scope, establish the intended user outcome, supported
 installation or deployment, affected consumers and meaningful failure
