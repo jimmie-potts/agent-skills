@@ -7,6 +7,12 @@ limit is a future requirement, not consumed budget or authority to implement.
 Keep both skills' evaluation-only validation references out of evaluated contexts;
 read `review-cycles-observations.md` in that fixture directory only after scoring.
 
+For a project that declares installation as a completion condition, a
+source-only item and a project with no declaration, use cases IC11 to IC13 in
+`tests/fixtures/workflow-evaluation/installation-cases.md`. Withhold
+`installation-graders.md` and recorded responses. Planned installation
+acceptance is a future requirement, not authority to install.
+
 For scope fit while drafting, including cuts that need the scope owner's
 decision, use `tests/fixtures/workflow-evaluation/scope-assessment-cases.md`.
 Withhold `scope-assessment-graders.md` and recorded responses. A drafted cut is
