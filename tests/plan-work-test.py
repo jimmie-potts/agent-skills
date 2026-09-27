@@ -159,6 +159,32 @@ class PlanWorkStructureTest(unittest.TestCase):
         rows = re.findall(r'^\| (IC1[1-3]) \| (P\d) \|', graders, re.MULTILINE)
         self.assertEqual(rows, [('IC11', 'P1'), ('IC12', 'P2'), ('IC13', 'P3')])
 
+    def test_scenario_fixtures_exist(self):
+        fixtures = ROOT / 'tests/fixtures/workflow-evaluation'
+        scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
+        names = re.findall(r'`([^`\s]+\.md)`', scenarios)
+        self.assertTrue(names)
+        for name in names:
+            if '*' in name:
+                continue
+            path = ROOT / name if '/' in name else fixtures / name
+            with self.subTest(name=name):
+                self.assertTrue(path.is_file())
+
+    def test_alignment_rubric_covers_every_case(self):
+        fixtures = ROOT / 'tests/fixtures/workflow-evaluation'
+        cases = (fixtures / 'alignment-cases.md').read_text()
+        graders = (fixtures / 'alignment-graders.md').read_text()
+        self.assertIn('Do not read `alignment-graders.md`', cases)
+        expected = set()
+        for number, body in re.findall(r'^## (\d+)\. .*?\n(.*?)(?=^## |\Z)',
+                                       cases, re.DOTALL | re.MULTILINE):
+            variants = re.findall(r'^- Variant ([A-Z]):', body, re.MULTILINE)
+            expected |= ({f'{number} {v}' for v in variants} or {number})
+        self.assertGreaterEqual(len(expected), 5)
+        rows = set(re.findall(r'^\| (\d+(?: [A-Z])?) \|', graders, re.MULTILINE))
+        self.assertEqual(rows, expected)
+
     def test_check_wiring(self):
         for path in (ROOT / 'README.md', ROOT / 'AGENTS.md',
                      ROOT / '.github/workflows/validate.yml'):

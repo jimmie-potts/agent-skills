@@ -69,6 +69,9 @@ Reusable SDLC workflows also include:
   a paste-ready prompt per host, and a cheaper start; on Claude Code that is
   usually Sonnet, which is not itself a starting recommendation. See
   [execution recommendations](skills/plan-work/references/execution-recommendations.md).
+  Before calling an item ready, it checks the item against the owning
+  project's accepted decisions, current code and related backlog, scaled to
+  the item; see [alignment](skills/plan-work/references/alignment.md).
   It follows project-owned guide and publication checkpoints within the user's
   authority, including a pending-documentation report for tracker-only work.
   It reads the installed `deliver-work` package's canonical assessment and
@@ -148,8 +151,9 @@ Reusable SDLC workflows also include:
   declares installation or deployment as a completion condition and defines
   its procedure, delivery offers that procedure at a checkpoint after verified
   merge and post-merge CI and runs it only on the owner's approval there or
-  explicit authorization in the request; otherwise it reports the step pending
-  with its owner and never improvises one;
+  on authorization in the request that names the step, which covers only
+  that delivery's own change; otherwise it reports a needed step to its owner
+  and never improvises one;
 - the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
   `openspec-apply-change`, `openspec-update-change`, `openspec-sync-specs`, and
   `openspec-archive-change`. They use the consuming repository's pinned CLI.

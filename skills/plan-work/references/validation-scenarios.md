@@ -30,6 +30,15 @@ For changes to the entrypoint's boundaries or routing, rerun the cases in
 round-2 file. Withhold the `entrypoint-rightsizing-graders*.md` files; read
 `entrypoint-rightsizing-observations.md` only after scoring.
 
+For the alignment checkpoint, use
+`tests/fixtures/workflow-evaluation/alignment-cases.md`: a conflict with an
+accepted decision and its authorized departure, an observed pattern without a
+rule, backlog duplicates, superseded and conflicting work, true and false
+dependencies, a small local item, and delivery pickup with unchanged and
+changed sources. Withhold `alignment-graders.md`; read
+`alignment-observations.md` only after scoring. An alignment result is a
+planning judgment, not a new gate on delivery.
+
 Use isolated read-only simulations with case inputs separated from evaluator
 checks below. Supply entrypoint and available operating resources, not expected
 answers. Record actual decisions, proposed effects, sources read, failures, and
