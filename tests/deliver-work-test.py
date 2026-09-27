@@ -327,123 +327,156 @@ MAINTENANCE = SKILL / 'references/verification-maintenance.md'
 EVALUATION = ROOT / 'tests/fixtures/workflow-evaluation'
 FAILURE_CLASSES = ('product', 'harness', 'stale-instructions', 'environment',
                    'acceptance')
-# One entry per agent-skills#86 commitment, keyed to its load-bearing phrases.
-# Wording may change around them; dropping or inverting a commitment fails.
-MAINTENANCE_RULES = {
-    'changed feature': ('update only the affected entries',
-                        'same authorized source delivery',
-                        'acceptance criteria and status stay with their owners'),
-    'ambiguous failure': ('record the candidate classes',),
-    'negative control': ('known bad result', 'the check must fail',
-                         'the check must pass',
-                         'add no executable test that mirrors prose'),
-    'repeated failure': ('type or schema constraint', 'lint or structural check',
-                         'boundary test', 'driver capability',
-                         'route it to its owner or a separate task'),
-    'observed failure': ('source revision', 'expected versus observed',
-                         'evidence pointer', 'human disposition',
-                         'record the deferral and its reason',
-                         'never an unseen holdout'),
-    'truthful evidence': ('never passed',
-                          'screenshots and videos supplement assertions',
-                          'simulated behavior only', 'physical acceptance'),
-    'project-owned detail': ('read it only when the change touches',
-                             'do not copy app commands'),
+UNPASSED_OUTCOMES = ('failed', 'unverified', 'unavailable', 'pending')
+# What these checks detect, and no more: the class table's structure, a
+# removed no-effect boundary that the rubric treats as an automatic failure,
+# a proof sentence that pairs missing proof, an image or a simulation with a
+# pass or acceptance claim without "never" or "not", and code fences or
+# inline code containing a space or slash, such as a pasted command or path.
+# They do not understand prose: a reworded contradiction that keeps a
+# negation, a one-word command, or a weakened sentence outside these anchors
+# passes. Inspection, review and the unrun scenario rubric cover the rest.
+BOUNDARIES = {
+    'no granted authority': ('grants no write, tracker, runtime, device, '
+                             'transcript or model-call authority'),
+    'no feature database': 'create no map, catalog or feature database',
+    'no copied commands': 'do not copy app commands',
+    'unrelated failures routed': 'route it to its owner or a separate task',
+    'no transcript scan': ('scans no past sessions, reads no transcripts, '
+                           'calls no models'),
 }
-COPIED_COMMAND = re.compile(
-    r'```|`(?:npm|npx|node|python3?|pytest|bash|make|playwright)\b[^`]*`')
+PRODUCT_GUARD = 'never change the check or recipe to make it pass'
+PROOF_RULES = {
+    'missing proof': (r'did not run|missing artifact|interrupted capture',
+                      r'\bpass'),
+    'screenshot proof': (r'\b(?:screenshots?|images?|videos?)\b', r'\bpass'),
+    'simulated proof': (r'\b(?:simulated|fakes?|emulators?)\b', r'accept|\bpass'),
+}
+NEGATION = re.compile(r"\b(?:never|not)\b|n't\b")
+CODE_SPAN = re.compile(r'```|`([^`\n]+)`')
+
+
+def class_table(text):
+    """Return the failure-class rows as (label, remaining cells)."""
+    return [(label, [cell.strip() for cell in rest.split('|')])
+            for label, rest in re.findall(r'^\| `([a-z-]+)` \|(.*)\|$', text,
+                                          re.MULTILINE)]
 
 
 def maintenance_gaps(text):
-    """Name each verification-maintenance commitment the text lacks."""
+    """Name each structural or boundary gap in the maintenance reference."""
     folded = ' '.join(text.split()).lower()
-    gaps = [rule for rule, phrases in MAINTENANCE_RULES.items()
-            if not all(phrase in folded for phrase in phrases)]
-    if tuple(re.findall(r'\| `([a-z-]+)` \|', text)) != FAILURE_CLASSES:
+    gaps = [name for name, phrase in BOUNDARIES.items() if phrase not in folded]
+    rows = class_table(text)
+    if tuple(label for label, _ in rows) != FAILURE_CLASSES:
         gaps.append('failure classes')
-    if COPIED_COMMAND.search(text):
+    if any(len(cells) != 3 or not all(cells) for _, cells in rows):
+        gaps.append('class row incomplete')
+    if any(len(cells) > 1 and cells[1] not in UNPASSED_OUTCOMES
+           for _, cells in rows):
+        gaps.append('class outcome')
+    if not any(label == 'product' and PRODUCT_GUARD in cells[-1].lower()
+               for label, cells in rows):
+        gaps.append('product guard')
+    sentences = re.split(r'(?<=[.;:])\s+|\s*\|\s*', folded)
+    for name, (subject, claim) in PROOF_RULES.items():
+        claims = [sentence for sentence in sentences
+                  if re.search(subject, sentence) and re.search(claim, sentence)]
+        if not claims or any(not NEGATION.search(re.sub(subject, '', sentence))
+                             for sentence in claims):
+            gaps.append(name)
+    if any(span == '' or re.search(r'[\s/]', span)
+           for span in CODE_SPAN.findall(text)):
         gaps.append('copied project command')
     return gaps
 
 
 def rubric_gaps(cases, graders):
     """Name scoring gaps between the case inputs and the evaluator rubric."""
-    gaps = []
-    if 'Do not read `verification-maintenance-graders.md`' not in ' '.join(cases.split()):
-        gaps.append('graders not withheld')
+    folded = ' '.join(cases.split())
+    gaps = [name for name, sentence in (
+        ('graders not withheld',
+         'Do not read `verification-maintenance-graders.md`'),
+        ('effects not forbidden',
+         'Perform no writes, tracker operations, agents, installs, device '
+         'contact or model calls'))
+        if sentence not in folded]
     expected = set()
     for number, body in re.findall(r'^## (\d+)\. .*?\n(.*?)(?=^## |\Z)',
                                    cases, re.DOTALL | re.MULTILINE):
         variants = re.findall(r'^- Variant ([A-Z]):', body, re.MULTILINE)
         expected |= {f'{number} {v}' for v in variants} or {number}
-    rows = dict(re.findall(r'^\| (\d+(?: [A-Z])?) \| (V\d(?:, V\d)*) \|',
-                           graders, re.MULTILINE))
+    rows, criteria = {}, []
+    for line in graders.splitlines():
+        cells = [cell.strip() for cell in line.strip().strip('|').split('|')]
+        if not line.startswith('| '):
+            continue
+        if re.fullmatch(r'V\d', cells[0]):
+            criteria.append(cells[0])
+            if len(cells) != 2 or not cells[1]:
+                gaps.append('bad criterion row')
+        elif re.fullmatch(r'\d+(?: [A-Z])?', cells[0]):
+            if cells[0] in rows:
+                gaps.append('duplicate case')
+            if (len(cells) != 3 or not cells[2]
+                    or not re.fullmatch(r'V\d(?:, V\d)*', cells[1])):
+                gaps.append('bad case row')
+            rows[cells[0]] = cells[1] if len(cells) > 1 else ''
     if not expected or set(rows) != expected:
         gaps.append('unscored or unknown cases')
-    defined = re.findall(r'^\| (V\d) \|', graders, re.MULTILINE)
-    if defined != [f'V{number}' for number in range(1, 8)]:
+    if criteria != [f'V{number}' for number in range(1, 8)]:
         gaps.append('criteria')
-    if {c for value in rows.values() for c in value.split(', ')} != set(defined):
+    if {c for value in rows.values() for c in value.split(', ')} != set(criteria):
         gaps.append('uncovered criteria')
     if 'not an unseen holdout' not in ' '.join(graders.split()):
         gaps.append('tuning reported as holdout')
     return gaps
 
 
+def remove_phrase(text, phrase):
+    """Delete a phrase however the file wraps it."""
+    pattern = r'\s+'.join(map(re.escape, phrase.split()))
+    return re.sub(pattern, 'X', text, count=1, flags=re.IGNORECASE)
+
+
 class VerificationMaintenanceTest(unittest.TestCase):
     def test_checkpoint_is_routed_conditionally(self):
         entry = ' '.join((SKILL / 'SKILL.md').read_text().split())
         self.assertIn('[Verification maintenance](references/verification-maintenance.md): '
-                      'when changed behavior has a project feature map', entry)
+                      'when changed behavior has a project-documented feature map', entry)
+        self.assertIn('not a deliberate TDD red run', entry)
         planning = ' '.join((SKILL / 'references/task-planning.md').read_text().split())
         self.assertIn('[verification maintenance](verification-maintenance.md)', planning)
 
-    def test_reference_keeps_every_commitment(self):
-        self.assertEqual(maintenance_gaps(MAINTENANCE.read_text()), [])
-
-    def test_gap_check_rejects_weakened_references(self):
-        reference = ' '.join(MAINTENANCE.read_text().split())
+    def test_reference_structure_and_boundaries(self):
+        reference = MAINTENANCE.read_text()
         self.assertEqual(maintenance_gaps(reference), [])
-        mutations = {
-            'changed feature': [
-                ('update only the affected entries', 'update the entries'),
-                ('Acceptance criteria and status stay with their owners',
-                 'The map records acceptance criteria and status')],
-            'ambiguous failure': [
-                ('record the candidate classes', 'pick the likeliest class')],
-            'failure classes': [
-                ('| `stale-instructions` |', '| `other` |'),
-                ('| `environment` |', '| `product` |')],
-            'negative control': [
-                ('the check must fail for the expected reason', 'the check may fail'),
-                ('Add no executable test that mirrors prose',
-                 'Add an executable test for each rule')],
-            'repeated failure': [
-                ('a type or schema constraint, a lint or structural check, a '
-                 'boundary test or a driver capability', 'a new instruction rule'),
-                ('Route it to its owner or a separate task', 'Fix it here')],
-            'observed failure': [
-                ('- the human disposition.', ''),
-                ('record the deferral and its reason', 'drop the case'),
-                ('never an unseen holdout result', 'also an unseen holdout result')],
-            'truthful evidence': [
-                ('are unknown, unavailable or failed, never passed',
-                 'count as passed'),
-                ('Screenshots and videos supplement assertions',
-                 'Screenshots and videos establish a pass'),
-                ('establish simulated behavior only',
-                 'establish physical acceptance')],
-            'project-owned detail': [
-                ('read it only when the change touches', 'read every map before'),
-                ('Do not copy app commands', 'Copy app commands')],
-            'copied project command': [
-                ('Run its commands and steps', 'Run `npm run verify -- capture` and')],
+        controls = {name: remove_phrase(reference, phrase)
+                    for name, phrase in BOUNDARIES.items()}
+        controls.update({
+            'failure classes': reference.replace('| `stale-instructions` |',
+                                                 '| `other` |'),
+            'class outcome': reference.replace('| unavailable |', '| passed |'),
+            'class row incomplete': reference.replace('| pending |', '|  |'),
+            'product guard': remove_phrase(reference, PRODUCT_GUARD),
+            'missing proof': reference + '\nA check that did not run counts as passed.\n',
+            'screenshot proof': reference + '\n- A screenshot alone establishes a pass.\n',
+            'simulated proof': reference + '\n- A simulated pass counts as physical acceptance.\n',
+            'copied project command': reference + '\nRun `cargo test` first.\n',
+        })
+        extra = {
+            'screenshot proof': remove_phrase(
+                reference, 'an image without its assertion log does not '
+                'establish a pass'),
+            'simulated proof': remove_phrase(reference, 'never physical acceptance'),
+            'copied project command': reference + '\n```\nverify\n```\n',
         }
-        for rule, replacements in mutations.items():
-            for old, new in replacements:
-                with self.subTest(rule=rule, removed=old):
-                    self.assertIn(old, reference)
-                    self.assertIn(rule, maintenance_gaps(reference.replace(old, new, 1)))
+        for name, mutated in list(controls.items()) + list(extra.items()):
+            with self.subTest(control=name):
+                self.assertNotEqual(mutated, reference)
+                self.assertIn(name, maintenance_gaps(mutated))
+        path_like = reference + '\nSee `docs/verification/map.md`.\n'
+        self.assertIn('copied project command', maintenance_gaps(path_like))
 
     def test_cases_are_scored_and_withheld(self):
         scenarios = ' '.join((SKILL / 'references/validation-scenarios.md').read_text().split())
@@ -454,23 +487,24 @@ class VerificationMaintenanceTest(unittest.TestCase):
         cases = (EVALUATION / 'verification-maintenance-cases.md').read_text()
         graders = (EVALUATION / 'verification-maintenance-graders.md').read_text()
         self.assertEqual(rubric_gaps(cases, graders), [])
-        mutations = {
-            'graders not withheld': (cases, graders, 'Do not read', 'Read'),
-            'unscored or unknown cases': (cases, graders, '| 7 B |', '| 8 B |'),
-            'criteria': (cases, graders, '| V4 |', '| V9 |'),
-            'uncovered criteria': (cases, graders.replace('| 4 A | V4 |', '| 4 A | V2 |'),
-                                   '| 4 B | V4, V6 |', '| 4 B | V6 |'),
-            'tuning reported as holdout': (cases, graders, 'not an unseen holdout',
-                                           'an unseen holdout'),
+        last = re.search(r'^\| 7 B \| V7 \| .+ \|$', graders, re.MULTILINE).group(0)
+        controls = {
+            'graders not withheld': (cases.replace('Do not read', 'Read', 1), graders),
+            'effects not forbidden': (cases.replace('Perform no writes', 'Perform writes', 1),
+                                      graders),
+            'unscored or unknown cases': (cases, graders.replace('| 7 B |', '| 8 B |')),
+            'duplicate case': (cases, graders.replace('| 7 B |', '| 7 A |')),
+            'bad case row': (cases, graders.replace(last, '| 7 B | V7 |  |')),
+            'criteria': (cases, graders.replace('| V4 |', '| V9 |')),
+            'uncovered criteria': (cases, graders.replace('| 4 A | V4 |', '| 4 A | V2 |')
+                                   .replace('| 4 B | V4, V6 |', '| 4 B | V6 |')),
+            'tuning reported as holdout': (cases, graders.replace(
+                'not an unseen holdout', 'an unseen holdout')),
         }
-        for gap, (case_text, grader_text, old, new) in mutations.items():
+        for gap, (case_text, grader_text) in controls.items():
             with self.subTest(gap=gap):
-                in_cases = old in case_text
-                target = case_text if in_cases else grader_text
-                self.assertIn(old, target)
-                mutated = target.replace(old, new, 1)
-                pair = (mutated, grader_text) if in_cases else (case_text, mutated)
-                self.assertIn(gap, rubric_gaps(*pair))
+                self.assertNotEqual((case_text, grader_text), (cases, graders))
+                self.assertIn(gap, rubric_gaps(case_text, grader_text))
 
 
 if __name__ == '__main__':
