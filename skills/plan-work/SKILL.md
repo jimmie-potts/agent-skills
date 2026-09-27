@@ -99,6 +99,14 @@ test, fixture, contract or mockup that states a criterion, link it as the
 acceptance reference rather than restating it in prose. An epic or list of chores
 alone is not implementation-ready. Include the assessment, evidence, unknowns,
 readiness and conditional specialist/human review or operational handoffs.
+When the owning project declares installation or deployment as a completion
+condition for the item's kind of change, the item's acceptance includes that
+step and its readback by default, and its recommendation's `Checkpoints` row
+names the stop before it. The item may instead use the project's declared
+opt-out or, by default, be marked source-only, but only with a reason and a
+link to the install issue that batches it. Write no blanket exclusion of that
+step for such a project. Without a declaration, leave installation and
+deployment out of the item.
 
 Apply the assessment contract, including scope fit while drafting, without
 embedding model names in planning ratings.
