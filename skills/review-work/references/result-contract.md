@@ -45,10 +45,15 @@ Give each required axis exactly one status:
 | `incomplete` | The axis cannot be decided: missing specification, failed, partial or missing return, unavailable required independence or control, stale comparison or requirements, exhausted limit, or missing mandatory evidence |
 
 Specification cannot be `satisfied` without an authoritative requirement. One
-axis never supplies the other. Unresolved P3 findings do not block an axis;
+axis never supplies the other. When an axis has an open blocker and also lacks
+evidence, report `action-required` and name the gap in the coverage; the gap
+still prevents `satisfied` after the fix. A required specialist axis has its
+own reviewer entry, and the coverage states its status with the same
+vocabulary. Unresolved P3 findings do not block an axis;
 record their disposition. A consumer accepts a final result only when both axes
-are `satisfied` and its comparison and requirement version equal the current
-ones; any other result blocks the gate it governs.
+are `satisfied`, every required specialist axis is `satisfied`, and its
+comparison and requirement version equal the current ones; any other result
+blocks the gate it governs.
 
 ## Write the result
 

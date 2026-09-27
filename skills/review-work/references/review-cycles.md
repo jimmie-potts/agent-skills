@@ -23,7 +23,10 @@ perspectives on one comparison are one round, not two.
 
 Before a round starts, record its identity and the full input. Retain
 incomplete rounds and missing perspectives as such. Clarifying an active
-assessment belongs to that round. Reassessing a repaired candidate is a new
+assessment, reassessing a dispute on the same comparison, and replacing a
+failed reviewer return on that comparison all belong to that round. Retain a
+failed return's findings in the history, but keep them out of the replacement
+reviewer's initial brief. Reassessing a repaired candidate is a new
 round, even when it is called fix verification. Intermediate commits the caller
 makes between rounds add no rounds. Changing scope, requirements, policy, base,
 head or content requires a new frozen comparison. Resuming or renaming work
@@ -120,9 +123,10 @@ explicit cap, unknown cost creates no gate. Introduce no default cap; productive
 severity-driven rounds continue while the caller keeps supplying changed
 candidates.
 
-At the limit, return the latest result with the affected axes `incomplete`, the
-unresolved finding IDs, the last reviewed comparison, the consumed and unknown
-capacity and the next owner. A resumed or renamed review gets no fresh
+At the limit, return the latest result unchanged for the comparison it
+reviewed, with the unresolved finding IDs, the consumed and unknown capacity
+and the next owner. Any later candidate has no result: its axes are
+`incomplete`. A resumed or renamed review gets no fresh
 allowance. An exhausted limit never resolves a finding or satisfies an axis.
 
 Design reference: [Superpowers fix verification](https://github.com/openai/plugins/blob/33bd9529725fcee78c9e51fcbaa93cd963c3a47b/plugins/superpowers/skills/subagent-driven-development/re-review-prompt.md)

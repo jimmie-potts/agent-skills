@@ -50,8 +50,8 @@ One request selects one coordinating review path:
 | Explicit blast-radius or "what could this break" request | `blast-radius` |
 | Explicit `deliver-work` request | `deliver-work`, which composes this skill for its required reviews |
 
-Another skill's output may be supplied to reviewers as raw evidence. It never
-fills an axis or replaces a round.
+Another skill's output may supply raw evidence, such as a reproduction or a
+failing input, but not its verdicts; it never fills an axis or replaces a round.
 
 ## Take the input and freeze the comparison
 

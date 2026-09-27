@@ -26,7 +26,9 @@ change personal settings to obtain a selection.
 
 Use the host adapter's routine reviewers for low and medium impact, and the
 strongest evidenced relevant reviewers at high reasoning for high impact, even
-with a tiny diff. Unknown impact takes the high-impact floor. Complexity and
+with a tiny diff. Unknown impact takes the high-impact floor. These floors
+apply to task and fix-verification reviewers too; a small fix does not
+establish low impact. Complexity and
 uncertainty may raise this floor. Inspect interactions, concurrency, invariants
 and recovery for interacting-state work; examine assumptions, omissions and
 conflicting evidence when uncertainty is high. Specification review covers

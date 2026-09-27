@@ -12,6 +12,9 @@ corrections share with this skill, also use
 `tests/fixtures/workflow-evaluation/review-cycles-cases.md` and withhold
 `review-cycles-graders.md` in the same way.
 
+Read `review-work-observations.md` in that fixture directory only after
+scoring.
+
 Give each evaluated context the case inputs, the candidate entrypoints and the
 operating references they select, never the expected answers. Record actual
 decisions, proposed effects, sources read and limits. Require every case to pass
