@@ -14,8 +14,10 @@ These hold at every step. The references this skill reads never relax them.
 - Authority: an explicit request to define and publish work authorizes scoped
   tracker creation/update after requirements are settled. Planning-only returns
   proposals, and invoking this skill alone does not authorize publication.
-  Neither mode starts implementation, delivery agents, sprint lifecycle
-  changes, deployment, or installation, or launches deliver-work. Preserve
+  Neither mode starts implementation, delivery or review agents, sprint
+  lifecycle changes, deployment, or installation, or launches deliver-work or
+  review-work. A request that explicitly invokes delivery as well carries that
+  delivery authority across the handoff; deliver-work then starts it. Preserve
   narrower user limits and applicable project policy.
 - Existing systems: use the project's tracker, fields, planning method and
   documentation. Create no tracker, planning or specification framework,
@@ -53,7 +55,7 @@ delivery, and grant no implementation dispatch authority:
   propose work.
 - `references/documentation.md` when project documentation or publication
   policy applies, for its planning checkpoint.
-- `references/review-cycles.md`, its section on explicit limits, when the user
+- `references/corrections.md`, its section on explicit limits, when the user
   or project sets review-round, time or spending limits. Carry each limit's
   scope, proposed observable accounting and stop/handoff evidence into
   acceptance and delivery requirements, and distinguish review rounds from
@@ -61,6 +63,12 @@ delivery, and grant no implementation dispatch authority:
 - `references/model-selection.md`, its implementation-selection branch and only
   the selected host's worker adapter before selecting workers for bounded
   investigation, then `references/worker-briefs.md` before dispatch.
+
+Discover the installed canonical review-work package the same way and read its
+`references/review-selection.md` and each host's reviewer adapter,
+`references/claude-code-reviewers.md` and `references/codex-reviewers.md`, to
+propose each item's review needs and reviewer settings. Delivery refreshes them
+at pickup; reading them dispatches no reviewer.
 
 ## Settle decisions and define items
 

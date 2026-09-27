@@ -47,11 +47,14 @@ changes under one bounded rule and verification method. Preserve direct
 coordinator implementation when decomposition adds no useful boundary, including
 trivial edits.
 
-Before accepting a task boundary, use [review cycles](review-cycles.md) to
-select independent intermediate inspection when a downstream task consumes the
-result or assessed risk warrants it. Record the reason, fixed task comparison
+Before accepting a task boundary, select independent intermediate review when
+a downstream task consumes the result or assessed risk warrants inspection
+before integration, for example a producer contract consumed by later tasks or
+a small high-impact permission change. Trivial edits and same-shape mechanical
+batches do not automatically need another context. Record the boundary, reason
 and required specification/quality evidence in the task packet. Planning only
-proposes this checkpoint; delivery obtains it before dependent work.
+proposes this checkpoint; delivery obtains it by composing `review-work` for a
+task round before dependent work.
 
 When a broad shared-contract change cannot land as independent behavior slices,
 name an expand, migrate, contract sequence and the inputs/evidence between phases:

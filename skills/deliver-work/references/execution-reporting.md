@@ -78,9 +78,10 @@ promotion that creates a fresh worker adds one distinct agent. Call a replacemen
 a promotion only when the recorded settings establish an increase. State known
 correction and effort-increase counts explicitly; keep missing history unknown.
 Preserve failure history and the task's effort-increase history across handoffs.
-Keep [review-round and finding history](review-cycles.md) in Evidence, with any
-explicit limit's scope, consumption and accounting gaps. Two perspectives on
-one candidate do not double the round count; corrections are counted separately.
+Keep review-work's round and finding history in Evidence, with the scope,
+consumption and accounting gaps of any [explicit limit](corrections.md). Two
+perspectives on one candidate do not double the round count; corrections are
+counted separately.
 For a new advisory attempt, report required consultations as still outstanding
 until evidenced, and pause the work they govern under the pairing protocol.
 Include exposed attributable usage in Evidence, retaining failed attempts and keeping subscription
@@ -147,7 +148,7 @@ with bare field names as in the examples. Add `Session label` directly after
 | `Reviewers` | `none`, or one agent entry per independent task, fix or final reviewer context |
 | `Agents` | A count of distinct agent contexts used, including every coordinator and advisor |
 | `Consultations` | A count of completed advisor consultations, or `not applicable` without an advisory pairing |
-| `Review rounds` | `final <count>; task <count>`, following [review cycles](review-cycles.md) |
+| `Review rounds` | `final <count>; task <count>`, counted as review-work counts rounds |
 | `Findings` | `P0 <count>; P1 <count>; P2 <count>; P3 <count>`: distinct findings from independent task, fix and final reviews, by stable identity. A regression reopens its finding and does not count again |
 | `Finding causes` | `edge-case <count>; untested-bug <count>; wrong-approach <count>; other <count>`: the same distinct P0 to P2 findings classified by cause, so the counts sum to the P0 to P2 total. `edge-case` is behavior the candidate missed on an input or state it did not consider; `untested-bug` is a defect its own checks would have caught had they been run or written; `wrong-approach` is a design or interpretation that no amount of verification would have fixed; `other` is a finding outside the candidate's control, such as a wrong specification, environment or permission. Classify from the reviewer's stated failure condition; P3 findings are not classified |
 | `Corrections` | A count of correction passes: each new candidate made to resolve review findings or failed acceptance, by a worker's guided correction or by the coordinator. Fixes batched before the next review count once. Models keeps the separate per-worker correction count, so the two can differ |

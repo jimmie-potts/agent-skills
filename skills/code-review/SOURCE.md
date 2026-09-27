@@ -29,6 +29,12 @@ or change Jira, GitHub, OPSX, or Sprint Work state.
 
 The shared adaptation uses repository-defined scope and delivery owners.
 
+An assigned-axis mode lets `review-work` brief one fresh context per axis
+against a supplied frozen comparison. That context launches no subagents and
+returns findings with coverage limits. The single-agent fallback remains a
+disclosed standalone limitation that cannot satisfy a mandatory independent
+review.
+
 Updates are manual. Fetch the pinned upstream directory and repository license
 into a temporary location, review every file and the complete diff, recompute
 all digests, and rerun the repository's focused and full checks before changing

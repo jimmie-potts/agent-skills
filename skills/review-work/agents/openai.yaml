@@ -1,0 +1,6 @@
+interface:
+  display_name: "Review Work"
+  short_description: "Run independent Standards and Specification review of one change"
+  default_prompt: "Use $review-work to freeze this change, run separate independent Standards and Specification reviewers, and return the per-axis result without modifying or publishing anything."
+policy:
+  allow_implicit_invocation: false

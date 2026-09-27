@@ -72,7 +72,8 @@ Reusable SDLC workflows also include:
   It follows project-owned guide and publication checkpoints within the user's
   authority, including a pending-documentation report for tracker-only work.
   It reads the installed `deliver-work` package's canonical assessment and
-  task-planning contracts without invoking delivery, and composes
+  task-planning contracts and `review-work`'s reviewer selection without
+  invoking either, and composes
   `grill-with-docs` for material unresolved decisions. A bounded read-only
   investigation may compose the host's advisory pairing. Install those
   dependencies when using this planner; missing resources are reported, never
@@ -82,13 +83,23 @@ Reusable SDLC workflows also include:
   [`domain-modeling`](skills/domain-modeling/SKILL.md) for grouped decisions and
   documentation proposals;
 - [`code-review`](skills/code-review/SKILL.md), separate Standards and
-  Specification reviews against one fixed comparison;
+  Specification reviews against one fixed comparison. Its assigned-axis mode
+  reviews one axis for a coordinating workflow and launches no agents;
+- [`review-work`](skills/review-work/SKILL.md), an explicit complete independent
+  review of one change without delivery. It freezes the comparison, runs
+  separate fresh Standards and Specification reviewers through rounds with
+  stable findings, and returns a per-axis `satisfied`, `action-required` or
+  `incomplete` [result](skills/review-work/references/result-contract.md). A
+  missing specification, partial return or stale comparison is never approval.
+  It implements, publishes and merges nothing; `deliver-work` composes it for
+  its required reviews and keeps corrections, CI and merge;
 - [`deliver-work`](skills/deliver-work/SKILL.md), explicit delivery of
   one Jira issue, GitHub issue, or document requirement using the owning
   project's planning, hosting, review, and completion policy. It supports a
   ready-PR-only limit and requires no specific specification framework;
-  it assesses verification needs and selects implementation/reviewer settings
-  from available host capabilities. The shared
+  it assesses verification needs and selects implementation settings from
+  available host capabilities, composing `review-work` for reviewer selection
+  and review rounds. The shared
   [work assessment](skills/deliver-work/references/work-assessment.md), also
   used by `plan-work`, fits scope to the owning project's actual needs at
   drafting and pickup: cuts must name what they lose, and required protections
@@ -102,11 +113,12 @@ Reusable SDLC workflows also include:
   [task planning](skills/deliver-work/references/task-planning.md) maps acceptance
   to verifiable tasks, distinguishes input dependencies from coordination, and
   checks contracts, resources and ownership before parallel dispatch.
-  [Review cycles](skills/deliver-work/references/review-cycles.md) selects task
-  reviews at dependency or risk boundaries, retains finding and correction
-  history, and honors explicit round, time and spending limits. Productive
-  rounds have no universal cap; exhausted limits leave unmet gates pending.
-  Task reviews never replace the two final independent reviews. Substantive
+  Task planning selects task reviews at dependency or risk boundaries, and
+  [corrections](skills/deliver-work/references/corrections.md) acts on review
+  results, diagnoses surviving blockers and honors explicit round, time and
+  spending limits. Productive rounds have no universal cap; exhausted limits
+  leave unmet gates pending. Task reviews never replace the two final
+  independent reviews. Substantive
   checkpoints and final handoff include the chosen strategy and reason, decision
   contributors, model roles and observed settings, active and distinct agent
   counts, planned additional agents, and advisor consultations. See
@@ -178,6 +190,8 @@ the prompts.
 | `Design a testable seam for this module` | Select `codebase-design`; a runtime explanation selects `how`. |
 | `Diagnose why this request is slow` | Select `diagnosing-bugs`; implementing a confirmed fix does not. |
 | `Review this pull request against its specification` | Select `code-review`; a plain change summary does not. |
+| Explicit `$review-work` for a branch, PR or local change | Select `review-work`; freeze the comparison, run two fresh independent axes and return the per-axis result without implementing, publishing or merging. |
+| Explicit `$deliver-work` for an issue | Select `deliver-work`, which composes `review-work` for its required reviews; the review is a substep, not a second coordinator. |
 | `Interrogate this PR diff` | Select `interrogate`, not `code-review`, because the explicit adversarial multi-review request takes precedence. |
 | `Review this small diff I do not trust; what could it break?` | Select `blast-radius`, not `code-review`, because explicit breakage-risk analysis takes precedence. |
 | `Where should rate limiting live?` | Select `how` Placement, not `codebase-design`. |
@@ -262,6 +276,7 @@ python3 tests/architect-test.py
 python3 tests/blast-radius-test.py
 python3 tests/deliver-work-test.py
 python3 tests/plan-work-test.py
+python3 tests/review-work-test.py
 python3 tests/improve-codebase-architecture-test.py
 python3 tests/pairing-skills-test.py
 python3 tests/workflow-evaluation-test.py
@@ -482,7 +497,7 @@ For local Codex and Pi use, select the required skills from this catalog with
 the manager. For example, from this repository:
 
 ```bash
-./scripts/manage-skills.sh install --agent codex deliver-work tdd grill-with-docs grilling domain-modeling code-review openspec-propose openspec-explore openspec-apply-change openspec-update-change openspec-sync-specs openspec-archive-change
+./scripts/manage-skills.sh install --agent codex deliver-work review-work tdd grill-with-docs grilling domain-modeling code-review openspec-propose openspec-explore openspec-apply-change openspec-update-change openspec-sync-specs openspec-archive-change
 ```
 
 The resulting personal symlinks point to this canonical checkout. Do not
@@ -499,9 +514,54 @@ checkout and run:
 ./scripts/manage-skills.sh status --agent codex
 ```
 
-The coordinator loads `code-review` for delivery review. Other shared skills
-are needed only when their substeps apply; the complete example above includes
-them. Installing only the coordinator does not install its composed skills.
+The coordinator composes `review-work` for delivery review, which composes
+`code-review` for each axis; `plan-work` reads `review-work`'s reviewer
+selection. Install both with any delivery or planning coordinator, and
+`code-review` with a standalone `review-work`. Other shared
+skills are needed only when their substeps apply; the complete example above
+includes them. Installing only the coordinator does not install its composed
+skills.
+
+### Adopt an update that adds a required skill
+
+A catalog update can add a skill that existing callers now require, as
+`review-work` is for `deliver-work` and `plan-work`. Installed
+links resolve into one checkout, so fast-forwarding it changes every running
+session on both hosts at once, even when the update was wanted for unrelated
+work. Adopt the complete required skill set in the same step. This procedure
+uses only Git and the manager, so it works while the new skill is still
+missing. From a checkout older than the update, read it from the target
+revision, for example `git show origin/main:README.md`.
+
+1. Find the checkout the installed links resolve to by reading one managed
+   link, such as `readlink -f ~/.claude/skills/deliver-work`; the checkout is
+   two directories above the skill it prints. Run everything
+   from that checkout, never a worktree: the manager links from its own
+   location, and a worktree's links break when it is removed.
+2. Preflight before changing anything. After `git fetch`, compare the installed
+   revision with the target, for example
+   `git diff --name-status HEAD origin/main -- skills/`,
+   and read the changed callers for newly required skills. Run
+   `./scripts/manage-skills.sh status --agent both` to see which are missing.
+3. Prepare the exact step for the owner's checkpoint: the fast-forward
+   (`git merge --ff-only origin/main` on `main`), a manager `--dry-run` install
+   and the real install of each new required skill for each host it supports,
+   the status readback, and a host reload or fresh session. Name the sessions
+   that are using the installed skills and agree timing with their owners; do
+   not interrupt another owner's work.
+4. Stop and report if the checkout is not on `main`, has diverged, or local
+   changes block the fast-forward. Never stash, reset, switch branches, roll
+   back or remove another session's files.
+5. After approval, run the prepared step. Until every readback passes, adoption
+   is incomplete: record which parts ran, and have callers that need the
+   missing skill report it and pause the dependent step rather than resume
+   against a partial skill set. To recover, read status and rerun only the
+   manager install for the missing owned links, dry-run first.
+6. Read back the evidence: the checkout revision includes the update, status
+   shows each required skill correctly installed for each host, each link
+   resolves into the checkout, and a fresh session on each host lists the new
+   skill. Resume paused callers only then. Link readback alone does not
+   establish reviewer quality or optional profile qualification.
 
 `deliver-work` replaces `deliver-jira-work` and `github-delivery` without aliases.
 Update calls in consuming project instructions and inspect manager status for

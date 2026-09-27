@@ -44,7 +44,7 @@ class PlanWorkStructureTest(unittest.TestCase):
         for resource in ('references/work-assessment.md',
                          'references/model-selection.md',
                          'references/task-planning.md',
-                         'references/review-cycles.md'):
+                         'references/corrections.md'):
             with self.subTest(resource=resource):
                 self.assertTrue((ROOT / 'skills/deliver-work' / resource).is_file())
                 self.assertFalse((SKILL / resource).exists())

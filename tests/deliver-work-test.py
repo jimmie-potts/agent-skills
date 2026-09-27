@@ -123,7 +123,7 @@ class DeliverWorkStructureTest(unittest.TestCase):
                          'references/resumption.md',
                          'references/pr-supervision.md',
                          'references/task-planning.md',
-                         'references/review-cycles.md'):
+                         'references/corrections.md'):
             self.assertTrue((SKILL / resource).is_file())
             self.assertIn(resource, links)
 
@@ -217,7 +217,8 @@ class DeliverWorkStructureTest(unittest.TestCase):
         readme = (ROOT / 'README.md').read_text()
         command = next(line for line in readme.splitlines()
                        if line.startswith('./scripts/manage-skills.sh install --agent codex deliver-work '))
-        for dependency in ('code-review', 'tdd', 'grilling', 'grill-with-docs',
+        for dependency in ('review-work', 'code-review', 'tdd', 'grilling',
+                           'grill-with-docs',
                            'domain-modeling', 'openspec-propose',
                            'openspec-apply-change', 'openspec-archive-change'):
             self.assertIn(dependency, command.split())

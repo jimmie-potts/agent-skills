@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Review a branch, pull request, diff, or change against repository standards and its originating specification from one fixed comparison point. Use when the user asks for a code review or findings on a change; do not select for a plain change summary, an explicit interrogate or adversarial multi-review request, or an explicit blast-radius or breakage-risk request.
+description: Review a branch, pull request, diff, or change against repository standards and its originating specification from one fixed comparison point. Use when the user asks for a code review or findings on a change; do not select for a plain change summary, an explicit review-work request, an explicit interrogate or adversarial multi-review request, or an explicit blast-radius or breakage-risk request.
 ---
 
 # Code review
@@ -11,8 +11,10 @@ Review one recorded change along two separate axes:
   introduces correctness, security, maintainability, or test-quality defects.
 - **Spec:** whether the change implements the approved behavior and scope.
 
-When the user explicitly asks to interrogate, challenge, stress-test, tear apart,
-or run a multi-reviewer review of code, use the `interrogate` skill instead.
+When the user explicitly invokes `review-work`, use `review-work`, which
+composes this skill for each axis. When the user explicitly asks to interrogate,
+challenge, stress-test, tear apart, or run a multi-reviewer review of code, use
+the `interrogate` skill instead.
 When the user explicitly asks for blast-radius analysis, asks what a change
 could break, or calls a small diff untrusted, use the `blast-radius` skill.
 
@@ -62,12 +64,30 @@ sources, the recorded comparison, and the required finding format.
 When isolation is unavailable, use a safe single-agent fallback: perform two
 separate passes against the same frozen diff, keep separate notes, and finish
 one axis before reading the other axis's conclusions. Do not silently skip
-independence or mix the rubrics.
+independence or mix the rubrics. The fallback is a disclosed standalone
+limitation: it never satisfies a mandatory independent delivery review or a
+review-work axis.
 
 Each finding must identify the file and tight line range, the observed defect,
 the violated standard or specification evidence, the concrete failure mode,
 severity, reproducibility, and likely encounter frequency. Do not report a
 speculative concern without an actionable failure condition.
+
+## Review an assigned axis
+
+When `review-work` or another coordinating workflow assigns this context one
+axis of a frozen comparison, review only that axis:
+
+- Use the supplied comparison. Verify that its commit IDs or patch digest
+  resolve and match; report a mismatch or unreadable input as incomplete
+  instead of freezing a different target.
+- Use the supplied requirements or standards sources for the axis. Report a
+  missing source as incomplete rather than substituting another.
+- Launch no subagents and load no coordinating review workflow such as
+  `review-work` or `interrogate`; the coordinator already owns
+  independence, rounds and the result.
+- Return findings in the assigned format, P0 to P2 blockers first and P3
+  observations separately, with the coverage and evidence limits of the review.
 
 ## Return findings without effects
 
