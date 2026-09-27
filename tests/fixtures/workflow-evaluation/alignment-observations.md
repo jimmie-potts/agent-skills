@@ -64,6 +64,12 @@ adapter's bug-fix-from-report clause can recommend Opus/high for a one-string
 typo fix. Trial 2 recommended Opus/low for the same case as a stated judgment.
 That belongs to execution-recommendation policy and was not changed here.
 
+After trial 2, commit `eded28bb5f5bbf1e22b73b5d29018f51d188014a` edited the
+wording of `work-assessment.md` and `alignment.md`: pickup names the decision
+and backlog locations behind the stored sources, the pickup rule has one home
+in the assessment contract, and a small-item paragraph the entrypoint already
+covers was dropped. The merged wording was not re-trialed.
+
 These are bounded simulated decisions from single contexts. They do not
 establish native skill discovery, host behavior, tracker execution or behavior
 in real external projects.

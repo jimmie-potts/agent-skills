@@ -146,11 +146,11 @@ class PlanWorkStructureTest(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertTrue(path.is_file())
 
-    def test_alignment_rubric_covers_every_case(self):
+    def assert_rubric_covers_every_case(self, stem):
         fixtures = ROOT / 'tests/fixtures/workflow-evaluation'
-        cases = (fixtures / 'alignment-cases.md').read_text()
-        graders = (fixtures / 'alignment-graders.md').read_text()
-        self.assertIn('Do not read `alignment-graders.md`', cases)
+        cases = (fixtures / f'{stem}-cases.md').read_text()
+        graders = (fixtures / f'{stem}-graders.md').read_text()
+        self.assertIn(f'Do not read `{stem}-graders.md`', cases)
         expected = set()
         for number, body in re.findall(r'^## (\d+)\. .*?\n(.*?)(?=^## |\Z)',
                                        cases, re.DOTALL | re.MULTILINE):
@@ -159,6 +159,53 @@ class PlanWorkStructureTest(unittest.TestCase):
         self.assertGreaterEqual(len(expected), 5)
         rows = set(re.findall(r'^\| (\d+(?: [A-Z])?) \|', graders, re.MULTILINE))
         self.assertEqual(rows, expected)
+
+    def test_alignment_rubric_covers_every_case(self):
+        self.assert_rubric_covers_every_case('alignment')
+
+    def test_uncertainty_routing_rubric_covers_every_case(self):
+        self.assert_rubric_covers_every_case('uncertainty-routing')
+
+    def test_uncertainty_routing_is_wired_and_composition_stays_explicit(self):
+        deliver = ROOT / 'skills/deliver-work'
+        routing = ' '.join((deliver / 'references/uncertainty-routing.md')
+                           .read_text().split())
+        for anchor in (
+            'A routine, well-specified change skips this reference',
+            'grants no authority',
+            'Never ask the owner what inspection answers',
+            'while a cheap decisive step is still missing',
+            'the next decision each outcome leads to',
+            'write the comparison brief that `architect` and `prototype` define',
+            'An experiment needs authority for every effect its brief lists',
+            'Never replace it with a silent installation, a copied script',
+            'Loading a skill authorizes no launch, installation or device use',
+            "use the project's documented alternative",
+            'Keep refuted and inconclusive outcomes',
+            'Never extend the bound or rerun silently',
+        ):
+            with self.subTest(anchor=anchor):
+                self.assertIn(anchor, routing)
+        link = '](uncertainty-routing.md)'
+        self.assertIn(link, (deliver / 'references/work-assessment.md').read_text())
+        self.assertIn('](references/uncertainty-routing.md)',
+                      (deliver / 'SKILL.md').read_text())
+        self.assertIn('`references/uncertainty-routing.md`',
+                      (SKILL / 'SKILL.md').read_text())
+        for name, explicit in (
+            ('architect', 'Use only when the user explicitly invokes architect'),
+            ('prototype', 'Use only when the user directly invokes prototype'),
+        ):
+            with self.subTest(skill=name):
+                root = ROOT / 'skills' / name
+                text = (root / 'SKILL.md').read_text()
+                description = yaml.safe_load(text.split('---')[1])['description']
+                self.assertIn(explicit, description)
+                self.assertIn('an authorized workflow deliberately composes it',
+                              description)
+                self.assertIn('composition adds no authority', ' '.join(text.split()))
+                adapter = yaml.safe_load((root / 'agents/openai.yaml').read_text())
+                self.assertIs(adapter['policy']['allow_implicit_invocation'], False)
 
     def test_check_wiring(self):
         for path in (ROOT / 'README.md', ROOT / 'AGENTS.md',

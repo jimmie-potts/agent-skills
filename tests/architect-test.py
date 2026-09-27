@@ -115,6 +115,8 @@ class ArchitectSkillTest(unittest.TestCase):
             "Choose directly when one candidate clearly wins or no real alternative needs investigation",
             "write a comparison brief before any artifact exists",
             "Run it with `prototype` only when the user explicitly invokes prototype for this task",
+            "When a workflow composed this skill, return the brief to that workflow, which decides under its own authority whether to run it",
+            "When an authorized workflow composes this skill, that workflow's request is the underlying task and its limits bind; composition adds no authority",
             "keep the decision open until the user answers",
         ):
             self.assertIn(required, text)

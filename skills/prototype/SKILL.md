@@ -1,6 +1,6 @@
 ---
 name: prototype
-description: Explicitly build a bounded experiment or functional delivery slice to answer one concrete logic, state-model, or UI question. Use only when the user directly invokes prototype and authorizes the needed artifact scope.
+description: Explicitly build a bounded experiment or functional delivery slice to answer one concrete logic, state-model, or UI question. Use only when the user directly invokes prototype and authorizes the needed artifact scope, or when an authorized workflow deliberately composes it for a disposable experiment or comparison.
 ---
 
 # Prototype
@@ -19,6 +19,12 @@ Classify the requested result before work begins:
 An explicit invocation does not itself grant filesystem, dependency-install,
 server-start, browser, Git, tracker, production-route, or publication authority.
 Use only the locations and actions authorized by the underlying request.
+
+An authorized workflow may compose this skill for a disposable experiment or
+comparison. The workflow's brief is the underlying request: it names the
+question, the isolated destination and the allowed effects, and composition
+adds no authority. Return the result to that workflow; functional slices
+remain its own implementation.
 
 For a disposable experiment or a comparison, first check whether the question
 is already answered. If existing code, documentation, or a single obvious
