@@ -3,12 +3,15 @@
 Use when current collaboration tools expose model and reasoning overrides.
 Inspect their actual schema and host model descriptions before calling.
 
-Use this mapping for both Standards and Specification, independently of the
-implementation row. Complexity or uncertainty may warrant stronger settings.
+Use this mapping for both Standards and Specification. Place the work by
+[review selection](review-selection.md#select-for-impact-and-the-review-task)'s
+impact and review task, from what the work needs rather than the settings its
+implementer ran with.
 
 | Impact | Reviewer default | Rationale and limits |
 | --- | --- | --- |
-| Low or medium impact | Luna (`gpt-6-luna`) at `high` for each axis | Capable lower-cost verification is the default for routine work |
+| Low or medium impact, bounded review task: work a Luna-level implementation suits, with settled requirements and reliable checks that cover the criteria | Luna (`gpt-6-luna`) at `high` for each axis | Capable lower-cost verification where the task and checks justify its coverage |
+| Low or medium impact, review task needing Sol-level judgment: several interacting interfaces, state transitions or invariants, or meaningful design judgment, as in work that planning or worker selection would start on Sol | Sol (`gpt-6-sol`) at `high` or stronger for each axis | The reviewer needs the cross-interface judgment the change needed. Luna at `high` or above is not a Sol equivalent; a Luna exception needs comparable evidence and stated coverage limits |
 | High impact, even with a tiny diff | Strongest evidenced relevant choice of Sol (`gpt-6-sol`) at `high` or Astra (`gpt-6-astra`) at `high` | Use separate fresh reviewer contexts; inspect high-impact negative cases |
 
 Before spawning, run the [reviewer execution preflight](reviewer-execution.md)
@@ -29,11 +32,17 @@ with the controls below.
 | Surface | ChatGPT Work runs hosted subagents without local sandbox or approval controls, and the web sidebar shows activity without controls. CLI, IDE and app controls differ | The surface in use |
 
 Sources: [Codex subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents),
-read 2026-09-27. The `collaboration.spawn_agent` parameters `model`,
-`reasoning_effort` and `fork_turns` were last recorded from a Codex schema on
-2026-09-26, and no agent-type parameter has been recorded. Inspect the active
-surface's schema before relying on any of them, and never apply one surface's
-controls to another.
+read 2026-09-27. The model catalog that Codex CLI 0.156.0 cached on 2026-09-27
+lists `gpt-6-luna` ("Fast and affordable model for easier tasks"), `gpt-6-sol`
+("Workhorse model for coding and everyday work") and `gpt-6-astra` ("Frontier
+intelligence for the most demanding work"), each defaulting to `medium` and
+supporting `low` to `max`, with `ultra` also listed for Sol and Astra. A catalog
+is not the spawn schema, and whether a spawn on the active surface accepts each
+model and level is unverified. The `collaboration.spawn_agent` parameters
+`model`, `reasoning_effort` and `fork_turns` were last recorded from a Codex
+schema on 2026-09-26, and no agent-type parameter has been recorded. Inspect the
+active surface's schema before relying on any of them, and never apply one
+surface's controls to another.
 
 ## Select and spawn
 
@@ -76,9 +85,10 @@ change `config.toml`. The owning environment provisions profiles, as
 describes.
 
 Astra in this table is an independent reviewer, not an implementation worker or
-a replacement coordinator. Reviewer suitability remains a hypothesis until
-evaluated on comparable work; a model listing is not live review verification.
-Explicit user or project requirements and stronger evidence override these
-defaults. Different models for the two axes remain optional. A fallback for a
-rejected default stays within the GPT-6 models named here, never a GPT-5.x
-model.
+a replacement coordinator. Reviewer suitability, including the Sol row for
+low- and medium-impact work, remains a hypothesis until evaluated on comparable
+work; a model listing is not live review verification. Explicit user or project
+requirements override these defaults; comparable evidence supports only the
+exceptions review selection allows. Different models for the two axes remain
+optional. A fallback for a rejected default stays within the GPT-6 models named
+here, never a GPT-5.x model.

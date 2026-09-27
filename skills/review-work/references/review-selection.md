@@ -4,8 +4,8 @@ Read before selecting task, fix-verification or final reviewers. Then read only
 the active host's adapter: [Claude Code](claude-code-reviewers.md) when the host
 exposes an `Agent` tool with a per-call `model` parameter, or
 [Codex](codex-reviewers.md) when collaboration tools expose model and reasoning
-overrides. Implementation settings and worker retry thresholds do not select
-reviewers.
+overrides. The settings an implementer actually ran with and worker retry
+thresholds do not select reviewers; impact and the review task below do.
 
 ## Establish the available choices
 
@@ -24,21 +24,49 @@ and observed settings apart. A profile cannot override these floors or explicit
 requirements. Do not create or install profiles or change personal settings to
 obtain a selection.
 
-## Start from impact
+## Select for impact and the review task
 
-Use the host adapter's routine reviewers for low and medium impact, and the
-strongest evidenced relevant reviewers at high reasoning for high impact, even
-with a tiny diff. Unknown impact takes the high-impact floor. These floors
-apply to task and fix-verification reviewers too; a small fix does not
-establish low impact. Complexity and
-uncertainty may raise this floor. Inspect interactions, concurrency, invariants
-and recovery for interacting-state work; examine assumptions, omissions and
-conflicting evidence when uncertainty is high. Specification review covers
-each criterion, exclusions and negative cases, including high-impact
-acceptance. Default, moderate and high are relative recommendations, not
-portable API enum names; map them to supported controls and record the mapping.
-Maximum reasoning is not automatic. Both axes may use the same model in
-separate fresh contexts.
+Select each reviewer for the judgment its review must exercise. Impact sets the
+minimum; the review task can only raise it.
+
+- Impact floor: the host adapter's routine reviewers for low and medium impact,
+  and the strongest evidenced relevant reviewers at high reasoning for high
+  impact, even with a tiny diff. Unknown impact takes the high-impact floor.
+- Review task: from the work assessment and the comparison, name the
+  complexity, the uncertainty, the interfaces, state and invariants the change
+  crosses, and the capability that implementing or integrating it needs. A
+  reviewer must be able to exercise the judgment the change needed. When the
+  host adapter places that work above its routine tier, select that tier or
+  stronger, even at low or medium impact. Keep the routine tier for bounded
+  work whose review coverage the task and reliable checks justify. Unknown
+  complexity, or work the evidence cannot place, takes the stronger tier.
+
+Place the work by what it needs, not by what ran: a stronger implementer than
+the work needed raises nothing, and a weaker one lowers nothing. Reasoning-level
+names are not comparable across models; a smaller model at a higher level is
+not an automatic equivalent of a larger one.
+
+Apply the same selection to task, fix-verification and final reviewers,
+assessing the comparison under review and the interfaces its fixes touch. A
+small fix establishes neither low impact nor a bounded review task. Selection
+changes no reviewer count, frozen comparison, scope, or specialist or human
+gate.
+
+A reviewer below the selected review-task tier needs an explicit user or project
+requirement, which prevails, or comparable evidence: recorded review outcomes on
+similar work that show the weaker setting finds what the selected one finds.
+Name that evidence and the coverage it cannot vouch for. Evidence never goes
+below the impact floor; only an explicit requirement does, with the difference
+recorded. Record this rationale in the input's Settings field, as the
+[result contract](result-contract.md) describes.
+
+Inspect interactions, concurrency, invariants and recovery for interacting-state
+work; examine assumptions, omissions and conflicting evidence when uncertainty
+is high. Specification review covers each criterion, exclusions and negative
+cases, including high-impact acceptance. Default, moderate and high are
+relative recommendations, not portable API enum names; map them to supported
+controls and record the mapping. Maximum reasoning is not automatic. Both axes
+may use the same model in separate fresh contexts.
 
 ## Brief each reviewer
 

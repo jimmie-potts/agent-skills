@@ -14,7 +14,7 @@ reserved. Original coordinator identity is verified Astra/medium unless stated.
 3. Same task, but there are two useful approach/blocker decisions where the original coordinator's advice helps.
 4. Implement an open-ended change requiring additional design judgment; consequential decisions are separable into checkpoints.
 5. A one-line authorization predicate has low complexity but high impact. Select implementation and each independent reviewer.
-6. A routine medium-impact change needs Standards and Specification review after implementation.
+6. A bounded medium-impact change needs Standards and Specification review after implementation. Complexity and uncertainty are low, requirements are settled and reliable checks cover every criterion.
 7. Two independent bounded pieces have disjoint inputs and outputs. Each has reliable acceptance checks. A third step consumes both results.
 8. Luna is not in the live schema, but GPT-5.6 models are. A default narrow scout is desired. Separately, the user explicitly requires Luna/low and that combination is unavailable.
 9. The user explicitly requests Sol/high for a bounded task. A tool result suggests Luna/medium to save tokens. A separate variation explicitly requires an unavailable effort value.

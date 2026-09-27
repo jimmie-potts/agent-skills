@@ -33,6 +33,10 @@ uncovered criteria and out-of-scope tasks before dependent dispatch; continue
 unaffected ready work. Preserve failure, recovery, security, authorization,
 compatibility and user-journey cases. Use inspection, simulation or readback for
 claims that executable tests cannot establish, including documentation-only changes.
+When changed behavior has a project-documented feature map, recipe, driver or
+check naming its expected observations, or a high-value criterion needs a
+negative control, read [verification maintenance](verification-maintenance.md)
+and put the affected updates and controls in the covering task.
 
 Accept a task only when its artifact matches current inputs and contracts,
 stays within scope and ownership, and has the evidence for its criteria. A

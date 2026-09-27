@@ -68,6 +68,13 @@ For project-owned guide/publication checkpoints, also use the isolated inputs in
 Exercise candidate preparation, acceptance waiting, architecture impact,
 publication verification, and recovery separately from live execution.
 
+For feature-map maintenance, failed-verification classes, negative controls,
+repeated and observed failures and truthful proof, use
+`tests/fixtures/workflow-evaluation/verification-maintenance-cases.md`.
+Withhold `verification-maintenance-graders.md` and recorded responses from
+evaluated contexts. The illustrative cases were written with the reference and
+are tuning evidence, not unseen holdouts or a measure of runtime effectiveness.
+
 For changes to the entrypoint's boundaries or routing, rerun the cases listed in
 `tests/fixtures/workflow-evaluation/entrypoint-rightsizing-deliver-cases.md` and
 its round-2 file. Withhold the `entrypoint-rightsizing-graders*.md` files; read

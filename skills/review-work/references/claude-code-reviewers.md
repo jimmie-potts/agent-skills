@@ -5,8 +5,11 @@ Inspect the actual tool schema and host model descriptions before calling.
 Worker attempt thresholds are separate from review-round accounting; worker
 replacement resets none of the [review-cycle history](review-cycles.md).
 
-Use this mapping for both Standards and Specification, independently of the
-implementation row. Complexity or uncertainty may warrant stronger settings.
+Use this mapping for both Standards and Specification. The routine reviewer
+here is already `opus`, so
+[review selection](review-selection.md#select-for-impact-and-the-review-task)'s
+review task changes no default on this host; still record it in the selection
+rationale. High complexity or uncertainty may warrant stronger settings.
 
 | Impact | Reviewer default | Rationale and limits |
 | --- | --- | --- |
@@ -106,9 +109,10 @@ own effort. Record the requested model and the model a reviewer reports from
 its own runtime instructions separately.
 
 These are capability hypotheses, not measured review-quality results. Explicit
-user or project requirements and stronger evidence override the defaults. Do
-not create, edit or install `.claude/agents` definitions, change settings,
-launch replacement sessions or simulate a reviewer by writing both sides of a
-conversation. The owning environment provisions profiles, as
+user or project requirements override the defaults; comparable evidence
+supports only the exceptions review selection allows, never below the impact
+floor. Do not create, edit or install `.claude/agents` definitions, change
+settings, launch replacement sessions or simulate a reviewer by writing both
+sides of a conversation. The owning environment provisions profiles, as
 [reviewer execution](reviewer-execution.md#discover-provisioned-profiles)
 describes.

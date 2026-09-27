@@ -126,7 +126,12 @@ Reusable SDLC workflows also include:
   results, diagnoses surviving blockers and honors explicit round, time and
   spending limits. Productive rounds have no universal cap; exhausted limits
   leave unmet gates pending. Task reviews never replace the two final
-  independent reviews. Substantive
+  independent reviews.
+  [Verification maintenance](skills/deliver-work/references/verification-maintenance.md)
+  updates the owning project's feature map or recipe with changed behavior,
+  classifies failed verification and shows that risk-selected checks fail on
+  a known bad result; a screenshot or simulated pass is never acceptance by
+  itself. Substantive
   checkpoints and final handoff include the chosen strategy and reason, decision
   contributors, model roles and observed settings, active and distinct agent
   counts, planned additional agents, and advisor consultations. See
@@ -509,7 +514,8 @@ or worker-with-astra advice at useful checkpoints.
 An initial result plus one guided correction at unchanged settings triggers
 reassessment if still inadequate. Diagnose missing facts, authority, or broken
 infrastructure before promoting capability. These are bounded defaults, not
-measured savings. Routine independent reviewers use Luna/high. Claude keeps
+measured savings. Independent reviewers use Luna/high only for bounded review
+tasks below high impact, and Sol/high or stronger otherwise. Claude keeps
 its own first-failed-attempt escalation and effort-inheritance rules.
 
 ## Shared and domain skill ownership

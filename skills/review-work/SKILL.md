@@ -68,11 +68,12 @@ state; for uncommitted work, capture one patch and its SHA-256 digest. Stop on
 an unresolvable ref or an empty change. Verify a caller-supplied comparison
 instead of re-deriving a different one. Do not mutate the source while doing so.
 
-Use the caller's work assessment for impact. Without one, discover the
-installed canonical `deliver-work` package and read its
-`references/work-assessment.md` section on rating the three dimensions; this
-reads a shared contract and does not invoke delivery. If it is unavailable,
-report the gap, record impact unknown and apply the high-impact reviewer floor.
+Use the caller's work assessment for impact, complexity and uncertainty.
+Without one, discover the installed canonical `deliver-work` package and read
+its `references/work-assessment.md` section on rating the three dimensions;
+this reads a shared contract and does not invoke delivery. If it is
+unavailable, report the gap, record the ratings unknown and apply the
+high-impact reviewer floor.
 
 ## Select, brief and run reviewers
 

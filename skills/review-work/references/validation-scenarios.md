@@ -23,6 +23,14 @@ partial or unattributed returns, also use
 checks the profile templates' tools and settings statically; that proves
 neither host discovery nor enforced restriction.
 
+For reviewer selection by impact and review task, including a low-impact
+shared-navigation change across several interfaces, bounded and high-impact
+controls, explicit requirements and evidence-backed exceptions, a Fable or
+Astra start, and the Claude Code control, also
+use `tests/fixtures/workflow-evaluation/reviewer-selection-cases.md` and
+withhold `reviewer-selection-graders.md` in the same way. Its delivery cases
+exercise deliver-work composing this skill.
+
 Read `review-work-observations.md` in that fixture directory only after
 scoring.
 
