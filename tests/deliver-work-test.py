@@ -376,7 +376,7 @@ class DeliverWorkStructureTest(unittest.TestCase):
                      'catalog before the fast-forward',
                      "Rerun step 2's checks just before the uninstall",
                      'A local change inside a skill the update changes or adds',
-                     'Run it under a delivery request\'s authorization instead '
+                     "Run it under a delivery request's authorization instead "
                      'only where `AGENTS.md` allows.',
                      '`git merge --ff-only origin/main`', '--dry-run',
                      '`worker-with-fable` for Claude Code',
@@ -400,8 +400,9 @@ class DeliverWorkStructureTest(unittest.TestCase):
                      'condition', 'at a checkpoint after verified merge and '
                      "post-merge CI", "only on the owner's approval at that "
                      'checkpoint or explicit authorization in the request that '
-                     'names the step', 'either covers only the step for this '
-                     'change', 'never improvise one', 'If a required '
+                     'names the step', 'either covers only installing or '
+                     'updating this change, never an uninstall, rename or '
+                     'retirement', 'never improvise one', 'If a required '
                      'deployment, installation',
                      '(references/project-discovery.md#declared-completion-steps)'):
             with self.subTest(rule=rule):
@@ -526,10 +527,16 @@ class DeliverWorkStructureTest(unittest.TestCase):
                          r' 3\. .*removes the skill')
         # A named request never covers an uninstall, rename or retirement,
         # even the change's own (owner decision, #99).
-        rename = next(line for line in graders.splitlines()
-                      if line.startswith('| IC03 |')).split('Variant 4:', 1)[1]
+        pre_authorized = next(line for line in graders.splitlines()
+                              if line.startswith('| IC03 |'))
+        self.assertIn('Variant 4:', pre_authorized)
+        rename = pre_authorized.split('Variant 4:', 1)[1]
         self.assertIn('at the checkpoint and wait', rename)
         self.assertNotIn('without a checkpoint', rename)
+        catalog = flat((ROOT / 'README.md').read_text())
+        self.assertIn("covers only installing or updating that delivery's own "
+                      'change, never an uninstall, rename or retirement',
+                      catalog)
         for path in (ROOT / 'AGENTS.md',
                      SKILL / 'references/project-discovery.md'):
             with self.subTest(path=path.name):
