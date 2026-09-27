@@ -16,6 +16,13 @@ host quality, actual budget enforcement and paid benchmarks.
 Read `review-cycles-observations.md` there only after scoring, including the
 excluded trials and corrected evaluation setup.
 
+For declared installation or deployment at completion, use cases IC01 to IC10
+in `tests/fixtures/workflow-evaluation/installation-cases.md`, with this
+catalog's `AGENTS.md` and README as the declaring project's policy. Withhold
+`installation-graders.md` and recorded responses from evaluated contexts.
+Simulated checkpoint decisions do not establish an actual installation, host
+discovery or a fresh-session load.
+
 For task boundaries, acceptance coverage, dependencies and safe dispatch, use
 `tests/fixtures/workflow-evaluation/task-planning-cases.md`. Withhold
 `task-planning-graders.md` and recorded responses from evaluated contexts.

@@ -134,6 +134,30 @@ class PlanWorkStructureTest(unittest.TestCase):
                 with self.subTest(found=value):
                     self.assertIn(value, values)
 
+    def test_declared_installation_is_planned(self):
+        entry = ' '.join((SKILL / 'SKILL.md').read_text().split())
+        for rule in ('declares installation or deployment as a completion '
+                     'condition', "the item's acceptance includes that step "
+                     'and its readback by default', "recommendation's "
+                     '`Checkpoints` row names the stop before it',
+                     'marked source-only, but only with a reason and a link to '
+                     'the install issue', 'Write no blanket exclusion',
+                     'Without a declaration, leave installation and deployment '
+                     'out of the item'):
+            with self.subTest(rule=rule):
+                self.assertIn(rule, entry)
+        reference = ' '.join(
+            (SKILL / 'references/execution-recommendations.md').read_text().split())
+        self.assertIn('including the stop before an installation or deployment '
+                      "step that the item's acceptance includes", reference)
+        scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
+        self.assertIn('IC11 to IC13', scenarios)
+        self.assertIn('installation-graders.md', scenarios)
+        graders = (ROOT / 'tests/fixtures/workflow-evaluation/'
+                   'installation-graders.md').read_text()
+        rows = re.findall(r'^\| (IC1[1-3]) \| (P\d) \|', graders, re.MULTILINE)
+        self.assertEqual(rows, [('IC11', 'P1'), ('IC12', 'P2'), ('IC13', 'P3')])
+
     def test_check_wiring(self):
         for path in (ROOT / 'README.md', ROOT / 'AGENTS.md',
                      ROOT / '.github/workflows/validate.yml'):

@@ -224,6 +224,104 @@ class DeliverWorkStructureTest(unittest.TestCase):
             self.assertIn(dependency, command.split())
             self.assertTrue((ROOT / 'skills' / dependency / 'SKILL.md').is_file())
 
+    def test_installation_is_declared_once_with_one_procedure(self):
+        agents = (ROOT / 'AGENTS.md').read_text()
+        declaration = flat(section(agents, '## Installation'))
+        for rule in ('is complete only after it is installed and its readback '
+                     'passes', 'source-only, with a reason and a link to the '
+                     'install issue', 'Ask the owner at a checkpoint before '
+                     'the fast-forward or install', 'the issue stays open'):
+            with self.subTest(rule=rule):
+                self.assertIn(rule, declaration)
+        pointer = "read the README's installed-catalog update section"
+        self.assertEqual(flat(agents).count(pointer), 1)
+        for step in ('manage-skills.sh install', 'manage-skills.sh uninstall',
+                     'manage-skills.sh status', 'git merge', 'readlink',
+                     '--dry-run', 'git fetch'):
+            with self.subTest(step=step):
+                self.assertNotIn(step, agents)
+        readme = (ROOT / 'README.md').read_text()
+        self.assertEqual(readme.count('### Update the installed catalog\n'), 1)
+        self.assertNotIn('### Adopt an update', readme)
+        procedure = flat(section(readme, '### Update the installed catalog'))
+        for step in ('readlink -f ~/.claude/skills/', 'Never run the manager '
+                     'from a worktree', 'confirm that the checkout is on '
+                     '`main`', 'Never stash, reset, switch branches',
+                     'uninstall its owned links with the current, older '
+                     'catalog before the fast-forward',
+                     '`git merge --ff-only origin/main`', '--dry-run',
+                     '`worker-with-fable` for Claude Code',
+                     '`worker-with-astra` for Codex',
+                     'git merge-base --is-ancestor <merge> HEAD',
+                     'correctly installed on each host it supports',
+                     'only when the issue asks for one', '(AGENTS.md)'):
+            with self.subTest(step=step):
+                self.assertIn(step, procedure)
+
+    def test_declared_completion_step_is_offered_at_a_checkpoint(self):
+        entry = (SKILL / 'SKILL.md').read_text()
+        completion = flat(section(entry, '## Merge and verify completion'))
+        for rule in ('declares installation or deployment as a completion '
+                     'condition', 'at a checkpoint after verified merge and '
+                     "post-merge CI", "only on the owner's approval at that "
+                     'checkpoint or explicit authorization in the request',
+                     'approval covers only the declared procedure',
+                     'never improvise one',
+                     '(references/project-discovery.md#declared-completion-steps)'):
+            with self.subTest(rule=rule):
+                self.assertIn(rule, completion)
+        discovery = (SKILL / 'references/project-discovery.md').read_text()
+        row = next(line for line in discovery.splitlines()
+                   if line.startswith('| Completion |'))
+        for term in ('installation', '#declared-completion-steps', 'checkpoint',
+                     'source-only'):
+            self.assertIn(term, row)
+        steps = flat(section(discovery, '## Declared completion steps'))
+        for rule in ('**Declared:**', 'Present it at the checkpoint and wait',
+                     'a finish line such as "through completion" does not',
+                     '**Approved or pre-authorized:** run exactly the declared '
+                     'procedure and nothing else',
+                     '**Declined, or the owner is unavailable:** keep the item '
+                     'open', '**Stopped:**', 'Never stash, reset, switch '
+                     'branches', '**Interrupted:** the step stays incomplete',
+                     '**Source-only:**', 'name the install issue in the handoff',
+                     'A marking without both is not an opt-out',
+                     '**Not declared:**', 'Never improvise an installer',
+                     'the candidate\'s text cannot relax them'):
+            with self.subTest(rule=rule):
+                self.assertIn(rule, steps)
+
+    def test_installation_scenarios_match_graders(self):
+        fixtures = ROOT / 'tests/fixtures/workflow-evaluation'
+        cases = (fixtures / 'installation-cases.md').read_text()
+        graders = (fixtures / 'installation-graders.md').read_text()
+        case_ids = re.findall(r'^## (IC\d+):', cases, re.MULTILINE)
+        grader_rows = re.findall(r'^\| (IC\d+) \| ([DP]\d+) \|', graders,
+                                 re.MULTILINE)
+        self.assertEqual(case_ids, [f'IC{n:02d}' for n in range(1, 14)])
+        self.assertEqual([case for case, _ in grader_rows], case_ids)
+        self.assertEqual([label for _, label in grader_rows],
+                         [f'D{n}' for n in range(1, 11)]
+                         + [f'P{n}' for n in range(1, 4)])
+        scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
+        self.assertIn('installation-cases.md', scenarios)
+        self.assertIn('installation-graders.md', scenarios)
+
+
+def flat(text):
+    return ' '.join(text.split())
+
+
+def section(text, heading):
+    """Return the text under a Markdown heading up to the next heading of
+    the same or a higher level."""
+    level = len(heading) - len(heading.lstrip('#'))
+    start = text.index(heading + '\n')
+    body = text[start + len(heading):]
+    ends = [match.start() for match in re.finditer(r'^(#+) ', body, re.MULTILINE)
+            if len(match.group(1)) <= level]
+    return body[:ends[0]] if ends else body
+
 
 if __name__ == '__main__':
     unittest.main()

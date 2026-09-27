@@ -317,7 +317,7 @@ class MigrationTest(unittest.TestCase):
             './scripts/manage-skills.sh install --agent codex deliver-work '))
         self.assertIn('review-work', command.split())
         self.assertIn('code-review', command.split())
-        self.assertIn('### Adopt an update that adds a required skill', readme)
+        self.assertIn('### Update the installed catalog', readme)
         self.assertIn('Explicit `$review-work`', readme)
 
     def test_scenario_cases_match_graders(self):

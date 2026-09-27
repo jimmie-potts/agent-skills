@@ -26,6 +26,21 @@ organization-wide governance are out of scope.
   their full behavior and permission scope explicitly before accepting them.
 - Preserve unrelated user changes.
 
+## Installation
+
+- A merged change that adds, changes, renames or removes a skill under
+  `skills/` is complete only after it is installed and its readback passes.
+  Changes that touch only tests, scripts, fixtures or documentation need no
+  installation. An issue may instead mark a skill change source-only, with a
+  reason and a link to the install issue that batches it; that issue then
+  closes at merge, and the install issue carries the installation.
+- Ask the owner at a checkpoint before the fast-forward or install, unless the
+  delivery request already authorized it. Approval covers only that update.
+  If the owner declines or is unavailable, the issue stays open, with
+  installation pending and its owner and next action recorded.
+- Before updating, installing or checking the installed catalog, read the
+  README's installed-catalog update section.
+
 ## Checks
 
 Create and activate a local virtual environment once before running the checks:
