@@ -69,6 +69,9 @@ Reusable SDLC workflows also include:
   a paste-ready prompt per host, and a cheaper start; on Claude Code that is
   usually Sonnet, which is not itself a starting recommendation. See
   [execution recommendations](skills/plan-work/references/execution-recommendations.md).
+  Before calling an item ready, it checks the item against the owning
+  project's accepted decisions, current code and related backlog, scaled to
+  the item; see [alignment](skills/plan-work/references/alignment.md).
   It follows project-owned guide and publication checkpoints within the user's
   authority, including a pending-documentation report for tracker-only work.
   It reads the installed `deliver-work` package's canonical assessment and
@@ -91,6 +94,7 @@ Reusable SDLC workflows also include:
   stable findings, and returns a per-axis `satisfied`, `action-required` or
   `incomplete` [result](skills/review-work/references/result-contract.md). A
   missing specification, partial return or stale comparison is never approval.
+  Each result carries every reviewer's actual return, redacted and digested.
   It implements, publishes and merges nothing; `deliver-work` composes it for
   its required reviews and keeps corrections, CI and merge;
 - [`deliver-work`](skills/deliver-work/SKILL.md), explicit delivery of
@@ -140,7 +144,10 @@ Reusable SDLC workflows also include:
   [PR supervision](skills/deliver-work/references/pr-supervision.md) tracks
   published feedback and current checks through the requested finish line.
   It diagnoses failures from logs, handles fixes before obsolete check reruns,
-  and resumes supervision after each push or rerun;
+  and resumes supervision after each push or rerun.
+  [Review reports](skills/deliver-work/references/review-reports.md) publish
+  each final round with its retained reviewer returns, keep the PR's current
+  review state, and limit replies to facts about scoped fixes;
 - the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
   `openspec-apply-change`, `openspec-update-change`, `openspec-sync-specs`, and
   `openspec-archive-change`. They use the consuming repository's pinned CLI.

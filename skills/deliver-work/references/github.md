@@ -53,8 +53,10 @@ do not discard an unresolved item solely because it refers to an older head.
 
 Identify items by stable GitHub node ID or resource kind plus database ID, and
 their published content/update version. Record dispositions in the existing
-packet, deduplicating repeated versions without hiding new edits. A previously
-authorized self-authored reply is not another request to reply.
+packet, deduplicating repeated versions without hiding new edits. This
+delivery's own reports and replies, identified as
+[review reports](review-reports.md) describes, are not new requests; the same
+account's other comments are feedback.
 
 Read workflows at the candidate revision, required branch/ruleset checks and
 applicable job results. Include matrix jobs and verify head SHA, event/PR
@@ -88,13 +90,14 @@ a consequential write. Reuse only a verified owned watch session. If it stops,
 reconcile its owner/state and resume through available reads or watch tools in
 the active session. Preserve the shared wait and inactive-monitoring rules.
 
-Code fixes do not grant permission to reply to humans or resolve their threads.
-Without existing explicit authority, draft a needed response in the task and
-identify the outstanding reply/resolution decision while continuing independent
-work. Existing approval for the exact response or scoped resolution persists;
-do not ask again. When authorized, verify the current thread/fix, perform the
-approved effect once and read it back. Keep any required unresolved thread or
-change request as a merge blocker until its accepted disposition is verified.
+Code fixes do not grant permission to resolve threads or to reply beyond the
+factual fix replies in [review reports](review-reports.md). For any other
+response, draft it in the task and identify the outstanding reply/resolution
+decision while continuing independent work. Existing approval for the exact
+response or scoped resolution persists; do not ask again. When authorized,
+verify the current thread/fix, perform the approved effect once and read it
+back. Keep any required unresolved thread or change request as a merge blocker
+until its accepted disposition is verified.
 Never dismiss a review, resolve a thread or alter issue state merely to clear
 the merge gate.
 
@@ -115,3 +118,22 @@ Design reference for failure classification and feedback ordering:
 [Codex PR Babysitter](https://github.com/openai/codex/blob/a770e5b8470d3320eb53a56a286ea4a0a70a1f59/.codex/skills/babysit-pr/SKILL.md).
 This adapter does not invoke that skill or adopt its scripts, permissions,
 retry defaults or stopping rules.
+
+## Publish review evidence
+
+Apply [review reports](review-reports.md) with these operations:
+
+- Post a round report as a PR issue comment whose first line is the marker
+  `<!-- deliver-work <work reference> <key>; head <full sha> -->`, where the key
+  includes any `part <i>/<m>`, and wrap each reviewer return in `<details>` with
+  its label as the summary. A comment body holds at most 65,536 characters.
+- Post inline findings as one pull request review with event `COMMENT` and
+  `commit_id` set to the reviewed head. Never submit `APPROVE` or
+  `REQUEST_CHANGES` from the delivery's account.
+- Reply in a review thread through the review comment replies endpoint. An
+  issue comment has no thread, so reply with a new issue comment linking it.
+- Update the description's review section through the pull request update
+  operation, then read the body back.
+- Find an existing effect by listing every page of issue comments, reviews or
+  review comments and matching the marker. Normalize line endings before
+  comparing content. Record the returned `id`, `node_id` and `html_url`.
