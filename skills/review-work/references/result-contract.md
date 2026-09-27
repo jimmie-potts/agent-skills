@@ -30,8 +30,9 @@ Record these before the first reviewer starts, and again for each round:
   results as facts, never as a verdict for reviewers to confirm.
 - Coverage: required axes, the task boundary for a task round, changed areas,
   and any specialist or qualified human review the assessment requires.
-- Settings: explicit user or project reviewer requirements and the selection
-  made from them.
+- Settings: explicit user or project reviewer requirements, the selection
+  made from them and the reviewer execution preflight: each control's evidence
+  class, whether it is mandatory, and any unsupported or unverified control.
 - Limits: each explicit round, time or spending limit with its source, scope,
   unit, threshold, consumed amount and accounting source. `none` when no limit
   was set; missing accounting is unknown, never zero.
@@ -55,9 +56,11 @@ Specification cannot be `satisfied` without an authoritative requirement. One
 axis never supplies the other. When an axis has an open blocker and also lacks
 evidence, report `action-required` and name the gap in the coverage; the gap
 still prevents `satisfied` after the fix, and the caller obtains it with the
-correction. A required specialist axis has its own reviewer entry, and the
-coverage states its status with the same vocabulary. Unresolved P3 findings do
-not block an axis; record their disposition. A consumer accepts a final result
+correction. Findings from a failed return leave the axis `incomplete` instead,
+as [reviewer execution](reviewer-execution.md) describes. A required specialist
+axis has its own reviewer entry, and the coverage states its status with the
+same vocabulary. Unresolved P3 findings do not block an axis; record their
+disposition. A consumer accepts a final result
 only when both axes are `satisfied`, every required specialist axis is
 `satisfied`, its policy is known, and its comparison, requirement version and
 policy equal the current ones; any other result blocks the gate it governs.
@@ -85,8 +88,8 @@ A reviewer entry is `<label>: <axis>, requested <model> at <level>, model
 such as `standards-reviewer-1`; the axis is `standards`, `specification`, a
 lowercase specialist name such as `security`, or `both` for one task-round
 reviewer returning both task verdicts. A final round never uses `both`, and
-neither does a finding. A requested value is what the coordinator passed,
-`default` when it left the value to the host, or `unknown`. Sourced values are
+neither does a finding. A requested value is what the coordinator passed or a
+selected profile sets, `default` if neither, or `unknown`. Sourced values are
 `unknown (unknown)` or one or more `<value> (<source>)` joined by ` + `, where
 the source is `host-observed`, `user-stated` or `self-reported`. A spawn or
 request never establishes the executing value. Without the axis, an entry

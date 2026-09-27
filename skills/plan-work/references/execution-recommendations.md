@@ -104,8 +104,9 @@ On Claude Code, the `Reviewers` row names `opus` for both axes, or the
 coordinator's model at high impact, following review-work's Claude Code reviewer
 adapter, which also owns how reviewer effort is inherited from the session or
 set by a subagent definition. Write the level as the session's level unless host
-evidence shows a read-only reviewer definition with `effort: high`, and then
-name that definition in the row. Verification is where effort pays, so when the
+evidence shows a reviewer definition with `effort: high` that the adapter
+accepts, such as review-work's high-effort profile, and then name that
+definition in the row. Verification is where effort pays, so when the
 project wants reviews at `high` and no definition exists, add a `Checkpoints`
 entry that stops before the final reviews so the user can run `/effort high`,
 which the effort article above says applies mid-session without breaking the
