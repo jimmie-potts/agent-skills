@@ -39,6 +39,13 @@ changed sources. Withhold `alignment-graders.md`; read
 `alignment-observations.md` only after scoring. An alignment result is a
 planning judgment, not a new gate on delivery.
 
+For uncertainty routing, experiment briefs and deliberate composition of
+`architect` and `prototype`, use
+`tests/fixtures/workflow-evaluation/uncertainty-routing-cases.md`. Withhold
+`uncertainty-routing-graders.md`; read `uncertainty-routing-observations.md`
+only after scoring. Simulated outcomes in the cases are inputs, not evidence
+that an experiment ran or that an installed host behaves this way.
+
 Use isolated read-only simulations with case inputs separated from evaluator
 checks below. Supply entrypoint and available operating resources, not expected
 answers. Record actual decisions, proposed effects, sources read, failures, and

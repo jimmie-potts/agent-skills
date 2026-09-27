@@ -83,5 +83,6 @@ separate alignment ledger.
 
 Delivery treats the stored alignment result under the assessment contract's
 pickup refresh and runs no second planning comparison. Its independent
-Standards and Specification reviews are unchanged. Planning changes no project architecture, style rule or
-backlog content except through authorized publication.
+Standards and Specification reviews are unchanged. Planning changes no project
+architecture, style rule or backlog content except through authorized
+publication.

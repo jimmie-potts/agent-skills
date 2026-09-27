@@ -68,6 +68,13 @@ For changes to the entrypoint's boundaries or routing, rerun the cases listed in
 its round-2 file. Withhold the `entrypoint-rightsizing-graders*.md` files; read
 `entrypoint-rightsizing-observations.md` only after scoring.
 
+For uncertainty routing, experiment briefs and deliberate composition of
+`architect` and `prototype`, use
+`tests/fixtures/workflow-evaluation/uncertainty-routing-cases.md`. Withhold
+`uncertainty-routing-graders.md`; read `uncertainty-routing-observations.md`
+only after scoring. Simulated outcomes in the cases are inputs, not evidence
+that an experiment ran or that an installed host behaves this way.
+
 For recorded integrated trials and their limits, read
 [bounded evaluation results](evaluation-results.md) only after scoring a trial.
 Reusable inputs and evaluator rubric live under

@@ -33,8 +33,11 @@ artifact, shared inputs, inspectable observations, and a supported decision or
 remaining question; project preview or capture tools for UI variants; and the
 rule that a chosen disposable variant is not production or UI approval.
 
-Codex invocation is explicit-only. The skill does not independently grant file,
-dependency, server, browser, Git, tracker, or publication authority.
+Codex invocation is explicit-only. An authorized workflow may also compose
+the skill deliberately for a disposable experiment or comparison whose brief
+names the destination and allowed effects. The skill does not independently
+grant file, dependency, server, browser, Git, tracker, or publication
+authority.
 
 Scope, change records, and delivery authority come from the target repository.
 The shared workflow does not require Jira, OPSX, or a named delivery skill.

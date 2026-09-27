@@ -140,6 +140,9 @@ control to this coordinator; they neither grant nor cancel existing authority.
 - For material interdependent design decisions, compose `grilling`. Use
   `grill-with-docs` when resolving those decisions also needs vocabulary or
   decision-record proposals. Answer ordinary discoverable questions directly.
+- When an unresolved question governs scope, approach or acceptance, follow
+  [uncertainty routing](references/uncertainty-routing.md) before planning the
+  work it governs. Compose `architect` or `prototype` only as it allows.
 - When OpenSpec is required, compose the applicable `openspec-propose`,
   `openspec-update-change`, `openspec-apply-change`, `openspec-sync-specs`, or
   `openspec-archive-change` skill with the project's pinned tools, schemas and
