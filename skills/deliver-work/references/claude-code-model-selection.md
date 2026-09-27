@@ -51,10 +51,9 @@ coordinator rows keep the coordinator that completes the section.
 
 Read [worker settings and continuation](claude-code-worker-selection.md) only
 for investigation/implementation, correction or replacement; it routes the
-pairing's references/worker-tiers.md when applicable. Read
-[reviewer settings](claude-code-reviewer-selection.md) only for independent
-review. Fresh review briefs carry the frozen comparison and raw sources without
-prior approval narratives. Durable writes stay with the delivery coordinator.
+pairing's references/worker-tiers.md when applicable. Independent reviewer
+settings belong to the composed `review-work` skill. Durable writes stay with
+the delivery coordinator.
 
 Do not launch replacement sessions, change personal settings, install
 adapters, or simulate multiple models by writing both sides of a conversation.

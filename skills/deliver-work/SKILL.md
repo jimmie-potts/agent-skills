@@ -33,8 +33,9 @@ These hold at every step. References elaborate them and never relax them.
 - Independent review: merge requires separate fresh read-only Standards and
   Specification reviews of the frozen comparison. Self-review, a single-agent
   fallback, advisor or task review, approvals of an older comparison and
-  exhausted limits never substitute. When this workflow modifies itself, the
-  candidate cannot waive the acceptance and merge gates used to approve it.
+  exhausted limits never substitute. Compose `review-work` to run them. When
+  this workflow modifies itself, the candidate cannot waive the acceptance and
+  merge gates used to approve it.
 - Evidence: never imply that an unverified gate passed. Missing history,
   counts, settings or usage stay `unknown` or a known minimum, never zero, and
   resumption never resets them.
@@ -104,12 +105,12 @@ Read each reference below at its trigger:
 
 - [Task planning and dispatch](references/task-planning.md): before decomposing
   work, ordering tasks or dispatching.
-- [Review cycles and limits](references/review-cycles.md): before selecting
-  task reviews, starting a review/correction cycle, or working under an explicit
-  round, time or spend limit.
+- [Corrections and explicit limits](references/corrections.md): before acting
+  on a review result, correcting findings or failed acceptance, or working under
+  an explicit round, time or spend limit.
 - [Model and strategy selection](references/model-selection.md): before
-  selecting a worker, changing implementation strategy/settings, or selecting
-  reviewers, reading only its selected role and host branches. Direct trivial
+  selecting a worker or changing implementation strategy/settings, reading only
+  its selected role and host branches. Direct trivial
   work at the coordinator's existing settings needs no worker-selection reads. Compose the host's advisory pairing,
   worker-with-astra with Codex collaboration tools or worker-with-fable with
   Claude Code subagent tools, only when that policy and the pairing's
@@ -139,6 +140,12 @@ control to this coordinator; they neither grant nor cancel existing authority.
   `openspec-update-change`, `openspec-apply-change`, `openspec-sync-specs`, or
   `openspec-archive-change` skill with the project's pinned tools, schemas and
   readiness/archive rules. Preserve existing and legacy change identities.
+- For task, fix-verification and final independent reviews, compose
+  `review-work` with its input: work and round, candidate, requirements and
+  policy, raw validation, required coverage, reviewer requirements from the
+  prompt or project, limits and prior findings. It freezes the comparison,
+  selects and briefs the reviewers and returns a per-axis result; this
+  coordinator keeps corrections, publication, CI, merge and completion.
 - For meaningful executable behavior, compose `tdd`. For documentation or
   instruction changes, inspect the result and exercise representative behavior;
   do not invent executable tests that merely mirror prose.
@@ -163,16 +170,15 @@ its coordinator-owned loop through the requested finish line.
    risk and remaining completion work. Update established review tracking only
    after the PR exists, and read it back. Avoid automatic issue closure when
    verification must happen after merge.
-2. Freeze base SHA, head SHA, merge-base, diff command and worktree state.
-   Compose `code-review` for that comparison in the two independent contexts
-   the boundary requires, supplying each reviewer its rubric and raw sources,
-   plus any stronger project requirement. Missing acceptance/specification
-   evidence cannot count as Specification approval. Apply the review-selection
-   rules for independent initial findings, changed-area coverage, test quality
-   and conditional specialist/human review. Keep revision-dependent evidence
-   outside its commit.
-3. Fix P0-P2 defects and every project-defined blocker; record P3 dispositions,
-   using the review-cycle contract. Resolve provider reviews, change requests
+2. Compose `review-work` for a final round on the committed candidate, plus
+   any stronger project requirement. Merge needs both final axes `satisfied`
+   for the current comparison and requirement version; `action-required` or
+   `incomplete` blocks it. Missing acceptance/specification evidence cannot
+   count as Specification approval. Keep revision-dependent evidence outside
+   its commit.
+3. Fix P0-P2 defects and every project-defined blocker and record P3
+   dispositions, following [corrections](references/corrections.md); review-work
+   verifies the fixes in a new round. Resolve provider reviews, change requests
    and discussion threads through fixes or accepted dispositions, never
    dismissal just to enable merge.
 4. Enumerate required hosted jobs from candidate CI configuration and protection
@@ -181,8 +187,9 @@ its coordinator-owned loop through the requested finish line.
    jobs block merge; an empty protection list proves nothing. Retain the run/PR
    association. Honor additional project and provider gates.
 5. Changed code, scope, base or head invalidates affected tests and reviews.
-   Reassess the changed comparison, rerun affected local checks and obtain fresh
-   applicable review/CI evidence. Reuse unrelated still-current evidence.
+   Reassess the changed comparison, rerun affected local checks and obtain a
+   fresh review-work result and CI evidence. Reuse unrelated still-current
+   evidence.
 
 ## Merge and verify completion
 

@@ -1,7 +1,8 @@
 # Route selection by role and host
 
-Read after [work assessment](work-assessment.md) when selecting a worker,
-changing implementation strategy/settings, or selecting an independent reviewer.
+Read after [work assessment](work-assessment.md) when selecting a worker or
+changing implementation strategy/settings. Independent reviewers are selected
+by the composed `review-work` skill, not by this policy.
 Direct trivial work at the coordinator's existing settings needs only the
 entrypoint and assessment; it does not select a worker. Ratings describe work;
 this policy owns selection. Keep the original coordinator's settings and durable
@@ -41,10 +42,6 @@ selection. Unavailable optional controls remain unavailable, not simulated.
   branch of the selected host adapter below. For a dispatched worker, read
   [bounded briefs](worker-briefs.md) and supply selected rules, not this routing
   policy. Workers do not repeat coordinator selection.
-- Task, fix or final independent reviewer: read
-  [review selection](review-selection.md), then that host's reviewer branch.
-  Supply the review rubric, frozen comparison and raw sources; implementation
-  escalation and pairing details are not reviewer prerequisites.
 - Advisory pairing, only after selecting that strategy: discover and read
   worker-with-astra for Codex collaboration tools, or worker-with-fable for
   Claude Code subagent tools. Read its setup adapter and worker protocol. The

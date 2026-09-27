@@ -17,10 +17,9 @@ mismatch against explicit requirements before dependent work. Model options
 alone never prove that the current coordinator is Astra.
 
 Read [worker settings and continuation](codex-worker-selection.md) only for an
-investigation/implementation worker, correction or replacement. Read
-[reviewer settings](codex-reviewer-selection.md) only for independent review.
-Fresh review briefs carry the fixed comparison and raw sources without prior
-approval narratives. For worker-with-astra, discover its installed package and
+investigation/implementation worker, correction or replacement. Independent
+reviewer settings belong to the composed `review-work` skill. For
+worker-with-astra, discover its installed package and
 follow references/codex.md and its worker protocol; do not copy its consultation
 protocol here. Durable writes stay with the delivery coordinator.
 

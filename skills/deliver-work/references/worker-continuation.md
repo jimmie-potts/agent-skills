@@ -34,9 +34,9 @@ and history without replaying transcripts. Advice never expands authority.
 
 ## Reassess and report
 
-Use the review-cycle diagnosis when a blocker survives a correction or new
-blockers reveal misunderstood behavior. Keep findings and rounds in existing
-evidence; read the selected host's worker adapter for escalation, without resetting
+Use the [corrections](corrections.md) diagnosis when a blocker survives a
+correction or new blockers reveal misunderstood behavior. Keep findings and
+rounds in existing evidence; read the selected host's worker adapter for escalation, without resetting
 its allowance when the reviewer, finding wording or candidate changes.
 
 Reassess on material scope changes, disproved assumptions, repeated failure

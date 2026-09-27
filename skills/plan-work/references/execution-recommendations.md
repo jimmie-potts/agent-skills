@@ -101,15 +101,15 @@ is the signal to rerun at the recommended start.
 ### Recommend the reviewers
 
 On Claude Code, the `Reviewers` row names `opus` for both axes, or the
-coordinator's model at high impact, following the canonical Claude reviewer
-adapter, which also owns how reviewer effort is inherited from the session or
-set by a subagent definition. Write the level as the session's level unless
+coordinator's model at high impact, following review-work's Claude Code
+reviewer adapter, which also owns how reviewer effort is inherited from the
+session or set by a subagent definition. Write the level as the session's level unless
 host evidence shows a read-only reviewer definition with `effort: high`, and
 then name that definition in the row. Verification is where effort pays, so
 when the project wants reviews at `high` and no definition exists, add a
 `Checkpoints` entry that stops before the final reviews so the user can run
 `/effort high`, which the effort article above says applies mid-session
-without breaking the prompt cache. On Codex, use that host's reviewer
+without breaking the prompt cache. On Codex, use review-work's Codex reviewer
 adapter.
 
 Verify model identifiers or aliases and supported effort levels from available
@@ -159,7 +159,7 @@ issue description or authoritative work document, in this order:
    `Availability`. Add a `Checkpoints` row only when the session should stop at
    named decisions. `Subagents` gives each proposed implementation worker's
    model and level from the canonical worker policy, or `None`. `Reviewers`
-   gives the two fresh read-only final reviewers per host from the canonical
+   gives the two fresh read-only final reviewers per host from review-work's
    reviewer policy for the item's impact, or `None` for `Investigate first`.
    `Availability` gives the evidence
    source and the date the host's options were checked, labels each host
