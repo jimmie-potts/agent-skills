@@ -30,7 +30,9 @@ caller-example contract (caller and real setup, owner, success and failure and
 recovery paths), selective type and boundary invariants, and the owner
 explanation. The Choose phase adds a comparison brief for unresolved
 consequential choices; architect runs `prototype` only when the user explicitly
-invokes it and keeps user-owned decisions open.
+invokes it and keeps user-owned decisions open. An authorized workflow may
+compose architect deliberately; its request is then the underlying task, and
+architect returns any comparison brief to it without running the experiment.
 
 Updates are manual. Fetch the pinned source into a temporary directory, review
 the license and complete diff, recompute every upstream digest, and rerun all

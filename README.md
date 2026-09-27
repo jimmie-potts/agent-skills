@@ -13,8 +13,8 @@ uses them.
 
 The catalog currently contains:
 
-- [`architect`](skills/architect/SKILL.md), an explicit design-first code
-  architecture workflow;
+- [`architect`](skills/architect/SKILL.md), an explicit or deliberately
+  composed design-first code architecture workflow;
 - [`arena`](skills/arena/SKILL.md), an explicit parallel-candidate synthesis
   workflow;
 - [`blast-radius`](skills/blast-radius/SKILL.md), an explicit change-risk
@@ -37,8 +37,8 @@ The catalog currently contains:
   source-backed workspace for sustained learning;
 - [`plan-jira-sprints`](skills/plan-jira-sprints/SKILL.md), agent-driven sprint
   planning and approved Jira issue updates with human-owned sprint setup;
-- [`prototype`](skills/prototype/SKILL.md), an explicit bounded experiment or
-  functional delivery-slice workflow;
+- [`prototype`](skills/prototype/SKILL.md), an explicit or deliberately
+  composed bounded experiment or functional delivery-slice workflow;
 - [`research`](skills/research/SKILL.md), source-backed investigation with
   claim-level citations;
 - [`worker-with-astra`](skills/worker-with-astra/SKILL.md), a Luna or Sol worker with the
@@ -171,7 +171,9 @@ A repository can deliberately compose the existing explicit-only TDD and
 Grill with Docs methods without changing their global invocation switches.
 Repository instructions must name that composition and preserve the underlying
 request's action boundaries. A context pointer does not change host discovery
-or install a missing skill.
+or install a missing skill. `plan-work` and `deliver-work` likewise compose the
+explicit-only `architect` and `prototype` methods for a named question under
+their uncertainty routing; the composing request's authority binds them.
 
 Third-party licenses and source records travel with their skills. Root-level
 provenance is recorded in [`PROVENANCE.md`](PROVENANCE.md). The examples under
