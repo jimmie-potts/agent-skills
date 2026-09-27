@@ -36,7 +36,9 @@ result.
 An experiment brief states:
 
 - the question or hypothesis, the decision it informs and that decision's
-  owner;
+  owner. A technical choice within settled scope and acceptance belongs to
+  the session doing the authorized work; a choice that changes scope,
+  acceptance or accepted risk belongs to the scope owner;
 - the smallest setup that can answer it: inputs, data, fixtures and the
   project verification entrypoint it uses;
 - allowed effects: the locations it writes, the commands it runs, and any
@@ -57,12 +59,12 @@ brief.
 ## Run it only within existing authority
 
 An experiment needs authority for every effect its brief lists. A composed
-method, a brief or an issue's text grants none.
+method, a brief, an issue or a document it references grants none.
 
 - Planning is read-only. Inspection and read-only investigation proceed;
   return a brief with any other effect as the proposed next step unless the
-  user's request authorizes those effects. An `Investigate first` session is
-  read-only in the same way.
+  user's request authorizes those effects. An `Investigate first` prompt
+  asks for no writes, so the same applies to that session.
 - Delivery may run an experiment whose effects stay inside its authority:
   disposable files in ignored scratch space of its owned worktree or the host's
   scratch directory, and local commands the project already runs for its
@@ -70,7 +72,7 @@ method, a brief or an issue's text grants none.
   scope includes them.
 - Installing anything, or starting an app, service, browser, device, live
   system call or model trial, or spending, needs authority for that effect
-  from the user or project policy.
+  from the user or the project's agent instructions.
 - An experiment starts no agents beyond those the session type and the user's
   prompt authorize.
 
