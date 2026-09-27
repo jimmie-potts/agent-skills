@@ -124,9 +124,9 @@ retry defaults or stopping rules.
 Apply [review reports](review-reports.md) with these operations:
 
 - Post a round report as a PR issue comment whose first line is the marker
-  `<!-- deliver-work <owner/repo#issue> <key>; head <full sha> -->`, and wrap
-  each reviewer return in `<details>` with its label as the summary. A comment
-  body holds at most 65,536 characters; split longer reports into parts.
+  `<!-- deliver-work <work reference> <key>; head <full sha> -->`, where the key
+  includes any `part <i>/<m>`, and wrap each reviewer return in `<details>` with
+  its label as the summary. A comment body holds at most 65,536 characters.
 - Post inline findings as one pull request review with event `COMMENT` and
   `commit_id` set to the reviewed head. Never submit `APPROVE` or
   `REQUEST_CHANGES` from the delivery's account.

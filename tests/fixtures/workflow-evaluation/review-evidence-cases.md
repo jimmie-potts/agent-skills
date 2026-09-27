@@ -61,6 +61,10 @@ seconds with no response body. Decide the next steps for each readback:
 - C: All pages read; no comment carries the marker.
 - D: All pages read; two comments carry the `report final 2` marker, ids 201
   and 205, both with the intended content.
+- E: The report was too long for one comment, so it was split into two parts.
+  Part 1 was posted and read back as id 210. The POST for part 2 timed out.
+  All pages read; one comment carries the `report final 2 part 1/2` marker and
+  none carries `report final 2 part 2/2`.
 
 ## RE04: Feedback that repeats, changes or belongs to the delivery
 

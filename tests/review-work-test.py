@@ -19,7 +19,7 @@ TOKEN = r'[^\s|()+,;]+'
 LABEL = r'[a-z0-9]+(?:-[a-z0-9]+)*'
 KNOWN = rf'(?!unknown ){TOKEN} \((?:host-observed|user-stated|self-reported)\)'
 SOURCED = rf'(?:unknown \(unknown\)|{KNOWN}(?: \+ {KNOWN})*)'
-POLICY = rf'(?!unknown\b)(?:[\w.-]+@[0-9a-f]{{40}}|{TOKEN} read \d{{4}}-\d{{2}}-\d{{2}})'
+POLICY = rf'(?!unknown\b)(?:[\w.-]+(?:/[\w.-]+)?@[0-9a-f]{{40}}|{TOKEN} read \d{{4}}-\d{{2}}-\d{{2}})'
 REVIEWER = (rf'({LABEL}): ([a-z]+), requested {TOKEN} at {TOKEN}, '
             rf'model {SOURCED}, level {SOURCED}')
 CELLS = {
@@ -71,15 +71,21 @@ def parse_table(block, cells, order):
 def parse_returns(text):
     """Parse the retained reviewer returns and check each digest."""
     returns = []
+    if not text:
+        return returns
     for block in re.split(r'\n(?=### Reviewer return: )', text):
         match = re.fullmatch(
             r'### Reviewer return: ([^\n]+)\n\n\| Field \| Value \|\n'
-            r'\| --- \| --- \|\n((?:\|[^\n]*\|\n)+)\n~~~text\n'
-            r'((?:(?!~~~)[^\n]*\n)+)~~~\n?', block)
+            r'\| --- \| --- \|\n((?:\|[^\n]*\|\n)+)\n(~{3,})text\n'
+            r'((?:[^\n]*\n)+?)\3\n?', block)
         if not match:
             raise ValueError('reviewer return outside its block shape')
+        fence, body = match.group(3), match.group(4)
+        if any(re.match(rf'~{{{len(fence)},}}', line)
+               for line in body.splitlines()):
+            raise ValueError('a return line would close its fence')
         rows = parse_table(match.group(2), RETURN_CELLS, RETURN_ROWS)
-        digest = hashlib.sha256(match.group(3).encode()).hexdigest()
+        digest = hashlib.sha256(body.encode()).hexdigest()
         if rows['Digest'] != f'sha256:{digest}':
             raise ValueError(f'digest does not match the return: {match.group(1)}')
         returns.append((match.group(1), rows))
@@ -93,11 +99,11 @@ def parse_review_result(text):
         r'((?:\|[^\n]*\|\n)+)'
         r'\n\*\*Findings:\*\*\n((?:- [^\n]+\n)+|none\n)'
         r'\n\*\*Coverage:\*\* (\S[^\n]*)\n'
-        r'\n(### Reviewer return: .+)', text, re.DOTALL)
+        r'(?:\n(### Reviewer return: .+)|\n?)', text, re.DOTALL)
     if not match:
         raise ValueError('section outside the Review result shape')
     rows = parse_table(match.group(1), CELLS, ROWS)
-    returns = parse_returns(match.group(4))
+    returns = parse_returns(match.group(4) or '')
 
     reviewers = [] if rows['Reviewers'] == 'none' else [
         re.match(REVIEWER, entry).groups()
@@ -360,8 +366,8 @@ class ResultContractTest(unittest.TestCase):
                     '| Requirements | example-org/example-app#42 at 2026-09-24'),
                 'Specification decided without a complete retained return'),
             'partial return decides its axis': (
-                good.replace('| Return | complete |\n| Digest | sha256:0bf8',
-                             '| Return | partial |\n| Digest | sha256:0bf8'),
+                good.replace('| Return | complete |\n| Digest | sha256:e6d8',
+                             '| Return | partial |\n| Digest | sha256:e6d8'),
                 'Specification decided without a complete retained return'),
             'unknown return state': (
                 good.replace('| Return | complete |', '| Return | approved |', 1),
@@ -415,10 +421,42 @@ class ResultContractTest(unittest.TestCase):
         self.assertFalse(accepts(undecided, rows['Comparison'],
                                  rows['Requirements'], rows['Policy']))
 
+    def test_no_reviewer_result_has_no_returns(self):
+        standalone = examples()[1]
+        summary, _ = split_returns(standalone)
+        none = (summary.replace(
+            summary.split('| Reviewers | ', 1)[1].split(' |\n', 1)[0], 'none')
+            .replace('| Standards | action-required |', '| Standards | incomplete |')
+            .replace('P1 1;', 'P1 0;')
+            .replace('- F1 (P1, standards, unresolved): lib/auth.py:88, an expired '
+                     'token passes the check; first final 1, latest final 1\n',
+                     'none\n'))
+        parsed = parse_review_result(none.rstrip('\n') + '\n')
+        self.assertEqual(parsed['returns'], [])
+        self.assertFalse(accepts(parsed, *(parsed['rows'][f] for f in
+                                          ('Comparison', 'Requirements', 'Policy'))))
+        with self.assertRaisesRegex(ValueError, 'own retained return'):
+            parse_review_result(summary)
+
+    def test_return_containing_a_tilde_fence(self):
+        good = examples()[0]
+        summary, (standards, specification) = split_returns(good)
+        body = 'Verdict: satisfied.\n~~~\nquoted fence\n~~~\nCoverage: all.\n'
+        digest = hashlib.sha256(body.encode()).hexdigest()
+        head = standards.split('~~~text\n', 1)[0]
+        head = re.sub(r'sha256:[0-9a-f]{64}', 'sha256:' + digest, head)
+        longer = head + '~~~~text\n' + body + '~~~~\n'
+        self.assertEqual(len(parse_review_result(
+            summary + '\n' + longer + '\n' + specification)['returns']), 2)
+        with self.assertRaises(ValueError):
+            parse_review_result(summary + '\n' + head + '~~~text\n' + body
+                                + '~~~\n\n' + specification)
+
     def test_policy_versions(self):
         good = examples()[0]
         policy = 'example-app@abcdef1234567890abcdef1234567890abcdef12'
         for value in ('wiki/standards read 2026-09-20',
+                      'example-org/example-app@' + 'a' * 40,
                       f'{policy} + wiki/standards read 2026-09-20'):
             with self.subTest(policy=value):
                 parsed = parse_review_result(good.replace(

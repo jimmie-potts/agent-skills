@@ -9,18 +9,17 @@ code-host adapter supplies the operations.
 
 ## Stay within the communication boundary
 
-- An explicit delivery request authorizes, on its own change review: one report
-  per completed or stopped final round, inline comments for its own blocking
-  findings, the description's review section, and factual replies about its
-  scoped fixes. Repository policy and narrower user limits prevail.
+- An explicit delivery request authorizes its own review evidence on its own
+  change review: one report per completed or stopped final round, inline
+  comments for its own blocking findings, the description's review section,
+  and factual replies about its findings' states and its scoped fixes.
+  Repository policy and narrower user limits prevail.
 - It does not authorize replying to a disagreement, arguing a disputed finding
   or disposition, resolving any thread, submitting an approving or
   change-requesting review, dismissing a review, or posting anywhere else.
   Draft the needed response in the task, name the decision and its owner, and
   continue independent work. Existing explicit approval of an exact reply or
   resolution persists.
-- Standalone `review-work` or `code-review` returns evidence and posts nothing
-  unless the user names the destination.
 - Reviewers never publish. A comment from the delivery's own account and a
   digest are evidence of what was retained, not native approval, independent
   sign-off or a tamper-proof attestation.
@@ -53,18 +52,26 @@ stop. Never publish a round before its result. In order:
 2. `**Review gate for this comparison:**` followed by `satisfied` only when
    every required axis is `satisfied`; otherwise `not satisfied` and the
    blocking axes or gaps, or `stopped` and why.
-3. The round's `## Review result` unchanged, with each reviewer return
-   collapsed so the report stays short. Keep its bytes, so its digest still
-   matches.
+3. The round's `## Review result` with its bytes unchanged. The adapter may
+   wrap each reviewer return in a collapsible block to keep the report short;
+   removing that wrapper restores the contract shape and each digest.
 4. Each specialist or provider result, such as a security scan, with the
    revision and coverage it reports. A result for another head is
-   `superseded` and never approves this one.
+   `superseded` and never approves this one: a required axis it would fill is
+   `incomplete` for this comparison.
 
 A report describes only its comparison, and later heads never edit it. When a
-stopped round later completes on the same comparison, append the completion to
-that report and keep the stopped content. Split a report longer than the
-provider allows into ordered parts that share its key; never truncate a
-return.
+stopped or incomplete round later gains a return on the same comparison, such
+as a replacement or a required specialist reviewer, append it and the updated
+result to that report and keep the earlier content.
+
+Never truncate a return. When a report exceeds the provider's size limit, split
+it at line boundaries into parts keyed `report final <n> part <i>/<m>`, fixing
+the split before the first part is posted. Each part is its own effect with
+its own intent and digest. A return split across parts repeats its fence
+opening and closing in each part; its digest covers the fenced lines of all its
+parts concatenated in part order. The report is published only when every part
+is applied; the description links part 1.
 
 ## Keep the current result in the description
 
@@ -78,12 +85,16 @@ a gate line, then one row per final round, newest last.
 | `superseded` | A completed round whose comparison, requirements or policy has since changed |
 | `stopped` | A round that ended without a complete result |
 
+The `Specialist` cell is `none` when no specialist axis is required, `-` while
+pending, or `<name>: <status>` entries joined by `, ` in the axis vocabulary.
+
 Write `**Review gate:** satisfied for head <full sha>` only when the last row is
 `current`, every required axis in it is `satisfied` and its report link reads
 back; otherwise write `**Review gate:** not satisfied:` with the reason. A
 changed head, requirement or policy marks the current row `superseded` and adds
 a `pending` row. Read the description immediately before each update, change
-only this section, and read it back.
+only this section, and read it back. A description update has no key: after an
+uncertain update, compare the section read back with the intended one.
 
 ```markdown
 ## Independent review
@@ -116,7 +127,8 @@ drafted response for its owner, not a reply. Never resolve the thread.
 
 ## Identify each effect and recover it
 
-Key each effect by work and purpose: `report final <n>`, `finding <ID>`,
+Key each posted effect by work and purpose: `report final <n>`, with
+`part <i>/<m>` when split, `finding <ID>`,
 `reply <ID> <state> final <n>`, or `reply <feedback ID> <version>` for another
 author's item. Embed the key, the work reference and the reviewed head in a
 hidden marker in the body. Before the request, record the intent, key and
@@ -130,8 +142,10 @@ nothing, so the result stays unknown and dependent effects pause.
 - One match with the intended content: applied. Record it; do not repeat it.
 - No match after a complete read: not applied. Publish once with fresh
   prerequisites.
-- Several matches: the earliest is canonical. Record the others as duplicates
-  and link only the canonical one; removing them needs authority.
+- Several matches for the same key: the earliest is canonical. Record the
+  others as duplicates and link only the canonical one; removing them needs
+  authority. Parts of one report have distinct keys, so they are never
+  duplicates of each other.
 - A match with different content: your own partial post is completed by
   editing that effect, not by posting another; another actor's edit is
   feedback.

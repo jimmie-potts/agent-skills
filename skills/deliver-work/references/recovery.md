@@ -16,7 +16,8 @@ IDs and attempt history. Reconcile authoritative run/job attempts before another
 request; a new run ID or resumed context does not reset the allowance.
 
 An ambiguous report, inline comment, reply or description update is a pending
-external effect too. Reconcile it by its identity key before repeating it, as
+external effect too. Before repeating it, reconcile a posted item by its
+identity key and a description update by reading its section back, as
 [review reports](review-reports.md) describes; a duplicate is recorded, not
 deleted, and an unread page leaves the result unknown.
 

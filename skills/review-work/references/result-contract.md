@@ -115,19 +115,24 @@ revision it actually covered; a result for an older head never covers this one.
 The table, findings and coverage are the coordinator's summary. After them,
 retain what each reviewer actually returned, so a reader can check the summary
 once the conversation is gone. Write one block per `Reviewers` entry, in the
-same order, including failed and replaced reviewers of the round:
+same order, including failed and replaced reviewers of the round; `Reviewers
+none` has no blocks:
 
 - A `### Reviewer return: <label>` heading, then a `| Field | Value |` table
   with the rows `Axis`, `Comparison`, `Requirements`, `Policy`, `Return`,
-  `Digest` and `Redactions`, then the return in a `~~~text` fence.
-- `Axis` matches the entry. `Comparison`, `Requirements` and `Policy` are the
-  inputs the reviewer was briefed with and confirmed, in the result's grammar.
-- `Return` is `complete` when the return states its coverage and findings for
-  the axis, `partial` when it stops early or omits coverage or findings, and
-  `failed` when it errored, returned nothing usable or exceeded its brief.
+  `Digest` and `Redactions`, then the return in a fence opened by `~~~text`.
+  When a line of the return starts with three or more tildes, lengthen both
+  fence lines beyond the longest such run.
+- `Axis` matches the entry. `Comparison`, `Requirements` and `Policy`, in the
+  result's grammar, are what the return itself names or confirms; when it names
+  none, the inputs it was briefed with.
+- `Return` is `complete` when the return states its verdict, coverage and
+  findings for the axis, `partial` when it stops early or omits any of them,
+  and `failed` when it errored, returned nothing usable or exceeded its brief.
 - The fence holds the reviewer's own final message, verbatim except for
   redactions. Never substitute a paraphrase, the reviewer's session
-  transcript, tool output or runtime metadata.
+  transcript, tool output or runtime metadata. When nothing came back, the
+  fence holds one line, `[no return: <reason>]`.
 - Replace credentials, secrets, private paths, host or session identifiers and
   unrelated personal data with `[redacted: <kind>]`, and list them in
   `Redactions` as `<count>: <kind>, <kind>`, or `none`. Change nothing else;
@@ -178,11 +183,13 @@ A second final round after one correction:
 | Requirements | example-org/example-app#42 at 2026-09-25T10:00Z |
 | Policy | example-app@abcdef1234567890abcdef1234567890abcdef12 |
 | Return | complete |
-| Digest | sha256:e5c293da7c5e918d07305526bc827ecc7d490577ec6a7b0137d926a2c3da04f6 |
+| Digest | sha256:b0d9bdbacf90cd3de2158490ca238515902791546d469b45b8f529ea1bc4b5f0 |
 | Redactions | none |
 
 ~~~text
 Standards review of 333333333333 against base 111111111111, policy example-app@abcdef1234567890abcdef1234567890abcdef12.
+
+Verdict: satisfied.
 
 Blocking findings: none.
 
@@ -200,11 +207,13 @@ Coverage: src/export.ts, test/export.test.ts and .github/workflows/ci.yml. I rea
 | Requirements | example-org/example-app#42 at 2026-09-25T10:00Z |
 | Policy | example-app@abcdef1234567890abcdef1234567890abcdef12 |
 | Return | complete |
-| Digest | sha256:0bf8f8ef5c8f680274407c5a8dd7c3644774bf63a88237efc7cb7ae8fedce2ec |
+| Digest | sha256:e6d81d2404f22efcdb9e4e4153e44c5006ee45fe70753a2074e5d024067b8097 |
 | Redactions | none |
 
 ~~~text
 Specification review of 333333333333 against base 111111111111, requirements example-org/example-app#42 at 2026-09-25T10:00Z.
+
+Verdict: satisfied.
 
 Blocking findings: none. F1 is resolved: test/export.test.ts:31 now rejects an empty filter, and the supplied CI run passed on this head.
 
@@ -245,11 +254,13 @@ A standalone review of an uncommitted patch without a specification:
 | Requirements | none |
 | Policy | unknown |
 | Return | complete |
-| Digest | sha256:34d79131cd02db9e8ba7a1ebc86db5f8fafad18f5edb260068154c77aa48e3c4 |
+| Digest | sha256:fc1fdac78bb4d53d34a268ed61434b200506075abc31bbf144db0573be29fa33 |
 | Redactions | 1: credential |
 
 ~~~text
 Standards review of the supplied patch (sha256:4f1c0d2e3b4a), no written standards policy.
+
+Verdict: action-required.
 
 Blocking findings:
 - P1 lib/auth.py:88: `is_valid` compares the expiry with `<=` against a naive local time, so a token that expired an hour ago passes. Failing input: a token with exp = now - 3600 in UTC+1. Log excerpt: AUTH_SECRET=[redacted: credential].
