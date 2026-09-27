@@ -156,8 +156,8 @@ Reusable SDLC workflows also include:
   defines its procedure, delivery offers that procedure at a checkpoint after
   verified merge and post-merge CI and runs it only on the owner's approval
   there or on authorization in the request that names the step, which covers
-  only that delivery's own change; otherwise it reports a needed step to its
-  owner and never improvises one;
+  only that delivery's own change; otherwise it never improvises one and keeps
+  a step the item still requires pending with its owner;
 - the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
   `openspec-apply-change`, `openspec-update-change`, `openspec-sync-specs`, and
   `openspec-archive-change`. They use the consuming repository's pinned CLI.
@@ -563,8 +563,11 @@ read this section from the target revision, for example
    checkout is on `main`, that `origin/main` includes the merge you are
    installing (`git merge-base --is-ancestor <merge> origin/main`), that the
    update is a fast-forward (`git merge-base --is-ancestor HEAD origin/main`)
-   and that no local change in `git status --short` blocks it. If any check
-   fails, stop and report the checkout's owner and the next action. Never
+   and that no local change in `git status --short` blocks it. A local change
+   inside a skill the update changes or adds
+   (`git status --short -- skills/<skill>`) also blocks it, because step 6
+   would then fail. If any check fails, stop and report the checkout's owner
+   and the next action. Never
    stash, reset, switch branches, roll back or remove another session's files.
 3. List everything the update brings, including changes merged for other work:
    `git diff --name-status HEAD origin/main -- skills/`. Classify each skill as
@@ -576,8 +579,8 @@ read this section from the target revision, for example
    update; the fast-forward brings every merged change at once.
 4. Prepare the complete step and present it at the owner's checkpoint. Run it
    under a delivery request's authorization instead only where `AGENTS.md`
-   allows, which excludes any step that installs, uninstalls or retires a
-   skill.
+   allows: never when it installs, uninstalls or retires any skill other than
+   that change's own.
    - For each renamed or removed skill, uninstall its owned links with the
      current, older catalog before the fast-forward, dry-run first, as the
      retirement paragraph below describes. Rerun step 2's checks just before

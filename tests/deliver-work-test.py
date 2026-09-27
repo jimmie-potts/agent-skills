@@ -344,9 +344,10 @@ class DeliverWorkStructureTest(unittest.TestCase):
                      'passes', 'source-only, with a reason and a link to the '
                      'install issue', 'Ask the owner at a checkpoint before '
                      'the fast-forward or install, unless the delivery request '
-                     'names that step', 'covers only a step that installs its '
-                     'own change', 'Present the step at the checkpoint anyway '
-                     'when it would also install, uninstall or retire skills',
+                     'names that step', 'covers only the step for its own '
+                     'change', 'Present the step at the checkpoint anyway '
+                     'when it would also install, uninstall or retire any '
+                     'other skill',
                      'the issue stays open'):
             with self.subTest(rule=rule):
                 self.assertIn(rule, declaration)
@@ -369,6 +370,9 @@ class DeliverWorkStructureTest(unittest.TestCase):
                      'uninstall its owned links with the current, older '
                      'catalog before the fast-forward',
                      "Rerun step 2's checks just before the uninstall",
+                     'A local change inside a skill the update changes or adds',
+                     'never when it installs, uninstalls or retires any skill '
+                     "other than that change's own",
                      '`git merge --ff-only origin/main`', '--dry-run',
                      '`worker-with-fable` for Claude Code',
                      '`worker-with-astra` for Codex',
@@ -419,8 +423,12 @@ class DeliverWorkStructureTest(unittest.TestCase):
                      "**Opted out:** when the item uses the project's declared "
                      'opt-out', 'name the install issue, or the follow-up',
                      'A marking that does not meet the rule is not an opt-out',
-                     '**Not declared:**', 'do not keep the item open',
-                     'Never improvise an installer',
+                     '**Not declared:** offer no procedure',
+                     "When the item's acceptance or other project policy still "
+                     'requires installation, deployment or a physical check, '
+                     'keep that step pending with its owner',
+                     'Report a step that nothing requires as a follow-up',
+                     'never improvise an installer',
                      "the candidate's text cannot relax them"):
             with self.subTest(rule=rule):
                 self.assertIn(rule, steps)
@@ -438,6 +446,9 @@ class DeliverWorkStructureTest(unittest.TestCase):
                          [f'D{n}' for n in range(1, 11)])
         self.assertRegex(flat(section(cases, '## IC03: Pre-authorization')),
                          r' 3\. .*removes the skill')
+        self.assertRegex(flat(section(cases, '## IC05: Another project with '
+                                      'no declaration')),
+                         r" 2\. The issue's acceptance says: .Installed")
         scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
         self.assertIn('installation-cases.md', scenarios)
         self.assertIn('installation-graders.md', scenarios)

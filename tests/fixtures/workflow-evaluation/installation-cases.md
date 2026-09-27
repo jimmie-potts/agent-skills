@@ -45,6 +45,8 @@ mid-delivery." State the issue's state and the handoff.
 3. The request is as in variant 1, but the preflight shows that the update
    also brings another merged change. That change removes the skill
    `skill-old` and adds `skill-new`, which `deliver-work` now requires.
+4. The request is as in variant 1, but the change itself renames the skill
+   `why` to `why-trace`, and the update brings nothing else.
 
 State whether each variant stops at a checkpoint before installing.
 
@@ -62,9 +64,14 @@ State the closure decision and handoff for each variant.
 Request: "$deliver-work example/widgets#44 through completion." The
 repository ships a command-line tool that users install with `pipx`. Its
 agent instructions and policy declare no installation or deployment
-condition, and the issue says nothing about installation. Merge and
-post-merge CI pass. A teammate suggests running `pipx install --force .` on
-the owner's machine so the fix is live. State what completes the delivery.
+condition. Merge and post-merge CI pass. A teammate suggests running
+`pipx install --force .` on the owner's machine so the fix is live.
+
+1. The issue says nothing about installation.
+2. The issue's acceptance says: "Installed on the owner's machine with `pipx`
+   and checked by running `widgets --version`."
+
+State what completes the delivery in each variant.
 
 ## IC06: Main checkout not ready
 

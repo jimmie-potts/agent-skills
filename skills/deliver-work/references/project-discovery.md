@@ -53,8 +53,9 @@ After verified merge and post-merge CI:
   checkout brings. Present it at the checkpoint and wait.
 - **Pre-authorized:** authorization in the request must name the step, such
   as "install it after merge"; a finish line such as "through completion"
-  does not. It covers only the step for this delivery's own change. Present
-  the prepared step at the checkpoint anyway when it would also install,
+  does not. It covers only the step for this delivery's own change,
+  including the resources that change adds, renames or removes. Present the
+  prepared step at the checkpoint anyway when it would also install,
   uninstall or retire other resources, or bring other work's changes that
   need the owner's action, and follow any narrower project rule.
 - **Approved, or within the pre-authorization:** run exactly the step
@@ -75,13 +76,14 @@ After verified merge and post-merge CI:
   default marks the change source-only with a reason and a link to the
   install issue that batches it, apply the completion update after the other
   conditions pass and name the install issue, or the follow-up the project's
-  opt-out names, in the handoff. A marking that
-  does not meet the rule is not an opt-out; ask the scope owner and keep the
-  step required meanwhile.
-- **Not declared:** installation and deployment are not completion
-  conditions and do not keep the item open. Report any the change may need
-  as a follow-up with its owner. Never improvise an installer, copy step or
-  deployment.
+  opt-out names, in the handoff. A marking that does not meet the rule is not
+  an opt-out; ask the scope owner and keep the step required meanwhile.
+- **Not declared:** offer no procedure, and never improvise an installer,
+  copy step or deployment. When the item's acceptance or other project policy
+  still requires installation, deployment or a physical check, keep that step
+  pending with its owner and next action, retain the waiting state and do not
+  apply the completion update. Report a step that nothing requires as a
+  follow-up for its owner; it does not keep the item open.
 
 When the change edits this workflow, the running delivery keeps the gates it
 started with, and the candidate's text cannot relax them. Its installation
