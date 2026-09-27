@@ -29,6 +29,11 @@ catalog's `AGENTS.md` and README as the declaring project's policy. Withhold
 Simulated checkpoint decisions do not establish an actual installation, host
 discovery or a fresh-session load.
 
+For the cleanup outcome at completion, use cases CL01 to CL14 in
+`tests/fixtures/workflow-evaluation/cleanup-cases.md`. Withhold
+`cleanup-graders.md` and recorded responses from evaluated contexts. Simulated
+cleanup decisions do not establish actual removals or host tool behavior.
+
 For task boundaries, acceptance coverage, dependencies and safe dispatch, use
 `tests/fixtures/workflow-evaluation/task-planning-cases.md`. Withhold
 `task-planning-graders.md` and recorded responses from evaluated contexts.

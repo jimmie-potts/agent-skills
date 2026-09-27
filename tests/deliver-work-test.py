@@ -438,6 +438,78 @@ class DeliverWorkStructureTest(unittest.TestCase):
             with self.subTest(rule=rule):
                 self.assertIn(rule, steps)
 
+    def test_cleanup_outcome_is_settled_at_completion(self):
+        entry = (SKILL / 'SKILL.md').read_text()
+        completion = flat(section(entry, '## Merge and verify completion'))
+        checkpoint = completion.index('(references/project-discovery.md#cleanup)')
+        self.assertLess(checkpoint, completion.index('Once all required '
+                                                     'conditions pass'))
+        for rule in ('record each as removed, retained or not applicable',
+                     'without a policy, retain them'):
+            with self.subTest(rule=rule):
+                self.assertIn(rule, completion)
+        self.assertIn('and the cleanup result', flat(entry))
+        discovery = (SKILL / 'references/project-discovery.md').read_text()
+        row = next(line for line in discovery.splitlines()
+                   if line.startswith('| Completion |'))
+        self.assertIn('[cleanup](#cleanup)', row)
+        cleanup = flat(section(discovery, '## Cleanup'))
+        # Each rule below rejects an unsafe removal.
+        for rule in ('Only recorded resources are this delivery\'s',
+                     'after verified merge and passing required post-merge CI',
+                     'is preserved at a surviving private location outside it',
+                     'a worktree is clean and unlocked',
+                     'a temporary clone has no local changes, stashes or '
+                     'unpushed commits',
+                     'a branch tip equals the head the merge recorded',
+                     'Never use a forcing flag that overrides a dirty, locked '
+                     "or unmerged state, such as Git's `git worktree remove "
+                     "--force` or `git branch -D`",
+                     'whatever the merge strategy',
+                     'with that tip as an expected-value guard',
+                     'first confirm with `git worktree list --porcelain` that '
+                     'no worktree has the branch checked out; otherwise retain '
+                     'it',
+                     "remove this branch's own configuration section if it "
+                     'exists',
+                     'never retry it with a forcing flag',
+                     'When a tool created the resource and manages its exit',
+                     'Read back the removal',
+                     'that proves nothing about local resources',
+                     'A local-only, ready-PR-only or explicit watch request '
+                     'stops without its own merge',
+                     'removes only what the applicable policy allows before a '
+                     'merge',
+                     'never assume a removal succeeded'):
+            with self.subTest(rule=rule):
+                self.assertIn(rule, cleanup)
+        self.assertNotIn('When OpenSpec applies', cleanup)
+        self.assertIn('(references/project-discovery.md#cleanup) outcome',
+                      flat(entry.split('## Boundaries')[0]))
+        resumption = (SKILL / 'references/resumption.md').read_text()
+        self.assertIn('(project-discovery.md#cleanup)', resumption)
+
+    def test_cleanup_scenarios_match_graders(self):
+        fixtures = ROOT / 'tests/fixtures/workflow-evaluation'
+        cases = (fixtures / 'cleanup-cases.md').read_text()
+        graders = (fixtures / 'cleanup-graders.md').read_text()
+        case_ids = re.findall(r'^## (CL\d+):', cases, re.MULTILINE)
+        grader_ids = re.findall(r'^\| (CL\d+) \|', graders, re.MULTILINE)
+        self.assertEqual(case_ids, [f'CL{n:02d}' for n in range(1, 15)])
+        self.assertEqual(grader_ids, case_ids)
+        self.assertRegex(flat(section(cases, '## CL03: A squash-merged branch')),
+                         r' 3\. .*checked out at H2')
+        squash = next(line for line in graders.splitlines()
+                      if line.startswith('| CL03 |'))
+        for decision in ('Variant 2', 'Variant 3', 'expected-value guard',
+                         'checked out in another worktree',
+                         '`git branch -D` or any other forcing flag fails'):
+            with self.subTest(decision=decision):
+                self.assertIn(decision, squash)
+        scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
+        self.assertIn('cleanup-cases.md', scenarios)
+        self.assertIn('cleanup-graders.md', scenarios)
+
     def test_installation_scenarios_match_graders(self):
         fixtures = ROOT / 'tests/fixtures/workflow-evaluation'
         cases = (fixtures / 'installation-cases.md').read_text()

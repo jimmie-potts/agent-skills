@@ -8,7 +8,9 @@ description: Deliver a named issue or requirement through project-defined implem
 An explicit invocation with a work reference requests implementation, one ready
 pull request, normal merge, and verified tracking completion, within the user's
 limits and project policy. A local-only, ready-PR-only or explicit watch request
-stops at that limit with its required evidence. Planning-only means read-only
+stops at that limit with its required evidence, including the
+[cleanup](references/project-discovery.md#cleanup) outcome for what it
+created. Planning-only means read-only
 planning. Ordinary implementation, investigation, and review requests do not
 select this skill. Treat a pull request as the code host's equivalent
 change-review object.
@@ -63,7 +65,8 @@ These hold at every step. References elaborate them and never relax them.
    revision. The work source need not belong to the current checkout. Read the
    applicable agent instructions and relevant development policy, contracts,
    code, tests and CI. Establish the planning method, local/hosted checks, review
-   requirements, merge strategy and completion conditions before those stages.
+   requirements, merge strategy, completion conditions and cleanup policy
+   before those stages.
    Identify maintained guides, roadmap and architecture inputs, their owning
    repositories/coordinator, and any publication procedure. When such policy
    applies, read [documentation checkpoints](references/documentation.md) and
@@ -81,7 +84,8 @@ These hold at every step. References elaborate them and never relax them.
    Resolve ambiguous identity or another coordinator's ownership first. Start
    new work in an isolated branch/worktree or owned checkout from the fresh
    target. Preserve existing authorized changes on resumption. Record the base
-   revision, worktree state, source reference and requested finish line.
+   revision, worktree state, source reference and requested finish line, and
+   each temporary resource this delivery creates.
 
 ## Plan, implement and validate
 
@@ -233,10 +237,13 @@ requires it. Before offering, skipping or recording such a step, read
 [declared completion steps](references/project-discovery.md#declared-completion-steps).
 If a required deployment, installation, physical check or human acceptance
 remains, retain the established waiting/current tracking state and report its
-owner and next action. Once all required conditions pass, apply the appropriate
-completion update, then read back status and resolution/reason where
-supported. Report the immutable published revision and acceptance evidence,
-and any documentation or publication stage still pending.
+owner and next action. Settle the temporary resources this delivery created
+under the project's cleanup policy, reading [cleanup](references/project-discovery.md#cleanup),
+and record each as removed, retained or not applicable; without a policy,
+retain them and say why. Once all required conditions pass, apply the
+appropriate completion update, then read back status and resolution/reason
+where supported. Report the immutable published revision and acceptance
+evidence, and any documentation or publication stage still pending.
 
 ## Recover and report
 
@@ -275,7 +282,8 @@ appropriate:
 - PR: reference or `none`.
 - Last verified revision: immutable revision and what was verified there.
 - Evidence: separate local checks, hosted CI, independent review, merge,
-  tracking completion, and required installation/deployment or human acceptance.
+  tracking completion, required installation/deployment or human acceptance,
+  and the cleanup result.
   Associate each result with its revision; link existing details.
   Include attributable usage when exposed, preserving unknowns and the selection
   policy's distinction between subscription usage and API cost.

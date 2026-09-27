@@ -162,7 +162,10 @@ Reusable SDLC workflows also include:
   verified merge and post-merge CI and runs it only on the owner's approval
   there or on authorization in the request that names the step, which covers
   only that delivery's own change; otherwise it never improvises one and keeps
-  a step the item still requires pending with its owner;
+  a step the item still requires pending with its owner. Every delivery ends
+  with a cleanup outcome for the temporary resources it created: removed where
+  the owning project's policy allows, otherwise retained with a reason, owner
+  and next action;
 - the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
   `openspec-apply-change`, `openspec-update-change`, `openspec-sync-specs`, and
   `openspec-archive-change`. They use the consuming repository's pinned CLI.
