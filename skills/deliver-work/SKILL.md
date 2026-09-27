@@ -112,6 +112,10 @@ Read each reference below at its trigger:
 - [Corrections and explicit limits](references/corrections.md): before acting
   on a review result, correcting findings or failed acceptance, or working under
   an explicit round, time or spend limit.
+- [Verification maintenance](references/verification-maintenance.md): when
+  changed behavior has a project feature map, verification recipe or
+  maintained check, when a verification fails or cannot run, and before adding
+  a check for a repeated or observed failure.
 - [Model and strategy selection](references/model-selection.md): before
   selecting a worker or changing implementation strategy/settings, reading only
   its selected role and host branches. Direct trivial

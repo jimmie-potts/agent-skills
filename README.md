@@ -122,7 +122,12 @@ Reusable SDLC workflows also include:
   results, diagnoses surviving blockers and honors explicit round, time and
   spending limits. Productive rounds have no universal cap; exhausted limits
   leave unmet gates pending. Task reviews never replace the two final
-  independent reviews. Substantive
+  independent reviews.
+  [Verification maintenance](skills/deliver-work/references/verification-maintenance.md)
+  updates the owning project's feature map or recipe with changed behavior,
+  classifies failed verification and shows that risk-selected checks fail on
+  a known bad result; a screenshot or simulated pass is never acceptance by
+  itself. Substantive
   checkpoints and final handoff include the chosen strategy and reason, decision
   contributors, model roles and observed settings, active and distinct agent
   counts, planned additional agents, and advisor consultations. See

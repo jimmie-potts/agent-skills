@@ -323,5 +323,155 @@ class DeliverWorkStructureTest(unittest.TestCase):
             self.assertTrue((ROOT / 'skills' / dependency / 'SKILL.md').is_file())
 
 
+MAINTENANCE = SKILL / 'references/verification-maintenance.md'
+EVALUATION = ROOT / 'tests/fixtures/workflow-evaluation'
+FAILURE_CLASSES = ('product', 'harness', 'stale-instructions', 'environment',
+                   'acceptance')
+# One entry per agent-skills#86 commitment, keyed to its load-bearing phrases.
+# Wording may change around them; dropping or inverting a commitment fails.
+MAINTENANCE_RULES = {
+    'changed feature': ('update only the affected entries',
+                        'same authorized source delivery',
+                        'acceptance criteria and status stay with their owners'),
+    'ambiguous failure': ('record the candidate classes',),
+    'negative control': ('known bad result', 'the check must fail',
+                         'the check must pass',
+                         'add no executable test that mirrors prose'),
+    'repeated failure': ('type or schema constraint', 'lint or structural check',
+                         'boundary test', 'driver capability',
+                         'route it to its owner or a separate task'),
+    'observed failure': ('source revision', 'expected versus observed',
+                         'evidence pointer', 'human disposition',
+                         'record the deferral and its reason',
+                         'never an unseen holdout'),
+    'truthful evidence': ('never passed',
+                          'screenshots and videos supplement assertions',
+                          'simulated behavior only', 'physical acceptance'),
+    'project-owned detail': ('read it only when the change touches',
+                             'do not copy app commands'),
+}
+COPIED_COMMAND = re.compile(
+    r'```|`(?:npm|npx|node|python3?|pytest|bash|make|playwright)\b[^`]*`')
+
+
+def maintenance_gaps(text):
+    """Name each verification-maintenance commitment the text lacks."""
+    folded = ' '.join(text.split()).lower()
+    gaps = [rule for rule, phrases in MAINTENANCE_RULES.items()
+            if not all(phrase in folded for phrase in phrases)]
+    if tuple(re.findall(r'\| `([a-z-]+)` \|', text)) != FAILURE_CLASSES:
+        gaps.append('failure classes')
+    if COPIED_COMMAND.search(text):
+        gaps.append('copied project command')
+    return gaps
+
+
+def rubric_gaps(cases, graders):
+    """Name scoring gaps between the case inputs and the evaluator rubric."""
+    gaps = []
+    if 'Do not read `verification-maintenance-graders.md`' not in ' '.join(cases.split()):
+        gaps.append('graders not withheld')
+    expected = set()
+    for number, body in re.findall(r'^## (\d+)\. .*?\n(.*?)(?=^## |\Z)',
+                                   cases, re.DOTALL | re.MULTILINE):
+        variants = re.findall(r'^- Variant ([A-Z]):', body, re.MULTILINE)
+        expected |= {f'{number} {v}' for v in variants} or {number}
+    rows = dict(re.findall(r'^\| (\d+(?: [A-Z])?) \| (V\d(?:, V\d)*) \|',
+                           graders, re.MULTILINE))
+    if not expected or set(rows) != expected:
+        gaps.append('unscored or unknown cases')
+    defined = re.findall(r'^\| (V\d) \|', graders, re.MULTILINE)
+    if defined != [f'V{number}' for number in range(1, 8)]:
+        gaps.append('criteria')
+    if {c for value in rows.values() for c in value.split(', ')} != set(defined):
+        gaps.append('uncovered criteria')
+    if 'not an unseen holdout' not in ' '.join(graders.split()):
+        gaps.append('tuning reported as holdout')
+    return gaps
+
+
+class VerificationMaintenanceTest(unittest.TestCase):
+    def test_checkpoint_is_routed_conditionally(self):
+        entry = ' '.join((SKILL / 'SKILL.md').read_text().split())
+        self.assertIn('[Verification maintenance](references/verification-maintenance.md): '
+                      'when changed behavior has a project feature map', entry)
+        planning = ' '.join((SKILL / 'references/task-planning.md').read_text().split())
+        self.assertIn('[verification maintenance](verification-maintenance.md)', planning)
+
+    def test_reference_keeps_every_commitment(self):
+        self.assertEqual(maintenance_gaps(MAINTENANCE.read_text()), [])
+
+    def test_gap_check_rejects_weakened_references(self):
+        reference = ' '.join(MAINTENANCE.read_text().split())
+        self.assertEqual(maintenance_gaps(reference), [])
+        mutations = {
+            'changed feature': [
+                ('update only the affected entries', 'update the entries'),
+                ('Acceptance criteria and status stay with their owners',
+                 'The map records acceptance criteria and status')],
+            'ambiguous failure': [
+                ('record the candidate classes', 'pick the likeliest class')],
+            'failure classes': [
+                ('| `stale-instructions` |', '| `other` |'),
+                ('| `environment` |', '| `product` |')],
+            'negative control': [
+                ('the check must fail for the expected reason', 'the check may fail'),
+                ('Add no executable test that mirrors prose',
+                 'Add an executable test for each rule')],
+            'repeated failure': [
+                ('a type or schema constraint, a lint or structural check, a '
+                 'boundary test or a driver capability', 'a new instruction rule'),
+                ('Route it to its owner or a separate task', 'Fix it here')],
+            'observed failure': [
+                ('- the human disposition.', ''),
+                ('record the deferral and its reason', 'drop the case'),
+                ('never an unseen holdout result', 'also an unseen holdout result')],
+            'truthful evidence': [
+                ('are unknown, unavailable or failed, never passed',
+                 'count as passed'),
+                ('Screenshots and videos supplement assertions',
+                 'Screenshots and videos establish a pass'),
+                ('establish simulated behavior only',
+                 'establish physical acceptance')],
+            'project-owned detail': [
+                ('read it only when the change touches', 'read every map before'),
+                ('Do not copy app commands', 'Copy app commands')],
+            'copied project command': [
+                ('Run its commands and steps', 'Run `npm run verify -- capture` and')],
+        }
+        for rule, replacements in mutations.items():
+            for old, new in replacements:
+                with self.subTest(rule=rule, removed=old):
+                    self.assertIn(old, reference)
+                    self.assertIn(rule, maintenance_gaps(reference.replace(old, new, 1)))
+
+    def test_cases_are_scored_and_withheld(self):
+        scenarios = ' '.join((SKILL / 'references/validation-scenarios.md').read_text().split())
+        self.assertIn('`tests/fixtures/workflow-evaluation/verification-maintenance-cases.md`',
+                      scenarios)
+        self.assertIn('Withhold `verification-maintenance-graders.md`', scenarios)
+        self.assertIn('not unseen holdouts', scenarios)
+        cases = (EVALUATION / 'verification-maintenance-cases.md').read_text()
+        graders = (EVALUATION / 'verification-maintenance-graders.md').read_text()
+        self.assertEqual(rubric_gaps(cases, graders), [])
+        mutations = {
+            'graders not withheld': (cases, graders, 'Do not read', 'Read'),
+            'unscored or unknown cases': (cases, graders, '| 7 B |', '| 8 B |'),
+            'criteria': (cases, graders, '| V4 |', '| V9 |'),
+            'uncovered criteria': (cases, graders.replace('| 4 A | V4 |', '| 4 A | V2 |'),
+                                   '| 4 B | V4, V6 |', '| 4 B | V6 |'),
+            'tuning reported as holdout': (cases, graders, 'not an unseen holdout',
+                                           'an unseen holdout'),
+        }
+        for gap, (case_text, grader_text, old, new) in mutations.items():
+            with self.subTest(gap=gap):
+                in_cases = old in case_text
+                target = case_text if in_cases else grader_text
+                self.assertIn(old, target)
+                mutated = target.replace(old, new, 1)
+                pair = (mutated, grader_text) if in_cases else (case_text, mutated)
+                self.assertIn(gap, rubric_gaps(*pair))
+
+
 if __name__ == '__main__':
     unittest.main()
