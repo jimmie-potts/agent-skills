@@ -27,8 +27,9 @@ round-2 file. Withhold the `entrypoint-rightsizing-graders*.md` files; read
 For the alignment checkpoint, use
 `tests/fixtures/workflow-evaluation/alignment-cases.md`: a conflict with an
 accepted decision and its authorized departure, an observed pattern without a
-rule, backlog duplicates, superseded work, true and false dependencies, a small
-local item, and delivery pickup. Withhold `alignment-graders.md`; read
+rule, backlog duplicates, superseded and conflicting work, true and false
+dependencies, a small local item, and delivery pickup with unchanged and
+changed sources. Withhold `alignment-graders.md`; read
 `alignment-observations.md` only after scoring. An alignment result is a
 planning judgment, not a new gate on delivery.
 

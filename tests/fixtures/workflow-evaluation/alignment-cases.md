@@ -77,7 +77,28 @@ edit only.
 
 Finch issue finch#41, planned under case 1 variant B, was published with its
 alignment entry and the superseding-record task in scope. The user now
-explicitly invokes deliver-work for finch#41 through merge. Since planning,
-nothing in `docs/adr/`, the account code or the finch backlog has changed.
-Describe what delivery does with the stored alignment at pickup and which
-reviews gate merge. Do not implement.
+explicitly invokes deliver-work for finch#41 through merge. Describe what
+delivery does with the stored alignment at pickup and which reviews gate
+merge. Do not implement.
+
+- Variant A: since planning, nothing in `docs/adr/`, the account code or the
+  finch backlog has changed.
+- Variant B: since planning, the owner accepted ADR-012, which requires every
+  bulk account write to run as a queued `AccountStore` job. The account code
+  and the finch backlog are unchanged.
+
+## 6. Superseded and conflicting backlog items
+
+Project Tern is a data pipeline tracked in GitHub. Its `README.md` roadmap
+says streaming exports will replace nightly batch exports. It has no decision
+records. The user explicitly invokes plan-work for two outcomes: (a) streaming
+exports through the existing `export` module, and (b) a corrected typo in the
+`export` command's help text. The user authorizes creating new issues for
+these outcomes and adding links in the new issues' bodies, and nothing else.
+
+Current backlog records:
+
+- tern#20, open and unassigned: "Speed up the nightly batch export."
+- tern#22, open and assigned to another developer: "Remove the `export`
+  module; move all exports to the vendor's hosted tool."
+- tern#25, open: "Add retries to the nightly batch export."

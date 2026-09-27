@@ -1,9 +1,8 @@
 # Check alignment with direction and backlog
 
-Read when a proposed item touches a shared seam, an accepted decision or rule,
-or related backlog work, or when the entrypoint's comparison finds a possible
-conflict, departure, duplicate or dependency. It details the entrypoint's
-alignment checkpoint and grants no write or delivery authority.
+Read for every proposed item except a small local one with no architecture,
+pattern or backlog interaction. It details the entrypoint's alignment
+checkpoint and grants no write or delivery authority.
 
 ## Gather evidence in proportion to the item
 
@@ -43,7 +42,7 @@ Compare each item on these points:
   it integrates.
 - Patterns: whether it reuses established components and conventions.
 - Backlog: duplicate, overlapping, conflicting or superseded items.
-- Dependencies: which inputs it genuinely needs, and in what order.
+- Required inputs: what it cannot proceed without, and in what order.
 - Direction: whether it advances an accepted direction or changes one.
 
 Route each finding:
@@ -52,13 +51,13 @@ Route each finding:
 | --- | --- |
 | Aligned | Record the basis. No further investigation. |
 | Authorized departure: the user or owner chose to change an accepted decision or rule | Explain the departure, the decision it changes and the reason. Include in scope any update the project's own process requires for that decision, such as a superseding record. Readiness is unaffected. |
-| Unauthorized conflict with an accepted decision or rule | Record the conflict, the alternatives and their evidence. Mark the affected work needs clarification and settle the decision through the entrypoint's decision step. Do not mark it ready until the decision is settled. |
-| Departure from an observed pattern only | Explain the choice in the item. It is not a conflict and does not block readiness. |
+| Unauthorized conflict with an accepted decision or rule | Record the conflict, the alternatives and their evidence. Mark the affected work as needing clarification and settle the decision through the entrypoint's decision step. Do not mark it ready until the decision is settled. |
+| Departure from an observed pattern only | Explain the choice in the item as a design decision. It is not a conflict and does not block readiness. |
 | Technical uncertainty that sources can resolve | Investigate what is discoverable. When it needs more than planning reads, propose a bounded investigation under the assessment contract; it can be ready while dependent work waits. |
 | Duplicate or overlapping item | Reuse or refine the existing item instead of proposing another. |
 | Superseded item | Reconcile it: link the replacement and propose a disposition for the old item. Changing, closing or relinking it requires publication authority for that effect. |
-| Conflicting backlog item | Surface both. When they cannot both proceed, the choice belongs to their owner; mark only the affected work needs clarification. |
-| Input dependency | Retain it as a blocking dependency with the task-planning meanings. Shared-file coordination and preferred order are not blockers. |
+| Conflicting backlog item | Surface both. When they cannot both proceed, the choice belongs to their owner; mark only the affected work as needing clarification. |
+| Required input | Retain it as a required input with the task-planning meanings. Shared-file coordination and preferred order are not blockers. |
 
 Continue planning items a finding does not affect. A finding on one item never
 blocks unrelated items.
@@ -67,9 +66,14 @@ blocks unrelated items.
 
 Add one compact alignment entry to the item's existing assessment:
 
-- result: aligned, authorized departure, conflict, or unknown;
+- result: `aligned`, including explained pattern departures and reconciled
+  backlog; `authorized departure` from an accepted decision or rule;
+  `conflict`, whose affected work needs clarification; or `unknown` when
+  missing evidence prevents the comparison, which keeps affected work from
+  ready under the assessment contract;
 - the sources inspected, linked, each with a revision or observation date;
-- departures with their reasons, and open questions with the affected work;
+- departures with their reasons, reused, superseded or conflicting backlog
+  items, required inputs, and open questions with the affected work;
 - remaining uncertainty and the limit of the search.
 
 For a small local item with no meaningful architecture or backlog interaction,
@@ -79,7 +83,8 @@ separate alignment ledger.
 
 ## Leave delivery gates unchanged
 
-Delivery refreshes the stored assessment at pickup and runs its independent
-Standards and Specification reviews. It does not repeat this comparison as a
-second planning pass. Planning changes no project architecture, style rule or
+At pickup, delivery checks the stored alignment result's sources for changes
+with the rest of the assessment and refreshes only what changed; it runs no
+second planning comparison. Its independent Standards and Specification
+reviews are unchanged. Planning changes no project architecture, style rule or
 backlog content except through authorized publication.
