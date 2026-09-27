@@ -42,6 +42,9 @@ mid-delivery." State the issue's state and the handoff.
    pass, and the procedure's preflight passes.
 2. The same change, but the request says only "$deliver-work agent-skills#903
    through verified completion."
+3. The request is as in variant 1, but the preflight shows that the update
+   also brings another merged change. That change removes the skill
+   `skill-old` and adds `skill-new`, which `deliver-work` now requires.
 
 State whether each variant stops at a checkpoint before installing.
 

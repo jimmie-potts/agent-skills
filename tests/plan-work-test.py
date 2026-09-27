@@ -140,6 +140,7 @@ class PlanWorkStructureTest(unittest.TestCase):
                      'condition', "the item's acceptance includes that step "
                      'and its readback by default', "recommendation's "
                      '`Checkpoints` row names the stop before it',
+                     "use the project's declared opt-out or, by default, be "
                      'marked source-only, but only with a reason and a link to '
                      'the install issue', 'Write no blanket exclusion',
                      'Without a declaration, leave installation and deployment '

@@ -15,7 +15,7 @@ Establish before each dependent stage:
 | Planning | Accepted issue/document or required planning method, applicable decisions, artifact identities and readiness/archive rules. |
 | Checks and review | Canonical commands, prerequisites, working directories, required CI jobs and protection rules; project requirements in addition to the two independent review axes. |
 | Tracking | Supported checkpoint operations and required fields. |
-| Completion | Post-merge checks; release, deployment, installation or human acceptance conditions and their owners; any [declared installation or deployment](#declared-completion-steps) procedure, its checkpoint and whether the item is marked source-only. |
+| Completion | Post-merge checks; release, deployment, installation or human acceptance conditions and their owners; any [declared installation or deployment](#declared-completion-steps) procedure, its checkpoint, the project's opt-out rule and any opt-out marking on the item. |
 
 Discover facts before asking. Resolve conflicting scope, target branches,
 acceptance requirements or policy with a concrete decision request. Continue
@@ -40,22 +40,27 @@ its agent instructions or delivery policy say that a merged change of a named
 kind is complete only after that step, and name the procedure that performs
 it. Past practice, an issue template or a procedure without the condition is
 not a declaration. At pickup, record whether the change falls within the
-declaration's scope, where the procedure lives, its checkpoint, and any
-source-only marking on the item. At completion, read the procedure from the
-merged target revision, because it may have changed, including by this change.
+declaration's scope, where the procedure lives, its checkpoint, the
+project's opt-out rule, and any opt-out marking on the item. At completion,
+read the procedure from the merged target revision, because it may have
+changed, including by this change.
 
 After verified merge and post-merge CI:
 
 - **Declared:** prepare the procedure's complete step, including its
   preflight, stop conditions, recovery and readbacks, and everything the step
   will change beyond this delivery, such as other merged work a shared
-  checkout brings. Present it at the checkpoint and wait. Explicit
-  authorization in the request must name the step, such as "install it after
-  merge"; a finish line such as "through completion" does not.
-- **Approved or pre-authorized:** run exactly the declared procedure and
-  nothing else, then read back its evidence and record it with the item's
-  delivery evidence. The approval covers only that procedure for this
-  delivery.
+  checkout brings. Present it at the checkpoint and wait.
+- **Pre-authorized:** authorization in the request must name the step, such
+  as "install it after merge"; a finish line such as "through completion"
+  does not. It covers only the step for this delivery's own change. Present
+  the prepared step at the checkpoint anyway when it would also install,
+  uninstall or retire other resources, or bring other work's changes that
+  need the owner's action, and follow any narrower project rule.
+- **Approved, or within the pre-authorization:** run exactly the step
+  presented or authorized and nothing else, then read back its evidence and
+  record it with the item's delivery evidence. The approval covers only that
+  step for this delivery.
 - **Declined, or the owner is unavailable:** keep the item open with the step
   pending, its owner and next action recorded; do not apply the completion
   update.
@@ -66,13 +71,16 @@ After verified merge and post-merge CI:
 - **Interrupted:** the step stays incomplete. Follow the procedure's own
   recovery for owned resources only, preserve others' work, and reconcile an
   ambiguous effect under [recovery](recovery.md) before retrying.
-- **Source-only:** when the item marks the change source-only with a reason
-  and a link to the install issue that batches it, apply the completion update
-  after the other conditions pass and name the install issue in the handoff.
-  A marking without both is not an opt-out; ask the scope owner and keep the
+- **Opted out:** when the item uses the project's declared opt-out, or by
+  default marks the change source-only with a reason and a link to the
+  install issue that batches it, apply the completion update after the other
+  conditions pass and name the install issue, or the follow-up the project's
+  opt-out names, in the handoff. A marking that
+  does not meet the rule is not an opt-out; ask the scope owner and keep the
   step required meanwhile.
-- **Not declared:** report any installation or deployment the change may need
-  as pending with its owner. Never improvise an installer, copy step or
+- **Not declared:** installation and deployment are not completion
+  conditions and do not keep the item open. Report any the change may need
+  as a follow-up with its owner. Never improvise an installer, copy step or
   deployment.
 
 When the change edits this workflow, the running delivery keeps the gates it

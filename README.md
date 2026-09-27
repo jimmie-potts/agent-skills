@@ -79,9 +79,9 @@ Reusable SDLC workflows also include:
   dependencies when using this planner; missing resources are reported, never
   copied. When the owning project declares installation as a completion
   condition, an item's acceptance includes installation and its readback, and
-  its `Checkpoints` row names the stop before it, unless the item is marked
-  source-only with a reason and a linked install issue; planning itself never
-  installs anything;
+  its `Checkpoints` row names the stop before it, unless the item uses the
+  project's opt-out, by default a source-only marking with a reason and a
+  linked install issue; planning itself never installs anything;
 - [`grill-with-docs`](skills/grill-with-docs/SKILL.md), which composes
   [`grilling`](skills/grilling/SKILL.md) and
   [`domain-modeling`](skills/domain-modeling/SKILL.md) for grouped decisions and
@@ -563,12 +563,17 @@ read this section from the target revision, for example
    changed, added, renamed or removed. Read the changed callers for newly
    required skills, such as `review-work` for `deliver-work` and `plan-work`,
    and run `./scripts/manage-skills.sh status --agent both` to see which are
-   missing. An issue marked source-only does not keep its changed callers out
-   of the update; the fast-forward brings every merged change at once.
-4. Prepare the complete step and present it at the owner's checkpoint:
+   missing, and record which changed skills are installed on each host. An
+   issue marked source-only does not keep its changed callers out of the
+   update; the fast-forward brings every merged change at once.
+4. Prepare the complete step and present it at the owner's checkpoint. Run it
+   under a delivery request's authorization instead only where `AGENTS.md`
+   allows, which excludes any step that installs, uninstalls or retires a
+   skill.
    - For each renamed or removed skill, uninstall its owned links with the
      current, older catalog before the fast-forward, dry-run first, as the
-     retirement paragraph below describes.
+     retirement paragraph below describes. Rerun step 2's checks just before
+     the uninstall.
    - Fast-forward with `git merge --ff-only origin/main`.
    - For each added skill, new name of a renamed skill and newly required
      skill, run
@@ -583,20 +588,26 @@ read this section from the target revision, for example
      owners; do not interrupt another owner's work.
 5. After approval, run the prepared step and nothing else. Approval is not
    standing permission to install other skills. If the fast-forward refuses,
-   stop as in step 2. Until every readback passes, the update is incomplete:
-   record which parts ran, and have callers that need a missing skill report
-   it and pause the dependent step rather than resume against a partial skill
-   set. To recover, read status and rerun only the manager commands for the
-   missing owned links, dry-run first. Preserve unrelated files.
+   reinstall any links the step uninstalled from the unchanged checkout,
+   dry-run first, then stop as in step 2. Until every readback passes, the
+   update is incomplete: record which parts ran, and have callers that need a
+   missing skill report it and pause the dependent step rather than resume
+   against a partial skill set. To recover, read status and rerun only the
+   manager commands for the missing owned links, dry-run first. Preserve
+   unrelated files.
 6. Read back the evidence:
    - the checkout's revision includes the merge
      (`git merge-base --is-ancestor <merge> HEAD`);
-   - each affected skill's link on each host it supports resolves into the
-     checkout (`readlink -f`);
-   - `git status --short -- skills/` is empty, so the installed files match the
-     fetched revision;
-   - status shows each new skill correctly installed on each host it supports,
-     and no owned links for retired names.
+   - each changed skill that status showed installed on a host before the
+     update still resolves into the checkout there (`readlink -f`); a changed
+     skill that was not installed on a host stays as it was, unless it is newly
+     required;
+   - `git status --short -- skills/<skill>` is empty for each changed or added
+     skill, so its installed files match the fetched revision. Other sessions'
+     local changes elsewhere do not fail this readback; a local change inside
+     an affected skill does, so report its owner;
+   - status shows each new or newly required skill correctly installed on
+     each host it supports, and no owned links for retired names.
 
    Resume paused callers only after a fresh session on each host lists a newly
    required skill. Run a fresh-session behavioral check of the changed skills

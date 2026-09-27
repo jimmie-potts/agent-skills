@@ -72,6 +72,21 @@ def parse_execution_record(text):
             'recorded': match.group(3), 'policy': match.group(4)}
 
 
+def flat(text):
+    return ' '.join(text.split())
+
+
+def section(text, heading):
+    """Return the text under a Markdown heading up to the next heading of
+    the same or a higher level."""
+    level = len(heading) - len(heading.lstrip('#'))
+    start = text.index(heading + '\n')
+    body = text[start + len(heading):]
+    ends = [match.start() for match in re.finditer(r'^(#+) ', body, re.MULTILINE)
+            if len(match.group(1)) <= level]
+    return body[:ends[0]] if ends else body
+
+
 class DeliverWorkStructureTest(unittest.TestCase):
     def test_single_portable_explicit_entrypoint(self):
         text = (SKILL / 'SKILL.md').read_text()
@@ -230,10 +245,16 @@ class DeliverWorkStructureTest(unittest.TestCase):
         for rule in ('is complete only after it is installed and its readback '
                      'passes', 'source-only, with a reason and a link to the '
                      'install issue', 'Ask the owner at a checkpoint before '
-                     'the fast-forward or install', 'the issue stays open'):
+                     'the fast-forward or install, unless the delivery request '
+                     'names that step', 'covers only a step that installs its '
+                     'own change', 'Present the step at the checkpoint anyway '
+                     'when it would also install, uninstall or retire skills',
+                     'the issue stays open'):
             with self.subTest(rule=rule):
                 self.assertIn(rule, declaration)
-        pointer = "read the README's installed-catalog update section"
+        pointer = ("read the README's installed-catalog update section, "
+                   '[Update the installed catalog]'
+                   '(README.md#update-the-installed-catalog)')
         self.assertEqual(flat(agents).count(pointer), 1)
         for step in ('manage-skills.sh install', 'manage-skills.sh uninstall',
                      'manage-skills.sh status', 'git merge', 'readlink',
@@ -249,14 +270,21 @@ class DeliverWorkStructureTest(unittest.TestCase):
                      '`main`', 'Never stash, reset, switch branches',
                      'uninstall its owned links with the current, older '
                      'catalog before the fast-forward',
+                     "Rerun step 2's checks just before the uninstall",
                      '`git merge --ff-only origin/main`', '--dry-run',
                      '`worker-with-fable` for Claude Code',
                      '`worker-with-astra` for Codex',
                      'git merge-base --is-ancestor <merge> HEAD',
-                     'correctly installed on each host it supports',
+                     '`git status --short -- skills/<skill>` is empty for each '
+                     'changed or added skill',
+                     'each new or newly required skill correctly installed on '
+                     'each host it supports',
                      'only when the issue asks for one', '(AGENTS.md)'):
             with self.subTest(step=step):
                 self.assertIn(step, procedure)
+        # A whole-tree readback cannot pass while another session's
+        # unrelated local change is preserved.
+        self.assertNotIn('`git status --short -- skills/` is empty', procedure)
 
     def test_declared_completion_step_is_offered_at_a_checkpoint(self):
         entry = (SKILL / 'SKILL.md').read_text()
@@ -264,9 +292,10 @@ class DeliverWorkStructureTest(unittest.TestCase):
         for rule in ('declares installation or deployment as a completion '
                      'condition', 'at a checkpoint after verified merge and '
                      "post-merge CI", "only on the owner's approval at that "
-                     'checkpoint or explicit authorization in the request',
-                     'approval covers only the declared procedure',
-                     'never improvise one',
+                     'checkpoint or explicit authorization in the request that '
+                     'names the step', 'either covers only the step for this '
+                     'change', 'never improvise one', 'If a required '
+                     'deployment, installation',
                      '(references/project-discovery.md#declared-completion-steps)'):
             with self.subTest(rule=rule):
                 self.assertIn(rule, completion)
@@ -274,20 +303,27 @@ class DeliverWorkStructureTest(unittest.TestCase):
         row = next(line for line in discovery.splitlines()
                    if line.startswith('| Completion |'))
         for term in ('installation', '#declared-completion-steps', 'checkpoint',
-                     'source-only'):
+                     'opt-out'):
             self.assertIn(term, row)
         steps = flat(section(discovery, '## Declared completion steps'))
         for rule in ('**Declared:**', 'Present it at the checkpoint and wait',
+                     '**Pre-authorized:**',
                      'a finish line such as "through completion" does not',
-                     '**Approved or pre-authorized:** run exactly the declared '
-                     'procedure and nothing else',
+                     "It covers only the step for this delivery's own change",
+                     'Present the prepared step at the checkpoint anyway when '
+                     'it would also install, uninstall or retire other '
+                     'resources',
+                     'run exactly the step presented or authorized and nothing '
+                     'else',
                      '**Declined, or the owner is unavailable:** keep the item '
                      'open', '**Stopped:**', 'Never stash, reset, switch '
                      'branches', '**Interrupted:** the step stays incomplete',
-                     '**Source-only:**', 'name the install issue in the handoff',
-                     'A marking without both is not an opt-out',
-                     '**Not declared:**', 'Never improvise an installer',
-                     'the candidate\'s text cannot relax them'):
+                     "**Opted out:** when the item uses the project's declared "
+                     'opt-out', 'name the install issue, or the follow-up',
+                     'A marking that does not meet the rule is not an opt-out',
+                     '**Not declared:**', 'do not keep the item open',
+                     'Never improvise an installer',
+                     "the candidate's text cannot relax them"):
             with self.subTest(rule=rule):
                 self.assertIn(rule, steps)
 
@@ -300,27 +336,13 @@ class DeliverWorkStructureTest(unittest.TestCase):
                                  re.MULTILINE)
         self.assertEqual(case_ids, [f'IC{n:02d}' for n in range(1, 14)])
         self.assertEqual([case for case, _ in grader_rows], case_ids)
-        self.assertEqual([label for _, label in grader_rows],
-                         [f'D{n}' for n in range(1, 11)]
-                         + [f'P{n}' for n in range(1, 4)])
+        self.assertEqual([label for _, label in grader_rows[:10]],
+                         [f'D{n}' for n in range(1, 11)])
+        self.assertRegex(flat(section(cases, '## IC03: Pre-authorization')),
+                         r' 3\. .*removes the skill')
         scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
         self.assertIn('installation-cases.md', scenarios)
         self.assertIn('installation-graders.md', scenarios)
-
-
-def flat(text):
-    return ' '.join(text.split())
-
-
-def section(text, heading):
-    """Return the text under a Markdown heading up to the next heading of
-    the same or a higher level."""
-    level = len(heading) - len(heading.lstrip('#'))
-    start = text.index(heading + '\n')
-    body = text[start + len(heading):]
-    ends = [match.start() for match in re.finditer(r'^(#+) ', body, re.MULTILINE)
-            if len(match.group(1)) <= level]
-    return body[:ends[0]] if ends else body
 
 
 if __name__ == '__main__':
