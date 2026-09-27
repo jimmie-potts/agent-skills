@@ -84,8 +84,8 @@ A reviewer entry is `<label>: <axis>, requested <model> at <level>, model
 such as `standards-reviewer-1`; the axis is `standards`, `specification`, a
 lowercase specialist name such as `security`, or `both` for one task-round
 reviewer returning both task verdicts. A final round never uses `both`, and
-neither does a finding. A requested value is what the coordinator passed,
-`default` when it left the value to the host, or `unknown`. Sourced values are
+neither does a finding. A requested value is what the coordinator passed or
+a selected profile sets, `default` when neither sets it, or `unknown`. Sourced values are
 `unknown (unknown)` or one or more `<value> (<source>)` joined by ` + `, where
 the source is `host-observed`, `user-stated` or `self-reported`. A spawn or
 request never establishes the executing value. Without the axis, an entry

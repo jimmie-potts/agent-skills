@@ -24,11 +24,11 @@ with the controls below.
 | Effort | No per-call control. A definition's `effort` overrides the session level; otherwise the reviewer inherits it. Supported levels depend on the model | Requested: the definition's `effort`, otherwise `default`. `/tasks` shows effort only when a definition sets it |
 | Extended thinking | Inherited from the parent session; no per-reviewer setting | Inherited, or unknown |
 | Fresh context | Every non-fork type starts from the brief. The `fork` type inherits the whole conversation | The type passed |
-| Tools | A definition's `tools` list is an allowlist. Without one, the reviewer inherits every available tool, including `Agent`, editing and MCP tools. A background run narrows the built-in set | The host's agent listing |
+| Tools | A definition's `tools` list is an allowlist. Without one, the reviewer inherits every available tool, including `Agent`, editing and MCP tools. A background run keeps every MCP tool but narrows the built-in set. On Linux, macOS and WSL a subagent can receive Glob and Grep even when the parent lacks them | The host's agent listing |
 | Permission mode | A definition's `permissionMode` is ignored while the parent runs in bypass, accept-edits or auto mode | Not a restriction to rely on |
 | Nesting | A subagent may spawn its own, three layers deep by default, unless `Agent` is absent from its tools | The agent listing |
 | Isolation | `isolation: "worktree"` starts from the default branch, not the frozen head | The parameter passed |
-| Delivery and cancellation | Foreground runs return to the call. Background runs, forced while fork mode is on in interactive sessions, end with a completion notification. A turn-limit stop or API cut-off is marked partial; a failed background run is reported failed. `TaskStop` stops a run, and a run the user stopped refuses messages | The returned result or notification |
+| Delivery and cancellation | Foreground runs return to the call. Background runs, forced while fork mode is on in interactive sessions, end with a completion notification. A turn-limit stop or API cut-off is marked partial; a failed background run is reported failed. `TaskStop` stops a run, and `SendMessage` can resume it once it exits; a run the user stopped from `/tasks` refuses messages as cancelled | The returned result or notification |
 
 Sources: [Claude Code subagents](https://code.claude.com/docs/en/sub-agents),
 read 2026-09-27, and the Agent tool schema inspected in Claude Code 2.1.283 on
@@ -52,13 +52,22 @@ host skips a missing preloaded skill silently, so confirm `code-review` is
 available before briefing and treat a return without the assigned-axis mode
 as `incomplete`.
 
+Qualification of the installed profiles belongs to the activation owner, not
+this skill. It must show that the allowlist resolves on the host, that a
+background run still delivers its result, including through any host hand-back
+tool the allowlist does not name, and that no MCP tool reaches the reviewer.
+Until then, a launch that reports unresolved tools or never returns is a failed
+return and a profile defect to report.
+
 Without a profile, use `general-purpose` or another non-fork type that fits.
 Its inherited tools include `Agent` and editing tools, so read-only conduct and
 the no-descendant rule are instruction-only; record both. A built-in type whose
 listing lacks `Agent` and editing tools, such as `Plan` where the host lists it
-so, narrows the tools further. The host documents that such types skip
-CLAUDE.md files and cannot be resumed, so supply the standards sources in the
-brief and start a fresh reviewer when a later round cannot resume one.
+so, narrows the tools further. It keeps `Skill`, so it can load `code-review`,
+and the rule against loading a coordinating review workflow stays
+instruction-only. The host documents that such types skip CLAUDE.md files and
+cannot be resumed, so supply the standards sources in the brief and start a
+fresh reviewer when a later round cannot resume one.
 
 ## Launch and resume
 

@@ -412,8 +412,10 @@ catalog's shared frontmatter stays portable with only `name` and
 [reviewer execution](skills/review-work/references/reviewer-execution.md)
 reference. The Agent tool has no per-call effort parameter, and a subagent
 inherits the session level unless its definition sets `effort`. Claude Code's
-documented default is `high` on every model that supports effort except Opus 4.7 (`xhigh`) and Opus 5.5
-(`medium`), unless an organization default applies; see the [model configuration docs](https://code.claude.com/docs/en/model-config).
+documented default is `high` on every model that supports effort except
+Opus 4.7 (`xhigh`) and Opus 5.5 (`medium`), unless an organization default
+applies; see the
+[model configuration docs](https://code.claude.com/docs/en/model-config).
 The [skill substitutions reference](https://code.claude.com/docs/en/skills#available-string-substitutions)
 describes `${CLAUDE_EFFORT}` inside skill text to read the level. The portable
 entrypoints here do not use it, and an agent cannot reliably read its own

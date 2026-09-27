@@ -38,6 +38,15 @@ reviewer: the affected axis is `incomplete`, with the gap named. An unsupported
 optional control keeps the host's default, is disclosed as a limit and creates
 no new gate.
 
+[Review selection](review-selection.md)'s impact floors and explicit
+requirements govern every choice below. Never choose a profile, definition or
+launch path whose resolved model or level falls below the selected reviewer
+setting; choose another path that meets it. When no available path meets an
+explicit requirement, the axis is `incomplete`. When the host itself lowers a
+setting the coordinator cannot control, such as an inherited level or a
+substitution, record a known mismatch; it leaves the axis `incomplete` only
+under an explicit requirement for that setting.
+
 ## Preflight before launch
 
 Run the preflight before the first reviewer of each round, and again after any
@@ -52,8 +61,12 @@ schema, listings and adapter, never from another host or surface:
    whether a higher-priority definition shadows it, and whether profile fields
    or the parent's live overrides beat the values passed on the call.
 4. Tools: no editing, publishing, tracker or agent-spawning tools, and no
-   coordinating review workflow. Use a narrower profile when one resolves;
-   otherwise record the restriction as instruction-only.
+   coordinating review workflow. Use a narrower profile when one resolves.
+   Record each part of the restriction, file writes, publication and
+   descendants, as enforced only when host evidence shows it for this reviewer,
+   such as its exposed tools or an applied sandbox; record every other part as
+   instruction-only. A configured setting whose effect is unverified is not
+   enforcement.
 5. Filesystem: the reviewer can read the frozen source. Record any write access
    it keeps, such as a shell.
 6. Credentials: connectors, MCP servers, host CLIs and environment the reviewer
@@ -63,7 +76,10 @@ schema, listings and adapter, never from another host or surface:
 8. Cancellation: how the coordinator stops a reviewer and how the host reports
    a stopped run.
 9. Result delivery: foreground return or background notification, the host's
-   partial-output markers and how to resume the same reviewer.
+   partial-output markers, how a wait timeout differs from a return, how to
+   resume the same reviewer and how to reconcile reviewers after a restart,
+   from the active host's adapter. Without a documented partial marker, a
+   return missing its findings list or coverage is partial.
 10. Source snapshot: the reviewer reads the frozen commits by ID, or a checkout
     verified at the frozen head, clean, with no writer during the round. A
     captured patch has its recorded digest. Isolation that starts from another
@@ -83,16 +99,17 @@ the caller.
   recorded as such, not substitution.
 - Conflicting precedence: a profile field or a parent override beats a value
   the coordinator passed. Record the effective value only when a readback shows
-  it; otherwise the executing value is unknown. When it contradicts a mandatory
-  setting, the axis is `incomplete`.
+  it; otherwise the executing value is unknown. Do not use a profile whose
+  fields would beat the selected model or level. When a conflict contradicts a
+  mandatory setting, the axis is `incomplete`.
 - Missing definition: the named profile does not resolve in this host. Proceed
   without it when it was optional, disclosing the limit; otherwise the axis is
   `incomplete`. Never create one.
 - Stale or modified definition: its governing fields differ from this skill's
   template at the policy revision under review. The governing fields are the
   tools, skills, effort, model, sandbox, agent and permission settings. Treat
-  it as a different profile, use it only when it still meets every mandatory
-  control, and record the difference.
+  it as a different profile. Use it only when it still meets every mandatory
+  control and the selected model and level, and record the difference.
 
 ## Keep context and restriction separate
 
@@ -114,14 +131,18 @@ A partial or cut-off return, a stop at a turn limit, a cancellation, a timeout,
 a failed run or a lost session leaves the axis `incomplete` for that round. So
 does a return you cannot attribute to its launched reviewer, its label and the
 frozen comparison. Retain the round, its findings and the failure in the
-history. Replace the reviewer with a fresh compliant one in the same round;
-never resume a failed one. A returned identifier or successful spawn is not
-review evidence.
+history. A failed return has not assessed the axis, so its findings do not
+make the axis `action-required`; they stay unresolved in the history until a
+compliant return confirms or clears them. Replace the reviewer with a fresh
+compliant one in the same round; never resume a failed one. A wait that times
+out is not a return. A returned identifier or successful spawn is not review
+evidence.
 
 ## Discover provisioned profiles
 
 This skill ships profile templates in `assets/` and installs nothing. The
-owning environment provisions them: it discovers the canonical durable checkout
+following is a contract for the environment that owns the host configuration,
+not a procedure this skill runs. That environment discovers the canonical durable checkout
 through its managed links, never a disposable worktree; installs each template
 under its stable name without changing the governing fields; gives any local
 variant a different name; reloads or restarts the host as the host requires;

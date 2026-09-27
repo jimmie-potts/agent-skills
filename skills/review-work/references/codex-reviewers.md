@@ -23,8 +23,9 @@ with the controls below.
 | Profile | A custom agent's `name` selects it where the spawn schema exposes an agent-type parameter. Project `.codex/agents/` and personal `~/.codex/agents/` files load as configuration layers, and a custom name matching a built-in agent replaces it | The schema and a readback of the resolved file |
 | Sandbox and approvals | A child inherits the parent's sandbox policy. A profile's `sandbox_mode` applies, but the parent turn's live overrides, such as a `/permissions` change or `--yolo`, are reapplied to the child regardless. Where no fresh approval can surface, an action needing one fails back to the parent | The parent's current permissions and the profile readback |
 | Nesting | Children can spawn their own; no depth limit is documented. `agents.enabled = false` in a profile is a documented setting whose effect on a child is unverified | The child's exposed tools, when visible |
-| MCP servers and skills | `mcp_servers` and `skills.config` inherit from the parent when the profile omits them | The parent's configuration |
+| MCP servers and skills | `mcp_servers` and `skills.config` inherit from the parent when the profile omits them. Connector permissions stay tool-specific, so treat inherited MCP tools as outside `sandbox_mode` unless the host shows otherwise | The parent's configuration and the child's exposed tools |
 | Concurrency | `agents.max_concurrent_threads_per_session` caps open child threads | A refused spawn |
+| Delivery, cancellation and identity | Documented: the parent waits for the requested results and consolidates them; with `agents.interrupt_message` on, the default, an interrupted turn leaves a model-visible message. Recorded 2026-09-26 and unverified now: `wait_agent` returns a notification, and a timeout is not a result; `list_agents` shows lifecycle state; `interrupt_agent` stops a run; `followup_task` resumes an idle agent. No partial-output marker is documented | The delivered message and the retained agent ID or task name |
 | Surface | ChatGPT Work runs hosted subagents without local sandbox or approval controls, and the web sidebar shows activity without controls. CLI, IDE and app controls differ | The surface in use |
 
 Sources: [Codex subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents),
@@ -41,12 +42,23 @@ a supported `reasoning_effort`, `fork_turns="none"` and a self-contained brief.
 Do not guess a reasoning enum. Where the schema exposes an agent-type parameter
 and `review_work_reviewer` resolves, select it after comparing its governing
 fields with the [template](../assets/codex/review-work-reviewer.toml). The
-template sets `sandbox_mode = "read-only"`, disables multi-agent tools and
-leaves model and reasoning to the spawn call. A provisioned file that sets them
-overrides the call, so any difference from the selected values is conflicting
-precedence. Record restricted execution as established only when the parent
-carries no live sandbox or approval override broader than read-only; otherwise
-it is instruction-only.
+template sets `sandbox_mode = "read-only"` and `agents.enabled = false`, whose
+effect on a child is unverified, and leaves model and reasoning to the spawn
+call. A provisioned file that sets them overrides the call, so do not use one
+whose values differ from the selected model and level.
+
+Record each part of the restriction separately. File writes are enforced only
+when the profile's sandbox applies and the parent carries no live sandbox or
+approval override broader than read-only. Publication and descendants are
+enforced only when the child's exposed tools show no multi-agent tools and no
+inherited MCP server that can write or publish. Every part without that
+evidence is instruction-only.
+
+Keep the retained agent ID or task name for each reviewer. After a restart or
+handoff, reconcile recorded reviewers with `list_agents` where it exists; a
+completed agent or message you cannot match to a recorded launch is
+unattributed. Treat a final message without its findings list or coverage as
+partial, and an interrupt as a cancelled return.
 
 Without a profile, the reviewer inherits the parent's sandbox, tools, MCP
 servers and multi-agent tools, so read-only conduct and the no-descendant rule

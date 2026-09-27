@@ -82,9 +82,10 @@ is unavailable, report the gap before briefing and do not reconstruct it. Brief
 each reviewer with code-review's assigned-axis mode, its axis rubric, the frozen
 comparison, the raw requirements or standards sources for that axis, the
 validation facts and the finding format. Leave out implementer and advisor
-narratives, other reviewers' conclusions and any preferred verdict. Before
-each launch, run the [reviewer execution](references/reviewer-execution.md)
-preflight; record requested, supported and observed settings separately.
+narratives, other reviewers' conclusions and any preferred verdict. Run the
+[reviewer execution](references/reviewer-execution.md) preflight before each
+round's first launch and after any host, profile or settings change; record
+requested, supported and observed settings separately.
 
 Read [review cycles](references/review-cycles.md) before the first round and on
 every later round, fix verification, disagreement or explicit limit. It owns
