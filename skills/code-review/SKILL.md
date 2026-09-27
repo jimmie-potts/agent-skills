@@ -11,8 +11,7 @@ Review one recorded change along two separate axes:
   introduces correctness, security, maintainability, or test-quality defects.
 - **Spec:** whether the change implements the approved behavior and scope.
 
-When the user explicitly invokes `review-work`, or asks for a complete
-independent review with rounds and a per-axis result, use `review-work`, which
+When the user explicitly invokes `review-work`, use `review-work`, which
 composes this skill for each axis. When the user explicitly asks to interrogate,
 challenge, stress-test, tear apart, or run a multi-reviewer review of code, use
 the `interrogate` skill instead.
@@ -84,7 +83,8 @@ axis of a frozen comparison, review only that axis:
   instead of freezing a different target.
 - Use the supplied requirements or standards sources for the axis. Report a
   missing source as incomplete rather than substituting another.
-- Launch no subagents and load no review workflow; the coordinator already owns
+- Launch no subagents and load no coordinating review workflow such as
+  `review-work` or `interrogate`; the coordinator already owns
   independence, rounds and the result.
 - Return findings in the assigned format, P0 to P2 blockers first and P3
   observations separately, with the coverage and evidence limits of the review.

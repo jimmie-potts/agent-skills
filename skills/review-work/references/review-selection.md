@@ -46,7 +46,8 @@ standards sources, the relevant code and consumers, and the validation facts.
 Reviewers may inspect implementation facts and validation outputs. Do not give
 initial reviewers implementer or advisor approval narratives, other reviewers'
 conclusions or instructions to confirm a preferred verdict. Tell each reviewer
-it is read-only, launches no agents and loads no review workflow of its own. A
+it is read-only, launches no agents and loads no coordinating review workflow
+such as `review-work` or `interrogate`. A
 return that exceeded its brief, for example by delegating, is a failed return:
 its axis stays `incomplete` until a fresh compliant reviewer returns.
 

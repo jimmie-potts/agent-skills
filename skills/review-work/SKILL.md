@@ -21,8 +21,8 @@ These hold at every step. References elaborate them and never relax them.
   explicit authority for that exact destination and belongs to the caller.
 - Ownership: a composing workflow keeps its implementation, corrections,
   publication, provider supervision, CI, merge and completion. Reviewers are
-  read-only; they return findings, launch no agents and load no review
-  workflow of their own, so one request never nests a second reviewer team.
+  read-only; they return findings, launch no agents and load no coordinating
+  review workflow, so one request never nests a second reviewer team.
 - Independence: each required axis runs in its own fresh read-only context that
   did not implement, advise or coordinate the change. The coordinator never
   fills an axis itself. Code-review's single-agent fallback, advisor or task
@@ -45,7 +45,7 @@ One request selects one coordinating review path:
 | Request | Path |
 | --- | --- |
 | Ordinary request to review a change, PR or diff | `code-review` on its own |
-| Explicit `review-work` request, or a request for a complete independent review without delivery | This skill |
+| Explicit `review-work` request | This skill |
 | Explicit request to interrogate or run an adversarial multi-review | `interrogate` |
 | Explicit blast-radius or "what could this break" request | `blast-radius` |
 | Explicit `deliver-work` request | `deliver-work`, which composes this skill for its required reviews |
@@ -76,12 +76,13 @@ report the gap, record impact unknown and apply the high-impact reviewer floor.
 ## Select, brief and run reviewers
 
 Read [review selection](references/review-selection.md), then only the active
-host's reviewer adapter. Brief each reviewer with code-review's assigned-axis
-mode, its axis rubric, the frozen comparison, the raw requirements or standards
-sources for that axis, the validation facts and the finding format. Leave out
-implementer and advisor narratives, other reviewers' conclusions and any
-preferred verdict. Record the requested settings and what each reviewer
-reports, separately.
+host's reviewer adapter. Reviewers need the canonical `code-review` skill; if it
+is unavailable, report the gap before briefing and do not reconstruct it. Brief
+each reviewer with code-review's assigned-axis mode, its axis rubric, the frozen
+comparison, the raw requirements or standards sources for that axis, the
+validation facts and the finding format. Leave out implementer and advisor
+narratives, other reviewers' conclusions and any preferred verdict. Record the
+requested settings and what each reviewer reports, separately.
 
 Read [review cycles](references/review-cycles.md) before the first round and on
 every later round, fix verification, disagreement or explicit limit. It owns

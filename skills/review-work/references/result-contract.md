@@ -17,8 +17,10 @@ Record these before the first reviewer starts, and again for each round:
 - Requirements: the authoritative scope and acceptance reference and the
   version reviewed, such as an edit timestamp, revision or readback date, or
   `none` when no specification exists.
-- Policy: the standards sources and the policy revision that governs review,
-  fixed at the first round even when the change edits that policy.
+- Policy: the standards sources and the policy revision that governs review.
+  The first round's policy is a floor: an edit the change itself makes to that
+  policy never lowers it. A later project policy change that the change did not
+  make is current policy, and it makes earlier results stale.
 - Validation: raw commands, results and the revision each ran on. Supply
   results as facts, never as a verdict for reviewers to confirm.
 - Coverage: required axes, the task boundary for a task round, changed areas,
@@ -42,18 +44,19 @@ Give each required axis exactly one status:
 | --- | --- |
 | `satisfied` | A fresh independent reviewer assessed this exact comparison against the recorded requirements and policy, stated its coverage, and no P0, P1, P2 or project-defined blocker on this axis remains unresolved |
 | `action-required` | The axis was assessed and at least one P0, P1, P2 or project-defined blocker on it remains unresolved |
-| `incomplete` | The axis cannot be decided: missing specification, failed, partial or missing return, unavailable required independence or control, stale comparison or requirements, exhausted limit, or missing mandatory evidence |
+| `incomplete` | The axis cannot be decided: missing specification, failed, partial or missing return, unavailable required independence or control, stale comparison, requirements or policy, a candidate no round could review before a limit ran out, or missing mandatory evidence |
 
 Specification cannot be `satisfied` without an authoritative requirement. One
 axis never supplies the other. When an axis has an open blocker and also lacks
 evidence, report `action-required` and name the gap in the coverage; the gap
-still prevents `satisfied` after the fix. A required specialist axis has its
-own reviewer entry, and the coverage states its status with the same
-vocabulary. Unresolved P3 findings do not block an axis;
-record their disposition. A consumer accepts a final result only when both axes
-are `satisfied`, every required specialist axis is `satisfied`, and its
-comparison and requirement version equal the current ones; any other result
-blocks the gate it governs.
+still prevents `satisfied` after the fix, and the caller obtains it with the
+correction. A required specialist axis has its own reviewer entry, and the
+coverage states its status with the same vocabulary. Unresolved P3 findings do
+not block an axis; record their disposition. A consumer accepts a final result
+only when both axes are `satisfied`, every required specialist axis is
+`satisfied`, and its comparison, requirement version and policy equal the
+current ones; any other result blocks the gate it governs. Required human
+acceptance remains a separate gate for the caller.
 
 ## Write the result
 
@@ -74,8 +77,9 @@ with these rows in this order, then a findings list and a coverage paragraph.
 
 A reviewer entry is `<label>: <axis>, requested <model> at <level>, model
 <sourced values>, level <sourced values>`. The label is a stable task-local name
-such as `standards-reviewer-1`; the axis is `standards`, `specification` or a
-lowercase specialist name such as `security`. A requested value is what the
+such as `standards-reviewer-1`; the axis is `standards`, `specification`, a
+lowercase specialist name such as `security`, or `both` for one task-round
+reviewer returning both task verdicts. A final round never uses `both`. A requested value is what the
 coordinator passed, `default` when it left the value to the host, or `unknown`.
 Sourced values are `unknown (unknown)` or one or more `<value> (<source>)`
 joined by ` + `, where the source is `host-observed`, `user-stated` or

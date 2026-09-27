@@ -172,7 +172,7 @@ its coordinator-owned loop through the requested finish line.
    verification must happen after merge.
 2. Compose `review-work` for a final round on the committed candidate, plus
    any stronger project requirement. Merge needs both final axes `satisfied`
-   for the current comparison and requirement version; `action-required` or
+   for the current comparison, requirement version and policy; `action-required` or
    `incomplete` blocks it. Missing acceptance/specification evidence cannot
    count as Specification approval. Keep revision-dependent evidence outside
    its commit.
@@ -186,7 +186,8 @@ its coordinator-owned loop through the requested finish line.
    this PR's current head. Missing, pending, failed, skipped or cancelled required
    jobs block merge; an empty protection list proves nothing. Retain the run/PR
    association. Honor additional project and provider gates.
-5. Changed code, scope, base or head invalidates affected tests and reviews.
+5. Changed code, scope, policy, base or head invalidates affected tests and
+   reviews.
    Reassess the changed comparison, rerun affected local checks and obtain a
    fresh review-work result and CI evidence. Reuse unrelated still-current
    evidence.

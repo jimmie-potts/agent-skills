@@ -516,7 +516,8 @@ checkout and run:
 
 The coordinator composes `review-work` for delivery review, which composes
 `code-review` for each axis; `plan-work` reads `review-work`'s reviewer
-selection. Install both with any delivery or planning coordinator. Other shared
+selection. Install both with any delivery or planning coordinator, and
+`code-review` with a standalone `review-work`. Other shared
 skills are needed only when their substeps apply; the complete example above
 includes them. Installing only the coordinator does not install its composed
 skills.
@@ -524,15 +525,17 @@ skills.
 ### Adopt an update that adds a required skill
 
 A catalog update can add a skill that existing callers now require, as
-`review-work` is for `deliver-work`, `plan-work` and `code-review`. Installed
+`review-work` is for `deliver-work` and `plan-work`. Installed
 links resolve into one checkout, so fast-forwarding it changes every running
 session on both hosts at once, even when the update was wanted for unrelated
 work. Adopt the complete required skill set in the same step. This procedure
 uses only Git and the manager, so it works while the new skill is still
-missing.
+missing. From a checkout older than the update, read it from the target
+revision, for example `git show origin/main:README.md`.
 
 1. Find the checkout the installed links resolve to by reading one managed
-   link, such as `readlink -f ~/.claude/skills/deliver-work`. Run everything
+   link, such as `readlink -f ~/.claude/skills/deliver-work`; the checkout is
+   two directories above the skill it prints. Run everything
    from that checkout, never a worktree: the manager links from its own
    location, and a worktree's links break when it is removed.
 2. Preflight before changing anything. After `git fetch`, compare the installed

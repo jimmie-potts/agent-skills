@@ -21,16 +21,16 @@ boundary; in a task round, Standards judges implementation quality, tests,
 failure behavior, affected contracts and the integration boundary. Two
 perspectives on one comparison are one round, not two.
 
-Before a round starts, record its identity and the full input. Retain
-incomplete rounds and missing perspectives as such. Clarifying an active
-assessment, reassessing a dispute on the same comparison, and replacing a
-failed reviewer return on that comparison all belong to that round. Retain a
-failed return's findings in the history, but keep them out of the replacement
-reviewer's initial brief. Reassessing a repaired candidate is a new
-round, even when it is called fix verification. Intermediate commits the caller
-makes between rounds add no rounds. Changing scope, requirements, policy, base,
-head or content requires a new frozen comparison. Resuming or renaming work
-never resets history.
+Before a round starts, record its identity and the full input. Retain incomplete
+rounds and missing perspectives as such. Clarifying an active assessment,
+reassessing a dispute on the same comparison, and replacing a failed reviewer
+return on that comparison all belong to that round. Retain a failed return's
+findings in the history, but keep them out of the replacement reviewer's initial
+brief. Reassessing a repaired candidate is a new round, even when it is called
+fix verification. Intermediate commits the caller makes between rounds add no
+rounds. Changing scope, requirements, project policy, base, head or content
+requires a new frozen comparison. Resuming or renaming work never resets
+history.
 
 Provider feedback, check reruns, worker corrections and advisor consultations
 keep their own counts and identities. Reading a comment or accepting a worker
@@ -41,19 +41,21 @@ return is not an independent review.
 The caller names the task boundary and the reason it needs inspection. Use a
 fresh read-only context independent of the implementer, with the raw
 requirements, task and attempt identity, accepted inputs, fixed artifact or
-diff, actual validation, coverage and limits. One reviewer may return both
-task verdicts unless project policy requires separate contexts. A failed or
-missing verdict leaves the round `incomplete` and withholds task acceptance
-and dependent work. Passing task review never replaces the final axes.
+diff, actual validation, coverage and limits. One reviewer may return both task
+verdicts, recorded with the axis `both`, unless project policy requires separate
+contexts. A failed or missing verdict leaves the round `incomplete` and
+withholds task acceptance and dependent work. Report the gap when required
+independence is unavailable; the caller continues unrelated authorized work.
+Passing task review never replaces the final axes.
 
 ## Preserve finding identity
 
 Give each finding a stable task-local identifier. Retain severity, axis,
 affected behavior and governing requirement; first and latest reviewed
-comparisons; the corrections the caller reports with their resulting
-revisions; covering checks and actual results; disposition, reason, owner and
-the review evidence that confirmed it. Link existing feedback records rather
-than copying transcripts.
+comparisons; the corrections the caller reports, with the worker and attempt,
+any changed approach and the resulting revisions; covering checks and actual
+results; disposition, reason, owner and the review evidence that confirmed it.
+Link existing feedback records rather than copying transcripts.
 
 - Unresolved: the behavior remains defective or required evidence is missing.
 - Resolved: current evidence establishes the correction or an accepted,
@@ -65,7 +67,8 @@ than copying transcripts.
 
 Rewording, changing reviewers or workers, and resuming preserve identity and
 history. Keep aliases for duplicate descriptions. Reconcile ambiguous identity
-against behavior and evidence before reporting it.
+against behavior and evidence before reporting it. Missing transcripts or
+private runtime metadata do not require a reset.
 
 P0 to P2 findings and project-defined blockers make their axis
 `action-required`. Record a disposition for every P3 finding with its reason and
@@ -106,11 +109,12 @@ inputs and coverage remain valid.
 Both final axes assess every changed final comparison. Still-valid factual
 evidence, such as an unaffected check result, may be reused; an old whole-change
 approval never approves a new comparison. A later round may resume the same
-reviewer context when it stayed independent; it still assesses the new
-comparison in full. Renew any required specialist or human evidence the change
-affects. When the change edits review or delivery instructions, keep the policy
-recorded at the first round; the candidate cannot waive the gates that approve
-it.
+reviewer context when it stayed independent; it remains a fresh reviewer in the
+sense that it never implemented, advised or coordinated the change, and it
+assesses the new comparison in full. Renew any required specialist or human
+evidence the change affects. When the change edits review or delivery
+instructions, keep the policy recorded at the first round; the candidate cannot
+waive the gates that approve it.
 
 ## Honor explicit limits
 

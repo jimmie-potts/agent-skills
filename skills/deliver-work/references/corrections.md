@@ -20,21 +20,21 @@ work record. Do not add a ledger, service, executable router or storage format.
   evidenced defect. Count it separately from attempts.
 - A correction pass is each new candidate made to resolve findings or failed
   acceptance, by a worker or by the coordinator. Compatible fixes batched
-  before the next review count once.
+  before the next review, within the host's worker allowances, count once.
 - Review rounds come from review-work's result. Provider feedback, check reruns
   and advisor consultations keep their own counts.
 
 ## Act on a review result
 
-Treat `satisfied` on both final axes for the current comparison and requirement
-version as the review gate's evidence; CI, merge and completion gates remain
-separate. For `action-required`, correct the P0 to P2 findings and every
-project-defined blocker within scope, then bring the changed candidate back to
-review-work for a new round with the finding IDs and the fix diff. For
-`incomplete`, obtain the missing specification, reviewer, control or evidence
-it names, or report the gap and its owner; never treat it as approval. Record
-a disposition for each P3 finding; a P3-only result starts no correction pass
-by itself.
+Treat `satisfied` on both final axes for the current comparison, requirement
+version and policy as the review gate's evidence; CI, merge and completion gates
+remain separate. For `action-required`, correct the P0 to P2 findings and every
+project-defined blocker within scope, obtain any evidence gap its coverage
+names, then bring the changed candidate back to review-work for a new round with
+the finding IDs and the fix diff. For `incomplete`, obtain the missing
+specification, reviewer, control or evidence it names, or report the gap and its
+owner; never treat it as approval. Record a disposition for each P3 finding; a
+P3-only result starts no correction pass by itself.
 
 Disputed findings go back to review-work with concrete evidence for
 independent reassessment. A finding that depends on a requirement the sources
@@ -54,10 +54,9 @@ When a blocker survives correction, diagnose it before another attempt:
 | Unavailable authority or capability | Identify the owner and needed permission/control, or an authorized alternative; pause the dependent action. |
 
 Record the cause, changed approach and expected evidence. Recurrence alone does
-not mandate a stronger model. Read the
-[Codex](codex-model-selection.md) or [Claude Code](claude-code-model-selection.md)
-adapter for its distinct worker threshold. Review counts do not replace, reset
-or copy those thresholds.
+not mandate a stronger model. Read the [Codex](codex-model-selection.md) or
+[Claude Code](claude-code-model-selection.md) adapter for its distinct worker
+threshold. Review counts do not replace, reset or copy those thresholds.
 
 Continue productive, severity-driven corrections without a universal numerical
 cap. Progress needs evidence that behavior, acceptance coverage or
@@ -80,13 +79,13 @@ accounting.
 
 Check remaining capacity before corrections, dispatch, renewed review and
 consequential effects, and at responsive checkpoints during active work. Account
-for in-flight commitments or reliable upper bounds before starting more work.
-Do not introduce a default spend allowance or review cap. Keep subscription
-usage separate from API dollars. Missing telemetry is unknown, never zero.
-If a hard cap cannot be enforced with observable accounting or a reliable bound,
-pause actions whose compliance cannot be established. Reconcile the gap or
-obtain a limit/control decision; continue independently authorized work outside
-that limit. Without an explicit cap, unknown cost alone creates no spending gate.
+for in-flight commitments or reliable upper bounds before starting more work. Do
+not introduce a default spend allowance or review cap. Keep subscription usage
+separate from API dollars. Missing telemetry is unknown, never zero. If a hard
+cap cannot be enforced with observable accounting or a reliable bound, pause
+actions whose compliance cannot be established. Reconcile the gap or obtain a
+limit/control decision; continue independently authorized work outside that
+limit. Without an explicit cap, unknown cost alone creates no spending gate.
 
 At the limit, start no more affected attempts, corrections, reviews or dependent
 work. Safely stop owned in-flight work through supported controls; reconcile
@@ -95,16 +94,17 @@ unavoidable overrun or unknown outcome. Preserve partial artifacts and hand off:
 
 - unresolved finding IDs and dispositions, attempted fixes and changed approach;
 - last reviewed and current revisions, valid/stale/missing evidence and results;
-- separate round/attempt/correction counts, limit scope, used or unknown capacity;
+- separate round/attempt/correction counts, limit scope, used or unknown
+  capacity;
 - incomplete gates, next action and responsible owner.
 
 If correction finishes before the limit but renewed review cannot run, keep the
 changed candidate unreviewed. Renaming a review, replacing a worker or resuming
 does not create another allowance. Budget exhaustion cannot authorize merge,
-resolve a finding, supply evidence or establish completion. Preserve any narrower
-local-only, ready-PR-only or explicit watch boundary.
+resolve a finding, supply evidence or establish completion. Preserve any
+narrower local-only, ready-PR-only or explicit watch boundary.
 
-Planning consumers carry proposed review boundaries, explicit limits and required
-accounting/handoff evidence into work items. Publication of future constraints
-does not start their counters, reviews, workers or implementation. Preserve
-proposal-only, tracker-only and deferred-selection boundaries.
+Planning consumers carry proposed review boundaries, explicit limits and
+required accounting/handoff evidence into work items. Publication of future
+constraints does not start their counters, reviews, workers or implementation.
+Preserve proposal-only, tracker-only and deferred-selection boundaries.

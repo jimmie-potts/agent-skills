@@ -5,8 +5,8 @@ limits, use `tests/fixtures/workflow-evaluation/review-cycles-cases.md`. Withhol
 `review-cycles-graders.md`, observations and other returns from two fresh
 independent read-only evaluations. Also withhold this evaluation-only reference
 and the validation scenarios of plan-work and review-work, even when an
-entrypoint links them. Require every variant to pass with no
-gate-waiver or authority violations.
+entrypoint links them. Require every variant to pass with no gate-waiver or
+authority violations.
 
 For delivery composing review-work, routing between the review skills and the
 adoption of review-work into an installed catalog, use

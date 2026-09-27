@@ -32,7 +32,9 @@ otherwise unknown, and report a mismatch with a project's stated review level
 rather than claiming to change it.
 
 Take a user-stated session level as stated and record it as `user-stated`;
-never ask a reviewer for its own effort. Record the requested model and the
+record a host-provided value such as `CLAUDE_EFFORT` beside it as
+`host-observed`, and report a conflict as a known mismatch. Never ask a
+reviewer for its own effort. Record the requested model and the
 model a reviewer reports from its own runtime instructions separately; a
 successful spawn proves the request succeeded, not the executing model.
 

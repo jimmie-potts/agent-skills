@@ -68,7 +68,12 @@ def parse_review_result(text):
         raise ValueError('repeated reviewer label')
     if any(label.startswith('coordinator') for label in labels):
         raise ValueError('the coordinator cannot fill an axis')
+    kind, number = rows['Round'].split()
     reviewed = {axis for _, axis in reviewers}
+    if 'both' in reviewed:
+        if kind != 'task':
+            raise ValueError('only a task-round reviewer covers both axes')
+        reviewed |= {'standards', 'specification'}
 
     findings = []
     if match.group(2) != 'none\n':
@@ -80,7 +85,6 @@ def parse_review_result(text):
     ids = [finding[0] for finding in findings]
     if len(set(ids)) != len(ids):
         raise ValueError('repeated finding ID')
-    kind, number = rows['Round'].split()
     for _, severity, _, state, _, latest in findings:
         if state in ('accepted', 'deferred') and severity != 'P3':
             raise ValueError('only P3 findings take accepted or deferred')
@@ -109,13 +113,14 @@ def parse_review_result(text):
     return {'rows': rows, 'reviewers': reviewers, 'findings': findings}
 
 
-def accepts(result, comparison, requirements):
+def accepts(result, comparison, requirements, policy):
     """A consumer's final-review gate: both axes satisfied for current inputs."""
     rows = result['rows']
     return (rows['Round'].startswith('final ')
             and all(rows[axis] == 'satisfied' for axis in AXES)
             and rows['Comparison'] == comparison
-            and rows['Requirements'] == requirements)
+            and rows['Requirements'] == requirements
+            and rows['Policy'] == policy)
 
 
 def examples():
@@ -175,66 +180,95 @@ class ResultContractTest(unittest.TestCase):
     def test_examples_parse_and_gate(self):
         complete, standalone = map(parse_review_result, examples())
         rows = complete['rows']
-        self.assertTrue(accepts(complete, rows['Comparison'], rows['Requirements']))
-        self.assertEqual(standalone['rows']['Specification'], 'incomplete')
-        self.assertFalse(accepts(standalone, standalone['rows']['Comparison'],
-                                 standalone['rows']['Requirements']))
+        self.assertTrue(accepts(complete, rows['Comparison'], rows['Requirements'],
+                                rows['Policy']))
+        other = standalone['rows']
+        self.assertEqual(other['Specification'], 'incomplete')
+        self.assertFalse(accepts(standalone, other['Comparison'],
+                                 other['Requirements'], other['Policy']))
+
+    def test_one_task_reviewer_covers_both_verdicts(self):
+        good = examples()[0]
+        entries = good.split('| Reviewers | ', 1)[1].split(' |\n', 1)[0]
+        task = (good.replace('| Round | final 2 |', '| Round | task 2 |')
+                .replace('first final 1, latest final 2', 'first task 1, latest task 2')
+                .replace('first final 1, latest final 1', 'first task 1, latest task 1')
+                .replace(entries, 'task-reviewer-1: both, requested opus at '
+                         'default, model unknown (unknown), level unknown (unknown)'))
+        parsed = parse_review_result(task)
+        self.assertEqual(parsed['rows']['Specification'], 'satisfied')
+        self.assertFalse(accepts(parsed, parsed['rows']['Comparison'],
+                                 parsed['rows']['Requirements'],
+                                 parsed['rows']['Policy']))
+        with self.assertRaisesRegex(ValueError, 'task-round reviewer'):
+            parse_review_result(task.replace('| Round | task 2 |',
+                                             '| Round | final 2 |'))
 
     def test_gate_rejects_stale_inputs(self):
         result = parse_review_result(examples()[0])
         rows = result['rows']
+        current = (rows['Comparison'], rows['Requirements'], rows['Policy'])
         newer_head = rows['Comparison'].replace('head 3333', 'head 4444', 1)
         self.assertNotEqual(newer_head, rows['Comparison'])
-        self.assertFalse(accepts(result, newer_head, rows['Requirements']))
-        self.assertFalse(accepts(result, rows['Comparison'],
-                                 rows['Requirements'] + '-edited'))
+        for stale in ((newer_head, *current[1:]),
+                      (current[0], current[1] + '-edited', current[2]),
+                      (*current[:2], current[2] + '-newer')):
+            with self.subTest(stale=stale):
+                self.assertFalse(accepts(result, *stale))
 
     def test_rejects_known_bad_results(self):
         good, standalone = examples()
+        requirement = good.split('| Requirements | ', 1)[1].split(' |', 1)[0]
         mutations = {
             'specification without requirement': (
-                standalone, '| Specification | incomplete |',
-                '| Specification | satisfied |'),
+                good, f'| Requirements | {requirement} |',
+                '| Requirements | none |', 'without a requirement'),
             'axis without its reviewer': (
                 standalone, '| Specification | incomplete |',
-                '| Specification | action-required |'),
+                '| Specification | action-required |', 'without its own reviewer'),
             'satisfied with open blocker': (
-                good, 'F1 (P2, specification, resolved)',
-                'F1 (P2, specification, unresolved)'),
+                good.replace('P2 0; P3 0', 'P2 1; P3 0'),
+                'F1 (P2, specification, resolved)',
+                'F1 (P2, specification, unresolved)', 'satisfied with an open'),
             'action-required without blocker': (
                 good, '| Standards | satisfied |',
-                '| Standards | action-required |'),
+                '| Standards | action-required |', 'without a blocker'),
             'coordinator fills an axis': (
                 good, 'standards-reviewer-2: standards',
-                'coordinator: standards'),
+                'coordinator: standards', 'coordinator'),
             'repeated reviewer label': (
                 good, 'specification-reviewer-2: specification',
-                'standards-reviewer-2: specification'),
+                'standards-reviewer-2: specification', 'repeated reviewer'),
             'open count disagrees': (
-                standalone, 'P0 0; P1 1;', 'P0 0; P1 0;'),
+                standalone, 'P0 0; P1 1;', 'P0 0; P1 0;', 'count disagrees'),
             'deferred blocker': (
                 standalone, '(P1, standards, unresolved)',
-                '(P1, standards, deferred)'),
+                '(P1, standards, deferred)', 'only P3'),
             'finding from a later round': (
-                good, 'latest final 2\n', 'latest final 3\n'),
+                good, 'latest final 2\n', 'latest final 3\n', 'later round'),
+            'final round reviewer for both axes': (
+                good, 'specification-reviewer-2: specification',
+                'specification-reviewer-2: both', 'task-round reviewer'),
             'short commit': (
                 good, 'head 3333333333333333333333333333333333333333',
-                'head 3333333'),
+                'head 3333333', 'bad Comparison'),
             'unknown status': (
-                good, '| Standards | satisfied |', '| Standards | approved |'),
+                good, '| Standards | satisfied |', '| Standards | approved |',
+                'bad Standards'),
             'unlabelled reviewer level': (
                 good, 'level high (user-stated); specification',
-                'level high; specification'),
+                'level high; specification', 'bad Reviewers'),
             'missing coverage': (
-                good, '\n**Coverage:** Both', '\nBoth'),
+                good, '\n**Coverage:** Both', '\nBoth', 'shape'),
             'row order': (
                 good, '| Standards | satisfied |\n| Specification | satisfied |',
-                '| Specification | satisfied |\n| Standards | satisfied |'),
+                '| Specification | satisfied |\n| Standards | satisfied |',
+                'out of order'),
         }
-        for name, (example, old, new) in mutations.items():
+        for name, (example, old, new, message) in mutations.items():
             with self.subTest(mutation=name):
                 self.assertIn(old, example)
-                with self.assertRaises(ValueError):
+                with self.assertRaisesRegex(ValueError, message):
                     parse_review_result(example.replace(old, new, 1))
 
 
