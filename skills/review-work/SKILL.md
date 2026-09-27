@@ -28,9 +28,9 @@ These hold at every step. References elaborate them and never relax them.
   fills an axis itself. Code-review's single-agent fallback, advisor or task
   review, implementer approval and approvals of an older comparison never
   satisfy a required axis.
-- Evidence: a missing specification, a failed or partial reviewer return,
-  unavailable required independence, a stale comparison, requirement version
-  or policy, or missing mandatory evidence leaves the affected axis
+- Evidence: a missing specification, a failed, partial or unretained reviewer
+  return, unavailable required independence, a stale comparison, requirement
+  version or policy, or missing mandatory evidence leaves the affected axis
   `incomplete`, never approved. Unknown counts stay unknown; resumption never
   resets history or limits. When the change edits review or delivery
   instructions, the first round's gates are a floor: the candidate's own edits
@@ -93,8 +93,10 @@ round identity, stable findings, reassessment, fix verification and renewal.
 
 Write the result in the contract's `## Review result` shape for each round,
 including the per-axis status, findings, coverage and gaps, reviewer
-provenance and cumulative history. Return it to the caller, or in the response
-for a standalone review, then stop. A caller acts on `action-required` findings
+provenance and cumulative history. After the summary, retain each reviewer's
+actual return with its provenance and digest, as the contract describes, never
+a transcript. Return both to the caller, or in the response for a standalone
+review, then stop. A caller acts on `action-required` findings
 under its own authority and brings the changed candidate back for a new round.
 
 When evaluating or revising this skill, read the synthetic

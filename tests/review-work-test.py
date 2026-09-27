@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Structural and result-contract checks; behavior uses held-out scenarios."""
 from pathlib import Path
+import hashlib
 import re
 import unittest
 import yaml
@@ -18,6 +19,7 @@ TOKEN = r'[^\s|()+,;]+'
 LABEL = r'[a-z0-9]+(?:-[a-z0-9]+)*'
 KNOWN = rf'(?!unknown ){TOKEN} \((?:host-observed|user-stated|self-reported)\)'
 SOURCED = rf'(?:unknown \(unknown\)|{KNOWN}(?: \+ {KNOWN})*)'
+POLICY = rf'(?!unknown\b)(?:[\w.-]+@[0-9a-f]{{40}}|{TOKEN} read \d{{4}}-\d{{2}}-\d{{2}})'
 REVIEWER = (rf'({LABEL}): ([a-z]+), requested {TOKEN} at {TOKEN}, '
             rf'model {SOURCED}, level {SOURCED}')
 CELLS = {
@@ -26,7 +28,7 @@ CELLS = {
     'Comparison': (r'base [0-9a-f]{40}; head [0-9a-f]{40}; merge-base [0-9a-f]{40}'
                    r'|patch sha256:[0-9a-f]{64}'),
     'Requirements': rf'{TOKEN} at {TOKEN}|none',
-    'Policy': TOKEN,
+    'Policy': rf'unknown|{POLICY}(?: \+ {POLICY})*',
     'Standards': STATUS,
     'Specification': STATUS,
     'Reviewers': rf'none|{REVIEWER}(?:; {REVIEWER})*',
@@ -37,6 +39,51 @@ FINDING = re.compile(
     r'(unresolved|resolved|regression|accepted|deferred)\): .+; '
     r'first ((?:final|task) \d+), latest ((?:final|task) \d+)')
 OPEN = ('unresolved', 'regression')
+RETURN_ROWS = ('Axis', 'Comparison', 'Requirements', 'Policy', 'Return',
+               'Digest', 'Redactions')
+RETURN_CELLS = {
+    'Axis': r'[a-z]+',
+    'Comparison': CELLS['Comparison'],
+    'Requirements': CELLS['Requirements'],
+    'Policy': CELLS['Policy'],
+    'Return': r'complete|partial|failed',
+    'Digest': r'sha256:[0-9a-f]{64}',
+    'Redactions': r'none|[1-9]\d*: [a-z]+(?: [a-z]+)*(?:, [a-z]+(?: [a-z]+)*)*',
+}
+PROVENANCE = ('Comparison', 'Requirements', 'Policy')
+
+
+def parse_table(block, cells, order):
+    rows = {}
+    for line in block.splitlines():
+        match = re.fullmatch(r'\| ([^|]+?) \| ([^|]+?) \|', line)
+        if not match or match.group(1) in rows or match.group(1) not in cells:
+            raise ValueError(f'bad, repeated or unknown row: {line}')
+        field, value = match.groups()
+        if not re.fullmatch(cells[field], value):
+            raise ValueError(f'bad {field} value: {value}')
+        rows[field] = value
+    if tuple(rows) != order:
+        raise ValueError(f'rows out of order or missing: {list(rows)}')
+    return rows
+
+
+def parse_returns(text):
+    """Parse the retained reviewer returns and check each digest."""
+    returns = []
+    for block in re.split(r'\n(?=### Reviewer return: )', text):
+        match = re.fullmatch(
+            r'### Reviewer return: ([^\n]+)\n\n\| Field \| Value \|\n'
+            r'\| --- \| --- \|\n((?:\|[^\n]*\|\n)+)\n~~~text\n'
+            r'((?:(?!~~~)[^\n]*\n)+)~~~\n?', block)
+        if not match:
+            raise ValueError('reviewer return outside its block shape')
+        rows = parse_table(match.group(2), RETURN_CELLS, RETURN_ROWS)
+        digest = hashlib.sha256(match.group(3).encode()).hexdigest()
+        if rows['Digest'] != f'sha256:{digest}':
+            raise ValueError(f'digest does not match the return: {match.group(1)}')
+        returns.append((match.group(1), rows))
+    return returns
 
 
 def parse_review_result(text):
@@ -45,20 +92,12 @@ def parse_review_result(text):
         r'## Review result\n\n\| Field \| Value \|\n\| --- \| --- \|\n'
         r'((?:\|[^\n]*\|\n)+)'
         r'\n\*\*Findings:\*\*\n((?:- [^\n]+\n)+|none\n)'
-        r'\n\*\*Coverage:\*\* (\S[^\n]*)\n?', text)
+        r'\n\*\*Coverage:\*\* (\S[^\n]*)\n'
+        r'\n(### Reviewer return: .+)', text, re.DOTALL)
     if not match:
         raise ValueError('section outside the Review result shape')
-    rows = {}
-    for line in match.group(1).splitlines():
-        cells = re.fullmatch(r'\| ([^|]+?) \| ([^|]+?) \|', line)
-        if not cells or cells.group(1) in rows or cells.group(1) not in CELLS:
-            raise ValueError(f'bad, repeated or unknown row: {line}')
-        field, value = cells.groups()
-        if not re.fullmatch(CELLS[field], value):
-            raise ValueError(f'bad {field} value: {value}')
-        rows[field] = value
-    if tuple(rows) != ROWS:
-        raise ValueError(f'rows out of order or missing: {list(rows)}')
+    rows = parse_table(match.group(1), CELLS, ROWS)
+    returns = parse_returns(match.group(4))
 
     reviewers = [] if rows['Reviewers'] == 'none' else [
         re.match(REVIEWER, entry).groups()
@@ -69,11 +108,17 @@ def parse_review_result(text):
     if any(label.startswith('coordinator') for label in labels):
         raise ValueError('the coordinator cannot fill an axis')
     kind, number = rows['Round'].split()
-    reviewed = {axis for _, axis in reviewers}
-    if 'both' in reviewed:
-        if kind != 'task':
-            raise ValueError('only a task-round reviewer covers both axes')
-        reviewed |= {'standards', 'specification'}
+    if any(axis == 'both' for _, axis in reviewers) and kind != 'task':
+        raise ValueError('only a task-round reviewer covers both axes')
+    if [(label, axis) for label, axis in reviewers] != [
+            (label, ret['Axis']) for label, ret in returns]:
+        raise ValueError('each reviewer entry needs its own retained return')
+    reviewed = set()
+    for _, ret in returns:
+        if ret['Return'] == 'complete' and all(
+                ret[field] == rows[field] for field in PROVENANCE):
+            reviewed |= ({'standards', 'specification'} if ret['Axis'] == 'both'
+                         else {ret['Axis']})
 
     findings = []
     if match.group(2) != 'none\n':
@@ -105,14 +150,16 @@ def parse_review_result(text):
         blockers = [f for f in findings
                     if f[2] == name and f[1] != 'P3' and f[3] in OPEN]
         if status != 'incomplete' and name not in reviewed:
-            raise ValueError(f'{axis} decided without its own reviewer')
+            raise ValueError(f'{axis} decided without a complete retained '
+                             'return from its own reviewer for these inputs')
         if status == 'satisfied' and blockers:
             raise ValueError(f'{axis} satisfied with an open blocker')
         if status == 'action-required' and not blockers:
             raise ValueError(f'{axis} action-required without a blocker')
     if rows['Specification'] == 'satisfied' and rows['Requirements'] == 'none':
         raise ValueError('Specification satisfied without a requirement')
-    return {'rows': rows, 'reviewers': reviewers, 'findings': findings}
+    return {'rows': rows, 'reviewers': reviewers, 'findings': findings,
+            'returns': returns}
 
 
 def accepts(result, comparison, requirements, policy):
@@ -124,6 +171,12 @@ def accepts(result, comparison, requirements, policy):
             and rows['Requirements'] == requirements
             and rows['Policy'] != 'unknown'
             and rows['Policy'] == policy)
+
+
+def split_returns(example):
+    """Split an example into its summary and its retained return blocks."""
+    summary, *blocks = re.split(r'\n(?=### Reviewer return: )', example)
+    return summary, blocks
 
 
 def examples():
@@ -191,7 +244,11 @@ class ResultContractTest(unittest.TestCase):
                                  other['Requirements'], other['Policy']))
 
     def test_one_task_reviewer_covers_both_verdicts(self):
-        good = examples()[0]
+        summary, blocks = split_returns(examples()[0])
+        good = summary + '\n' + blocks[0].replace(
+            '### Reviewer return: standards-reviewer-2',
+            '### Reviewer return: task-reviewer-1').replace(
+            '| Axis | standards |', '| Axis | both |')
         entries = good.split('| Reviewers | ', 1)[1].split(' |\n', 1)[0]
         task = (good.replace('| Round | final 2 |', '| Round | task 2 |')
                 .replace('first final 1, latest final 2', 'first task 1, latest task 2')
@@ -228,10 +285,10 @@ class ResultContractTest(unittest.TestCase):
         mutations = {
             'specification without requirement': (
                 good, f'| Requirements | {requirement} |',
-                '| Requirements | none |', 'without a requirement'),
+                '| Requirements | none |', 'without a requirement', -1),
             'axis without its reviewer': (
                 standalone, '| Specification | incomplete |',
-                '| Specification | action-required |', 'without its own reviewer'),
+                '| Specification | action-required |', 'from its own reviewer'),
             'satisfied with open blocker': (
                 good.replace('P2 0; P3 0', 'P2 1; P3 0'),
                 'F1 (P2, specification, resolved)',
@@ -274,11 +331,99 @@ class ResultContractTest(unittest.TestCase):
                 '| Specification | satisfied |\n| Standards | satisfied |',
                 'out of order'),
         }
-        for name, (example, old, new, message) in mutations.items():
+        for name, (example, old, new, message, *count) in mutations.items():
             with self.subTest(mutation=name):
                 self.assertIn(old, example)
                 with self.assertRaisesRegex(ValueError, message):
-                    parse_review_result(example.replace(old, new, 1))
+                    parse_review_result(example.replace(old, new, *(count or [1])))
+
+    def test_retained_returns_decide_axes(self):
+        good, standalone = examples()
+        summary, (standards, specification) = split_returns(good)
+        text = specification.split('~~~text\n', 1)[1].split('~~~', 1)[0]
+        head = 'head 3333333333333333333333333333333333333333'
+        mutations = {
+            'missing return': (summary + '\n' + standards, 'own retained return'),
+            'returns out of order': (
+                summary + '\n' + specification + '\n' + standards,
+                'own retained return'),
+            'edited return text': (
+                good.replace('now rejects an empty filter', 'rejects empties'),
+                'digest does not match'),
+            'return for another head': (
+                summary + '\n' + standards + '\n'
+                + specification.replace(head, head.replace('3', '4')),
+                'Specification decided without a complete retained return'),
+            'return for another requirement version': (
+                summary + '\n' + standards + '\n' + specification.replace(
+                    '| Requirements | example-org/example-app#42 at 2026-09-25',
+                    '| Requirements | example-org/example-app#42 at 2026-09-24'),
+                'Specification decided without a complete retained return'),
+            'partial return decides its axis': (
+                good.replace('| Return | complete |\n| Digest | sha256:0bf8',
+                             '| Return | partial |\n| Digest | sha256:0bf8'),
+                'Specification decided without a complete retained return'),
+            'unknown return state': (
+                good.replace('| Return | complete |', '| Return | approved |', 1),
+                'bad Return'),
+            'unlisted redaction kinds': (
+                standalone.replace('| Redactions | 1: credential |',
+                                   '| Redactions | yes |'), 'bad Redactions'),
+            'short policy commit': (
+                good.replace('abcdef1234567890abcdef1234567890abcdef12',
+                             'abcdef1'), 'bad Policy'),
+        }
+        self.assertTrue(text)
+        for name, (mutated, message) in mutations.items():
+            with self.subTest(mutation=name):
+                self.assertNotEqual(mutated, good)
+                with self.assertRaisesRegex(ValueError, message):
+                    parse_review_result(mutated)
+
+    def test_failed_return_is_kept_and_leaves_axis_undecided(self):
+        good = examples()[0]
+        summary, (standards, specification) = split_returns(good)
+        body = 'The review stopped: the tool call timed out.\n'
+        failed = (specification
+                  .replace('specification-reviewer-2', 'specification-reviewer-1')
+                  .replace('| Return | complete |', '| Return | failed |')
+                  .split('~~~text\n', 1)[0]
+                  + '~~~text\n' + body + '~~~\n')
+        failed = re.sub(r'sha256:[0-9a-f]{64}', 'sha256:'
+                        + hashlib.sha256(body.encode()).hexdigest(), failed)
+        entry = ('specification-reviewer-1: specification, requested opus at '
+                 'default, model unknown (unknown), level unknown (unknown); ')
+        replaced = summary.replace('specification-reviewer-2: specification',
+                                   entry + 'specification-reviewer-2: specification')
+        parsed = parse_review_result(replaced + '\n' + standards + '\n' + failed
+                                     + '\n' + specification)
+        self.assertEqual([r['Return'] for _, r in parsed['returns']],
+                         ['complete', 'failed', 'complete'])
+        rows = parsed['rows']
+        self.assertTrue(accepts(parsed, rows['Comparison'], rows['Requirements'],
+                                rows['Policy']))
+        alone = replaced + '\n' + standards + '\n' + failed
+        with self.assertRaisesRegex(ValueError, 'own retained return'):
+            parse_review_result(alone)
+        alone = alone.replace('; specification-reviewer-2: specification, requested '
+                              'opus at default, model claude-opus-5-5 (self-reported), '
+                              'level high (user-stated)', '')
+        with self.assertRaisesRegex(ValueError, 'Specification decided without'):
+            parse_review_result(alone)
+        undecided = parse_review_result(alone.replace(
+            '| Specification | satisfied |', '| Specification | incomplete |'))
+        self.assertFalse(accepts(undecided, rows['Comparison'],
+                                 rows['Requirements'], rows['Policy']))
+
+    def test_policy_versions(self):
+        good = examples()[0]
+        policy = 'example-app@abcdef1234567890abcdef1234567890abcdef12'
+        for value in ('wiki/standards read 2026-09-20',
+                      f'{policy} + wiki/standards read 2026-09-20'):
+            with self.subTest(policy=value):
+                parsed = parse_review_result(good.replace(
+                    f'| Policy | {policy} |', f'| Policy | {value} |'))
+                self.assertEqual(parsed['rows']['Policy'], value)
 
 
 class MigrationTest(unittest.TestCase):
@@ -321,15 +466,21 @@ class MigrationTest(unittest.TestCase):
         self.assertIn('Explicit `$review-work`', readme)
 
     def test_scenario_cases_match_graders(self):
-        cases = (FIXTURES / 'review-work-cases.md').read_text()
-        graders = (FIXTURES / 'review-work-graders.md').read_text()
-        case_ids = re.findall(r'^## (RW\d+):', cases, re.MULTILINE)
-        grader_ids = re.findall(r'^\| (RW\d+) \|', graders, re.MULTILINE)
-        self.assertTrue(case_ids)
-        self.assertEqual(case_ids, grader_ids)
         scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
-        self.assertIn('review-work-cases.md', scenarios)
-        self.assertIn('review-work-graders.md', scenarios)
+        delivery = (SKILLS / 'deliver-work/references/validation-scenarios.md'
+                    ).read_text()
+        for name, prefix in (('review-work', 'RW'), ('review-evidence', 'RE')):
+            with self.subTest(fixture=name):
+                cases = (FIXTURES / f'{name}-cases.md').read_text()
+                graders = (FIXTURES / f'{name}-graders.md').read_text()
+                case_ids = re.findall(rf'^## ({prefix}\d+):', cases, re.MULTILINE)
+                grader_ids = re.findall(rf'^\| ({prefix}\d+) \|', graders,
+                                        re.MULTILINE)
+                self.assertTrue(case_ids)
+                self.assertEqual(case_ids, grader_ids)
+                for reference in (scenarios, delivery):
+                    self.assertIn(f'{name}-cases.md', reference)
+                    self.assertIn(f'{name}-graders.md', reference)
 
 
 if __name__ == '__main__':

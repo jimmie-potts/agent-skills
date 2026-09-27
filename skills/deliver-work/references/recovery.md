@@ -15,6 +15,11 @@ logical check/matrix entry and failure key, allowance, request intent, provider
 IDs and attempt history. Reconcile authoritative run/job attempts before another
 request; a new run ID or resumed context does not reset the allowance.
 
+An ambiguous report, inline comment, reply or description update is a pending
+external effect too. Reconcile it by its identity key before repeating it, as
+[review reports](review-reports.md) describes; a duplicate is recorded, not
+deleted, and an unread page leaves the result unknown.
+
 A lost watch session leaves current monitoring unknown until checked; a
 confirmed stopped session is inactive. Reconcile its owner and last observation
 before restarting or transferring supervision under the existing delivery/watch
