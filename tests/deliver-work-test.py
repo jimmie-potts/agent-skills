@@ -433,6 +433,54 @@ class DeliverWorkStructureTest(unittest.TestCase):
             with self.subTest(rule=rule):
                 self.assertIn(rule, steps)
 
+    def test_cleanup_outcome_is_settled_at_completion(self):
+        entry = (SKILL / 'SKILL.md').read_text()
+        completion = flat(section(entry, '## Merge and verify completion'))
+        checkpoint = completion.index('(references/project-discovery.md#cleanup)')
+        self.assertLess(checkpoint, completion.index('Once all required '
+                                                     'conditions pass'))
+        for rule in ('record each as removed, retained or not applicable',
+                     'without a policy, retain them'):
+            with self.subTest(rule=rule):
+                self.assertIn(rule, completion)
+        self.assertIn('and the cleanup result', flat(entry))
+        discovery = (SKILL / 'references/project-discovery.md').read_text()
+        row = next(line for line in discovery.splitlines()
+                   if line.startswith('| Completion |'))
+        self.assertIn('[cleanup](#cleanup)', row)
+        cleanup = flat(section(discovery, '## Cleanup'))
+        # Each rule below rejects an unsafe removal.
+        for rule in ('Only recorded resources are this delivery\'s',
+                     'after verified merge and required post-merge CI',
+                     'is preserved at a surviving private location outside it',
+                     'a branch tip equals the head the merge recorded',
+                     'a worktree is clean and unlocked',
+                     'never a forcing flag',
+                     'When a tool created the resource and manages its exit',
+                     'Read back the removal',
+                     'Record its reason, its owner or `unknown`, and the next '
+                     'action', 'proves nothing about local resources',
+                     'removes nothing beyond its own authority',
+                     'never assume a removal succeeded',
+                     'public records, such as the PR or tracker, name '
+                     'resources by neutral task labels'):
+            with self.subTest(rule=rule):
+                self.assertIn(rule, cleanup)
+        resumption = flat((SKILL / 'references/resumption.md').read_text())
+        self.assertIn('Keep a recorded cleanup outcome', resumption)
+
+    def test_cleanup_scenarios_match_graders(self):
+        fixtures = ROOT / 'tests/fixtures/workflow-evaluation'
+        cases = (fixtures / 'cleanup-cases.md').read_text()
+        graders = (fixtures / 'cleanup-graders.md').read_text()
+        case_ids = re.findall(r'^## (CL\d+):', cases, re.MULTILINE)
+        grader_ids = re.findall(r'^\| (CL\d+) \|', graders, re.MULTILINE)
+        self.assertEqual(case_ids, [f'CL{n:02d}' for n in range(1, 15)])
+        self.assertEqual(grader_ids, case_ids)
+        scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
+        self.assertIn('cleanup-cases.md', scenarios)
+        self.assertIn('cleanup-graders.md', scenarios)
+
     def test_installation_scenarios_match_graders(self):
         fixtures = ROOT / 'tests/fixtures/workflow-evaluation'
         cases = (fixtures / 'installation-cases.md').read_text()

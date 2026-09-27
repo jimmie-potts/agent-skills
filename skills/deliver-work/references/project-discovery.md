@@ -1,7 +1,8 @@
 # Discover the owning project's delivery policy
 
 Use for an unfamiliar project, conflicting sources or incomplete resumed
-records, and at completion for [declared completion steps](#declared-completion-steps).
+records, and at completion for [declared completion steps](#declared-completion-steps)
+and [cleanup](#cleanup).
 Inspect relevant sources; reuse still-current discoveries. Keep a
 concise record in the task or the project's existing tracking location, linking
 policy rather than copying it into a new journal or configuration schema.
@@ -15,7 +16,7 @@ Establish before each dependent stage:
 | Planning | Accepted issue/document or required planning method, applicable decisions, artifact identities and readiness/archive rules. |
 | Checks and review | Canonical commands, prerequisites, working directories, required CI jobs and protection rules; project requirements in addition to the two independent review axes. |
 | Tracking | Supported checkpoint operations and required fields. |
-| Completion | Post-merge checks; release, deployment, installation or human acceptance conditions and their owners; any [declared installation or deployment](#declared-completion-steps) procedure, its checkpoint, the project's opt-out rule and any opt-out marking on the item. |
+| Completion | Post-merge checks; release, deployment, installation or human acceptance conditions and their owners; any [declared installation or deployment](#declared-completion-steps) procedure, its checkpoint, the project's opt-out rule and any opt-out marking on the item; the project's [cleanup](#cleanup) or retention policy. |
 
 Discover facts before asking. Resolve conflicting scope, target branches,
 acceptance requirements or policy with a concrete decision request. Continue
@@ -90,6 +91,58 @@ started with, and the candidate's text cannot relax them. Its installation
 still follows merge and post-merge CI at the checkpoint, as the project's
 declaration or the item's acceptance requires; a fresh session then loads the
 installed result.
+
+## Cleanup
+
+The project owns cleanup policy: which temporary resources a delivery may
+remove, when, and which evidence must survive. Find it at preparation in the
+agent instructions, contributing or delivery policy, or the user's
+instructions. A habit, a tool default or a remote branch deleted on merge is
+not a policy. Record each temporary resource as this delivery creates it:
+worktrees, local branches, scratch directories, temporary clones and
+publication staging. Only recorded resources are this delivery's; everything
+else, including another session's resources, is out of scope, and ownership
+you cannot establish is unknown.
+
+Settle each recorded resource at completion, after verified merge and required
+post-merge CI. The outcomes are:
+
+- **Removed:** only when all of these hold:
+  - the policy allows removing that kind of resource at this stage;
+  - this delivery owns it and no other session or owner is using it;
+  - evidence the project or the delivery needs, including ignored private
+    files inside it, is preserved at a surviving private location outside it;
+  - no remaining acceptance, installation or other consumer uses it. A
+    pending physical or human acceptance that does not use it does not delay
+    its removal;
+  - its state matches what the delivery last verified: a branch tip equals the
+    head the merge recorded, even when a squash merge keeps the host's
+    safe-delete check from seeing it, and a worktree is clean and unlocked.
+
+  Use the host's normal removal, never a forcing flag that overrides a dirty,
+  locked or unmerged state. When a tool created the resource and manages its
+  exit, such as a host-managed worktree, use that exit. Read back the removal,
+  such as the worktree and branch lists or the path's absence.
+- **Retained:** any resource failing a condition above, including a moved
+  branch tip, a dirty or locked worktree, evidence that cannot be preserved,
+  missing post-merge CI, an unavailable tool-managed exit, unknown ownership or
+  a missing policy. Record its reason, its owner or `unknown`, and the next
+  action.
+- **Not applicable:** the delivery created no resource of that kind.
+
+Report each kind separately: branch, worktree, scratch, clone, staging and
+remote. A remote branch that disappeared, even by an automatic delete on merge,
+proves nothing about local resources. Deleting a remote branch is its own
+effect and needs the same policy and ownership checks. A local-only,
+ready-PR-only or planning-only request removes nothing beyond its own
+authority and reports what it retains.
+
+Record the result in the existing delivery evidence. Keep private paths and
+evidence in the private task record; public records, such as the PR or
+tracker, name resources by neutral task labels. A removal intent is a pending
+effect: on resumption, re-read each resource's state before acting, keep the
+recorded outcomes and history, and never assume a removal succeeded. Clean up
+only this delivery's resources; an unrelated cleanup needs its own authority.
 
 When OpenSpec applies, resolve pinned tooling, local configuration, active and
 archived identities, schemas, templates and completion rules. Existing legacy
