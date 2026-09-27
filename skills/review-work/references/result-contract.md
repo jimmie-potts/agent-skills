@@ -58,8 +58,9 @@ evidence, report `action-required` and name the gap in the coverage; the gap
 still prevents `satisfied` after the fix, and the caller obtains it with the
 correction. Findings from a failed return leave the axis `incomplete` instead,
 as [reviewer execution](reviewer-execution.md) describes. A required specialist
-axis has its own reviewer entry, and the coverage states its status with the same vocabulary. Unresolved P3 findings do
-not block an axis; record their disposition. A consumer accepts a final result
+axis has its own reviewer entry, and the coverage states its status with the
+same vocabulary. Unresolved P3 findings do not block an axis; record their
+disposition. A consumer accepts a final result
 only when both axes are `satisfied`, every required specialist axis is
 `satisfied`, its policy is known, and its comparison, requirement version and
 policy equal the current ones; any other result blocks the gate it governs.

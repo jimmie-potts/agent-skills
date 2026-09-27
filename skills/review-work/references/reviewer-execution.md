@@ -134,11 +134,20 @@ and the frozen comparison. Retain the round, its findings and the failure in the
 history. A failed return has not assessed the axis, so its findings do not make
 the axis `action-required`. List and count them as unresolved. Replace the
 reviewer with a fresh compliant one in the same round; never resume a failed
-one. After the replacement's independent initial return, give it the retained
-findings in a follow-up within that round to confirm or clear with evidence.
-Replace a reviewer the user stopped only with the user's agreement; until then
-its axis stays `incomplete`. A wait that times out is not a return. A returned
-identifier or successful spawn is not review evidence.
+one. After the replacement's independent initial return, send it the retained
+findings in a follow-up within that round. Its reply must restate the axis's
+complete verdict, its coverage and every finding with its disposition and
+evidence; that reply is its final message, retained as its return, and a reply
+missing any of them is `partial`. When the host cannot continue the
+replacement, the axis stays `incomplete` and the retained findings carry to the
+next round as prior findings. Replace a reviewer the user stopped only with the
+user's agreement; until then its axis stays `incomplete`.
+
+Retain a cancelled or user-stopped reviewer's return as `partial` when usable
+text came back, otherwise as `failed` with `[no return: cancelled]`. An
+unattributed message belongs to no `Reviewers` entry and gets no return block.
+A wait that times out is not a return. A returned identifier or successful
+spawn is not review evidence.
 
 ## Discover provisioned profiles
 

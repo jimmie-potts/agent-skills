@@ -86,10 +86,12 @@ completion notification. Never pass the `fork` type or `isolation`.
 `SendMessage` resumes the same reviewer for a later round or reassessment when
 [review cycles](review-cycles.md) allows it. Record each reviewer's agent ID.
 After a coordinator restart, match every result and notification to a recorded
-ID; the host keeps each subagent's transcript under its agent ID, and reading it
-needs authority. A result from an unrecorded ID is unattributed. The
-coordinator's model here means a fresh independent reviewer on that model, never
-the coordinating session's own judgment.
+ID. The same Resume subagents section documents each transcript as
+`agent-<agentId>.jsonl` under the session's `subagents/` directory, which was
+observed on this host on 2026-09-27; reading it needs authority. A result from
+an unrecorded ID is unattributed. The coordinator's model here means a fresh
+independent reviewer on that model, never the coordinating session's own
+judgment.
 
 ## Record the settings
 
