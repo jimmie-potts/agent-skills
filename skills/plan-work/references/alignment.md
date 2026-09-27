@@ -76,15 +76,12 @@ Add one compact alignment entry to the item's existing assessment:
   items, required inputs, and open questions with the affected work;
 - remaining uncertainty and the limit of the search.
 
-For a small local item with no meaningful architecture or backlog interaction,
-the entry is one or two lines: what was inspected, and why no further
-investigation is needed. Link sources instead of copying them, and create no
+Keep the entry compact. Link sources instead of copying them, and create no
 separate alignment ledger.
 
 ## Leave delivery gates unchanged
 
-At pickup, delivery checks the stored alignment result's sources for changes
-with the rest of the assessment and refreshes only what changed; it runs no
-second planning comparison. Its independent Standards and Specification
-reviews are unchanged. Planning changes no project architecture, style rule or
+Delivery treats the stored alignment result under the assessment contract's
+pickup refresh and runs no second planning comparison. Its independent
+Standards and Specification reviews are unchanged. Planning changes no project architecture, style rule or
 backlog content except through authorized publication.

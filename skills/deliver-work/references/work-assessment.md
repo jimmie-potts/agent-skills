@@ -87,9 +87,10 @@ complexity or impact alone does not prevent readiness.
 Planning compares each item with the owning project's accepted direction,
 architecture and related backlog before calling it ready. An unsettled
 conflict with an accepted decision leaves the affected work needing
-clarification. At pickup, delivery checks the stored alignment result's sources
-for changes with the rest of the assessment and refreshes only what changed; it
-runs no second planning comparison.
+clarification. At pickup, delivery checks the stored alignment result's
+sources, and the decision and backlog locations they came from, for changes
+with the rest of the assessment. It refreshes only what changed and runs no
+second planning comparison.
 
 These are meanings, not mandated tracker statuses. If both a blocker and a
 clarification exist, report both. Unknown evidence affecting scope, acceptance,
