@@ -47,10 +47,17 @@ def normalized(text: str) -> str:
     return " ".join(text.split())
 
 
-def fixture_sections(path: Path) -> dict[str, str]:
-    """Map each `## D<n> Title` heading to its section body."""
-    parts = re.split(r"^## (D\d+) [^\n]+\n", path.read_text(encoding="utf-8"), flags=re.M)
-    return dict(zip(parts[1::2], parts[2::2]))
+def fixture_sections(path: Path) -> dict[str, tuple[str, str]]:
+    """Map each `## D<n> Title` heading to its title and section body."""
+    text = path.read_text(encoding="utf-8")
+    level_two = re.findall(r"^## .*$", text, flags=re.M)
+    parts = re.split(r"^## (D\d+) ([^\n]+)\n", text, flags=re.M)
+    ids = parts[1::3]
+    if len(ids) != len(level_two):
+        raise AssertionError(f"{path.name} has a level-two heading that is not `## D<n> Title`")
+    if len(set(ids)) != len(ids):
+        raise AssertionError(f"{path.name} repeats a case ID")
+    return {case_id: (title, body) for case_id, title, body in zip(ids, parts[2::3], parts[3::3])}
 
 
 class ArchitectSkillTest(unittest.TestCase):
@@ -93,7 +100,7 @@ class ArchitectSkillTest(unittest.TestCase):
 
     def test_workflow_preserves_design_and_authority_invariants(self) -> None:
         _, body = split_frontmatter(SKILL_PATH.read_text(encoding="utf-8"))
-        normalized = " ".join(body.split())
+        text = normalized(body)
 
         for required in (
             "This skill grants no authority to modify tracked files",
@@ -103,13 +110,14 @@ class ArchitectSkillTest(unittest.TestCase):
             "Do not average designs with conflicting ownership or data models",
             "Treat deviations as evidence",
             "Do not put throwing stubs or unfinished bodies into production paths",
-            "Do not endorse a candidate before its caller example shows the caller, owner, success path, and failure and recovery path",
+            "A consequential interface is one that other modules, services, jobs, or people call",
+            "For a consequential interface, do not endorse a candidate before its caller example shows the caller, owner, success path, and failure and recovery path",
             "Choose directly when one candidate clearly wins or no real alternative needs investigation",
             "write a comparison brief before any artifact exists",
             "Run it with `prototype` only when the user explicitly invokes prototype for this task",
             "keep the decision open until the user answers",
         ):
-            self.assertIn(required, normalized)
+            self.assertIn(required, text)
 
         for reference in (
             "references/design-review.md",
@@ -200,22 +208,25 @@ class ArchitectSkillTest(unittest.TestCase):
         cases = fixture_sections(FIXTURES / "cases.md")
         graders = fixture_sections(FIXTURES / "graders.md")
         self.assertEqual(sorted(cases), sorted(graders))
-        self.assertGreaterEqual(len(cases), 8)
+        self.assertGreaterEqual(len(cases), 11)
 
         covered: set[int] = set()
         kinds: set[str] = set()
-        for case_id, case in cases.items():
+        for case_id, (title, case) in cases.items():
             with self.subTest(case=case_id):
-                invoked = re.search(r"^Invoked: (\S+)$", case, re.M)
-                self.assertIsNotNone(invoked)
-                self.assertIn(invoked.group(1), ANCHOR_SKILLS)
+                self.assertEqual(title, graders[case_id][0])
+                invoked_line = re.search(r"^Invoked: (.+)$", case, re.M)
+                self.assertIsNotNone(invoked_line)
+                invoked = set(invoked_line.group(1).split(", "))
+                self.assertTrue(invoked)
+                self.assertLessEqual(invoked, set(ANCHOR_SKILLS))
                 self.assertIn("Prompt:", case)
                 self.assertIn("Setup:", case)
                 # Inputs must not leak the expected outcome or its rule anchors.
                 for leak in ("Expected:", "Anchors:", "Acceptance:"):
                     self.assertNotIn(leak, case)
 
-                grader = graders[case_id]
+                grader = graders[case_id][1]
                 acceptance = re.search(r"^Acceptance: (\d+)$", grader, re.M)
                 kind = re.search(r"^Kind: (positive|negative)$", grader, re.M)
                 self.assertIsNotNone(acceptance)
@@ -224,11 +235,17 @@ class ArchitectSkillTest(unittest.TestCase):
                 covered.add(int(acceptance.group(1)))
                 kinds.add(kind.group(1))
 
-                anchors = re.findall(r'^- (skills/[^:]+): "(.+)"$', grader, re.M)
+                anchor_block = grader.split("Anchors:\n", 1)[1]
+                anchor_lines = [line for line in anchor_block.splitlines() if line.strip()]
+                anchors = [re.fullmatch(r'- (skills/[^:]+): "(.+)"', line) for line in anchor_lines]
                 self.assertTrue(anchors, "each grader cites at least one rule")
+                self.assertTrue(all(anchors), f"{case_id} has a malformed anchor line")
+                anchors = [match.groups() for match in anchors]
                 for relative, phrase in anchors:
                     path = REPOSITORY_ROOT / relative
-                    self.assertIn(Path(relative).parts[1], ANCHOR_SKILLS)
+                    # A trial sees only its invoked skills, so graders may
+                    # rely only on their rules.
+                    self.assertIn(Path(relative).parts[1], invoked)
                     self.assertTrue(path.is_file(), relative)
                     self.assertIn(
                         normalized(phrase),
@@ -237,6 +254,26 @@ class ArchitectSkillTest(unittest.TestCase):
                     )
         self.assertEqual(covered, ACCEPTANCE_CRITERIA)
         self.assertEqual(kinds, {"positive", "negative"})
+
+    def test_comparison_brief_fields_match_prototype(self) -> None:
+        # Architect writes the brief that prototype runs; the fields must agree.
+        architect = normalized(SKILL_PATH.read_text(encoding="utf-8"))
+        prototype = normalized(
+            (REPOSITORY_ROOT / "skills" / "prototype" / "SKILL.md").read_text(encoding="utf-8")
+        )
+        architect_brief = architect[architect.index("write a comparison brief"):]
+        architect_brief = architect_brief[: architect_brief.index("Run it with")]
+        prototype_brief = prototype[prototype.index("write the comparison brief"):]
+        prototype_brief = prototype_brief[: prototype_brief.index("Build each alternative")]
+        for field in (
+            ("the question", "the question"),
+            ("who owns that decision", "who owns that decision"),
+            ("how each is observed", "how each one will be observed"),
+            ("normally two", "normally two"),
+            ("the stop condition", "the stop condition"),
+        ):
+            self.assertIn(field[0], architect_brief)
+            self.assertIn(field[1], prototype_brief)
 
     def test_provenance_and_mit_notice_are_pinned(self) -> None:
         source = SOURCE_PATH.read_text(encoding="utf-8")

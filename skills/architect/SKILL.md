@@ -56,11 +56,12 @@ shape, or migration strategy.
 ### Explore
 
 Read [the candidate design discipline](references/design-review.md) before
-generating candidates. Read [caller examples and invariant
-boundaries](references/caller-examples.md) before writing caller usage for a
-consequential interface or encoding an invariant in types. Write the caller's
-usage first, then derive data types, function signatures, module boundaries,
-and data flow.
+generating candidates. A consequential interface is one that other modules,
+services, jobs, or people call, or one that owns state they depend on. Before
+writing caller usage for one, or encoding an invariant in types, read [caller
+examples and invariant boundaries](references/caller-examples.md). Write the
+caller's usage first, then derive data types, function signatures, module
+boundaries, and data flow.
 
 Load and follow `arena` to produce at least two structurally different candidate
 designs when independent candidates are available. Give each candidate the
@@ -89,16 +90,17 @@ Screen each candidate against the red flags in
 - migration cost and compatibility risk;
 - testability and the cost of likely future changes.
 
-Do not endorse a candidate before its caller example shows the caller, owner,
-success path, and failure and recovery path.
+For a consequential interface, do not endorse a candidate before its caller
+example shows the caller, owner, success path, and failure and recovery path.
 
 Choose directly when one candidate clearly wins or no real alternative needs
 investigation. When a consequential choice between viable candidates stays
 unresolved and a bounded experiment could settle it, write a comparison brief
-before any artifact exists: the question, the decision it informs, evaluation
-criteria and how each is observed, and the plausible alternatives, normally
-two. Run it with `prototype` only when the user explicitly invokes prototype
-for this task; otherwise return the brief as the proposed next step. When the
+before any artifact exists: the question, the decision it informs and who owns
+that decision, evaluation criteria and how each is observed, the plausible
+alternatives, normally two, and the stop condition. Run it with `prototype`
+only when the user explicitly invokes prototype for this task; otherwise return
+the brief as the proposed next step. When the
 choice belongs to the user, such as a product preference, scope, or accepted
 risk, present the evidence and keep the decision open until the user answers.
 

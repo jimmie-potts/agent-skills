@@ -27,8 +27,8 @@ repository tests, error handling, and production-quality completion for their
 accepted behavior. Unfinished or untested code cannot remain in production
 paths.
 
-Local additions not in upstream: a bypass when existing evidence already
-answers the question; a bounded comparison with a brief written before any
+Local additions not in upstream: a bypass for experiments and comparisons
+when existing evidence already answers the question; a bounded comparison with a brief written before any
 artifact, shared inputs, inspectable observations, and a supported decision or
 remaining question; project preview or capture tools for UI variants; and the
 rule that a chosen disposable variant is not production or UI approval.

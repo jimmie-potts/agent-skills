@@ -5,9 +5,8 @@ an invariant in types, and before explaining the chosen design to its owner.
 
 ## Write the caller example first
 
-A consequential interface is one that other modules, services, jobs, or people
-will call, or one that owns state they depend on. For each one, write a caller
-example from real code before endorsing a candidate. Name:
+For each consequential interface, as the architect Explore phase defines it,
+write a caller example from real code before endorsing a candidate. Name:
 
 - **Caller and real setup:** the existing module or actor that calls, and what
   it already holds at that point, such as configuration, identifiers, handles,
@@ -34,16 +33,20 @@ and vocabulary.
 
 ```ts
 // Caller: the POST /orders/:id/pay handler. Setup: it holds orderId from the
-// route and the request ID; `payments` was constructed at startup.
-const result = await payments.capture({ orderId, idempotencyKey: requestId });
+// route and the Idempotency-Key header, which the client generates once per
+// payment attempt and resends unchanged on every retry. `payments` was
+// constructed at startup.
+const result = await payments.capture({ orderId, idempotencyKey });
 switch (result.kind) {
   case "captured":
     return { status: 200, body: { receiptId: result.receiptId } };
   case "declined":
-    // No payment state changed. The customer may retry with another card.
+    // Nothing was charged; payments recorded the decline. The customer may
+    // start a new attempt, with a new key, using another card.
     return { status: 402, body: { reason: result.reason } };
   case "pending":
-    // Gateway timeout. Retrying with the same idempotencyKey cannot charge twice.
+    // Gateway timeout. The client retries with the same Idempotency-Key, so
+    // the gateway cannot charge twice.
     return { status: 202, body: { retryAfterSeconds: result.retryAfterSeconds } };
 }
 ```
@@ -52,7 +55,9 @@ switch (result.kind) {
   never writes payment state.
 - Behind the interface: the gateway protocol, gateway retries, and idempotency
   storage.
-- Caller knowledge: the three outcomes, and that a retry must reuse the key.
+- Caller knowledge: the three outcomes, and that a retry must resend the same
+  key. A key derived from a per-request ID would change on retry and allow a
+  second charge.
 
 ## Encode invariants selectively
 
@@ -66,7 +71,8 @@ repository-wide type migration, compiler-strictness change, or blanket style
 rule, such as banning comments or a type everywhere, as part of a design.
 
 ```ts
-// Before: nothing rejects { status: "captured", receiptId: undefined }.
+// Sketch of before and after, not one compilable file.
+// Before: nothing rejects { status: "captured" } without a receiptId.
 type Payment = {
   status: "pending" | "captured" | "declined";
   receiptId?: string;
@@ -83,10 +89,15 @@ type Payment =
 function parseGatewayPayment(raw: unknown): Payment | GatewayParseError;
 ```
 
-The compiler now rejects a captured payment without a receipt in internal
-code, and `parseGatewayPayment` rejects it in external data. Modules that only
-read payments through existing accessors need no change; update only the code
-that constructed the invalid shape. In other languages, use the equivalent sum
+Internal code can no longer omit the receipt from a captured payment, and
+`parseGatewayPayment` rejects one in external data. The compiler also rejects
+an explicit `receiptId: undefined` only when `strictNullChecks` is enabled.
+Without it, keep a runtime check or a test for internal writers; enabling the
+flag is a separate project decision.
+
+Update the code that constructs payments and the code that reads
+status-specific fields, which must now check `status` first. Modules that do
+not use `Payment` need no change. In other languages, use the equivalent sum
 type or validating constructor.
 
 ## Explain the chosen shape

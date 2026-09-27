@@ -7,9 +7,7 @@ description: Explicitly build a bounded experiment or functional delivery slice 
 
 Answer one concrete question with a runnable artifact. Do not infer a vague
 question from nearby code. If the question cannot be stated as an observable
-result, resolve it before writing. If existing code, documentation, or a single
-obvious implementation already answers the question, report that answer and
-its evidence instead of building an artifact.
+result, resolve it before writing.
 
 Classify the requested result before work begins:
 
@@ -21,6 +19,12 @@ Classify the requested result before work begins:
 An explicit invocation does not itself grant filesystem, dependency-install,
 server-start, browser, Git, tracker, production-route, or publication authority.
 Use only the locations and actions authorized by the underlying request.
+
+For a disposable experiment or a comparison, first check whether the question
+is already answered. If existing code, documentation, or a single obvious
+implementation already answers the question, report that answer and its
+evidence instead of building an artifact. A functional delivery slice is still
+built, directly and without exploratory variants.
 
 ## Choose the branch
 
@@ -35,7 +39,7 @@ artifact answers instead of blending them into one vague prototype.
 When the question is which of several approaches to choose, write the
 comparison brief before building any artifact:
 
-- the question and the decision it informs, and who owns that decision;
+- the question, the decision it informs and who owns that decision;
 - evaluation criteria, and how each one will be observed;
 - the plausible alternatives, normally two. Add another only when it is
   plausible and structurally distinct; and
@@ -45,8 +49,8 @@ Build each alternative against the same inputs, data, and scenarios. Record
 observations per criterion in a form someone else can inspect, such as a
 command and its output, a captured screen, or a state trace. Stop when the
 evidence supports a decision; do not polish a losing alternative. When the
-owner must decide, such as a product preference or accepted risk, present the
-evidence and leave the decision open until the owner answers.
+decision belongs to the user, such as a product preference or accepted risk,
+present the evidence and leave the decision open until the user answers.
 
 ## Bound the artifact
 
@@ -77,7 +81,9 @@ authority and verification.
 
 Report the concrete question, classification, authorized location, how to run
 the artifact, observed result, evidence, limitations, and disposition still
-requiring the user's decision. For a comparison, also report the criteria,
+requiring the user's decision. When existing evidence answered the question,
+report the answer and cite that evidence, and state that no artifact was
+built. For a comparison, also report the criteria,
 the observations for each alternative and where to inspect them, the
 tradeoffs, and either the supported decision or the explicit remaining
 question, in the project's vocabulary. Do not imply that a disposable result is

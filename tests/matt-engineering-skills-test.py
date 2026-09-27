@@ -659,7 +659,10 @@ class MattEngineeringSkillsTest(unittest.TestCase):
             "Build each alternative against the same inputs, data, and scenarios",
             "Record observations per criterion in a form someone else can inspect",
             "Stop when the evidence supports a decision",
-            "leave the decision open until the owner answers",
+            "leave the decision open until the user answers",
+            "For a disposable experiment or a comparison, first check whether the question is already answered",
+            "A functional delivery slice is still built, directly and without exploratory variants",
+            "state that no artifact was built",
             "either the supported decision or the explicit remaining question",
             "Choosing a disposable variant does not approve the production candidate or its UI",
         ):

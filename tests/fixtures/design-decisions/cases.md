@@ -1,6 +1,6 @@
 # Design decision cases
 
-Give each trial one case, the named skill, and that skill's references. Do not
+Give each trial one case, the named skills, and their references. Do not
 supply `graders.md`. These are synthetic decision scenarios; they authorize no
 repository edits, installs, servers, browsers, or model studies.
 
@@ -63,22 +63,23 @@ sizes. The team has no stated density or scanning preference.
 
 Invoked: prototype
 
-Prompt: "Variant B from the settings-page prototype looks great. Is the
-settings page UI done?"
+Prompt: "Use prototype to answer this: variant B from the settings-page
+prototype looks great. Is the settings page UI done?"
 
 Setup: Variant B exists only in the authorized disposable scratch location.
 The production settings page is unchanged.
 
-## D7 Receipt-less captured payments
+## D7 Delivered shipments without a delivery time
 
 Invoked: architect
 
-Prompt: "Use architect to design a fix: captured payments are sometimes stored
-without a receipt ID. Implementation is authorized for the payment module."
+Prompt: "Use architect to design a fix: shipments marked delivered are
+sometimes stored without a delivery time. Implementation is authorized for the
+shipping module."
 
-Setup: `Payment` is one object type with an optional `receiptId`. Gateway JSON
-is cast directly to `Payment`. Unrelated modules use other loose types and the
-compiler's strict mode is off.
+Setup: `Shipment` is one object type with a `status` string and an optional
+`deliveredAt`. Carrier webhook JSON is cast directly to `Shipment`. Unrelated
+modules use other loose types and the compiler's strict mode is off.
 
 ## D8 Unresolved choice without a prototype invocation
 
@@ -89,3 +90,37 @@ Prompt: "Use architect to design the cancellation module. Design only."
 Setup: After candidate comparison, a status-field design and an event-log
 design remain viable. Their difference in refund audit cost can only be
 settled by running scenarios. The user did not invoke prototype.
+
+## D9 Retry policy with a clear winner
+
+Invoked: architect
+
+Prompt: "Use architect to design the retry policy for the email sender. Design
+only."
+
+Setup: After candidate comparison, reusing the existing job queue's retry
+support beats a new scheduler on every criterion: less caller code, no new
+state owner, and existing failure tests. No question remains open.
+
+## D10 Architect and prototype invoked together
+
+Invoked: architect, prototype
+
+Prompt: "Use architect to design the cancellation module, and use prototype to
+settle the refund audit question with a disposable experiment in
+`.local/scratch/cancel-proto`. Design only for production code."
+
+Setup: After candidate comparison, a status-field design and an event-log
+design remain viable. Their difference in refund audit cost can only be
+settled by running scenarios.
+
+## D11 Obvious functional slice
+
+Invoked: prototype
+
+Prompt: "Use prototype to build a functional delivery slice that lets a
+customer cancel an unshipped order. Implementation is authorized in
+`src/orders`."
+
+Setup: The order service already has a status transition helper and tests for
+other transitions. Adding cancellation is straightforward.

@@ -6,9 +6,9 @@ Use this discipline for every candidate and again before synthesis.
 
 Write realistic caller usage before defining types. Show what callers import,
 what they provide, what they receive, and how errors appear. For a
-consequential interface, follow [the caller-example
-contract](caller-examples.md). Derive the public contract from that usage. When usage and types disagree, fix the design rather
-than forcing callers through the type sketch.
+consequential interface, follow
+[the caller-example contract](caller-examples.md). Derive the public contract from that usage. When usage and types disagree, fix
+the design rather than forcing callers through the type sketch.
 
 Model core data before orchestration. Trace dominant reads, writes, lookups, and
 state transitions through the proposed structures. A design that depends on an
@@ -60,9 +60,9 @@ translation, lifecycle, ownership, or a distinct contract.
 
 Repeated casts, broad optional fields, unbounded maps, and generic payloads may
 hide an unresolved invariant. Require the candidate to name why the state is
-valid and where invalid states become impossible or are rejected. Encode such
-an invariant in types only as [selectively as the caller-example
-reference](caller-examples.md#encode-invariants-selectively) allows.
+valid and where invalid states become impossible or are rejected. Before
+encoding such an invariant in types, apply [the selective-encoding
+rule](caller-examples.md#encode-invariants-selectively).
 
 ### Accidental shared state
 
