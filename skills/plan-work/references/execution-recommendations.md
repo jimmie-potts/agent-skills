@@ -112,6 +112,16 @@ entry that stops before the final reviews so the user can run `/effort high`,
 which the effort article above says applies mid-session without breaking the
 prompt cache. On Codex, use review-work's Codex reviewer adapter.
 
+On both hosts, select reviewers from review-work's review selection for the
+item's impact and review task, not impact alone. Name the reviewers that the
+active host's review-work adapter assigns to that impact and review task. Copy
+no reviewer mapping here, and never derive reviewers from the starting model or
+level. The review task comes from the item's ratings, the interfaces and
+invariants it crosses and the capability its implementation needs. The
+`Reviewers` row and both prompts name the selected reviewers, and `**Why:**`
+states the review task and any weaker-reviewer exception with its evidence and
+coverage limits.
+
 Verify model identifiers or aliases and supported effort levels from available
 host evidence. When that is insufficient, consult current official
 [Codex model guidance](https://developers.openai.com/codex/models) or
@@ -161,8 +171,8 @@ issue description or authoritative work document, in this order:
    step that the item's acceptance includes. `Subagents` gives each proposed
    implementation worker's model and level from the canonical worker policy,
    or `None`. `Reviewers` gives the two fresh read-only final reviewers per
-   host from review-work's
-   reviewer policy for the item's impact, or `None` for `Investigate first`.
+   host from review-work's reviewer policy for the item's impact and review
+   task, or `None` for `Investigate first`.
    `Availability` gives the evidence
    source and the date the host's options were checked, labels each host
    verified or provisional, and notes any

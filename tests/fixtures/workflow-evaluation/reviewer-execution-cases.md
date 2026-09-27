@@ -101,7 +101,9 @@ Final round 2 on B1/H5 is running with a fresh reviewer per axis.
 
 ## RX09: Planning recommendation
 
-"$plan-work: propose an issue for a medium-impact change; no publication."
+"$plan-work: propose an issue for a bounded medium-impact change; no
+publication." Complexity and uncertainty are low, requirements are settled and
+reliable checks cover every criterion.
 The installed review-work package includes this candidate's references. Neither
 host has a review-work profile provisioned. State the proposed Reviewers and
 Availability rows for both hosts and what planning reads or launches.

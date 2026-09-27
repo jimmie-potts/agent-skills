@@ -594,5 +594,101 @@ class ReviewerProfileTest(unittest.TestCase):
         self.assertIn('reviewer-execution-graders.md', scenarios)
 
 
+def reviewer_table(adapter):
+    """Return (condition, default) rows of a host adapter's reviewer table."""
+    text = (SKILL / 'references' / adapter).read_text()
+    table = text.split('| Impact | Reviewer default |', 1)[1].split('\n\n', 1)[0]
+    rows = [line.split(' | ') for line in table.splitlines()[2:]]
+    return [(cells[0].lstrip('| '), cells[1]) for cells in rows]
+
+
+class ReviewerSelectionTest(unittest.TestCase):
+    """Issue #71: reviewers follow the review task as well as impact."""
+
+    def test_cross_interface_work_gets_sol_reviewers_at_low_impact(self):
+        # Hub #278: low impact, several interfaces, a Sol-level implementation.
+        rows = reviewer_table('codex-reviewers.md')
+        below_high = [row for row in rows if row[0].startswith('Low or medium')]
+        self.assertEqual(len(below_high), 2, below_high)
+        matches = [default for condition, default in below_high
+                   if 'interfaces' in condition]
+        self.assertEqual(len(matches), 1)
+        self.assertIn('Sol (`gpt-6-sol`) at `high` or stronger', matches[0])
+        self.assertNotIn('luna', matches[0].lower())
+
+    def test_luna_reviewers_are_limited_to_bounded_work(self):
+        rows = reviewer_table('codex-reviewers.md')
+        luna = [(condition, default) for condition, default in rows
+                if 'gpt-6-luna' in default]
+        self.assertEqual(len(luna), 1)
+        condition, default = luna[0]
+        for requirement in ('bounded review task', 'Luna-level implementation',
+                            'settled requirements', 'reliable checks'):
+            with self.subTest(requirement=requirement):
+                self.assertIn(requirement, condition)
+        self.assertNotIn('interfaces', condition)
+        # The pre-#71 row selected Luna for every low- or medium-impact change.
+        self.assertNotEqual(condition, 'Low or medium impact')
+
+    def test_high_impact_floor_is_unchanged(self):
+        rows = reviewer_table('codex-reviewers.md')
+        high = [default for condition, default in rows
+                if condition.startswith('High impact, even with a tiny diff')]
+        self.assertEqual(high, ['Strongest evidenced relevant choice of Sol '
+                                '(`gpt-6-sol`) at `high` or Astra '
+                                '(`gpt-6-astra`) at `high`'])
+
+    def test_claude_code_default_stays_opus(self):
+        rows = reviewer_table('claude-code-reviewers.md')
+        self.assertEqual(rows[0][0], 'Low or medium impact')
+        self.assertEqual(rows[0][1], '`opus` for each axis')
+        for _, default in rows:
+            self.assertNotIn('sonnet', default.split('.')[0].lower())
+
+    def test_review_selection_states_the_rule(self):
+        text = ' '.join((SKILL / 'references/review-selection.md')
+                        .read_text().split())
+        for rule in ('Impact sets the minimum; the review task can only raise it',
+                     'select that tier or stronger, even at low or medium impact',
+                     'a stronger implementer than the work needed raises '
+                     'nothing, and a weaker one lowers nothing',
+                     'not an automatic equivalent of a larger one',
+                     'task, fix-verification and final reviewers',
+                     'Selection changes no reviewer count, frozen comparison, '
+                     'scope, or specialist or human gate',
+                     'Evidence never goes below the impact floor',
+                     "in the input's Settings field"):
+            with self.subTest(rule=rule):
+                self.assertIn(rule, text)
+        self.assertNotIn('## Start from impact', text)
+
+    def test_selection_cases_match_graders(self):
+        cases = (FIXTURES / 'reviewer-selection-cases.md').read_text()
+        graders = (FIXTURES / 'reviewer-selection-graders.md').read_text()
+        case_ids = re.findall(r'^## (RS\d+):', cases, re.MULTILINE)
+        rows = dict(re.findall(r'^\| (RS\d+) \| ([^|]+) \|', graders,
+                               re.MULTILINE))
+        self.assertTrue(case_ids)
+        self.assertEqual(case_ids, list(rows))
+        criteria = {c for value in rows.values() for c in value.split(', ')}
+        self.assertEqual(criteria, {'A1', 'A2', 'A3', 'A4', 'A5'})
+        self.assertIn('example/hub#278', cases)
+        grader_rows = {row.split(' | ')[0].lstrip('| '): row for row in
+                       graders.splitlines() if row.startswith('| RS')}
+        self.assertIn('Luna for either axis fails the case', grader_rows['RS01'])
+        self.assertIn('Luna reviewers for Codex fail the case',
+                      grader_rows['RS02'])
+        # A Fable or Astra start does not select Fable or Astra reviewers.
+        self.assertIn('Fable reviewers fail the case', grader_rows['RS07'])
+        self.assertIn('choosing Astra because the start is Astra fails',
+                      grader_rows['RS07'])
+        for skill in ('review-work', 'plan-work'):
+            scenarios = (SKILLS / skill / 'references/validation-scenarios.md'
+                         ).read_text()
+            with self.subTest(skill=skill):
+                self.assertIn('reviewer-selection-cases.md', scenarios)
+                self.assertIn('reviewer-selection-graders.md', scenarios)
+
+
 if __name__ == '__main__':
     unittest.main()

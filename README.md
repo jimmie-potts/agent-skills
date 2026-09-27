@@ -511,7 +511,8 @@ or worker-with-astra advice at useful checkpoints.
 An initial result plus one guided correction at unchanged settings triggers
 reassessment if still inadequate. Diagnose missing facts, authority, or broken
 infrastructure before promoting capability. These are bounded defaults, not
-measured savings. Routine independent reviewers use Luna/high. Claude keeps
+measured savings. Independent reviewers use Luna/high only for bounded review
+tasks below high impact, and Sol/high or stronger otherwise. Claude keeps
 its own first-failed-attempt escalation and effort-inheritance rules.
 
 ## Shared and domain skill ownership

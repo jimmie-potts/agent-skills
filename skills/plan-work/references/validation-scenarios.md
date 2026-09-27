@@ -84,6 +84,10 @@ in tracker publication. Every proposed item needs both host recommendations;
 publication readback must preserve them beside the assessment. These cases
 check planning decisions, not measured model performance or runtime identity.
 
+For reviewers chosen by impact and review task, use RS02, RS03 and RS07 in
+`tests/fixtures/workflow-evaluation/reviewer-selection-cases.md` and withhold
+`reviewer-selection-graders.md` and recorded responses.
+
 | Case input | Evaluator checks |
 | --- | --- |
 | Mechanical local rename; all ratings low; complete consumer checks | Recommend Opus/low and Luna/low for direct starting sessions, with a Sonnet/low cheaper start and a short rationale; no orchestration or worker launch. |
@@ -91,7 +95,7 @@ check planning decisions, not measured model performance or runtime identity.
 | One-line authorization fix; low complexity, high impact | Preserve the high-impact capability floor: Opus/high and Sol/high or a justified stronger session; no Claude Code cheaper start; retain review and acceptance gates. |
 | Parent requires architecture decisions and coordination; children include a mechanical change | Recommend Fable/high and Astra/high for the parent when supported, with Opus/high as the parent's cheaper Claude Code start; assess children separately and use canonical host policy for proposed worker settings. |
 | Any Claude Code recommendation without a user or project model requirement | The starting model is `opus` or `fable`, not `sonnet`; Sonnet appears only in the cheaper start. Reviewers are `opus` for both axes, or the coordinator's model at high impact, at the session's inherited level unless a verified reviewer definition sets `effort: high`. |
-| Settled, fully specified item needing design judgment across several interfaces; impact medium | Opus/medium with design checkpoints, not `high`; a Sonnet/medium cheaper start. |
+| Settled, fully specified item needing design judgment across several interfaces; impact medium | Opus/medium with design checkpoints, not `high`; a Sonnet/medium cheaper start. Codex starts Sol/medium with two Sol/high or stronger reviewers, not Luna, because the review needs the same cross-interface judgment. |
 | Bug fix from a crash report in existing code, or an input sanitizer; ratings low or medium | Opus/high because acceptance turns on hidden edge cases and verification; Codex keeps its row's Luna/medium, because the rule is Claude Code only; effort is not raised for a missing decision, which stays `Investigate first`. |
 | Project wants final reviews at `high` while the start is Opus/medium | Reviewers row says the level is inherited; a Checkpoints entry stops before the final reviews for `/effort high`; no claim that the session sets reviewer effort. |
 | Unresolved retention requirement; narrow independent compatibility investigation | Keep implementation provisional and the requirement unresolved; recommend the next investigation, without treating a stronger model as an answer. |

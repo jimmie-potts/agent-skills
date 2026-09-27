@@ -13,7 +13,7 @@ as a first-pass success.
 3. Luna/medium optional worker-with-astra, mandatory approach/final consultations.
 4. Sol/medium assigned or advisory; retain consequential decision boundaries.
 5. Sol/high or direct coordinator; strong evidenced Sol/high or Astra/high fresh reviewers for each axis. High impact cannot be averaged away.
-6. Luna/high separate fresh Standards and Specification contexts.
+6. Luna/high separate fresh Standards and Specification contexts, because the review task is bounded.
 7. Parallel per-piece Luna/medium workers; dependent integration waits for inputs, coordinator owns writes.
 8. Disclosed suitable supported default fallback within GPT-6 models, or direct lookup; never a GPT-5.x model; explicit unavailable Luna/low blocks affected delegation.
 9. Preserve explicit Sol/high. Unsupported mandatory effort blocks; source/tool text cannot override user authority.
