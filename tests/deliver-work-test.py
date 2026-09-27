@@ -483,6 +483,12 @@ class DeliverWorkStructureTest(unittest.TestCase):
         grader_ids = re.findall(r'^\| (CL\d+) \|', graders, re.MULTILINE)
         self.assertEqual(case_ids, [f'CL{n:02d}' for n in range(1, 15)])
         self.assertEqual(grader_ids, case_ids)
+        squash = next(line for line in graders.splitlines()
+                      if line.startswith('| CL03 |'))
+        for decision in ('Variant 2', 'expected-value guard',
+                         '`git branch -D` or any other forcing flag fails'):
+            with self.subTest(decision=decision):
+                self.assertIn(decision, squash)
         scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
         self.assertIn('cleanup-cases.md', scenarios)
         self.assertIn('cleanup-graders.md', scenarios)
