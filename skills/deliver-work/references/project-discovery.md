@@ -121,8 +121,9 @@ documentation or release publication. Only recorded resources are this
 delivery's; everything else, including another session's resources, is out
 of scope, and ownership you cannot establish is unknown.
 
-Settle each recorded resource at completion, after verified merge and passing
-required post-merge CI. The outcomes are:
+Settle each recorded resource at completion: after verified merge and passing
+required post-merge CI, or at a limited request's finish line. The outcomes
+are:
 
 - **Removed:** only when all of these hold:
   - the policy allows removing that kind of resource at this stage;
@@ -138,18 +139,26 @@ required post-merge CI. The outcomes are:
 
   Use the host's normal removal. Never use a forcing flag that overrides a
   dirty, locked or unmerged state, such as Git's `git worktree remove --force`
-  or `git branch -D`. Remove a worktree before its branch. A squash merge
-  hides the merged head from `git branch -d`, which then refuses; for that
-  branch only, delete with the verified tip as an expected-value guard, such
-  as `git update-ref -d refs/heads/<branch> <verified-tip-sha>`, which refuses
-  if the branch moved. When a tool created the resource and manages its exit,
-  such as a host-managed worktree, use that exit. Read back the removal, such
-  as the worktree and branch lists or the path's absence. A refused removal
-  leaves the resource retained; never retry it with a forcing flag.
+  or `git branch -D`. Remove a worktree before its branch. `git branch -d`
+  refuses a branch whose merge it cannot see, as after a squash or rebase
+  merge or against a stale local target. When the branch's verified tip
+  equals the PR head the merge recorded, whatever the merge strategy, delete
+  it instead with that tip as an expected-value guard, such as
+  `git update-ref -d refs/heads/<branch> <verified-tip-sha>`, which refuses if
+  the branch moved. That command skips `git branch -d`'s check for a branch
+  checked out elsewhere, so first confirm with `git worktree list --porcelain`
+  that no worktree has the branch checked out; otherwise retain it. Then
+  remove this branch's own configuration section if it exists, such as
+  `git config --remove-section branch.<branch>`, and nothing else. When a tool
+  created the resource and manages its exit, such as a host-managed worktree,
+  use that exit. Read back the removal, such as the worktree and branch lists
+  or the path's absence. A refused removal leaves the resource retained; never
+  retry it with a forcing flag.
 - **Retained:** any resource failing a condition above, including a moved
-  branch tip, a dirty or locked worktree, evidence that cannot be preserved,
-  missing or failing post-merge CI, an unavailable tool-managed exit, unknown
-  ownership or a missing policy. Record its reason, its owner or `unknown`,
+  branch tip, a branch checked out in another worktree, a dirty or locked
+  worktree, evidence that cannot be preserved, missing or failing post-merge
+  CI, an unavailable tool-managed exit, unknown ownership or a missing
+  policy. Record its reason, its owner or `unknown`,
   and the next action.
 - **Not applicable:** the delivery created no resource of that kind.
 
@@ -157,10 +166,13 @@ Report each kind separately: branch, worktree, scratch, clone, staging and
 remote. Record a remote branch the host deleted on merge as removed by the
 host, with the readback that shows it gone; that proves nothing about local
 resources. Deleting a remote branch yourself is its own effect and needs the
-same policy and ownership checks. A local-only or ready-PR-only request stops
-before merge, so it removes nothing: it reports each resource it created as
-retained, with its reason, owner and next action. A planning-only request
-creates no resource and reports not applicable.
+same policy and ownership checks. A local-only, ready-PR-only or explicit
+watch request stops without its own merge. It removes only what the
+applicable policy allows before a merge, such as a scratch directory the
+user's instructions say to delete when the task ends, once its evidence is
+preserved and nothing uses it. It retains the rest, including a worktree or
+branch that holds unmerged work, with reason, owner and next action. A
+planning-only request creates no resource and reports not applicable.
 
 Retained resources do not hold back the completion update; completion needs the
 recorded outcome, not removal. Record the result in the existing delivery

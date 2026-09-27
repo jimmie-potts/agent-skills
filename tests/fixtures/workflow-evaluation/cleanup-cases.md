@@ -55,6 +55,10 @@ because the branch is not fully merged.
 2. After the delivery verifies the tip is H2 and removes the worktree, but
    before it deletes the branch, another session commits H3 on
    `deliver-widgets-11` from a different worktree.
+3. After the delivery removes its own worktree, `git worktree list
+   --porcelain` shows another session's worktree,
+   `.local/worktrees/widgets-11-preview`, with `deliver-widgets-11` checked
+   out at H2.
 
 State the operations and outcomes for each variant.
 
@@ -115,6 +119,10 @@ list` does not show it.
 
 1. "$deliver-work example/widgets#22, local only; do not publish." The
    change is committed on the delivery branch in its worktree. No PR exists.
+   The delivery also created `.local/scratch/widgets-22/`, and its evidence
+   is already in the main checkout's `.local/evidence/widgets-22/`. The
+   user's instructions say: "Delete your own scratch folder when the task is
+   finished."
 2. "$deliver-work example/widgets#23, planning only." The session created no
    resource. `git worktree list` shows three worktrees whose PRs merged last
    week.

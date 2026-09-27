@@ -460,12 +460,21 @@ class DeliverWorkStructureTest(unittest.TestCase):
                      'Never use a forcing flag that overrides a dirty, locked '
                      "or unmerged state, such as Git's `git worktree remove "
                      "--force` or `git branch -D`",
-                     'delete with the verified tip as an expected-value guard',
+                     'whatever the merge strategy',
+                     'with that tip as an expected-value guard',
+                     'first confirm with `git worktree list --porcelain` that '
+                     'no worktree has the branch checked out; otherwise retain '
+                     'it',
+                     "remove this branch's own configuration section if it "
+                     'exists',
                      'never retry it with a forcing flag',
                      'When a tool created the resource and manages its exit',
                      'Read back the removal',
                      'that proves nothing about local resources',
-                     'stops before merge, so it removes nothing',
+                     'A local-only, ready-PR-only or explicit watch request '
+                     'stops without its own merge',
+                     'removes only what the applicable policy allows before a '
+                     'merge',
                      'never assume a removal succeeded'):
             with self.subTest(rule=rule):
                 self.assertIn(rule, cleanup)
@@ -483,9 +492,12 @@ class DeliverWorkStructureTest(unittest.TestCase):
         grader_ids = re.findall(r'^\| (CL\d+) \|', graders, re.MULTILINE)
         self.assertEqual(case_ids, [f'CL{n:02d}' for n in range(1, 15)])
         self.assertEqual(grader_ids, case_ids)
+        self.assertRegex(flat(section(cases, '## CL03: A squash-merged branch')),
+                         r' 3\. .*checked out at H2')
         squash = next(line for line in graders.splitlines()
                       if line.startswith('| CL03 |'))
-        for decision in ('Variant 2', 'expected-value guard',
+        for decision in ('Variant 2', 'Variant 3', 'expected-value guard',
+                         'checked out in another worktree',
                          '`git branch -D` or any other forcing flag fails'):
             with self.subTest(decision=decision):
                 self.assertIn(decision, squash)
