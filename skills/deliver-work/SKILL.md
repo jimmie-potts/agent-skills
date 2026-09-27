@@ -219,13 +219,21 @@ required artifacts, and required post-merge CI. Verify the published result is
 included in the actual target under the selected merge strategy. Queue entry
 or merge acceptance alone is not a verified merge.
 
-Evaluate all completion conditions. If deployment, installation, physical checks
-or human acceptance remains, retain the established waiting/current tracking
-state and report its owner. Perform those actions only when authorized. Once
-all required conditions pass, apply the appropriate completion update, then
-read back status and resolution/reason where supported. Report the immutable
-published revision and acceptance evidence, and any documentation or
-publication stage still pending.
+Evaluate all completion conditions. When the owning project declares
+installation or deployment as a completion condition and defines its
+procedure, offer that procedure at a checkpoint after verified merge and
+post-merge CI. Perform it only on the owner's approval at that checkpoint or
+explicit authorization in the request that names the step; either covers only
+the step for this change. Without a declared procedure, never improvise one;
+report the step to its owner, pending while the item or project policy still
+requires it. Before offering, skipping or recording such a step, read
+[declared completion steps](references/project-discovery.md#declared-completion-steps).
+If a required deployment, installation, physical check or human acceptance
+remains, retain the established waiting/current tracking state and report its
+owner and next action. Once all required conditions pass, apply the appropriate
+completion update, then read back status and resolution/reason where
+supported. Report the immutable published revision and acceptance evidence,
+and any documentation or publication stage still pending.
 
 ## Recover and report
 
