@@ -33,6 +33,8 @@ repeated appearances of the same published item/version. Reassess edits and new
 follow-ups. Older-head feedback can still apply to the current candidate.
 Record a disposition with evidence rather than treating retrieval as handling.
 Fixing code, replying and resolving a provider thread are separate actions.
+This delivery's own reports and replies are not feedback; publish and
+recognize them under [review reports](review-reports.md).
 
 ## Refresh and act in evidence order
 
@@ -116,6 +118,7 @@ never claim a detached process or ended turn continues watching.
 | Required capability or decision unavailable | Report the specific gap, owner and evidence needed. Pause dependent actions and continue independent authorized work; hand off if no useful action or responsive wait remains. |
 | User stop | Stop and verify any owned watch process, preserve evidence and relinquish its active ownership. Report monitoring inactive; do not claim completion that was not verified. |
 
-Supervision grants no new permission. Preserve restrictions on replies, thread
-resolution, issue state, pushes, merge and deployment. Never bypass protections,
-force-push or weaken a check to enable delivery.
+Supervision grants no new permission. Beyond the reports and factual replies
+in [review reports](review-reports.md), preserve restrictions on replies,
+thread resolution, issue state, pushes, merge and deployment. Never bypass
+protections, force-push or weaken a check to enable delivery.
