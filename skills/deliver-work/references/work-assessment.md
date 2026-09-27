@@ -10,7 +10,8 @@ gates remain floors.
 Assess scope when drafting an item, at delivery pickup, and after a material
 scope or assumption change, not on every turn. Refresh the stored assessment
 instead of writing another. This adds no skill invocation; explicit-only skills
-still need their own explicit request.
+still need their own explicit request or deliberate composition by an
+authorized workflow.
 
 Before choosing scope, establish the intended user outcome, supported
 installation or deployment, affected consumers and meaningful failure
@@ -84,13 +85,17 @@ complexity or impact alone does not prevent readiness.
   observable result, and dependent-work boundary. A separately deliverable
   investigation can be ready while the feature remains blocked.
 
+When an unresolved question governs scope, approach or acceptance, read
+[uncertainty routing](uncertainty-routing.md) to choose its cheapest decisive
+step before detailing the work it governs.
+
 Planning compares each item with the owning project's accepted direction,
 architecture and related backlog before calling it ready. An unsettled
 conflict with an accepted decision leaves the affected work needing
 clarification. At pickup, delivery checks the stored alignment result's
-sources, and the decision and backlog locations they came from, for changes
-with the rest of the assessment. It refreshes only what changed and runs no
-second planning comparison.
+sources, and the decision and backlog locations within its recorded search
+limit, for changes with the rest of the assessment. It refreshes only what
+changed; it runs no second planning comparison or wider backlog search.
 
 These are meanings, not mandated tracker statuses. If both a blocker and a
 clarification exist, report both. Unknown evidence affecting scope, acceptance,
@@ -133,7 +138,8 @@ work document, with:
   cut with its class, lost behavior or assurance, manual alternative, and
   owning issue or revisit trigger;
 - each rating, rationale, evidence, and unknowns;
-- readiness, blockers, unresolved decisions, and bounded investigations;
+- readiness, blockers, unresolved decisions, and bounded investigations with
+  their outcomes, including refuted and inconclusive ones;
 - when planning supplied one, the alignment result with its sources,
   observation dates and remaining uncertainty;
 - acceptance-to-verification mapping and conditional review/handoff needs;
