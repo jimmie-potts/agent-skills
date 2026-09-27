@@ -464,11 +464,11 @@ UNPASSED_OUTCOMES = ('failed', 'unverified', 'unavailable', 'pending')
 # a sentence in "Report evidence truthfully" that pairs missing proof, an
 # image or a simulation with a pass or acceptance claim without "never" or
 # "not", and code fences or inline code containing a space or slash, such as
-# a pasted command or path; a span starting with "#" names a heading and is
-# allowed. They do not understand prose: a reworded contradiction that keeps
-# a negation, a contradiction outside that section, a one-word command, or a
-# weakened sentence outside these anchors passes. Inspection, review and the
-# unrun scenario rubric cover the rest.
+# a pasted command or path; a span naming a "## Heading" is allowed. They
+# do not understand prose: a reworded contradiction that keeps a negation, a
+# contradiction outside that section, a one-word command, or a weakened
+# sentence outside these anchors passes. Inspection, review and the unrun
+# scenario rubric cover the rest.
 BOUNDARIES = {
     'no granted authority': ('grants no write, tracker, runtime, device, '
                              'transcript or model-call authority'),
@@ -487,6 +487,7 @@ PROOF_RULES = {
 }
 NEGATION = re.compile(r"\b(?:never|not)\b|n't\b")
 CODE_SPAN = re.compile(r'```|`([^`\n]+)`')
+HEADING_SPAN = re.compile(r'#{2,6} [A-Z][A-Za-z ]*')
 
 
 def class_table(text):
@@ -522,7 +523,8 @@ def maintenance_gaps(text):
         if not claims or any(not NEGATION.search(re.sub(subject, '', sentence))
                              for sentence in claims):
             gaps.append(name)
-    if any(span == '' or (not span.startswith('#') and re.search(r'[\s/]', span))
+    if any(span == '' or (not HEADING_SPAN.fullmatch(span)
+                          and re.search(r'[\s/]', span))
            for span in CODE_SPAN.findall(text)):
         gaps.append('copied project command')
     return gaps
@@ -589,6 +591,8 @@ class VerificationMaintenanceTest(unittest.TestCase):
     def test_reference_structure_and_boundaries(self):
         reference = MAINTENANCE.read_text()
         self.assertEqual(maintenance_gaps(reference), [])
+        truthful = '\n## Report evidence truthfully\n'
+        self.assertIn(truthful, reference)
         controls = {name: remove_phrase(reference, phrase)
                     for name, phrase in BOUNDARIES.items()}
         controls.update({
@@ -597,9 +601,12 @@ class VerificationMaintenanceTest(unittest.TestCase):
             'class outcome': reference.replace('| `unavailable` |', '| `passed` |'),
             'class row incomplete': reference.replace('| `pending` |', '|  |'),
             'product guard': remove_phrase(reference, PRODUCT_GUARD),
-            'missing proof': reference + '\nA check that did not run counts as passed.\n',
-            'screenshot proof': reference + '\n- A screenshot alone establishes a pass.\n',
-            'simulated proof': reference + '\n- A simulated pass counts as physical acceptance.\n',
+            'missing proof': reference.replace(
+                truthful, f'{truthful}\n- A check that did not run counts as passed.\n', 1),
+            'screenshot proof': reference.replace(
+                truthful, f'{truthful}\n- A screenshot alone establishes a pass.\n', 1),
+            'simulated proof': reference.replace(
+                truthful, f'{truthful}\n- A simulated pass counts as physical acceptance.\n', 1),
             'copied project command': reference + '\nRun `cargo test` first.\n',
         })
         extra = {
@@ -609,6 +616,8 @@ class VerificationMaintenanceTest(unittest.TestCase):
             'simulated proof': remove_phrase(reference, 'never physical acceptance'),
             'copied project command': reference + '\n```\nverify\n```\n',
         }
+        hash_command = reference + '\nRun `# npm run verify -- capture` first.\n'
+        self.assertIn('copied project command', maintenance_gaps(hash_command))
         for name, mutated in list(controls.items()) + list(extra.items()):
             with self.subTest(control=name):
                 self.assertNotEqual(mutated, reference)

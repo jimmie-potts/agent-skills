@@ -48,7 +48,6 @@ and report its class's outcome until the evidence the class lacks exists: a
 passing rerun after the product fix, entry update, restored harness capability
 or available environment, or for `acceptance` the owner's acceptance evidence.
 
-
 | Class | Supporting evidence | Reported outcome | Next action |
 | --- | --- | --- | --- |
 | `product` | A working harness, or independent evidence such as a unit test or log, shows the behavior misses its criterion | `failed` | Fix the product within scope and rerun. Never change the check or recipe to make it pass |
@@ -85,9 +84,9 @@ unless the project retains such fixtures.
 A check that passes on the known bad result is not evidence. Strengthen it or
 report the gap. Select controls by assessed risk. Do not mutate every edit,
 start a mutation-testing program or copy implementation details into tests.
-Low-impact wording, documentation and instruction changes follow the
-entrypoint's rule instead: inspect the result and exercise representative
-behavior, without executable tests that merely mirror prose.
+Documentation and instruction changes follow the entrypoint's rule: inspect
+the result and exercise representative behavior, without executable tests that
+merely mirror prose. Low-impact wording needs only inspection and readback.
 
 ## Prevent repeated mistakes structurally
 
