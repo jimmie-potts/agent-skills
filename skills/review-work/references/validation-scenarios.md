@@ -12,6 +12,13 @@ corrections share with this skill, also use
 `tests/fixtures/workflow-evaluation/review-cycles-cases.md` and withhold
 `review-cycles-graders.md` in the same way.
 
+For the reviewer execution preflight, native profiles, substitution and
+partial or unattributed returns, also use
+`tests/fixtures/workflow-evaluation/reviewer-execution-cases.md` and withhold
+`reviewer-execution-graders.md` in the same way. `tests/review-work-test.py`
+checks the profile templates' tools and settings statically; that proves
+neither host discovery nor enforced restriction.
+
 Read `review-work-observations.md` in that fixture directory only after
 scoring.
 

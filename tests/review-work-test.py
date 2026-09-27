@@ -2,6 +2,7 @@
 """Structural and result-contract checks; behavior uses held-out scenarios."""
 from pathlib import Path
 import re
+import tomllib
 import unittest
 import yaml
 
@@ -170,7 +171,10 @@ class ReviewWorkStructureTest(unittest.TestCase):
         for path in SKILL.rglob('*'):
             self.assertFalse(path.is_symlink(), str(path))
             if path.is_file():
-                self.assertIn(path.suffix, {'.md', '.yaml'})
+                allowed = {'.md', '.yaml'}
+                if path.relative_to(SKILL).parts[0] == 'assets':
+                    allowed = {'.md', '.toml'}
+                self.assertIn(path.suffix, allowed, str(path))
 
     def test_canonical_check_wiring(self):
         for path in (ROOT / 'AGENTS.md', ROOT / 'README.md',
@@ -330,6 +334,75 @@ class MigrationTest(unittest.TestCase):
         scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
         self.assertIn('review-work-cases.md', scenarios)
         self.assertIn('review-work-graders.md', scenarios)
+
+
+def claude_profile(path):
+    match = re.fullmatch(r'---\n(.*?)\n---\n\n(.+)', path.read_text(), re.DOTALL)
+    return yaml.safe_load(match.group(1)), match.group(2)
+
+
+class ReviewerProfileTest(unittest.TestCase):
+    ASSETS = SKILL / 'assets'
+    CLAUDE = {'review-work-reviewer': None, 'review-work-reviewer-high': 'high'}
+
+    def test_profile_set_is_exact(self):
+        shipped = sorted(path.relative_to(self.ASSETS).as_posix()
+                         for path in self.ASSETS.rglob('*') if path.is_file())
+        self.assertEqual(shipped, [
+            'claude-code/review-work-reviewer-high.md',
+            'claude-code/review-work-reviewer.md',
+            'codex/review-work-reviewer.toml'])
+
+    def test_claude_profiles_restrict_tools_and_differ_only_in_effort(self):
+        bodies = set()
+        for name, effort in self.CLAUDE.items():
+            with self.subTest(profile=name):
+                meta, body = claude_profile(self.ASSETS / f'claude-code/{name}.md')
+                bodies.add(body)
+                expected = {'name', 'description', 'tools', 'skills'}
+                self.assertEqual(set(meta), expected | ({'effort'} if effort else set()))
+                self.assertEqual(meta['name'], name)
+                self.assertEqual(meta.get('effort'), effort)
+                self.assertIn('review-work', meta['description'])
+                # No Agent, editing, Skill or MCP tools; no model, permission
+                # mode, isolation or background override.
+                self.assertEqual(meta['tools'].split(', '),
+                                 ['Read', 'Grep', 'Glob', 'Bash'])
+                self.assertEqual(meta['skills'], ['code-review'])
+        self.assertEqual(len(bodies), 1)
+
+    def test_codex_profile_leaves_selection_to_the_spawn_call(self):
+        profile = tomllib.loads(
+            (self.ASSETS / 'codex/review-work-reviewer.toml').read_text())
+        self.assertEqual(set(profile), {'name', 'description', 'sandbox_mode',
+                                        'developer_instructions', 'agents'})
+        self.assertEqual(profile['name'], 'review_work_reviewer')
+        self.assertEqual(profile['sandbox_mode'], 'read-only')
+        self.assertEqual(profile['agents'], {'enabled': False})
+        _, body = claude_profile(self.ASSETS / 'claude-code/review-work-reviewer.md')
+        self.assertEqual(profile['developer_instructions'].strip(), body.strip())
+
+    def test_adapters_link_their_profiles(self):
+        for adapter, host in (('claude-code-reviewers.md', 'claude-code'),
+                              ('codex-reviewers.md', 'codex')):
+            path = SKILL / 'references' / adapter
+            with self.subTest(adapter=adapter):
+                targets = {(path.parent / link).resolve() for link in links(path)}
+                for asset in (self.ASSETS / host).iterdir():
+                    self.assertIn(asset.resolve(), targets)
+                self.assertIn('reviewer-execution.md', links(path))
+                self.assertIn('| Impact | Reviewer default |', path.read_text())
+
+    def test_execution_cases_match_graders(self):
+        cases = (FIXTURES / 'reviewer-execution-cases.md').read_text()
+        graders = (FIXTURES / 'reviewer-execution-graders.md').read_text()
+        case_ids = re.findall(r'^## (RX\d+):', cases, re.MULTILINE)
+        self.assertTrue(case_ids)
+        self.assertEqual(case_ids,
+                         re.findall(r'^\| (RX\d+) \|', graders, re.MULTILINE))
+        scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
+        self.assertIn('reviewer-execution-cases.md', scenarios)
+        self.assertIn('reviewer-execution-graders.md', scenarios)
 
 
 if __name__ == '__main__':
