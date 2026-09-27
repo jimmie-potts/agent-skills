@@ -71,6 +71,54 @@ def parse_execution_record(text):
     return {'rows': rows, 'fixes': match.group(2),
             'recorded': match.group(3), 'policy': match.group(4)}
 
+REVIEW_STATES = ('pending', 'current', 'superseded', 'stopped')
+AXIS_STATUS = r'satisfied|action-required|incomplete'
+REVIEW_CELLS = (
+    r'final [1-9]\d*', r'`[0-9a-f]{7}\.\.[0-9a-f]{7}`', '|'.join(REVIEW_STATES),
+    rf'{AXIS_STATUS}|-', rf'{AXIS_STATUS}|-',
+    rf'-|none|[a-z]+: (?:{AXIS_STATUS})(?:, [a-z]+: (?:{AXIS_STATUS}))*',
+    r'-|\[report\]\(https://\S+\)')
+
+
+def parse_review_section(text):
+    """Read a description's review section and enforce its gate rules."""
+    match = re.fullmatch(
+        r'## Independent review\n\n\*\*Review gate:\*\* '
+        r'(satisfied for head ([0-9a-f]{40})|not satisfied: \S[^\n]*)\n\n'
+        r'\| Round \| Comparison \| State \| Standards \| Specification \| '
+        r'Specialist \| Report \|\n(?:\| --- ){7}\|\n((?:\|[^\n]*\|\n)+)', text)
+    if not match:
+        raise ValueError('section outside the review section shape')
+    rows = []
+    for line in match.group(3).splitlines():
+        cells = [cell.strip() for cell in line.strip('|').split('|')]
+        if len(cells) != 7 or not all(
+                re.fullmatch(grammar, cell)
+                for grammar, cell in zip(REVIEW_CELLS, cells)):
+            raise ValueError(f'bad review row: {line}')
+        rows.append(cells)
+    numbers = [int(row[0].split()[1]) for row in rows]
+    if numbers != list(range(1, len(rows) + 1)):
+        raise ValueError('rounds missing or out of order')
+    for row in rows:
+        state, axes, report = row[2], row[3:6], row[6]
+        if state == 'pending' and (row is not rows[-1] or set(row[3:]) != {'-'}):
+            raise ValueError('only the last row may be pending, without results')
+        if state == 'current' and row is not rows[-1]:
+            raise ValueError('only the last row may be current')
+        if state in ('current', 'superseded') and (report == '-' or '-' in axes):
+            raise ValueError(f'{row[0]} completed without its report or statuses')
+    last = rows[-1]
+    approved = (last[2] == 'current' and last[3] == last[4] == 'satisfied'
+                and all(status.split(': ')[1] == 'satisfied'
+                        for status in last[5].split(', ') if ': ' in status)
+                and last[6] != '-'
+                and match.group(2) is not None
+                and last[1].strip('`').split('..')[1] == match.group(2)[:7])
+    if match.group(1).startswith('satisfied') != approved:
+        raise ValueError('gate line disagrees with the current round')
+    return {'gate': match.group(1), 'rows': rows}
+
 
 def flat(text):
     return ' '.join(text.split())
@@ -219,6 +267,56 @@ class DeliverWorkStructureTest(unittest.TestCase):
         self.assertIn('`## Execution record`', readme)
         for term in PROVENANCE:
             self.assertIn(f'`{term}`', readme)
+
+    def test_review_section_cannot_look_approved_when_incomplete(self):
+        reference = (SKILL / 'references/review-reports.md').read_text()
+        example = re.findall(r'```markdown\n(.+?)```', reference, re.DOTALL)[0]
+        pending = parse_review_section(example)
+        self.assertTrue(pending['gate'].startswith('not satisfied'))
+        head = '4444444444444444444444444444444444444444'
+        current = (example
+                   .replace('| pending | - | - | - | - |',
+                            '| current | satisfied | satisfied | '
+                            'security: satisfied | [report](https://github.com/'
+                            'example-org/example-app/pull/43#issuecomment-103) |')
+                   .replace(f'not satisfied: final 3 pending for head {head}',
+                            f'satisfied for head {head}'))
+        self.assertTrue(parse_review_section(current)['gate'].startswith('satisfied'))
+        satisfied = f'**Review gate:** satisfied for head {head}'
+        mutations = {
+            'gate satisfied while pending': example.replace(
+                f'**Review gate:** not satisfied: final 3 pending for head {head}',
+                satisfied),
+            'gate satisfied with an incomplete axis': current.replace(
+                '| current | satisfied | satisfied |',
+                '| current | satisfied | incomplete |'),
+            'gate satisfied with a specialist blocker': current.replace(
+                '| current | satisfied | satisfied | security: satisfied',
+                '| current | satisfied | satisfied | security: action-required'),
+            'gate satisfied without a retained report': current.replace(
+                '[report](https://github.com/example-org/example-app/pull/43'
+                '#issuecomment-103)', '-'),
+            'gate satisfied for another head': current.replace(
+                satisfied, satisfied.replace('4444', '5555', 1)),
+            'gate satisfied by a superseded round': current.replace(
+                '| current |', '| superseded |'),
+            'two current rounds': current.replace(
+                '| final 2 | `1111111..3333333` | superseded |',
+                '| final 2 | `1111111..3333333` | current |'),
+            'superseded without its report': example.replace(
+                '[report](https://github.com/example-org/example-app/pull/43'
+                '#issuecomment-101)', '-'),
+            'unknown state': example.replace('| superseded |', '| approved |', 1),
+            'missing gate line': example.replace(
+                f'**Review gate:** not satisfied: final 3 pending for head {head}\n\n',
+                ''),
+        }
+        for name, mutated in mutations.items():
+            with self.subTest(mutation=name):
+                self.assertNotEqual(mutated, example)
+                self.assertNotEqual(mutated, current)
+                with self.assertRaises(ValueError):
+                    parse_review_section(mutated)
 
     def test_canonical_check_wiring(self):
         command = 'python3 tests/deliver-work-test.py'

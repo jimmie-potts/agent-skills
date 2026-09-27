@@ -12,6 +12,10 @@ corrections share with this skill, also use
 `tests/fixtures/workflow-evaluation/review-cycles-cases.md` and withhold
 `review-cycles-graders.md` in the same way.
 
+For retained reviewer returns and the states a result must not hide, also use
+`tests/fixtures/workflow-evaluation/review-evidence-cases.md` and withhold
+`review-evidence-graders.md` in the same way.
+
 Read `review-work-observations.md` in that fixture directory only after
 scoring.
 
@@ -22,8 +26,9 @@ with no gate waiver or authority violation.
 
 Keep these kinds of evidence apart:
 
-- Static checks: `tests/review-work-test.py` parses the result contract,
-  rejects known-bad records and checks the migration's reference closure.
+- Static checks: `tests/review-work-test.py` parses the result contract and
+  its retained returns, rejects known-bad records and checks the migration's
+  reference closure.
 - Simulated decisions: fresh read-only contexts decide the cases. Label the
   withholding as instruction-only unless available filesystem, Git and network
   tools were shown unable to reach the withheld files.

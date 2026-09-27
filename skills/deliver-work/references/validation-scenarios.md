@@ -16,6 +16,12 @@ host quality, actual budget enforcement and paid benchmarks.
 Read `review-cycles-observations.md` there only after scoring, including the
 excluded trials and corrected evaluation setup.
 
+For review-round reports, retained reviewer returns, factual replies, the
+communication boundary and recovery of uncertain publication, use
+`tests/fixtures/workflow-evaluation/review-evidence-cases.md` and withhold
+`review-evidence-graders.md` in the same way. Simulated provider stubs do not
+establish live GitHub behavior or retention after archival.
+
 For declared installation or deployment at completion, use cases IC01 to IC10
 in `tests/fixtures/workflow-evaluation/installation-cases.md`, with this
 catalog's `AGENTS.md` and README as the declaring project's policy. Withhold

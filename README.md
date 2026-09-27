@@ -98,6 +98,7 @@ Reusable SDLC workflows also include:
   stable findings, and returns a per-axis `satisfied`, `action-required` or
   `incomplete` [result](skills/review-work/references/result-contract.md). A
   missing specification, partial return or stale comparison is never approval.
+  Each result carries every reviewer's actual return, redacted and digested.
   It implements, publishes and merges nothing; `deliver-work` composes it for
   its required reviews and keeps corrections, CI and merge;
 - [`deliver-work`](skills/deliver-work/SKILL.md), explicit delivery of
@@ -147,13 +148,16 @@ Reusable SDLC workflows also include:
   [PR supervision](skills/deliver-work/references/pr-supervision.md) tracks
   published feedback and current checks through the requested finish line.
   It diagnoses failures from logs, handles fixes before obsolete check reruns,
-  and resumes supervision after each push or rerun. When the owning project
-  declares installation or deployment as a completion condition and defines
-  its procedure, delivery offers that procedure at a checkpoint after verified
-  merge and post-merge CI and runs it only on the owner's approval there or
-  on authorization in the request that names the step, which covers only
-  that delivery's own change; otherwise it reports a needed step to its owner
-  and never improvises one;
+  and resumes supervision after each push or rerun.
+  [Review reports](skills/deliver-work/references/review-reports.md) publish
+  each final round with its retained reviewer returns, keep the PR's current
+  review state, and limit replies to facts about scoped fixes. When the owning
+  project declares installation or deployment as a completion condition and
+  defines its procedure, delivery offers that procedure at a checkpoint after
+  verified merge and post-merge CI and runs it only on the owner's approval
+  there or on authorization in the request that names the step, which covers
+  only that delivery's own change; otherwise it reports a needed step to its
+  owner and never improvises one;
 - the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
   `openspec-apply-change`, `openspec-update-change`, `openspec-sync-specs`, and
   `openspec-archive-change`. They use the consuming repository's pinned CLI.
