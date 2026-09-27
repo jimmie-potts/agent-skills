@@ -8,7 +8,9 @@ description: Deliver a named issue or requirement through project-defined implem
 An explicit invocation with a work reference requests implementation, one ready
 pull request, normal merge, and verified tracking completion, within the user's
 limits and project policy. A local-only, ready-PR-only or explicit watch request
-stops at that limit with its required evidence. Planning-only means read-only
+stops at that limit with its required evidence, including the
+[cleanup](references/project-discovery.md#cleanup) outcome for what it
+created. Planning-only means read-only
 planning. Ordinary implementation, investigation, and review requests do not
 select this skill. Treat a pull request as the code host's equivalent
 change-review object.

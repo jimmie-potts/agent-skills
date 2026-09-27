@@ -34,6 +34,22 @@ Do not invent an approval gate from a missing optional control.
 An absent optional planning framework does not require setup;
 the accepted issue or requirement can supply the plan when policy permits it.
 
+When OpenSpec applies, resolve pinned tooling, local configuration, active and
+archived identities, schemas, templates and completion rules. Existing legacy
+work retains its documented path. Required artifact readiness or archive failure
+must be resolved before dependent delivery, not reclassified as optional.
+
+For an alternate code host, verify PR-equivalent review/check APIs, pagination,
+merge strategies, expected-head guards and destination readbacks. An unavailable
+required capability blocks its dependent action; do not change providers or
+push directly to the target to circumvent it.
+
+On resumption, inspect the whole candidate and any dirty patch, source links,
+base/head, PR disposition, reviews and checks. Require a clear ownership transfer
+before taking over another coordinator's work. Reconcile merged or closed PRs
+before reopening or replacing them. Never discard existing authorized work to
+replay the workflow from the beginning.
+
 ## Declared completion steps
 
 A project declares installation or deployment as a completion condition when
@@ -100,12 +116,13 @@ agent instructions, contributing or delivery policy, or the user's
 instructions. A habit, a tool default or a remote branch deleted on merge is
 not a policy. Record each temporary resource as this delivery creates it:
 worktrees, local branches, scratch directories, temporary clones and
-publication staging. Only recorded resources are this delivery's; everything
-else, including another session's resources, is out of scope, and ownership
-you cannot establish is unknown.
+publication staging, such as a directory or branch used to prepare a
+documentation or release publication. Only recorded resources are this
+delivery's; everything else, including another session's resources, is out
+of scope, and ownership you cannot establish is unknown.
 
-Settle each recorded resource at completion, after verified merge and required
-post-merge CI. The outcomes are:
+Settle each recorded resource at completion, after verified merge and passing
+required post-merge CI. The outcomes are:
 
 - **Removed:** only when all of these hold:
   - the policy allows removing that kind of resource at this stage;
@@ -115,47 +132,41 @@ post-merge CI. The outcomes are:
   - no remaining acceptance, installation or other consumer uses it. A
     pending physical or human acceptance that does not use it does not delay
     its removal;
-  - its state matches what the delivery last verified: a branch tip equals the
-    head the merge recorded, even when a squash merge keeps the host's
-    safe-delete check from seeing it, and a worktree is clean and unlocked.
+  - its state matches what the delivery last verified: a worktree is clean
+    and unlocked, a temporary clone has no local changes, stashes or unpushed
+    commits, and a branch tip equals the head the merge recorded.
 
-  Use the host's normal removal, never a forcing flag that overrides a dirty,
-  locked or unmerged state. When a tool created the resource and manages its
-  exit, such as a host-managed worktree, use that exit. Read back the removal,
-  such as the worktree and branch lists or the path's absence.
+  Use the host's normal removal. Never use a forcing flag that overrides a
+  dirty, locked or unmerged state, such as Git's `git worktree remove --force`
+  or `git branch -D`. Remove a worktree before its branch. A squash merge
+  hides the merged head from `git branch -d`, which then refuses; for that
+  branch only, delete with the verified tip as an expected-value guard, such
+  as `git update-ref -d refs/heads/<branch> <verified-tip-sha>`, which refuses
+  if the branch moved. When a tool created the resource and manages its exit,
+  such as a host-managed worktree, use that exit. Read back the removal, such
+  as the worktree and branch lists or the path's absence. A refused removal
+  leaves the resource retained; never retry it with a forcing flag.
 - **Retained:** any resource failing a condition above, including a moved
   branch tip, a dirty or locked worktree, evidence that cannot be preserved,
-  missing post-merge CI, an unavailable tool-managed exit, unknown ownership or
-  a missing policy. Record its reason, its owner or `unknown`, and the next
-  action.
+  missing or failing post-merge CI, an unavailable tool-managed exit, unknown
+  ownership or a missing policy. Record its reason, its owner or `unknown`,
+  and the next action.
 - **Not applicable:** the delivery created no resource of that kind.
 
 Report each kind separately: branch, worktree, scratch, clone, staging and
-remote. A remote branch that disappeared, even by an automatic delete on merge,
-proves nothing about local resources. Deleting a remote branch is its own
-effect and needs the same policy and ownership checks. A local-only,
-ready-PR-only or planning-only request removes nothing beyond its own
-authority and reports what it retains.
+remote. Record a remote branch the host deleted on merge as removed by the
+host, with the readback that shows it gone; that proves nothing about local
+resources. Deleting a remote branch yourself is its own effect and needs the
+same policy and ownership checks. A local-only or ready-PR-only request stops
+before merge, so it removes nothing: it reports each resource it created as
+retained, with its reason, owner and next action. A planning-only request
+creates no resource and reports not applicable.
 
-Record the result in the existing delivery evidence. Keep private paths and
-evidence in the private task record; public records, such as the PR or
-tracker, name resources by neutral task labels. A removal intent is a pending
-effect: on resumption, re-read each resource's state before acting, keep the
-recorded outcomes and history, and never assume a removal succeeded. Clean up
-only this delivery's resources; an unrelated cleanup needs its own authority.
-
-When OpenSpec applies, resolve pinned tooling, local configuration, active and
-archived identities, schemas, templates and completion rules. Existing legacy
-work retains its documented path. Required artifact readiness or archive failure
-must be resolved before dependent delivery, not reclassified as optional.
-
-For an alternate code host, verify PR-equivalent review/check APIs, pagination,
-merge strategies, expected-head guards and destination readbacks. An unavailable
-required capability blocks its dependent action; do not change providers or
-push directly to the target to circumvent it.
-
-On resumption, inspect the whole candidate and any dirty patch, source links,
-base/head, PR disposition, reviews and checks. Require a clear ownership transfer
-before taking over another coordinator's work. Reconcile merged or closed PRs
-before reopening or replacing them. Never discard existing authorized work to
-replay the workflow from the beginning.
+Retained resources do not hold back the completion update; completion needs the
+recorded outcome, not removal. Record the result in the existing delivery
+evidence. Keep private paths and evidence in the private task record; public
+records, such as the PR or tracker, name resources by neutral task labels. A
+removal intent is a pending effect: on resumption, re-read each resource's
+state before acting, keep the recorded outcomes and history, and never assume a
+removal succeeded. Clean up only this delivery's resources; an unrelated
+cleanup needs its own authority.

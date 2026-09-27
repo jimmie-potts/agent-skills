@@ -51,6 +51,13 @@ As CL01, but the PR was squash-merged as S1. The branch tip is still H2, the
 PR's reviewed and merged head. `git branch -d deliver-widgets-11` refuses
 because the branch is not fully merged.
 
+1. Nothing else changes.
+2. After the delivery verifies the tip is H2 and removes the worktree, but
+   before it deletes the branch, another session commits H3 on
+   `deliver-widgets-11` from a different worktree.
+
+State the operations and outcomes for each variant.
+
 ## CL04: A moved branch tip
 
 As CL03, but after the merge someone committed H3 on `deliver-widgets-11` in

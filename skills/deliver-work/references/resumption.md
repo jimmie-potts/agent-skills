@@ -131,6 +131,5 @@ project's retention rules and existing cleanup authority, after required evidenc
 is preserved at a surviving authorized location and remaining consumers no
 longer need the original. A checkpoint, merge, worker exit or context limit alone
 does not authorize deletion. Without a retention rule, retain the artifacts and
-report the limit; do not invent a cleanup policy. Keep a recorded cleanup
-outcome, including each retained resource's reason, owner and next action,
-through resumption; re-read a resource's state before acting on it again.
+report the limit; do not invent a cleanup policy. Resume a recorded cleanup
+outcome under [cleanup](project-discovery.md#cleanup).

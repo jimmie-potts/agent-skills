@@ -451,23 +451,29 @@ class DeliverWorkStructureTest(unittest.TestCase):
         cleanup = flat(section(discovery, '## Cleanup'))
         # Each rule below rejects an unsafe removal.
         for rule in ('Only recorded resources are this delivery\'s',
-                     'after verified merge and required post-merge CI',
+                     'after verified merge and passing required post-merge CI',
                      'is preserved at a surviving private location outside it',
-                     'a branch tip equals the head the merge recorded',
                      'a worktree is clean and unlocked',
-                     'never a forcing flag',
+                     'a temporary clone has no local changes, stashes or '
+                     'unpushed commits',
+                     'a branch tip equals the head the merge recorded',
+                     'Never use a forcing flag that overrides a dirty, locked '
+                     "or unmerged state, such as Git's `git worktree remove "
+                     "--force` or `git branch -D`",
+                     'delete with the verified tip as an expected-value guard',
+                     'never retry it with a forcing flag',
                      'When a tool created the resource and manages its exit',
                      'Read back the removal',
-                     'Record its reason, its owner or `unknown`, and the next '
-                     'action', 'proves nothing about local resources',
-                     'removes nothing beyond its own authority',
-                     'never assume a removal succeeded',
-                     'public records, such as the PR or tracker, name '
-                     'resources by neutral task labels'):
+                     'that proves nothing about local resources',
+                     'stops before merge, so it removes nothing',
+                     'never assume a removal succeeded'):
             with self.subTest(rule=rule):
                 self.assertIn(rule, cleanup)
-        resumption = flat((SKILL / 'references/resumption.md').read_text())
-        self.assertIn('Keep a recorded cleanup outcome', resumption)
+        self.assertNotIn('When OpenSpec applies', cleanup)
+        self.assertIn('(references/project-discovery.md#cleanup) outcome',
+                      flat(entry.split('## Boundaries')[0]))
+        resumption = (SKILL / 'references/resumption.md').read_text()
+        self.assertIn('(project-discovery.md#cleanup)', resumption)
 
     def test_cleanup_scenarios_match_graders(self):
         fixtures = ROOT / 'tests/fixtures/workflow-evaluation'
