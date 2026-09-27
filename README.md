@@ -418,11 +418,16 @@ No skill in this catalog sets the reasoning effort. Claude Code documents an
 `effort` frontmatter field for [skills](https://code.claude.com/docs/en/skills)
 and [subagent definitions](https://code.claude.com/docs/en/sub-agents), but the
 catalog's shared frontmatter stays portable with only `name` and
-`description`, and the catalog ships no `.claude/agents` definitions. The
-Agent tool has no per-call effort parameter, and a subagent inherits the
-session level by default. Claude Code's documented default is `high` on
-every model that supports effort except Opus 4.7 (`xhigh`) and Opus 5.5
-(`medium`), unless an organization default applies; see the [model configuration docs](https://code.claude.com/docs/en/model-config).
+`description`, and the catalog installs no `.claude/agents` definitions.
+`review-work` ships reviewer profile templates, including one that sets
+`effort: high`, for the owning environment to provision; see its
+[reviewer execution](skills/review-work/references/reviewer-execution.md)
+reference. The Agent tool has no per-call effort parameter, and a subagent
+inherits the session level unless its definition sets `effort`. Claude Code's
+documented default is `high` on every model that supports effort except
+Opus 4.7 (`xhigh`) and Opus 5.5 (`medium`), unless an organization default
+applies; see the
+[model configuration docs](https://code.claude.com/docs/en/model-config).
 The [skill substitutions reference](https://code.claude.com/docs/en/skills#available-string-substitutions)
 describes `${CLAUDE_EFFORT}` inside skill text to read the level. The portable
 entrypoints here do not use it, and an agent cannot reliably read its own

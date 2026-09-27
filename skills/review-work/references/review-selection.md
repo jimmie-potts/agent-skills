@@ -17,10 +17,12 @@ Never silently substitute an explicitly required reviewer: when it is
 unavailable, the affected axis is `incomplete`. Missing optional controls
 preserve host defaults with the gap disclosed.
 
-Optional native reviewer profiles are adapters only. Verify the resolved model,
-effort, permissions and available tools before use; a profile cannot override
-these floors or explicit requirements. Do not create or install profiles or
-change personal settings to obtain a selection.
+Native reviewer profiles are optional adapters. Before any reviewer starts,
+run the [reviewer execution](reviewer-execution.md) preflight, which resolves
+the model, effort, context, tools and profile and keeps requested, supported
+and observed settings apart. A profile cannot override these floors or explicit
+requirements. Do not create or install profiles or change personal settings to
+obtain a selection.
 
 ## Start from impact
 
