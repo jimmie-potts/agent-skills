@@ -1,12 +1,28 @@
 #!/usr/bin/env python3
 """Validate packaging contracts; behavioral evidence uses isolated scenarios."""
 from pathlib import Path
+import importlib.util
 import re
 import unittest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / 'skills' / 'plan-work'
+BULLETS_SPEC = importlib.util.spec_from_file_location(
+    'labelled_bullets', ROOT / 'tests/labelled-bullets.py')
+BULLETS = importlib.util.module_from_spec(BULLETS_SPEC)
+BULLETS_SPEC.loader.exec_module(BULLETS)
+
+# Each protection class keeps its label and the anchors that carry its core
+# commitment; any other wording may change. A weakened sentence that keeps its
+# anchors passes, so inspection and review cover the rest.
+BOUNDARIES = {
+    'Authority': ('does not authorize publication',
+                  'neither mode starts implementation'),
+    'Existing systems': ("project's tracker", 'create no tracker'),
+    'Shared resources': ('report the gap', 'never silently install'),
+    'Evidence': ('explicitly unexecuted', 'never becomes implemented behavior'),
+}
 
 
 class PlanWorkStructureTest(unittest.TestCase):
@@ -49,6 +65,10 @@ class PlanWorkStructureTest(unittest.TestCase):
                 self.assertTrue((ROOT / 'skills/deliver-work' / resource).is_file())
                 self.assertFalse((SKILL / resource).exists())
                 self.assertIn(resource, (SKILL / 'SKILL.md').read_text())
+
+    def test_each_protection_class_keeps_its_commitment(self):
+        BULLETS.assert_guarded(self, (SKILL / 'SKILL.md').read_text(),
+                               '## Boundaries', BOUNDARIES)
 
     def test_instruction_only_package(self):
         for path in SKILL.rglob('*'):

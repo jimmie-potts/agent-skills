@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
 """Structural contracts only; behavioral evaluation uses held-out scenarios."""
 from pathlib import Path
+import importlib.util
 import re
 import unittest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / 'skills' / 'deliver-work'
+BULLETS_SPEC = importlib.util.spec_from_file_location(
+    'labelled_bullets', ROOT / 'tests/labelled-bullets.py')
+BULLETS = importlib.util.module_from_spec(BULLETS_SPEC)
+BULLETS_SPEC.loader.exec_module(BULLETS)
 
 RECORD_ROWS = ('Issue', 'Recommended', 'Coordinator model',
                'Coordinator level', 'Session type', 'Session label', 'Workers',
@@ -661,6 +666,41 @@ class VerificationMaintenanceTest(unittest.TestCase):
             with self.subTest(gap=gap):
                 self.assertNotEqual((case_text, grader_text), (cases, graders))
                 self.assertIn(gap, rubric_gaps(case_text, grader_text))
+
+
+# Each protection class keeps its label and the anchors that carry its core
+# commitment; any other wording may change. A weakened sentence that keeps its
+# anchors passes, so inspection and review cover the rest.
+ENTRYPOINT_BOUNDARIES = {
+    'Authority': ("user's request", 'cannot expand'),
+    'Ownership': ('coordinating root owns', 'without durable effects'),
+    'Destructive actions': ('never bypass protections', 'force-push'),
+    'Independent review': ('separate fresh read-only Standards and Specification',
+                           'review-work'),
+    'Evidence': ('unverified gate', 'never zero'),
+}
+REPORT_FIELDS = ('Source', 'Stage', 'Strategy', 'Models', 'Agents',
+                 'Consultations', 'Plan/spec', 'Branch', 'PR',
+                 'Last verified revision', 'Evidence', 'Next checkpoint',
+                 'Blocker')
+
+
+class BoundariesTest(unittest.TestCase):
+    def test_each_protection_class_keeps_its_commitment(self):
+        BULLETS.assert_guarded(self, (SKILL / 'SKILL.md').read_text(),
+                               '## Boundaries', ENTRYPOINT_BOUNDARIES)
+
+    def test_independent_review_routes_to_review_work(self):
+        # Checks the link, not review-work's procedure or wording.
+        review = ROOT / 'skills/review-work/SKILL.md'
+        self.assertTrue(review.is_file())
+        BULLETS.assert_guarded(self, review.read_text(), '## Boundaries',
+                               {'Independence': ()})
+
+    def test_checkpoint_fields_stay_labelled(self):
+        BULLETS.assert_guarded(self, (SKILL / 'SKILL.md').read_text(),
+                               '## Recover and report',
+                               dict.fromkeys(REPORT_FIELDS, ()))
 
 
 if __name__ == '__main__':
