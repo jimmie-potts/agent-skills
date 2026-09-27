@@ -5,8 +5,11 @@ Inspect the actual tool schema and host model descriptions before calling.
 Worker attempt thresholds are separate from review-round accounting; worker
 replacement resets none of the [review-cycle history](review-cycles.md).
 
-Use this mapping for both Standards and Specification, independently of the
-implementation row. Complexity or uncertainty may warrant stronger settings.
+Use this mapping for both Standards and Specification. The routine reviewer
+here is already `opus`, so
+[review selection](review-selection.md#select-for-impact-and-the-review-task)'s
+review task changes no default on this host; still record it in the selection
+rationale. High complexity or uncertainty may warrant stronger settings.
 
 | Impact | Reviewer default | Rationale and limits |
 | --- | --- | --- |

@@ -31,8 +31,9 @@ Record these before the first reviewer starts, and again for each round:
 - Coverage: required axes, the task boundary for a task round, changed areas,
   and any specialist or qualified human review the assessment requires.
 - Settings: explicit user or project reviewer requirements, the selection
-  made from them and the reviewer execution preflight: each control's evidence
-  class, whether it is mandatory, and any unsupported or unverified control.
+  made from them with its impact and review-task rationale and any exception,
+  and the reviewer execution preflight: each control's evidence class, whether
+  it is mandatory, and any unsupported or unverified control.
 - Limits: each explicit round, time or spending limit with its source, scope,
   unit, threshold, consumed amount and accounting source. `none` when no limit
   was set; missing accounting is unknown, never zero.
