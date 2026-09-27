@@ -1,6 +1,6 @@
 ---
 name: architect
-description: Design types, interfaces, module ownership, and caller usage before implementation, then use implementation feedback to revise the design. Use only when the user explicitly invokes architect, asks to architect or design non-trivial code, or requests a design-first implementation workflow.
+description: Design types, interfaces, module ownership, and caller usage before implementation, then use implementation feedback to revise the design. Use only when the user explicitly invokes architect, asks to architect or design non-trivial code, or requests a design-first implementation workflow, or when an authorized workflow deliberately composes it.
 ---
 
 # Architect
@@ -20,7 +20,11 @@ instructions, and approval policy.
 If the user asks only for architecture or design, stop after the design package.
 Implement only when the underlying task clearly requests implementation. A
 design-first implementation request authorizes normal in-scope edits, not
-publication or unrelated changes.
+publication or unrelated changes. When an authorized workflow composes this
+skill, that workflow's request is the underlying task and its limits bind;
+composition adds no authority. Compare candidates in one pass unless that
+request authorizes more agents, and return the design package to the workflow,
+which implements it under its own gates.
 
 ## Design phases
 
@@ -100,9 +104,11 @@ before any artifact exists: the question, the decision it informs and who owns
 that decision, evaluation criteria and how each is observed, the plausible
 alternatives, normally two, and the stop condition. Run it with `prototype`
 only when the user explicitly invokes prototype for this task; otherwise return
-the brief as the proposed next step. When the
-choice belongs to the user, such as a product preference, scope, or accepted
-risk, present the evidence and keep the decision open until the user answers.
+the brief as the proposed next step. When an authorized workflow composed
+this skill, return the brief to that workflow, which decides under its own
+authority whether to run it with `prototype`. When the choice belongs to the
+user, such as a product preference, scope, or accepted risk, present the
+evidence and keep the decision open until the user answers.
 
 Choose one coherent base. Port only compatible ideas from losing candidates.
 Do not average designs with conflicting ownership or data models. Write the

@@ -53,6 +53,8 @@ delivery, and grant no implementation dispatch authority:
 - `references/work-assessment.md` and `references/task-planning.md` for every
   item. Use the task-planning definition, boundary and dependency sections to
   propose work.
+- `references/uncertainty-routing.md` when an unresolved question governs an
+  item's scope, approach or acceptance.
 - `references/documentation.md` when project documentation or publication
   policy applies, for its planning checkpoint.
 - `references/corrections.md`, its section on explicit limits, when the user
@@ -124,7 +126,9 @@ reasoning requirement, such as a pairing worker that would inherit a reduced
 level, and never claim to change it.
 
 Use a bounded investigation when it can resolve technical uncertainty; a
-missing product decision remains a question. Supply the worker the selected
+missing product decision remains a question. Planning installs nothing and
+runs no experiment whose other effects the user has not authorized. Supply the
+worker the selected
 role, criteria, relevant instructions, read-only authority and return contract.
 Load no reviewer, delivery-reporting or unselected pairing rules for an
 assigned investigation. A bounded
