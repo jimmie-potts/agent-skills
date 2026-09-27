@@ -127,27 +127,29 @@ verdicts, as [review cycles](review-cycles.md) requires.
 
 ## Handle partial, cancelled and unattributed returns
 
-A partial or cut-off return, a stop at a turn limit, a cancellation, a timeout,
-a failed run or a lost session leaves the axis `incomplete` for that round. So
-does a return you cannot attribute to its launched reviewer, its label and the
-frozen comparison. Retain the round, its findings and the failure in the
-history. A failed return has not assessed the axis, so its findings do not
-make the axis `action-required`; they stay unresolved in the history until a
-compliant return confirms or clears them. Replace the reviewer with a fresh
-compliant one in the same round; never resume a failed one. A wait that times
-out is not a return. A returned identifier or successful spawn is not review
-evidence.
+A partial or cut-off return, a stop at a turn limit, a cancellation, a run
+timeout, a failed run or a lost session leaves the axis `incomplete` for that
+round. So does a return you cannot attribute to its launched reviewer, its label
+and the frozen comparison. Retain the round, its findings and the failure in the
+history. A failed return has not assessed the axis, so its findings do not make
+the axis `action-required`. List and count them as unresolved. Replace the
+reviewer with a fresh compliant one in the same round; never resume a failed
+one. After the replacement's independent initial return, give it the retained
+findings in a follow-up within that round to confirm or clear with evidence.
+Replace a reviewer the user stopped only with the user's agreement; until then
+its axis stays `incomplete`. A wait that times out is not a return. A returned
+identifier or successful spawn is not review evidence.
 
 ## Discover provisioned profiles
 
 This skill ships profile templates in `assets/` and installs nothing. The
 following is a contract for the environment that owns the host configuration,
-not a procedure this skill runs. That environment discovers the canonical durable checkout
-through its managed links, never a disposable worktree; installs each template
-under its stable name without changing the governing fields; gives any local
-variant a different name; reloads or restarts the host as the host requires;
-and reads back the resolved definition. Removal touches only the links or files
-it owns.
+not a procedure this skill runs. That environment discovers the canonical
+durable checkout through its managed links, never a disposable worktree;
+installs each template under its stable name without changing the governing
+fields; gives any local variant a different name; reloads or restarts the host
+as the host requires; and reads back the resolved definition. Removal touches
+only the links or files it owns.
 
 Review-work only discovers profiles. It checks whether the name resolves in the
 active host, reads the effective fields where the host exposes them and

@@ -51,8 +51,10 @@ Record each part of the restriction separately. File writes are enforced only
 when the profile's sandbox applies and the parent carries no live sandbox or
 approval override broader than read-only. Publication and descendants are
 enforced only when the child's exposed tools show no multi-agent tools and no
-inherited MCP server that can write or publish. Every part without that
-evidence is instruction-only.
+inherited MCP server that can write or publish, and the applied sandbox shows
+the shell has no network access; a shell with network can publish through
+credential-bearing CLIs such as `gh`. Every part without that evidence is
+instruction-only.
 
 Keep the retained agent ID or task name for each reviewer. After a restart or
 handoff, reconcile recorded reviewers with `list_agents` where it exists; a

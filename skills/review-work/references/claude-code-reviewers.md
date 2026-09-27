@@ -33,8 +33,11 @@ with the controls below.
 Sources: [Claude Code subagents](https://code.claude.com/docs/en/sub-agents),
 read 2026-09-27, and the Agent tool schema inspected in Claude Code 2.1.283 on
 2026-09-27: `model` (`sonnet`, `opus`, `haiku`, `fable`), `subagent_type`,
-`run_in_background` and `isolation`, with no effort parameter. Everything else
-in the table is documented, unverified until the active host shows it.
+`run_in_background` and `isolation`, with no effort parameter. The refusal of
+messages to a run the user stopped is in that page's
+[Resume subagents](https://code.claude.com/docs/en/sub-agents#resume-subagents)
+section. Everything else in the table is documented, unverified until the
+active host shows it.
 
 ## Select the reviewer type
 
@@ -45,12 +48,14 @@ and, where the definition is readable, compare its governing fields with the
 [high-effort template](../assets/claude-code/review-work-reviewer-high.md).
 Choose the high-effort profile when the selected reviewer level is `high`, and
 the other profile to inherit the session level. Its tools exclude `Agent`,
-editing tools, `Skill` and MCP tools, but `Bash` can still write files and reach
+editing tools and `Skill`, but `Bash` can still write files and reach
 credential-bearing CLIs. Record the restriction as that tool set with the shell
-retained. The profile preloads `code-review` and cannot load other skills; the
-host skips a missing preloaded skill silently, so confirm `code-review` is
-available before briefing and treat a return without the assigned-axis mode
-as `incomplete`.
+retained. Record MCP tools as excluded only for a foreground run or once
+qualification shows a background run excludes them; otherwise record inherited
+MCP tools as instruction-only. The profile preloads `code-review` and cannot
+load other skills; the host skips a missing preloaded skill silently, so confirm
+`code-review` is available before briefing and treat a return without the
+assigned-axis mode as `incomplete`.
 
 Qualification of the installed profiles belongs to the activation owner, not
 this skill. It must show that the allowlist resolves on the host, that a
@@ -63,22 +68,28 @@ Without a profile, use `general-purpose` or another non-fork type that fits.
 Its inherited tools include `Agent` and editing tools, so read-only conduct and
 the no-descendant rule are instruction-only; record both. A built-in type whose
 listing lacks `Agent` and editing tools, such as `Plan` where the host lists it
-so, narrows the tools further. It keeps `Skill`, so it can load `code-review`,
-and the rule against loading a coordinating review workflow stays
-instruction-only. The host documents that such types skip CLAUDE.md files and
-cannot be resumed, so supply the standards sources in the brief and start a
-fresh reviewer when a later round cannot resume one.
+so, narrows the tools further. Where its listing shows `Skill`, it can load
+`code-review`, and the rule against loading a coordinating review workflow
+stays instruction-only; treat a return without the assigned-axis mode as
+`incomplete`. The host documents that such types skip CLAUDE.md files, so
+supply the standards sources in the brief. It also documents them as one-shot,
+yet Claude Code 2.1.283 resumed `Plan` reviewers with `SendMessage` on
+2026-09-27; try resuming, and start a fresh reviewer when a later round cannot
+resume one.
 
 ## Launch and resume
 
 Call `Agent` once per reviewer with the selected type, the exact model alias
 passed explicitly and a self-contained brief. Run it in the foreground when the
-next step depends on the result and the schema allows it; otherwise wait for
-the completion notification. Never pass the `fork` type or `isolation`.
+next step depends on the result and the schema allows it; otherwise wait for the
+completion notification. Never pass the `fork` type or `isolation`.
 `SendMessage` resumes the same reviewer for a later round or reassessment when
-[review cycles](review-cycles.md) allows it. The coordinator's model here means
-a fresh independent reviewer on that model, never the coordinating session's
-own judgment.
+[review cycles](review-cycles.md) allows it. Record each reviewer's agent ID.
+After a coordinator restart, match every result and notification to a recorded
+ID; the host keeps each subagent's transcript under its agent ID, and reading it
+needs authority. A result from an unrecorded ID is unattributed. The
+coordinator's model here means a fresh independent reviewer on that model, never
+the coordinating session's own judgment.
 
 ## Record the settings
 

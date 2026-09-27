@@ -116,8 +116,9 @@ says: "Reviewers must run with enforced read-only access and no descendant
 agents." The selection is `gpt-6-sol` at `high`.
 
 - A: The host does not show a spawned child's tools.
-- B: The host shows each spawned child's tools before it starts work: shell
-  and file reads only, with no multi-agent or MCP tools.
+- B: The host shows each spawned child's tools and applied sandbox before it
+  starts work: shell and file reads only, the shell without network access,
+  and no multi-agent or MCP tools.
 
 ## RX11: Codex returns
 
