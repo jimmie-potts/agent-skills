@@ -80,7 +80,11 @@ Reusable SDLC workflows also include:
   `grill-with-docs` for material unresolved decisions. A bounded read-only
   investigation may compose the host's advisory pairing. Install those
   dependencies when using this planner; missing resources are reported, never
-  copied;
+  copied. When the owning project declares installation as a completion
+  condition, an item's acceptance includes installation and its readback, and
+  its `Checkpoints` row names the stop before it, unless the item uses the
+  project's opt-out, by default a source-only marking with a reason and a
+  linked install issue; planning itself never installs anything;
 - [`grill-with-docs`](skills/grill-with-docs/SKILL.md), which composes
   [`grilling`](skills/grilling/SKILL.md) and
   [`domain-modeling`](skills/domain-modeling/SKILL.md) for grouped decisions and
@@ -147,7 +151,13 @@ Reusable SDLC workflows also include:
   and resumes supervision after each push or rerun.
   [Review reports](skills/deliver-work/references/review-reports.md) publish
   each final round with its retained reviewer returns, keep the PR's current
-  review state, and limit replies to facts about scoped fixes;
+  review state, and limit replies to facts about scoped fixes. When the owning
+  project declares installation or deployment as a completion condition and
+  defines its procedure, delivery offers that procedure at a checkpoint after
+  verified merge and post-merge CI and runs it only on the owner's approval
+  there or on authorization in the request that names the step, which covers
+  only that delivery's own change; otherwise it never improvises one and keeps
+  a step the item still requires pending with its owner;
 - the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
   `openspec-apply-change`, `openspec-update-change`, `openspec-sync-specs`, and
   `openspec-archive-change`. They use the consuming repository's pinned CLI.
@@ -534,46 +544,91 @@ skills are needed only when their substeps apply; the complete example above
 includes them. Installing only the coordinator does not install its composed
 skills.
 
-### Adopt an update that adds a required skill
+### Update the installed catalog
 
-A catalog update can add a skill that existing callers now require, as
-`review-work` is for `deliver-work` and `plan-work`. Installed
-links resolve into one checkout, so fast-forwarding it changes every running
-session on both hosts at once, even when the update was wanted for unrelated
-work. Adopt the complete required skill set in the same step. This procedure
-uses only Git and the manager, so it works while the new skill is still
-missing. From a checkout older than the update, read it from the target
-revision, for example `git show origin/main:README.md`.
+Installed links on both hosts resolve into one checkout of this repository, so
+updating it changes the skills of every running Codex, Claude Code and Pi
+session at once, even when the update was wanted for unrelated work. Use this
+one procedure for every update: installing a merged change that
+[`AGENTS.md`](AGENTS.md) says needs installation, working an install issue that
+batches source-only changes, or picking up `main` for any other reason.
+`AGENTS.md` also sets the owner's checkpoint and what happens when the owner
+declines. The procedure uses only Git and the manager, so it works while a
+newly required skill is still missing. From a checkout older than the update,
+read this section from the target revision, for example
+`git show origin/main:README.md`.
 
 1. Find the checkout the installed links resolve to by reading one managed
    link, such as `readlink -f ~/.claude/skills/deliver-work`; the checkout is
-   two directories above the skill it prints. Run everything
-   from that checkout, never a worktree: the manager links from its own
-   location, and a worktree's links break when it is removed.
-2. Preflight before changing anything. After `git fetch`, compare the installed
-   revision with the target, for example
-   `git diff --name-status HEAD origin/main -- skills/`,
-   and read the changed callers for newly required skills. Run
-   `./scripts/manage-skills.sh status --agent both` to see which are missing.
-3. Prepare the exact step for the owner's checkpoint: the fast-forward
-   (`git merge --ff-only origin/main` on `main`), a manager `--dry-run` install
-   and the real install of each new required skill for each host it supports,
-   the status readback, and a host reload or fresh session. Name the sessions
-   that are using the installed skills and agree timing with their owners; do
-   not interrupt another owner's work.
-4. Stop and report if the checkout is not on `main`, has diverged, or local
-   changes block the fast-forward. Never stash, reset, switch branches, roll
-   back or remove another session's files.
-5. After approval, run the prepared step. Until every readback passes, adoption
-   is incomplete: record which parts ran, and have callers that need the
+   two directories above the skill it prints. Run everything from that
+   checkout. Never run the manager from a worktree: it builds its source path
+   from its own location, and links made from a worktree break when the
+   worktree is removed.
+2. Preflight before changing anything. After `git fetch`, confirm that the
+   checkout is on `main`, that `origin/main` includes the merge you are
+   installing (`git merge-base --is-ancestor <merge> origin/main`), that the
+   update is a fast-forward (`git merge-base --is-ancestor HEAD origin/main`)
+   and that no local change in `git status --short` blocks it. A local change
+   inside a skill the update changes or adds
+   (`git status --short -- skills/<skill>`) also blocks it, because step 6
+   would then fail. If any check fails, stop and report the checkout's owner
+   and the next action. Never
+   stash, reset, switch branches, roll back or remove another session's files.
+3. List everything the update brings, including changes merged for other work:
+   `git diff --name-status HEAD origin/main -- skills/`. Classify each skill as
+   changed, added, renamed or removed. Read the changed callers for newly
+   required skills, such as `review-work` for `deliver-work` and `plan-work`,
+   and run `./scripts/manage-skills.sh status --agent both` to see which are
+   missing, and record which changed skills are installed on each host. An
+   issue marked source-only does not keep its changed callers out of the
+   update; the fast-forward brings every merged change at once.
+4. Prepare the complete step and present it at the owner's checkpoint. Run it
+   under a delivery request's authorization instead only where `AGENTS.md`
+   allows: never when it installs, uninstalls or retires any skill other than
+   that change's own.
+   - For each renamed or removed skill, uninstall its owned links with the
+     current, older catalog before the fast-forward, dry-run first, as the
+     retirement paragraph below describes. Rerun step 2's checks just before
+     the uninstall.
+   - Fast-forward with `git merge --ff-only origin/main`.
+   - For each added skill, new name of a renamed skill and newly required
+     skill, run
+     `./scripts/manage-skills.sh install --agent <host> --dry-run <skill>` and
+     then the install, for each host the skill supports. Most skills support
+     both hosts (`--agent both`). Host-specific skills install for their host
+     only, such as `worker-with-fable` for Claude Code and `worker-with-astra`
+     for Codex.
+   - List the readbacks in step 6, the host reload or fresh session that new
+     skills need before they can be discovered, and the recovery in step 5.
+   - Name the sessions using the installed skills and agree timing with their
+     owners; do not interrupt another owner's work.
+5. After approval, run the prepared step and nothing else. Approval is not
+   standing permission to install other skills. If the fast-forward refuses,
+   reinstall any links the step uninstalled from the unchanged checkout,
+   dry-run first, then stop as in step 2. Until every readback passes, the
+   update is incomplete: record which parts ran, and have callers that need a
    missing skill report it and pause the dependent step rather than resume
    against a partial skill set. To recover, read status and rerun only the
-   manager install for the missing owned links, dry-run first.
-6. Read back the evidence: the checkout revision includes the update, status
-   shows each required skill correctly installed for each host, each link
-   resolves into the checkout, and a fresh session on each host lists the new
-   skill. Resume paused callers only then. Link readback alone does not
-   establish reviewer quality or optional profile qualification.
+   manager commands for the missing owned links, dry-run first. Preserve
+   unrelated files.
+6. Read back the evidence:
+   - the checkout's revision includes the merge
+     (`git merge-base --is-ancestor <merge> HEAD`);
+   - each changed skill that status showed installed on a host before the
+     update still resolves into the checkout there (`readlink -f`); a changed
+     skill that was not installed on a host stays as it was, unless it is newly
+     required;
+   - `git status --short -- skills/<skill>` is empty for each changed or added
+     skill, so its installed files match the fetched revision. Other sessions'
+     local changes elsewhere do not fail this readback; a local change inside
+     an affected skill does, so report its owner;
+   - status shows each new or newly required skill correctly installed on
+     each host it supports, and no owned links for retired names.
+
+   Resume paused callers only after a fresh session on each host lists a newly
+   required skill. Run a fresh-session behavioral check of the changed skills
+   only when the issue asks for one. Link readback alone does not establish
+   reviewer quality or optional profile qualification.
 
 `deliver-work` replaces `deliver-jira-work` and `github-delivery` without aliases.
 Update calls in consuming project instructions and inspect manager status for
