@@ -85,7 +85,9 @@ def parse_review_result(text):
     ids = [finding[0] for finding in findings]
     if len(set(ids)) != len(ids):
         raise ValueError('repeated finding ID')
-    for _, severity, _, state, _, latest in findings:
+    for _, severity, axis, state, _, latest in findings:
+        if axis == 'both':
+            raise ValueError('a finding names one axis, never both')
         if state in ('accepted', 'deferred') and severity != 'P3':
             raise ValueError('only P3 findings take accepted or deferred')
         latest_kind, latest_number = latest.split()
@@ -120,6 +122,7 @@ def accepts(result, comparison, requirements, policy):
             and all(rows[axis] == 'satisfied' for axis in AXES)
             and rows['Comparison'] == comparison
             and rows['Requirements'] == requirements
+            and rows['Policy'] != 'unknown'
             and rows['Policy'] == policy)
 
 
@@ -215,6 +218,9 @@ class ResultContractTest(unittest.TestCase):
                       (*current[:2], current[2] + '-newer')):
             with self.subTest(stale=stale):
                 self.assertFalse(accepts(result, *stale))
+        unknown = parse_review_result(examples()[0].replace(
+            f"| Policy | {rows['Policy']} |", '| Policy | unknown |'))
+        self.assertFalse(accepts(unknown, *current[:2], 'unknown'))
 
     def test_rejects_known_bad_results(self):
         good, standalone = examples()
@@ -246,6 +252,9 @@ class ResultContractTest(unittest.TestCase):
                 '(P1, standards, deferred)', 'only P3'),
             'finding from a later round': (
                 good, 'latest final 2\n', 'latest final 3\n', 'later round'),
+            'finding for both axes': (
+                good, 'F1 (P2, specification, resolved)',
+                'F1 (P2, both, resolved)', 'never both'),
             'final round reviewer for both axes': (
                 good, 'specification-reviewer-2: specification',
                 'specification-reviewer-2: both', 'task-round reviewer'),

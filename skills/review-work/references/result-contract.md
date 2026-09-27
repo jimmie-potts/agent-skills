@@ -17,10 +17,13 @@ Record these before the first reviewer starts, and again for each round:
 - Requirements: the authoritative scope and acceptance reference and the
   version reviewed, such as an edit timestamp, revision or readback date, or
   `none` when no specification exists.
-- Policy: the standards sources and the policy revision that governs review.
-  The first round's policy is a floor: an edit the change itself makes to that
-  policy never lowers it. A later project policy change that the change did not
-  make is current policy, and it makes earlier results stale.
+- Policy: the standards sources and the version of the policy that governs
+  review, such as the revision at which those sources last changed on the
+  target; an unrelated target commit does not change it. Record the current
+  project policy each round. The candidate's own edits to that policy never
+  count as policy for its review: the first round's gates are a floor it cannot
+  lower. A later project policy change the candidate did not make is current
+  policy, and it makes earlier results stale.
 - Validation: raw commands, results and the revision each ran on. Supply
   results as facts, never as a verdict for reviewers to confirm.
 - Coverage: required axes, the task boundary for a task round, changed areas,
@@ -54,9 +57,9 @@ correction. A required specialist axis has its own reviewer entry, and the
 coverage states its status with the same vocabulary. Unresolved P3 findings do
 not block an axis; record their disposition. A consumer accepts a final result
 only when both axes are `satisfied`, every required specialist axis is
-`satisfied`, and its comparison, requirement version and policy equal the
-current ones; any other result blocks the gate it governs. Required human
-acceptance remains a separate gate for the caller.
+`satisfied`, its policy is known, and its comparison, requirement version and
+policy equal the current ones; any other result blocks the gate it governs.
+Required human acceptance remains a separate gate for the caller.
 
 ## Write the result
 
@@ -79,13 +82,14 @@ A reviewer entry is `<label>: <axis>, requested <model> at <level>, model
 <sourced values>, level <sourced values>`. The label is a stable task-local name
 such as `standards-reviewer-1`; the axis is `standards`, `specification`, a
 lowercase specialist name such as `security`, or `both` for one task-round
-reviewer returning both task verdicts. A final round never uses `both`. A requested value is what the
-coordinator passed, `default` when it left the value to the host, or `unknown`.
-Sourced values are `unknown (unknown)` or one or more `<value> (<source>)`
-joined by ` + `, where the source is `host-observed`, `user-stated` or
-`self-reported`. A spawn or request never establishes the executing value.
-Without the axis, an entry matches deliver-work's Execution record grammar, so
-a composing delivery copies it into its `Reviewers` row.
+reviewer returning both task verdicts. A final round never uses `both`, and
+neither does a finding. A requested value is what the coordinator passed,
+`default` when it left the value to the host, or `unknown`. Sourced values are
+`unknown (unknown)` or one or more `<value> (<source>)` joined by ` + `, where
+the source is `host-observed`, `user-stated` or `self-reported`. A spawn or
+request never establishes the executing value. Without the axis, an entry
+matches deliver-work's Execution record grammar, so a composing delivery copies
+it into its `Reviewers` row.
 
 After the table, write `**Findings:**` followed by one line per finding, or
 `none`:

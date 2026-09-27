@@ -109,12 +109,12 @@ inputs and coverage remain valid.
 Both final axes assess every changed final comparison. Still-valid factual
 evidence, such as an unaffected check result, may be reused; an old whole-change
 approval never approves a new comparison. A later round may resume the same
-reviewer context when it stayed independent; it remains a fresh reviewer in the
-sense that it never implemented, advised or coordinated the change, and it
-assesses the new comparison in full. Renew any required specialist or human
-evidence the change affects. When the change edits review or delivery
-instructions, keep the policy recorded at the first round; the candidate cannot
-waive the gates that approve it.
+reviewer context when it stayed independent and none of its returns failed; it
+remains a fresh reviewer in the sense that it never implemented, advised or
+coordinated the change, and it assesses the new comparison in full. Renew any
+required specialist or human evidence the change affects. When the change edits
+review or delivery instructions, the first round's gates are a floor that the
+candidate cannot lower; record policy as the result contract describes.
 
 ## Honor explicit limits
 

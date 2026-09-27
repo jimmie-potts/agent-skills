@@ -170,12 +170,12 @@ its coordinator-owned loop through the requested finish line.
    risk and remaining completion work. Update established review tracking only
    after the PR exists, and read it back. Avoid automatic issue closure when
    verification must happen after merge.
-2. Compose `review-work` for a final round on the committed candidate, plus
-   any stronger project requirement. Merge needs both final axes `satisfied`
-   for the current comparison, requirement version and policy; `action-required` or
-   `incomplete` blocks it. Missing acceptance/specification evidence cannot
-   count as Specification approval. Keep revision-dependent evidence outside
-   its commit.
+2. Compose `review-work` for a final round on the committed candidate, plus any
+   stronger project requirement and required specialist or human review. Merge
+   needs both final axes `satisfied` for the current comparison, requirement
+   version and policy; `action-required` or `incomplete` blocks it. Missing
+   acceptance/specification evidence cannot count as Specification approval.
+   Keep revision-dependent evidence outside its commit.
 3. Fix P0-P2 defects and every project-defined blocker and record P3
    dispositions, following [corrections](references/corrections.md); review-work
    verifies the fixes in a new round. Resolve provider reviews, change requests
@@ -187,10 +187,9 @@ its coordinator-owned loop through the requested finish line.
    jobs block merge; an empty protection list proves nothing. Retain the run/PR
    association. Honor additional project and provider gates.
 5. Changed code, scope, policy, base or head invalidates affected tests and
-   reviews.
-   Reassess the changed comparison, rerun affected local checks and obtain a
-   fresh review-work result and CI evidence. Reuse unrelated still-current
-   evidence.
+   reviews. Reassess the changed comparison, rerun affected local checks and
+   obtain a fresh review-work result and CI evidence. Reuse unrelated
+   still-current evidence.
 
 ## Merge and verify completion
 

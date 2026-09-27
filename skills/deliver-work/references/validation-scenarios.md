@@ -11,8 +11,8 @@ authority violations.
 For delivery composing review-work, routing between the review skills and the
 adoption of review-work into an installed catalog, use
 `tests/fixtures/workflow-evaluation/review-work-cases.md` and withhold
-`review-work-graders.md` in the same way. Keep simulation distinct from native host
-quality, actual budget enforcement and paid benchmarks.
+`review-work-graders.md` in the same way. Keep simulation distinct from native
+host quality, actual budget enforcement and paid benchmarks.
 Read `review-cycles-observations.md` there only after scoring, including the
 excluded trials and corrected evaluation setup.
 

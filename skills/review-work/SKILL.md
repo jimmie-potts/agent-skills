@@ -29,11 +29,12 @@ These hold at every step. References elaborate them and never relax them.
   review, implementer approval and approvals of an older comparison never
   satisfy a required axis.
 - Evidence: a missing specification, a failed or partial reviewer return,
-  unavailable required independence, a stale comparison or requirement version,
-  or missing mandatory evidence leaves the affected axis `incomplete`, never
-  approved. Unknown counts stay unknown; resumption never resets history or
-  limits. When the change edits review or delivery instructions, the policy
-  recorded for the first round governs; the candidate cannot weaken it.
+  unavailable required independence, a stale comparison, requirement version
+  or policy, or missing mandatory evidence leaves the affected axis
+  `incomplete`, never approved. Unknown counts stay unknown; resumption never
+  resets history or limits. When the change edits review or delivery
+  instructions, the first round's gates are a floor: the candidate's own edits
+  never lower them, though a later project policy change applies.
 - Scope: reviewers apply the authoritative requirements. They do not invent
   acceptance criteria or change product scope; a material conflict goes to the
   scope owner as an open question.
