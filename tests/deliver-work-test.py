@@ -454,5 +454,214 @@ class DeliverWorkStructureTest(unittest.TestCase):
         self.assertIn('installation-graders.md', scenarios)
 
 
+MAINTENANCE = SKILL / 'references/verification-maintenance.md'
+EVALUATION = ROOT / 'tests/fixtures/workflow-evaluation'
+FAILURE_CLASSES = ('product', 'harness', 'stale-instructions', 'environment',
+                   'acceptance')
+UNPASSED_OUTCOMES = ('failed', 'unverified', 'unavailable', 'pending')
+# What these checks detect, and no more: the class table's structure, a
+# removed no-effect boundary that the rubric treats as an automatic failure,
+# a sentence in "Report evidence truthfully" that pairs missing proof, an
+# image or a simulation with a pass or acceptance claim without "never" or
+# "not", and code fences or inline code containing a space or slash, such as
+# a pasted command or path; a span naming a "## Heading" is allowed. They
+# do not understand prose: a reworded contradiction that keeps a negation, a
+# contradiction outside that section, a one-word command, or a weakened
+# sentence outside these anchors passes. Inspection, review and the unrun
+# scenario rubric cover the rest.
+BOUNDARIES = {
+    'no granted authority': ('grants no write, tracker, runtime, device, '
+                             'transcript or model-call authority'),
+    'no feature database': 'create no map, catalog or feature database',
+    'no copied commands': 'do not copy app commands',
+    'unrelated failures routed': 'route it to its owner or a separate task',
+    'no transcript scan': ('scans no past sessions, reads no transcripts, '
+                           'calls no models'),
+}
+PRODUCT_GUARD = 'never change the check or recipe to make it pass'
+PROOF_RULES = {
+    'missing proof': (r'did not run|missing artifact|interrupted capture',
+                      r'\bpass'),
+    'screenshot proof': (r'\b(?:screenshots?|images?|videos?)\b', r'\bpass'),
+    'simulated proof': (r'\b(?:simulated|fakes?|emulators?)\b', r'accept|\bpass'),
+}
+NEGATION = re.compile(r"\b(?:never|not)\b|n't\b")
+CODE_SPAN = re.compile(r'```|`([^`\n]+)`')
+HEADING_SPAN = re.compile(r'#{2,6} [A-Z][A-Za-z ]*')
+
+
+def class_table(text):
+    """Return the failure-class rows as (label, remaining cells)."""
+    return [(label, [cell.strip() for cell in rest.split('|')])
+            for label, rest in re.findall(r'^\| `([a-z-]+)` \|(.*)\|$', text,
+                                          re.MULTILINE)]
+
+
+def maintenance_gaps(text):
+    """Name each structural or boundary gap in the maintenance reference."""
+    folded = ' '.join(text.split()).lower()
+    gaps = [name for name, phrase in BOUNDARIES.items() if phrase not in folded]
+    rows = class_table(text)
+    if tuple(label for label, _ in rows) != FAILURE_CLASSES:
+        gaps.append('failure classes')
+    if any(len(cells) != 3 or not all(cells) for _, cells in rows):
+        gaps.append('class row incomplete')
+    if any(len(cells) > 1 and cells[1].strip('`') not in UNPASSED_OUTCOMES
+           for _, cells in rows):
+        gaps.append('class outcome')
+    if not any(label == 'product' and PRODUCT_GUARD in cells[-1].lower()
+               for label, cells in rows):
+        gaps.append('product guard')
+    truthful = re.search(r'^## Report evidence truthfully\n(.*?)(?=^## |\Z)',
+                         text, re.DOTALL | re.MULTILINE)
+    sentences = re.split(r'(?<=[.;:])\s+',
+                         ' '.join(truthful.group(1).split()).lower()
+                         if truthful else '')
+    for name, (subject, claim) in PROOF_RULES.items():
+        claims = [sentence for sentence in sentences
+                  if re.search(subject, sentence) and re.search(claim, sentence)]
+        if not claims or any(not NEGATION.search(re.sub(subject, '', sentence))
+                             for sentence in claims):
+            gaps.append(name)
+    if any(span == '' or (not HEADING_SPAN.fullmatch(span)
+                          and re.search(r'[\s/]', span))
+           for span in CODE_SPAN.findall(text)):
+        gaps.append('copied project command')
+    return gaps
+
+
+def rubric_gaps(cases, graders):
+    """Name scoring gaps between the case inputs and the evaluator rubric."""
+    folded = ' '.join(cases.split())
+    gaps = [name for name, sentence in (
+        ('graders not withheld',
+         'Do not read `verification-maintenance-graders.md`'),
+        ('effects not forbidden',
+         'Perform no writes, tracker operations, agents, installs, device '
+         'contact or model calls'))
+        if sentence not in folded]
+    expected = set()
+    for number, body in re.findall(r'^## (\d+)\. .*?\n(.*?)(?=^## |\Z)',
+                                   cases, re.DOTALL | re.MULTILINE):
+        variants = re.findall(r'^- Variant ([A-Z]):', body, re.MULTILINE)
+        expected |= {f'{number} {v}' for v in variants} or {number}
+    rows, criteria = {}, []
+    for line in graders.splitlines():
+        cells = [cell.strip() for cell in line.strip().strip('|').split('|')]
+        if not line.startswith('| '):
+            continue
+        if re.fullmatch(r'V\d', cells[0]):
+            criteria.append(cells[0])
+            if len(cells) != 2 or not cells[1]:
+                gaps.append('bad criterion row')
+        elif re.fullmatch(r'\d+(?: [A-Z])?', cells[0]):
+            if cells[0] in rows:
+                gaps.append('duplicate case')
+            if (len(cells) != 3 or not cells[2]
+                    or not re.fullmatch(r'V\d(?:, V\d)*', cells[1])):
+                gaps.append('bad case row')
+            rows[cells[0]] = cells[1] if len(cells) > 1 else ''
+    if not expected or set(rows) != expected:
+        gaps.append('unscored or unknown cases')
+    if criteria != [f'V{number}' for number in range(1, 8)]:
+        gaps.append('criteria')
+    if {c for value in rows.values() for c in value.split(', ')} != set(criteria):
+        gaps.append('uncovered criteria')
+    if 'not an unseen holdout' not in ' '.join(graders.split()):
+        gaps.append('tuning reported as holdout')
+    return gaps
+
+
+def remove_phrase(text, phrase):
+    """Delete a phrase however the file wraps it."""
+    pattern = r'\s+'.join(map(re.escape, phrase.split()))
+    return re.sub(pattern, 'X', text, count=1, flags=re.IGNORECASE)
+
+
+class VerificationMaintenanceTest(unittest.TestCase):
+    def test_checkpoint_is_routed_conditionally(self):
+        entry = ' '.join((SKILL / 'SKILL.md').read_text().split())
+        self.assertIn('[Verification maintenance](references/verification-maintenance.md): '
+                      'when changed behavior has a project-documented feature map', entry)
+        self.assertIn('not a deliberate TDD red run', entry)
+        self.assertIn('or a high-value changed criterion needs a negative control', entry)
+        planning = ' '.join((SKILL / 'references/task-planning.md').read_text().split())
+        self.assertIn('[verification maintenance](verification-maintenance.md)', planning)
+
+    def test_reference_structure_and_boundaries(self):
+        reference = MAINTENANCE.read_text()
+        self.assertEqual(maintenance_gaps(reference), [])
+        truthful = '\n## Report evidence truthfully\n'
+        self.assertIn(truthful, reference)
+        controls = {name: remove_phrase(reference, phrase)
+                    for name, phrase in BOUNDARIES.items()}
+        controls.update({
+            'failure classes': reference.replace('| `stale-instructions` |',
+                                                 '| `other` |'),
+            'class outcome': reference.replace('| `unavailable` |', '| `passed` |'),
+            'class row incomplete': reference.replace('| `pending` |', '|  |'),
+            'product guard': remove_phrase(reference, PRODUCT_GUARD),
+            'missing proof': reference.replace(
+                truthful, f'{truthful}\n- A check that did not run counts as passed.\n', 1),
+            'screenshot proof': reference.replace(
+                truthful, f'{truthful}\n- A screenshot alone establishes a pass.\n', 1),
+            'simulated proof': reference.replace(
+                truthful, f'{truthful}\n- A simulated pass counts as physical acceptance.\n', 1),
+            'copied project command': reference + '\nRun `cargo test` first.\n',
+        })
+        extra = {
+            'screenshot proof': remove_phrase(
+                reference, 'an image without its assertion log does not '
+                'establish a pass'),
+            'simulated proof': remove_phrase(reference, 'never physical acceptance'),
+            'copied project command': reference + '\n```\nverify\n```\n',
+        }
+        hash_command = reference + '\nRun `# npm run verify -- capture` first.\n'
+        self.assertIn('copied project command', maintenance_gaps(hash_command))
+        for name, mutated in list(controls.items()) + list(extra.items()):
+            with self.subTest(control=name):
+                self.assertNotEqual(mutated, reference)
+                self.assertIn(name, maintenance_gaps(mutated))
+        path_like = reference + '\nSee `docs/verification/map.md`.\n'
+        self.assertIn('copied project command', maintenance_gaps(path_like))
+        # Known false positives of an unscoped scan stay accepted.
+        section = '\n## Choose negative controls by risk\n'
+        for accepted in ('Rerun the simulated check until it passes, then '
+                         'request physical acceptance from its owner.',
+                         'Keep the `## Execution record` current.'):
+            with self.subTest(accepted=accepted):
+                self.assertIn(section, reference)
+                self.assertEqual(maintenance_gaps(reference.replace(
+                    section, f'{section}\n{accepted}\n', 1)), [])
+
+    def test_cases_are_scored_and_withheld(self):
+        scenarios = ' '.join((SKILL / 'references/validation-scenarios.md').read_text().split())
+        self.assertIn('`tests/fixtures/workflow-evaluation/verification-maintenance-cases.md`',
+                      scenarios)
+        self.assertIn('Withhold `verification-maintenance-graders.md`', scenarios)
+        self.assertIn('not unseen holdouts', scenarios)
+        cases = (EVALUATION / 'verification-maintenance-cases.md').read_text()
+        graders = (EVALUATION / 'verification-maintenance-graders.md').read_text()
+        self.assertEqual(rubric_gaps(cases, graders), [])
+        last = re.search(r'^\| 7 B \| V7 \| .+ \|$', graders, re.MULTILINE).group(0)
+        controls = {
+            'graders not withheld': (cases.replace('Do not read', 'Read', 1), graders),
+            'effects not forbidden': (cases.replace('Perform no writes', 'Perform writes', 1),
+                                      graders),
+            'unscored or unknown cases': (cases, graders.replace('| 7 B |', '| 8 B |')),
+            'duplicate case': (cases, graders.replace('| 7 B |', '| 7 A |')),
+            'bad case row': (cases, graders.replace(last, '| 7 B | V7 |  |')),
+            'criteria': (cases, graders.replace('| V4 |', '| V9 |')),
+            'uncovered criteria': (cases, graders.replace('| 4 A | V4 |', '| 4 A | V2 |')
+                                   .replace('| 4 B | V4, V6 |', '| 4 B | V6 |')),
+            'tuning reported as holdout': (cases, graders.replace(
+                'not an unseen holdout', 'an unseen holdout')),
+        }
+        for gap, (case_text, grader_text) in controls.items():
+            with self.subTest(gap=gap):
+                self.assertNotEqual((case_text, grader_text), (cases, graders))
+                self.assertIn(gap, rubric_gaps(case_text, grader_text))
+
+
 if __name__ == '__main__':
     unittest.main()
