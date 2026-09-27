@@ -113,13 +113,14 @@ which the effort article above says applies mid-session without breaking the
 prompt cache. On Codex, use review-work's Codex reviewer adapter.
 
 On both hosts, select reviewers from review-work's review selection for the
-item's impact and review task, not impact alone, and copy no reviewer mapping
-here. The review task comes from the item's ratings, the interfaces and
-invariants it crosses and the capability its implementation needs, so an item
-whose recommended start needs more than the reviewer adapter's routine tier
-normally gets reviewers at that tier or stronger. The `Reviewers` row and both prompts name the selected
-reviewers, and `**Why:**` states the review task and any weaker-reviewer
-exception with its evidence and coverage limits.
+item's impact and review task, not impact alone. Name the reviewers that the
+active host's review-work adapter assigns to that impact and review task. Copy
+no reviewer mapping here, and never derive reviewers from the starting model or
+level. The review task comes from the item's ratings, the interfaces and
+invariants it crosses and the capability its implementation needs. The
+`Reviewers` row and both prompts name the selected reviewers, and `**Why:**`
+states the review task and any weaker-reviewer exception with its evidence and
+coverage limits.
 
 Verify model identifiers or aliases and supported effort levels from available
 host evidence. When that is insufficient, consult current official

@@ -84,7 +84,7 @@ in tracker publication. Every proposed item needs both host recommendations;
 publication readback must preserve them beside the assessment. These cases
 check planning decisions, not measured model performance or runtime identity.
 
-For reviewers chosen by impact and review task, use RS02 and RS03 in
+For reviewers chosen by impact and review task, use RS02, RS03 and RS07 in
 `tests/fixtures/workflow-evaluation/reviewer-selection-cases.md` and withhold
 `reviewer-selection-graders.md` and recorded responses.
 

@@ -139,3 +139,16 @@ model you are running and stop if it is not Opus; take the effort as stated.
 Run as a one-shot session without worker subagents, and use two fresh
 read-only independent reviewers for deliver-work's required reviews." The
 implementation is committed as H1. Select the final round 1 reviewers.
+
+## RS07: A Fable or Astra start below high impact
+
+Issue `example/app#40`: redesign how three dependent services hand off a job
+record, then migrate each service's reader in bounded child items. The parent
+needs architecture tradeoffs and coordination across the children. Assessment:
+complexity high, "tightly coupled state across three services"; uncertainty
+low, "settled behavior with a written contract and direct checks"; impact
+medium, "disruptive but reversible recovery". Request: "$plan-work: propose the
+parent item's Execution recommendation for both hosts. Proposal only." Both
+hosts support the recommended models; neither host's controls can be inspected
+from this session. Return the `**Start with:**` line, the `Reviewers` row, both
+prompts and `**Why:**`.

@@ -594,7 +594,6 @@ class ReviewerProfileTest(unittest.TestCase):
         self.assertIn('reviewer-execution-graders.md', scenarios)
 
 
-
 def reviewer_table(adapter):
     """Return (condition, default) rows of a host adapter's reviewer table."""
     text = (SKILL / 'references' / adapter).read_text()
@@ -679,6 +678,10 @@ class ReviewerSelectionTest(unittest.TestCase):
         self.assertIn('Luna for either axis fails the case', grader_rows['RS01'])
         self.assertIn('Luna reviewers for Codex fail the case',
                       grader_rows['RS02'])
+        # A Fable or Astra start does not select Fable or Astra reviewers.
+        self.assertIn('Fable reviewers fail the case', grader_rows['RS07'])
+        self.assertIn('choosing Astra because the start is Astra fails',
+                      grader_rows['RS07'])
         for skill in ('review-work', 'plan-work'):
             scenarios = (SKILLS / skill / 'references/validation-scenarios.md'
                          ).read_text()

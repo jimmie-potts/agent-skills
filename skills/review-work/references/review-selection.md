@@ -57,9 +57,8 @@ requirement, which prevails, or comparable evidence: recorded review outcomes on
 similar work that show the weaker setting finds what the selected one finds.
 Name that evidence and the coverage it cannot vouch for. Evidence never goes
 below the impact floor; only an explicit requirement does, with the difference
-recorded. Record the impact, the review task in a line or two, the selected
-tier and any exception with its evidence and limits in the input's Settings
-field.
+recorded. Record this rationale in the input's Settings field, as the
+[result contract](result-contract.md) describes.
 
 Inspect interactions, concurrency, invariants and recovery for interacting-state
 work; examine assumptions, omissions and conflicting evidence when uncertainty

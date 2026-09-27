@@ -39,10 +39,10 @@ optional control keeps the host's default, is disclosed as a limit and creates
 no new gate.
 
 [Review selection](review-selection.md)'s impact floors, review-task tiers
-and explicit requirements govern every choice below. Never choose a profile, definition or
-launch path whose resolved model or level falls below the selected reviewer
-setting; choose another path that meets it. When no available path meets an
-explicit requirement, the axis is `incomplete`. When the host itself lowers a
+and explicit requirements govern every choice below. Never choose a profile,
+definition or launch path whose resolved model or level falls below the
+selected reviewer setting; choose another path that meets it. When no
+available path meets an explicit requirement, the axis is `incomplete`. When the host itself lowers a
 setting the coordinator cannot control, such as an inherited level or a
 substitution, record a known mismatch; it leaves the axis `incomplete` only
 under an explicit requirement for that setting.

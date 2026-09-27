@@ -119,7 +119,10 @@ class PlanWorkStructureTest(unittest.TestCase):
         prose = ' '.join(section.split())
         for rule in ("review-work's review selection for the item's impact and "
                      'review task, not impact alone',
-                     'copy no reviewer mapping here',
+                     'Copy no reviewer mapping here, and never derive '
+                     'reviewers from the starting model or level',
+                     "reviewers that the active host's review-work adapter "
+                     'assigns to that impact and review task',
                      '`**Why:**` states the review task and any '
                      'weaker-reviewer exception with its evidence and coverage '
                      'limits'):
@@ -134,7 +137,8 @@ class PlanWorkStructureTest(unittest.TestCase):
             (SKILL / 'references/validation-scenarios.md').read_text().split())
         self.assertIn('Codex starts Sol/medium with two Sol/high or stronger '
                       'reviewers, not Luna', scenarios)
-        self.assertIn('RS02 and RS03', scenarios)
+        self.assertIn('RS02, RS03 and RS07', scenarios)
+        self.assertNotIn('normally gets reviewers', prose)
 
     def test_work_surface_line(self):
         reference = (SKILL / 'references/execution-recommendations.md').read_text()
