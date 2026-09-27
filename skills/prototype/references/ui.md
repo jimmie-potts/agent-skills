@@ -14,9 +14,16 @@ Provide a simple, local way to switch variants when the authorized artifact
 supports it. Do not add a production route, shared production component,
 dependency, server, or automatic browser opening merely to display the options.
 
-Record the question and the trade-off each variant tests. Report accessibility,
-responsive behavior, data-density, and interaction limitations that were not
-verified. Do not promote a selected variant automatically.
+Prefer the owning project's disposable preview or capture tools, such as a
+component preview or screenshot script, when they exist and the request
+authorizes their use. Capture every variant with the same data, viewport, and
+state so the observations can be compared.
+
+Record the question and the trade-off each variant tests, and explain the
+choice in the project's vocabulary. Report accessibility, responsive behavior,
+data-density, and interaction limitations that were not verified. Do not
+promote a selected variant automatically. A selected variant is exploration
+evidence, not approval of the production UI.
 
 ## Functional delivery slice
 

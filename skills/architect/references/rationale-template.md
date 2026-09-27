@@ -12,7 +12,9 @@ non-obvious. Separate confirmed constraints from assumptions.
 
 Write this before the type sketch. Show realistic imports, calls, inputs,
 outputs, and errors. Include enough variation to expose the important contract,
-not every possible call.
+not every possible call. For a consequential interface, name the caller and its
+real setup, the state owner, the success path, the failure and recovery path,
+and what the caller must know.
 
 ## Proposed shape
 
@@ -27,7 +29,9 @@ and the responsibilities callers still own.
 
 Name the base candidate and why it won. Record ideas adapted from other
 candidates and rejected ideas that would conflict with the chosen ownership or
-data model. Disclose when independent candidates were unavailable.
+data model. Disclose when independent candidates were unavailable. When a
+prototype comparison informed the choice, cite its criteria, observations, and
+decision or remaining question.
 
 ## Tradeoffs accepted
 
@@ -44,7 +48,8 @@ failure behavior, migration risk, or likely change cost.
 
 List unresolved decisions that require user input and risks that implementation
 or verification must test. Do not disguise an undecided contract as a minor
-implementation detail.
+implementation detail. Keep a user-owned decision here until the user answers,
+even when evidence favors one option.
 
 ## Next implementation step
 
