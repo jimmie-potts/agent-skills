@@ -170,8 +170,8 @@ issue description or authoritative work document, in this order:
    step that the item's acceptance includes. `Subagents` gives each proposed
    implementation worker's model and level from the canonical worker policy,
    or `None`. `Reviewers` gives the two fresh read-only final reviewers per
-   host from review-work's
-   reviewer policy for the item's impact, or `None` for `Investigate first`.
+   host from review-work's reviewer policy for the item's impact and review
+   task, or `None` for `Investigate first`.
    `Availability` gives the evidence
    source and the date the host's options were checked, labels each host
    verified or provisional, and notes any
