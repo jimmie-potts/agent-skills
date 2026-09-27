@@ -110,6 +110,32 @@ class PlanWorkStructureTest(unittest.TestCase):
         self.assertNotIn('without subagents', prompt)
         self.assertNotRegex(prompt.lower(), r'(report|verify|confirm)\w* (your|its) effort')
 
+    def test_reviewers_follow_the_canonical_review_policy(self):
+        # Issue #71: reviewer settings come from review-work's review selection
+        # by impact and review task; plan-work keeps no mapping of its own.
+        reference = (SKILL / 'references/execution-recommendations.md').read_text()
+        section = reference.split('### Recommend the reviewers', 1)[1]
+        section = section.split('\n## ', 1)[0]
+        prose = ' '.join(section.split())
+        for rule in ("review-work's review selection for the item's impact and "
+                     'review task, not impact alone',
+                     'copy no reviewer mapping here',
+                     '`**Why:**` states the review task and any '
+                     'weaker-reviewer exception with its evidence and coverage '
+                     'limits'):
+            with self.subTest(rule=rule):
+                self.assertIn(rule, prose)
+        self.assertNotRegex(section, r'(?m)^\|')
+        self.assertNotIn('gpt-6-', section)
+        for path in SKILL.rglob('*.md'):
+            with self.subTest(path=path.name):
+                self.assertNotIn('| Impact | Reviewer default |', path.read_text())
+        scenarios = ' '.join(
+            (SKILL / 'references/validation-scenarios.md').read_text().split())
+        self.assertIn('Codex starts Sol/medium with two Sol/high or stronger '
+                      'reviewers, not Luna', scenarios)
+        self.assertIn('RS02 and RS03', scenarios)
+
     def test_work_surface_line(self):
         reference = (SKILL / 'references/execution-recommendations.md').read_text()
         entry = (SKILL / 'SKILL.md').read_text()
@@ -159,32 +185,6 @@ class PlanWorkStructureTest(unittest.TestCase):
         self.assertGreaterEqual(len(expected), 5)
         rows = set(re.findall(r'^\| (\d+(?: [A-Z])?) \|', graders, re.MULTILINE))
         self.assertEqual(rows, expected)
-
-    def test_reviewers_follow_the_canonical_review_policy(self):
-        # Issue #71: reviewer settings come from review-work's review selection
-        # by impact and review task; plan-work keeps no mapping of its own.
-        reference = (SKILL / 'references/execution-recommendations.md').read_text()
-        section = reference.split('### Recommend the reviewers', 1)[1]
-        section = section.split('\n## ', 1)[0]
-        prose = ' '.join(section.split())
-        for rule in ("review-work's review selection for the item's impact and "
-                     'review task, not impact alone',
-                     'copy no reviewer mapping here',
-                     '`**Why:**` states the review task and any '
-                     'weaker-reviewer exception with its evidence and coverage '
-                     'limits'):
-            with self.subTest(rule=rule):
-                self.assertIn(rule, prose)
-        self.assertNotRegex(section, r'(?m)^\|')
-        self.assertNotIn('gpt-6-', section)
-        for path in SKILL.rglob('*.md'):
-            with self.subTest(path=path.name):
-                self.assertNotIn('| Impact | Reviewer default |', path.read_text())
-        scenarios = ' '.join(
-            (SKILL / 'references/validation-scenarios.md').read_text().split())
-        self.assertIn('Codex starts Sol/medium with two Sol/high or stronger '
-                      'reviewers, not Luna', scenarios)
-        self.assertIn('RS02 and RS03', scenarios)
 
     def test_check_wiring(self):
         for path in (ROOT / 'README.md', ROOT / 'AGENTS.md',
