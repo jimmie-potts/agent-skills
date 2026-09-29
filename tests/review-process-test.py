@@ -231,19 +231,45 @@ class ProcessReviewerTests(unittest.TestCase):
             libc.prctl(36, previous.value, 0, 0, 0)
 
     def test_cancel_marker_reaps_process(self):
+        responses = []
         def cancel():
-            while not (self.evidence/'state.json').exists():
+            deadline = time.monotonic() + 2
+            while time.monotonic() < deadline:
+                if (self.evidence/'state.json').exists():
+                    state = json.loads((self.evidence/'state.json').read_text())
+                    if state['status'] == 'running' and state.get('process'):
+                        break
                 time.sleep(0.005)
-            response = RUNNER.cancel(self.evidence, RUNNER.digest(self.packet_path.read_bytes()),
-                                     RUNNER.digest(self.launch_path.read_bytes()))
-            self.assertIn('cancellation requested', response['reason'])
+            else:
+                return
+            responses.append(RUNNER.cancel(self.evidence, RUNNER.digest(self.packet_path.read_bytes()),
+                                           RUNNER.digest(self.launch_path.read_bytes())))
         thread = threading.Thread(target=cancel)
         thread.start()
         state, _ = self.run_fake('import time; time.sleep(30)')
         thread.join(timeout=2)
+        self.assertEqual(len(responses), 1)
+        self.assertIn('cancellation requested', responses[0]['reason'])
         self.assertEqual(state['status'], 'incomplete')
         self.assertIn('cancelled', state['reason'])
         self.assertIsNone(RUNNER.process_identity(state['process']['pid']))
+
+    def test_cancellation_after_intent_before_spawn_consumes_without_process(self):
+        save = RUNNER.save
+        requested = []
+        def cancel_after_intent(path, value):
+            save(path, value)
+            if path.name == 'state.json' and not requested:
+                requested.append(RUNNER.cancel(self.evidence, value['packet_sha256'], value['launch_sha256']))
+        with patch.object(RUNNER, 'save', side_effect=cancel_after_intent):
+            state, launches = self.run_fake()
+        self.assertEqual(launches, 0)
+        self.assertEqual(state['status'], 'incomplete')
+        self.assertIn('cancelled', state['reason'])
+        self.assertNotIn('process', state)
+        self.assertEqual(state['attempts'], 1)
+        resumed, launches = self.run_fake()
+        self.assertEqual((resumed, launches), (state, 0))
 
     def test_running_and_lost_response_never_duplicate_or_trust_reused_pid(self):
         self.evidence.mkdir(mode=0o700)
