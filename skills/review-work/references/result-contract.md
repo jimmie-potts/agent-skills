@@ -102,7 +102,7 @@ After the table, write `**Findings:**` followed by one line per finding, or
 `none`:
 
 ```text
-- <ID> (<severity>, <axes>, <state>): <file:line>, <failure condition>; first <round>, latest <round>
+- <ID> (<severity>, <axes>, <state>): <file:line>, <failure condition>[; aliases <axis>:<raw ID>, ...]; first <round>, latest <round>
 ```
 
 The ID is a stable task-local identifier of letters and digits, with single
@@ -119,6 +119,14 @@ condition keeps one ID however many axes raise it:
   must raise or reassess it among its findings; naming the file only in its
   coverage is not support. The finding becomes `resolved` only when every
   listed axis's return confirms the fix; until then it keeps its earlier state.
+
+When a reviewer's return names the finding by its own ID rather than this one,
+record that raw ID as an alias qualified by the axis whose return used it, such
+as `; aliases standards:S-1, specification:S-3`. Each alias names a listed
+axis, and one axis's raw ID names one finding; another axis may reuse the same
+raw ID for a different condition. A return supports a carried finding by its ID
+or by an alias for its own axis. Aliases never merge different failure
+conditions.
 
 The state is `unresolved`, `resolved`, `regression`, or, for P3 only,
 `accepted` or `deferred` with its reason in the text. Findings keep their IDs
