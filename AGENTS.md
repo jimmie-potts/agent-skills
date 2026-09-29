@@ -47,6 +47,27 @@ organization-wide governance are out of scope.
   README's installed-catalog update section,
   [Update the installed catalog](README.md#update-the-installed-catalog).
 
+## Review requirements
+
+This project requires host-enforced reviewer tool restriction on Claude Code, a
+mandatory control in `review-work`'s reviewer execution preflight. A Standards,
+Specification or specialist reviewer that a Claude Code coordinator launches
+with its `Agent` tool must use the `review-work-reviewer` or
+`review-work-reviewer-high` profile, and host evidence for that reviewer must
+show that its tools exclude `Agent`, editing tools, `Skill` and MCP tools, as
+`review-work`'s Claude Code adapter describes. Without that evidence, the axis
+is `incomplete`. For this check, a coordinator may read the metadata of its own
+reviewers' subagent transcripts, such as the tool list each reviewer received,
+but not other sessions' transcripts. The profile keeps `Bash`, so file writes,
+publication and agents launched through the shell stay instruction-only; record
+them that way. A packet-only process reviewer under `review-work`'s
+separate-process adapter meets this requirement once host evidence verifies its
+empty tool set, as that adapter requires. On Codex, restriction stays
+instruction-only, as the Codex adapter records; revisit this declaration when a
+Codex surface can select the `review_work_reviewer` profile. Evidence:
+[#80](https://github.com/jimmie-potts/agent-skills/issues/80) and
+[#108](https://github.com/jimmie-potts/agent-skills/issues/108).
+
 ## Checks
 
 Create and activate a local virtual environment once before running the checks:

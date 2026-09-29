@@ -27,7 +27,7 @@ with the controls below.
 | Effort | No per-call control. A definition's `effort` overrides the session level; otherwise the reviewer inherits it. Supported levels depend on the model | Requested: the definition's `effort`, otherwise `default`. `/tasks` shows effort only when a definition sets it |
 | Extended thinking | Inherited from the parent session; no per-reviewer setting | Inherited, or unknown |
 | Fresh context | Every non-fork type starts from the brief. The `fork` type inherits the whole conversation | The type passed |
-| Tools | A definition's `tools` list is an allowlist. Without one, the reviewer inherits every available tool, including `Agent`, editing and MCP tools. A background run keeps every MCP tool but narrows the built-in set. On Linux, macOS and WSL a subagent can receive Glob and Grep even when the parent lacks them | The host's agent listing |
+| Tools | A definition's `tools` list is an allowlist. Without one, the reviewer inherits every available tool, including `Agent`, editing and MCP tools; a background run then keeps every MCP tool but narrows the built-in set, and on Linux, macOS and WSL it can receive Glob and Grep even when the parent lacks them. For the review-work profile's allowlist, see the qualification under [Select the reviewer type](#select-the-reviewer-type) | The host's agent listing, and the tool list the reviewer received |
 | Permission mode | A definition's `permissionMode` is ignored while the parent runs in bypass, accept-edits or auto mode | Not a restriction to rely on |
 | Nesting | A subagent may spawn its own, three layers deep by default, unless `Agent` is absent from its tools | The agent listing |
 | Isolation | `isolation: "worktree"` starts from the default branch, not the frozen head | The parameter passed |
@@ -53,19 +53,23 @@ Choose the high-effort profile when the selected reviewer level is `high`, and
 the other profile to inherit the session level. Its tools exclude `Agent`,
 editing tools and `Skill`, but `Bash` can still write files and reach
 credential-bearing CLIs. Record the restriction as that tool set with the shell
-retained. Record MCP tools as excluded only for a foreground run or once
-qualification shows a background run excludes them; otherwise record inherited
-MCP tools as instruction-only. The profile preloads `code-review` and cannot
-load other skills; the host skips a missing preloaded skill silently, so confirm
-`code-review` is available before briefing and treat a return without the
-assigned-axis mode as `incomplete`.
+retained. After launch and before accepting the return, check the tools this
+reviewer received, such as the tool list in its subagent transcript's prompt
+snapshot where reading it is authorized. Record MCP tools as excluded only when
+that evidence shows it; otherwise record them as instruction-only. The profile
+preloads `code-review` and cannot load other skills; the host skips a missing
+preloaded skill silently, so confirm `code-review` is available before briefing
+and treat a return without the assigned-axis mode as `incomplete`.
 
-Qualification of the installed profiles belongs to the activation owner, not
-this skill. It must show that the allowlist resolves on the host, that a
-background run still delivers its result, including through any host hand-back
-tool the allowlist does not name, and that no MCP tool reaches the reviewer.
-Until then, a launch that reports unresolved tools or never returns is a failed
-return and a profile defect to report.
+On 2026-09-29, background runs of `review-work-reviewer-high` in Claude Code
+2.1.284 received only `Read`, `Bash` and the host's `SubagentHandback` tool,
+which delivered the result. No MCP tool reached a reviewer, although the parent
+had MCP tools. `Grep` and `Glob` were not delivered despite the allowlist, so
+reviewers search through `Bash`. `review-work-reviewer` declares the same tools
+but was not run. These observations hold for that host version only: after an
+upgrade or profile change, verify the received tools again. A launch that
+reports unresolved tools, receives an excluded tool or never returns is a failed
+return and a profile defect to report to the activation owner.
 
 Without a profile, use `general-purpose` or another non-fork type that fits.
 Its inherited tools include `Agent` and editing tools, so read-only conduct and
