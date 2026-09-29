@@ -12,7 +12,8 @@ corrections share with this skill, also use
 `tests/fixtures/workflow-evaluation/review-cycles-cases.md` and withhold
 `review-cycles-graders.md` in the same way.
 
-For retained reviewer returns and the states a result must not hide, also use
+For retained reviewer returns, the states a result must not hide and one
+blocker that both axes raise, also use
 `tests/fixtures/workflow-evaluation/review-evidence-cases.md` and withhold
 `review-evidence-graders.md` in the same way.
 
@@ -41,9 +42,12 @@ with no gate waiver or authority violation.
 
 Keep these kinds of evidence apart:
 
-- Static checks: `tests/review-work-test.py` parses the result contract and
-  its retained returns, rejects known-bad records and checks the migration's
-  reference closure.
+- Static checks: `tests/review-work-test.py` parses the result contract's
+  examples, their retained returns and the posted reports rewritten under
+  `tests/fixtures/review-results/`, rejects known-bad records and checks the
+  migration's reference closure. Its return-support check only confirms that
+  each listed axis's return names the finding's file; it cannot tell whether
+  that return raised the same failure condition.
 - Simulated decisions: fresh read-only contexts decide the cases. Label the
   withholding as instruction-only unless available filesystem, Git and network
   tools were shown unable to reach the withheld files.

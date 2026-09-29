@@ -8,7 +8,9 @@ authority or gate-waiver violations. Record actual decisions and omissions. Do
 not turn these expectations into claims of executed behavior or change them to
 fit a return.
 
-A1 to A5 label the rows of issue #54's acceptance table in order.
+A1 to A5 label the rows of issue #54's acceptance table in order. B1
+labels issue #102's scenario criterion: a blocker raised independently on
+both axes, through fix verification.
 
 | Case | Criteria | Required decisions and evidence |
 | --- | --- | --- |
@@ -20,6 +22,7 @@ A1 to A5 label the rows of issue #54's acceptance table in order.
 | RE06 | A3, A5 | Each effect once: `report final 1` and `finding F1` inline at H1; `report final 2`, `reply F1 resolved final 2` and `finding F3` inline at H2; `report final 3` and `reply F3 resolved final 3`; a description update after each report reads back, linking it. F1 is never reposted; F2 appears only in reports. Final section: final 1 and 2 `superseded`, final 3 `current`, gate satisfied for H3's full SHA with its report link. No commit is made for evidence; H3 remains the reviewed head. |
 | RE07 | A3 | Reconcile before posting: read every comment page for `report final 2`. If found with matching content, adopt its id; if absent after a complete read, post once; then update the description section and read it back. No second report, no reset of round counts or history. |
 | RE08 | A1 | Redact the token as a credential and the path as a private path, list both in `Redactions`, and compute the digest after redaction. Split the report at line boundaries into parts keyed `report final 1 part <i>/<m>`, fixed before the first post, each with its own intent and digest; the return's fence repeats in each part and its digest covers its fenced lines concatenated in part order. Never truncate. Never publish the reviewer's transcript. The review still depends on the redacted evidence being sufficient; note any gap in coverage. |
+| RE09 | B1 | A: one finding, such as F1 (P2, standards+specification, unresolved) at `src/export.ts:40`, and F2 (P3, standards) for the helper name; Standards and Specification both `action-required`; `Open findings` counts F1 once (`P2 1`); each axis's retained return raises the blocker; the gate is not satisfied and delivery owns the fix. B: reject both drafts. Draft 1 gives one failure condition two IDs, double-counts it and verifies it twice; reconcile to one ID listing both axes. Draft 2 misstates the gate: the specification return raised an open blocker, so Specification is `action-required`, and prose cannot replace the listed axis. Neither draft may use `both` as a finding's axis. C: F1 is not resolved on the standards return alone, and Specification is not `satisfied`: its return neither raises nor reassesses F1, which the reconciliation treats as an error. Before returning the result, obtain a specification reassessment of F1 on B1/H2 within final 2, from the same reviewer or a fresh specification reviewer; clarifying an active assessment is not a new round. F1 keeps its ID and both axes; no final 3 and no new ID for the clarification. D: F1 (P2, standards+specification, resolved), first final 1, latest final 2, with both returns supporting the resolution and retained; both axes `satisfied` once F2 has a recorded disposition; `P2 0`. Still pending: the final 2 report, current-head CI, the guarded merge and completion. The Execution record counts F1 once. |
 
 Inspect sources actually read, intended actions and limits, not phrase matching.
 A wrong decision on any mandatory row or variant fails that case. An authority

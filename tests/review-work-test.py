@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ROOT / 'skills'
 SKILL = SKILLS / 'review-work'
 FIXTURES = ROOT / 'tests/fixtures/workflow-evaluation'
+POSTED = ROOT / 'tests/fixtures/review-results'
 BULLETS_SPEC = importlib.util.spec_from_file_location(
     'labelled_bullets', ROOT / 'tests/labelled-bullets.py')
 BULLETS = importlib.util.module_from_spec(BULLETS_SPEC)
@@ -52,8 +53,8 @@ CELLS = {
     'Open findings': r'P0 \d+; P1 \d+; P2 \d+; P3 \d+',
 }
 FINDING = re.compile(
-    r'- (F\d+) \((P[0-3]), ([a-z]+), '
-    r'(unresolved|resolved|regression|accepted|deferred)\): .+; '
+    r'- ([A-Za-z0-9]+(?:-[A-Za-z0-9]+)*) \((P[0-3]), ([a-z]+(?:\+[a-z]+)*), '
+    r'(unresolved|resolved|regression|accepted|deferred)\): ([^\s:,]+).*; '
     r'first ((?:final|task) \d+), latest ((?:final|task) \d+)')
 OPEN = ('unresolved', 'regression')
 RETURN_ROWS = ('Axis', 'Comparison', 'Requirements', 'Policy', 'Return',
@@ -105,8 +106,13 @@ def parse_returns(text):
         digest = hashlib.sha256(body.encode()).hexdigest()
         if rows['Digest'] != f'sha256:{digest}':
             raise ValueError(f'digest does not match the return: {match.group(1)}')
-        returns.append((match.group(1), rows))
+        returns.append((match.group(1), rows, body))
     return returns
+
+
+def covered(axis):
+    """The axes one reviewer return covers; `both` is a task-round reviewer."""
+    return {'standards', 'specification'} if axis == 'both' else {axis}
 
 
 def parse_review_result(text):
@@ -134,14 +140,13 @@ def parse_review_result(text):
     if any(axis == 'both' for _, axis in reviewers) and kind != 'task':
         raise ValueError('only a task-round reviewer covers both axes')
     if [(label, axis) for label, axis in reviewers] != [
-            (label, ret['Axis']) for label, ret in returns]:
+            (label, ret['Axis']) for label, ret, _ in returns]:
         raise ValueError('each reviewer entry needs its own retained return')
     reviewed = set()
-    for _, ret in returns:
+    for _, ret, _ in returns:
         if ret['Return'] == 'complete' and all(
                 ret[field] == rows[field] for field in PROVENANCE):
-            reviewed |= ({'standards', 'specification'} if ret['Axis'] == 'both'
-                         else {ret['Axis']})
+            reviewed |= covered(ret['Axis'])
 
     findings = []
     if match.group(2) != 'none\n':
@@ -149,18 +154,36 @@ def parse_review_result(text):
             parsed = FINDING.fullmatch(line)
             if not parsed:
                 raise ValueError(f'bad finding: {line}')
-            findings.append(parsed.groups())
+            fid, severity, axes, state, location, first, latest = parsed.groups()
+            findings.append((fid, severity, axes.split('+'), state, location,
+                             first, latest))
     ids = [finding[0] for finding in findings]
     if len(set(ids)) != len(ids):
         raise ValueError('repeated finding ID')
-    for _, severity, axis, state, _, latest in findings:
-        if axis == 'both':
-            raise ValueError('a finding names one axis, never both')
+    known = {'standards', 'specification'} | {
+        axis for _, axis in reviewers if axis != 'both'}
+    for fid, severity, axes, state, location, _, latest in findings:
+        if 'both' in axes:
+            raise ValueError('a finding lists its axes, never both')
+        if len(set(axes)) != len(axes):
+            raise ValueError(f'{fid} lists an axis twice')
+        if set(axes) - known:
+            raise ValueError(f'{fid} lists an unknown axis')
         if state in ('accepted', 'deferred') and severity != 'P3':
             raise ValueError('only P3 findings take accepted or deferred')
         latest_kind, latest_number = latest.split()
         if latest_kind == kind and int(latest_number) > int(number):
             raise ValueError('finding reviewed in a later round than this one')
+        # Support: each listed axis's return in this round names the finding's
+        # file. This is a static proxy for the coordinator's reconciliation; it
+        # cannot tell whether the return raises the same failure condition.
+        if latest == rows['Round']:
+            cited = location.rsplit('/', 1)[-1]
+            for axis in axes:
+                if not any(axis in covered(ret['Axis']) and cited in body
+                           for _, ret, body in returns):
+                    raise ValueError(f'{fid} lists {axis}, but no {axis} return '
+                                     'in this round supports it')
 
     counts = dict(re.findall(r'(P\d) (\d+)', rows['Open findings']))
     for severity in ('P0', 'P1', 'P2', 'P3'):
@@ -171,7 +194,7 @@ def parse_review_result(text):
     for axis in AXES:
         status, name = rows[axis], axis.lower()
         blockers = [f for f in findings
-                    if f[2] == name and f[1] != 'P3' and f[3] in OPEN]
+                    if name in f[2] and f[1] != 'P3' and f[3] in OPEN]
         if status != 'incomplete' and name not in reviewed:
             raise ValueError(f'{axis} decided without a complete retained '
                              'return from its own reviewer for these inputs')
@@ -429,7 +452,7 @@ class ResultContractTest(unittest.TestCase):
                                    entry + 'specification-reviewer-2: specification')
         parsed = parse_review_result(replaced + '\n' + standards + '\n' + failed
                                      + '\n' + specification)
-        self.assertEqual([r['Return'] for _, r in parsed['returns']],
+        self.assertEqual([r['Return'] for _, r, _ in parsed['returns']],
                          ['complete', 'failed', 'complete'])
         rows = parsed['rows']
         self.assertTrue(accepts(parsed, rows['Comparison'], rows['Requirements'],
@@ -440,6 +463,13 @@ class ResultContractTest(unittest.TestCase):
         alone = alone.replace('; specification-reviewer-2: specification, requested '
                               'opus at default, model claude-opus-5-5 (self-reported), '
                               'level high (user-stated)', '')
+        with self.assertRaisesRegex(ValueError, 'no specification return'):
+            parse_review_result(alone)
+        # A failed reviewer reassesses nothing, so F1 stays as final 1 left it.
+        alone = (alone.replace('F1 (P2, specification, resolved)',
+                               'F1 (P2, specification, unresolved)')
+                 .replace('latest final 2\n', 'latest final 1\n')
+                 .replace('P2 0; P3 0', 'P2 1; P3 0'))
         with self.assertRaisesRegex(ValueError, 'Specification decided without'):
             parse_review_result(alone)
         undecided = parse_review_result(alone.replace(
@@ -488,6 +518,109 @@ class ResultContractTest(unittest.TestCase):
                 parsed = parse_review_result(good.replace(
                     f'| Policy | {policy} |', f'| Policy | {value} |'))
                 self.assertEqual(parsed['rows']['Policy'], value)
+
+
+def posted(name):
+    """A posted report rewritten in the multi-axis form, from its result on."""
+    text = (POSTED / name).read_text()
+    return text[text.index('\n## Review result\n') + 1:]
+
+
+def rewrite_return(text, label, old, new):
+    """Edit one retained return's text and give it the matching digest."""
+    head, rest = text.split(f'### Reviewer return: {label}\n', 1)
+    table, rest = rest.split('~~~text\n', 1)
+    body, tail = rest.split('\n~~~\n', 1)
+    body = body.replace(old, new)
+    digest = hashlib.sha256((body + '\n').encode()).hexdigest()
+    table = re.sub(r'sha256:[0-9a-f]{64}', 'sha256:' + digest, table)
+    return (f'{head}### Reviewer return: {label}\n{table}~~~text\n{body}'
+            f'\n~~~\n{tail}')
+
+
+class SharedFindingTest(unittest.TestCase):
+    """Issue #102: one finding lists every axis that raised it."""
+
+    REPORTS = {'pr96-final-1.md': ['71-F1'],
+               'pr97-final-1.md': ['83-F1', '83-F4', '83-F7'],
+               'pr100-final-2.md': ['99-F1', '99-F2', '99-F6']}
+
+    def test_posted_reports_parse_in_the_multi_axis_form(self):
+        self.assertEqual(sorted(p.name for p in POSTED.iterdir()),
+                         sorted(self.REPORTS))
+        for name, shared in self.REPORTS.items():
+            with self.subTest(report=name):
+                result = parse_review_result(posted(name))
+                rows = result['rows']
+                self.assertEqual((rows['Standards'], rows['Specification']),
+                                 ('action-required', 'action-required'))
+                both = [f[0] for f in result['findings']
+                        if f[2] == ['standards', 'specification']]
+                self.assertEqual(both, shared)
+                blockers = [f for f in result['findings']
+                            if f[1] != 'P3' and f[3] in OPEN]
+                self.assertEqual(len(blockers), 1)
+                self.assertIn('P2 1;', rows['Open findings'])
+                self.assertEqual(len(result['returns']), 2)
+
+    def test_one_axis_workaround_fails(self):
+        for name, shared in self.REPORTS.items():
+            blocker = next(i for i in shared if f'{i} (P2,' in posted(name))
+            with self.subTest(report=name), self.assertRaisesRegex(
+                    ValueError, 'Specification action-required without'):
+                parse_review_result(posted(name).replace(
+                    f'{blocker} (P2, standards+specification,',
+                    f'{blocker} (P2, standards,'))
+
+    def test_rejects_known_bad_shared_findings(self):
+        good = posted('pr96-final-1.md')
+        shared = '71-F1 (P2, standards+specification, unresolved)'
+        mutations = {
+            'shared blocker missing from one return': (
+                rewrite_return(good, 'specification-reviewer-1',
+                               'execution-recommendations.md',
+                               'another-reference.md'),
+                '71-F1 lists specification, but no specification return'),
+            'shared blocker counted twice': (
+                good.replace('P0 0; P1 0; P2 1;', 'P0 0; P1 0; P2 2;'),
+                'P2 count disagrees'),
+            'unknown axis': (
+                good.replace(shared, shared.replace('+specification',
+                                                    '+specifcation')),
+                'unknown axis'),
+            'specialist axis without its reviewer': (
+                good.replace(shared, shared.replace('+specification',
+                                                    '+security')),
+                'unknown axis'),
+            'axis listed twice': (
+                good.replace(shared, shared.replace('+specification',
+                                                    '+standards')),
+                'axis twice'),
+            'both as a listed axis': (
+                good.replace(shared, shared.replace('+specification',
+                                                    '+both')),
+                'never both'),
+            'spaced finding ID': (
+                good.replace('- 71-F1 (', '- 71 F1 ('), 'bad finding'),
+        }
+        self.assertIn(shared, good)
+        for name, (mutated, message) in mutations.items():
+            with self.subTest(mutation=name):
+                self.assertNotEqual(mutated, good)
+                with self.assertRaisesRegex(ValueError, message):
+                    parse_review_result(mutated)
+
+    def test_resolved_shared_finding_needs_both_returns(self):
+        # Fix verification: 99-F2 is resolved in final 2 on both axes, so
+        # each axis's final 2 return must reassess README.md.
+        good = posted('pr100-final-2.md')
+        self.assertIn('99-F2 (P3, standards+specification, resolved)', good)
+        for label, axis in (('standards-reviewer-1', 'standards'),
+                            ('specification-reviewer-1', 'specification')):
+            with self.subTest(axis=axis), self.assertRaisesRegex(
+                    ValueError, f'99-F2 lists {axis}, but no {axis} return'):
+                parse_review_result(rewrite_return(good, label, 'README',
+                                                   'OVERVIEW'))
 
 
 class MigrationTest(unittest.TestCase):

@@ -66,11 +66,14 @@ Link existing feedback records rather than copying transcripts.
   own identifier, linking related causes when useful.
 
 Rewording, changing reviewers or workers, and resuming preserve identity and
-history. Keep aliases for duplicate descriptions. Reconcile ambiguous identity
-against behavior and evidence before reporting it. Missing transcripts or
-private runtime metadata do not require a reset.
+history. Keep aliases for duplicate descriptions. When reviewers on different
+axes independently raise the same failure condition, keep one identifier that
+lists each of those axes, as the [result contract](result-contract.md)
+describes; verifying its fix needs a reassessment from each listed axis.
+Reconcile ambiguous identity against behavior and evidence before reporting it.
+Missing transcripts or private runtime metadata do not require a reset.
 
-P0 to P2 findings and project-defined blockers make their axis
+P0 to P2 findings and project-defined blockers make each axis they list
 `action-required`, except findings from a failed return, which leave it
 `incomplete` as [reviewer execution](reviewer-execution.md) describes. Record a
 disposition for every P3 finding with its reason and owner. A round that returns
