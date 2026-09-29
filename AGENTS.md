@@ -51,15 +51,17 @@ organization-wide governance are out of scope.
 
 This project requires host-enforced reviewer tool restriction on Claude Code, a
 mandatory control in `review-work`'s reviewer execution preflight. A Standards,
-Specification or specialist reviewer on Claude Code must run the installed
-`review-work-reviewer` or `review-work-reviewer-high` profile, natively or in a
-dedicated session. Its tools exclude `Agent`, editing tools, `Skill` and MCP
-tools. Without a qualified profile, that axis is `incomplete`. The profile keeps
-`Bash`, so record file writes and publication as instruction-only. Packet-only
-process reviewers under `review-work`'s separate-process adapter run with no
-tools and meet this requirement. Codex cannot yet select its named profile, so
-restriction stays instruction-only there; revisit this when `spawn_agent`
-accepts `agent_type: review_work_reviewer`. Evidence:
+Specification or specialist reviewer that a Claude Code coordinator launches
+with its `Agent` tool must use the `review-work-reviewer` or
+`review-work-reviewer-high` profile, and host evidence for that reviewer must
+show that its tools exclude `Agent`, editing tools, `Skill` and MCP tools, as
+`review-work`'s Claude Code adapter describes. Without that evidence, the axis
+is `incomplete`. The profile keeps `Bash`, so file writes, publication and
+agents launched through the shell stay instruction-only; record them that way. A
+packet-only process reviewer under `review-work`'s separate-process adapter
+meets this requirement once host evidence verifies its empty tool set, as that
+adapter requires. On Codex, restriction stays instruction-only until a surface
+can select the named profile, as the Codex adapter records. Evidence:
 [#80](https://github.com/jimmie-potts/agent-skills/issues/80) and
 [#108](https://github.com/jimmie-potts/agent-skills/issues/108).
 
