@@ -242,11 +242,13 @@ class ReviewWorkStructureTest(unittest.TestCase):
         references = {path.resolve() for path in (SKILL / 'references').glob('*.md')}
         self.assertTrue(references <= visited, references - visited)
 
-    def test_instruction_only_package(self):
+    def test_package_resources(self):
         for path in SKILL.rglob('*'):
             self.assertFalse(path.is_symlink(), str(path))
             if path.is_file():
                 allowed = {'.md', '.yaml'}
+                if path.relative_to(SKILL).as_posix() == 'scripts/process_reviewer.py':
+                    allowed = {'.py'}
                 if path.relative_to(SKILL).parts[0] == 'assets':
                     allowed = {'.md', '.toml'}
                 self.assertIn(path.suffix, allowed, str(path))
@@ -708,6 +710,15 @@ class ReviewerSelectionTest(unittest.TestCase):
             with self.subTest(skill=skill):
                 self.assertIn('reviewer-selection-cases.md', scenarios)
                 self.assertIn('reviewer-selection-graders.md', scenarios)
+
+
+def load_tests(loader, tests, pattern):
+    spec = importlib.util.spec_from_file_location(
+        'review_process_tests', ROOT / 'tests/review-process-test.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    tests.addTests(loader.loadTestsFromModule(module))
+    return tests
 
 
 if __name__ == '__main__':

@@ -24,5 +24,8 @@ follow references/codex.md and its worker protocol; do not copy its consultation
 protocol here. Durable writes stay with the delivery coordinator.
 
 Call collaboration tools through the interface actually exposed by the host.
-Do not launch replacement sessions, change personal settings, install adapters,
-or simulate multiple models by writing both sides of a conversation.
+Do not launch replacement coordinator or writer sessions, change personal
+settings, install adapters, or simulate multiple models by writing both sides
+of a conversation. The optional separate-process reviewer path belongs to
+review-work and is limited to its supervised adapter; it preserves the original
+coordinator, writer, restrictions, authority and cumulative budgets.
