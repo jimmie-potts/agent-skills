@@ -50,8 +50,8 @@ Give each required axis exactly one status:
 
 | Status | Meaning |
 | --- | --- |
-| `satisfied` | A fresh independent reviewer assessed this exact comparison against the recorded requirements and policy, stated its coverage, and no P0, P1, P2 or project-defined blocker on this axis remains unresolved |
-| `action-required` | The axis was assessed and at least one P0, P1, P2 or project-defined blocker on it remains unresolved |
+| `satisfied` | A fresh independent reviewer assessed this exact comparison against the recorded requirements and policy, stated its coverage, and no P0, P1, P2 or project-defined blocker that lists this axis remains unresolved |
+| `action-required` | The axis was assessed and at least one P0, P1, P2 or project-defined blocker that lists it remains unresolved |
 | `incomplete` | The axis cannot be decided: missing specification, failed, partial or missing return, no retained return matching this round's inputs, unavailable required independence or control, stale comparison, requirements or policy, a candidate no round could review before a limit ran out, or missing mandatory evidence |
 
 Specification cannot be `satisfied` without an authoritative requirement. One
@@ -89,9 +89,9 @@ A reviewer entry is `<label>: <axis>, requested <model> at <level>, model
 <sourced values>, level <sourced values>`. The label is a stable task-local name
 such as `standards-reviewer-1`; the axis is `standards`, `specification`, a
 lowercase specialist name such as `security`, or `both` for one task-round
-reviewer returning both task verdicts. A final round never uses `both`, and
-neither does a finding. A requested value is what the coordinator passed or a
-selected profile sets, `default` if neither, or `unknown`. Sourced values are
+reviewer returning both task verdicts. A final round never uses `both`. A
+requested value is what the coordinator passed or a selected profile sets,
+`default` if neither, or `unknown`. Sourced values are
 `unknown (unknown)` or one or more `<value> (<source>)` joined by ` + `, where
 the source is `host-observed`, `user-stated` or `self-reported`. A spawn or
 request never establishes the executing value. Without the axis, an entry
@@ -102,8 +102,23 @@ After the table, write `**Findings:**` followed by one line per finding, or
 `none`:
 
 ```text
-- <ID> (<severity>, <axis>, <state>): <file:line>, <failure condition>; first <round>, latest <round>
+- <ID> (<severity>, <axes>, <state>): <file:line>, <failure condition>; first <round>, latest <round>
 ```
+
+The ID is a stable task-local identifier of letters and digits, with single
+hyphens between parts, such as `F1` or `71-F1`. The location is a file and
+line. The axes are each axis whose reviewer raised this failure condition,
+joined by `+` when there are several, such as `standards+specification`. List
+each axis once and never write `both`, even in a task round. One failure
+condition keeps one ID however many axes raise it:
+
+- Status: each listed axis is `action-required` while the finding is an open
+  P0 to P2 or project-defined blocker.
+- Counts: `Open findings` counts the finding once.
+- Support: each listed axis's retained return in the finding's latest round
+  must raise or reassess it among its findings; naming the file only in its
+  coverage is not support. The finding becomes `resolved` only when every
+  listed axis's return confirms the fix; until then it keeps its earlier state.
 
 The state is `unresolved`, `resolved`, `regression`, or, for P3 only,
 `accepted` or `deferred` with its reason in the text. Findings keep their IDs
@@ -138,6 +153,12 @@ none` has no blocks:
   redactions. Never substitute a paraphrase, the reviewer's session
   transcript, tool output or runtime metadata. When nothing came back, the
   fence holds one line, `[no return: <reason>]`.
+- When the coordinator sends a reviewer a follow-up within the round, such as
+  a clarification, a reassessment request or prior findings for a
+  replacement, the reply must restate the axis's complete verdict, its
+  coverage and every finding with its disposition and evidence. That reply is
+  the reviewer's final message and its retained return; a reply missing any
+  of them is `partial`.
 - Replace credentials, secrets, private paths, host or session identifiers and
   unrelated personal data with `[redacted: <kind>]`, and list them in
   `Redactions` as `<count>: <kind>, <kind>`, or `none`. Change nothing else;
@@ -148,9 +169,14 @@ none` has no blocks:
 
 An axis is `incomplete` unless the round has a `complete` return on that axis
 whose comparison, requirements and policy equal the result's. Before returning
-the result, reconcile it with the returns: a summary finding no return
-supports, or a returned blocker the summary omits, is an error to correct, not
-a disposition. Task rounds keep their returns in the task evidence only.
+the result, reconcile it with the returns. Each of these is an error to
+correct, not a disposition:
+
+- a summary finding that no return supports;
+- a finding that breaks the ID and axis rules above;
+- a returned blocker the summary omits.
+
+Task rounds keep their returns in the task evidence only.
 Review-work publishes none of this; keeping it beyond the conversation needs an
 existing destination the caller is authorized to use.
 

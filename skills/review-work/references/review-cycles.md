@@ -50,7 +50,7 @@ Passing task review never replaces the final axes.
 
 ## Preserve finding identity
 
-Give each finding a stable task-local identifier. Retain severity, axis,
+Give each finding a stable task-local identifier. Retain severity, axes,
 affected behavior and governing requirement; first and latest reviewed
 comparisons; the corrections the caller reports, with the worker and attempt,
 any changed approach and the resulting revisions; covering checks and actual
@@ -66,11 +66,13 @@ Link existing feedback records rather than copying transcripts.
   own identifier, linking related causes when useful.
 
 Rewording, changing reviewers or workers, and resuming preserve identity and
-history. Keep aliases for duplicate descriptions. Reconcile ambiguous identity
-against behavior and evidence before reporting it. Missing transcripts or
-private runtime metadata do not require a reset.
+history. Keep aliases for duplicate descriptions. For a failure condition that
+reviewers on more than one axis raise, follow the
+[result contract](result-contract.md#write-the-result).
+Reconcile ambiguous identity against behavior and evidence before reporting it.
+Missing transcripts or private runtime metadata do not require a reset.
 
-P0 to P2 findings and project-defined blockers make their axis
+P0 to P2 findings and project-defined blockers make each axis they list
 `action-required`, except findings from a failed return, which leave it
 `incomplete` as [reviewer execution](reviewer-execution.md) describes. Record a
 disposition for every P3 finding with its reason and owner. A round that returns

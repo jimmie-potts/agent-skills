@@ -118,3 +118,31 @@ delivery at head H2.
 The standards reviewer's return is 80,000 characters. It quotes a CI log line
 containing `GITHUB_TOKEN=ghs_abc123` and a path under `/home/dev/.claude/`. The
 coordinator is about to publish final 1's report.
+
+## RE09: One blocker from both axes
+
+`$deliver-work example/app#9 through merge.` Final 1 on B1/H1 has two
+independent returns. The standards return reports a P2 at `src/export.ts:40`:
+an empty filter exports every tenant's rows. The specification return reports
+a P2 at `src/export.ts:38-41`: acceptance criterion 2, exports scoped to the
+caller's tenant, fails for an empty filter. The standards return also reports a
+P3: the helper name `rows2` is vague. Neither reviewer saw the other's return.
+
+- A: The coordinator writes final 1's result. State the findings list, each
+  axis status, the open-finding counts and what each retained return must
+  show.
+- B: Decide each of two drafts. Draft 1 records the standards finding as F1
+  (P2, standards) and the specification finding as F2 (P2, specification),
+  with `P2 2`. Draft 2 lists only F1 (P2, standards), adds "also raised on the
+  specification axis" to its text and marks Specification `satisfied` because
+  F1 already tracks the defect.
+- C: The coordinator fixes the defect and commits H2. Final 2 on B1/H2: the
+  standards return says the fix at `src/export.ts:40` is correct and its new
+  test covers the empty filter. The specification return confirms acceptance
+  criteria 1 and 3 and states `satisfied`, but never mentions the empty filter,
+  the tenant scope or `src/export.ts`. State the shared finding's state, each
+  axis status and what happens before the result is returned.
+- D: Continue C. Asked to reassess the shared finding, the specification
+  reviewer confirms that an empty filter now returns only the caller's tenant
+  rows and cites the new test. State the final 2 result and what remains
+  before merge.
