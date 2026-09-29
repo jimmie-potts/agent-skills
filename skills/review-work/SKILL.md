@@ -78,8 +78,10 @@ high-impact reviewer floor.
 ## Select, brief and run reviewers
 
 Read [review selection](references/review-selection.md), then only the active
-host's reviewer adapter. Reviewers need the canonical `code-review` skill; if it
-is unavailable, report the gap before briefing and do not reconstruct it. Brief
+host's reviewer adapter. When native controls cannot meet a requirement or the
+owner explicitly selects cross-provider review, read the optional
+[separate-process adapter](references/process-reviewers.md). Reviewers need the
+canonical `code-review` skill; if it is unavailable, report the gap before briefing and do not reconstruct it. Brief
 each reviewer with code-review's assigned-axis mode, its axis rubric, the frozen
 comparison, the raw requirements or standards sources for that axis, the
 validation facts and the finding format. Leave out implementer and advisor

@@ -112,7 +112,9 @@ These are capability hypotheses, not measured review-quality results. Explicit
 user or project requirements override the defaults; comparable evidence
 supports only the exceptions review selection allows, never below the impact
 floor. Do not create, edit or install `.claude/agents` definitions, change
-settings, launch replacement sessions or simulate a reviewer by writing both
-sides of a conversation. The owning environment provisions profiles, as
+settings, launch replacement coordinator or writer sessions, or simulate a
+reviewer by writing both sides of a conversation. For an explicitly selected
+cross-provider reviewer or a required native-control gap, use only the bounded
+[separate-process adapter](process-reviewers.md). The owning environment provisions profiles, as
 [reviewer execution](reviewer-execution.md#discover-provisioned-profiles)
 describes.
