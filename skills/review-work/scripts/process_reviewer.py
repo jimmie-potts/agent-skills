@@ -165,37 +165,64 @@ def process_identity(pid):
         return None
 
 
+def group_alive(group):
+    for entry in Path("/proc").iterdir():
+        if not entry.name.isdigit():
+            continue
+        try:
+            fields = (entry / "stat").read_text().rsplit(")", 1)[1].split()
+            if int(fields[2]) == group and fields[0] != "Z":
+                return True
+        except FileNotFoundError:
+            continue
+    return False
+
+
+def stop_group(group):
+    """Stop an owned group, including children whose leader has already exited."""
+    for sig, grace in ((signal.SIGTERM, 1), (signal.SIGKILL, 2)):
+        if not group_alive(group):
+            return True
+        try:
+            os.killpg(group, sig)
+        except ProcessLookupError:
+            return True
+        deadline = time.monotonic() + grace
+        while time.monotonic() < deadline:
+            if not group_alive(group):
+                return True
+            time.sleep(0.02)
+    return not group_alive(group)
+
+
 def stop(identity):
     if not identity or process_identity(identity["pid"]) != identity:
         return False
     try:
         if os.getpgid(identity["pid"]) != identity["pid"]:
             return False
-        os.killpg(identity["pid"], signal.SIGTERM)
+        return stop_group(identity["pid"])
     except ProcessLookupError:
-        return True
-    deadline = time.monotonic() + 1
-    while time.monotonic() < deadline and process_identity(identity["pid"]) == identity:
-        time.sleep(0.02)
-    if process_identity(identity["pid"]) == identity:
-        try:
-            os.killpg(identity["pid"], signal.SIGKILL)
-        except ProcessLookupError:
-            pass
-    return True
+        return False
 
 
 def extract(host, raw):
     if host == "claude":
         response = json.loads(raw)
+        if not isinstance(response, dict):
+            raise Incomplete("Claude result envelope must be an object")
         if response.get("type") != "result" or response.get("subtype") != "success" or response.get("is_error"):
             raise Incomplete("Claude did not return a successful final result")
         return response["structured_output"]
     events = [json.loads(line) for line in raw.splitlines() if line.strip()]
+    if any(not isinstance(event, dict) for event in events):
+        raise Incomplete("Codex events must be objects")
     if not events or events[-1].get("type") != "turn.completed":
         raise Incomplete("Codex final turn completion missing")
     if any(e.get("type") in ("error", "turn.failed") for e in events):
         raise Incomplete("Codex reported a failed event")
+    if any(e.get("type") == "item.completed" and not isinstance(e.get("item"), dict) for e in events):
+        raise Incomplete("Codex completed items must be objects")
     messages = [e["item"]["text"] for e in events if e.get("type") == "item.completed"
                 and e.get("item", {}).get("type") == "agent_message"]
     if len(messages) != 1:
@@ -295,6 +322,7 @@ def run(packet_path, launch_path, directory):
         (directory / "packet.json").write_bytes(packet_path.read_bytes())
         (directory / "prompt.txt").write_text(prompt)
         child = None
+        group_stopped = False
         try:
             with (directory / "prompt.txt").open("rb") as source, (directory / "stdout.json").open("wb") as stdout, (directory / "stderr.txt").open("wb") as stderr:
                 child = subprocess.Popen(command(launch, runtime, schema), cwd=runtime,
@@ -303,7 +331,9 @@ def run(packet_path, launch_path, directory):
                 state.update(status="running", process=process_identity(child.pid))
                 save(directory / "state.json", state)
                 deadline = time.monotonic() + launch["timeout_seconds"]
-                while child.poll() is None:
+                # WNOWAIT keeps the exited leader's PID reserved until its whole
+                # group is stopped; do not reap it early with Popen.poll().
+                while os.waitid(os.P_PID, child.pid, os.WEXITED | os.WNOHANG | os.WNOWAIT) is None:
                     if time.monotonic() >= deadline:
                         raise Incomplete("timeout; attempt consumed")
                     if any((directory / name).stat().st_size > MAX_BYTES for name in ("stdout.json", "stderr.txt")):
@@ -311,6 +341,10 @@ def run(packet_path, launch_path, directory):
                     if (directory / "cancel").exists():
                         raise Incomplete("cancelled; replacement needs owner agreement")
                     time.sleep(0.02)
+            group_stopped = stop_group(child.pid)
+            if not group_stopped:
+                raise Incomplete("cleanup unconfirmed; retain process ownership")
+            child.wait(timeout=2)
             state["exit_code"] = child.returncode
             if (directory / "cancel").exists():
                 raise Incomplete("cancelled; replacement needs owner agreement")
@@ -319,9 +353,9 @@ def run(packet_path, launch_path, directory):
             if load(packet_path)[1] != packet_digest or load(launch_path)[1] != launch_digest:
                 raise Incomplete("source/specification/settings packet changed during review")
             validate_launch(launch)
-            raw = (directory / "stdout.json").read_bytes()
-            if len(raw) > MAX_BYTES:
+            if any((directory / name).stat().st_size > MAX_BYTES for name in ("stdout.json", "stderr.txt")):
                 raise Incomplete("output limit; partial return")
+            raw = (directory / "stdout.json").read_bytes()
             result = extract(launch["host"], raw)
             validate_result(result, packet, packet_digest)
             save(directory / "reviewer-return.json", result)
@@ -332,11 +366,12 @@ def run(packet_path, launch_path, directory):
         except (OSError, ValueError, KeyError, TypeError, KeyboardInterrupt) as exc:
             state.update(status="incomplete", reason=str(exc) or "interrupted")
         finally:
-            if child is not None and child.poll() is None:
-                stop(state.get("process"))
+            if child is not None:
                 try:
+                    if not group_stopped and not stop_group(child.pid):
+                        state.update(status="incomplete", reason="cleanup unconfirmed; retain process ownership")
                     child.wait(timeout=2)
-                except subprocess.TimeoutExpired:
+                except (OSError, subprocess.TimeoutExpired):
                     state.update(status="incomplete", reason="cleanup unconfirmed; retain process ownership")
             save(directory / "state.json", state)
         return state

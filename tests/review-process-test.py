@@ -2,7 +2,7 @@
 """Model-free subprocess tests for the optional reviewer supervisor."""
 
 import copy
-import hashlib
+import ctypes
 import importlib.util
 import json
 import os
@@ -115,6 +115,30 @@ class ProcessReviewerTests(unittest.TestCase):
                 state, _ = self.run_fake(source)
                 self.assertEqual(state['status'], 'incomplete')
 
+    def test_wrong_json_shapes_are_retained_as_incomplete(self):
+        for host, raw in [('claude', '[]'), ('claude', 'null'),
+                          ('codex', 'null'), ('codex', '[]'),
+                          ('codex', '{"type":"item.completed","item":null}\n{"type":"turn.completed"}')]:
+            with self.subTest(host=host, raw=raw):
+                self.launch['host'] = host
+                self.write_inputs()
+                self.evidence = self.root/f'bad-shape-{host}-{len(list(self.root.iterdir()))}'
+                state, _ = self.run_fake(f'print({raw!r})')
+                self.assertEqual(state['status'], 'incomplete')
+                self.assertEqual(state['exit_code'], 0)
+                saved = json.loads((self.evidence/'state.json').read_text())
+                self.assertEqual(saved['status'], 'incomplete')
+                resumed, launches = self.run_fake()
+                self.assertEqual((resumed, launches), (state, 0))
+
+    def test_exit_checks_the_stderr_limit(self):
+        # A small test ceiling exercises exactly the same post-exit boundary.
+        source = f'import sys; sys.stderr.write("x"*4097); print({self.output(self.returned())!r})'
+        with patch.object(RUNNER, 'MAX_BYTES', 4096):
+            state, _ = self.run_fake(source)
+        self.assertEqual(state['status'], 'incomplete')
+        self.assertIn('output limit', state['reason'])
+
     def test_startup_failure_is_consumed_and_duplicate_run_never_launches(self):
         with patch.object(RUNNER.subprocess, 'Popen', side_effect=OSError('fixture startup failure')):
             state = RUNNER.run(self.packet_path, self.launch_path, self.evidence)
@@ -167,6 +191,43 @@ class ProcessReviewerTests(unittest.TestCase):
         self.assertEqual(state['status'], 'incomplete')
         self.assertIn('timeout', state['reason'])
         self.assertIsNone(RUNNER.process_identity(state['process']['pid']))
+
+    def test_group_cleanup_after_timeout_or_successful_leader_exit(self):
+        # Adopt/reap fixture grandchildren instead of leaving zombies with PID 1.
+        libc = ctypes.CDLL(None, use_errno=True)
+        previous = ctypes.c_int()
+        self.assertEqual(libc.prctl(37, ctypes.byref(previous), 0, 0, 0), 0)
+        self.assertEqual(libc.prctl(36, 1, 0, 0, 0), 0)
+        try:
+            for timeout in (True, False):
+                with self.subTest(timeout=timeout):
+                    self.evidence = self.root/f'group-{timeout}'
+                    self.launch['timeout_seconds'] = 0.2 if timeout else 2
+                    self.write_inputs()
+                    ready = self.root/f'child-{timeout}.pid'
+                    child_source = ('import os,signal,time\nfrom pathlib import Path\n'
+                                    'signal.signal(signal.SIGTERM,signal.SIG_IGN)\n'
+                                    f'Path({str(ready)!r}).write_text(str(os.getpid()))\n'
+                                    'time.sleep(30)')
+                    source = ('import subprocess,time\nfrom pathlib import Path\n'
+                              f'subprocess.Popen([{sys.executable!r}, "-c", {child_source!r}])\n'
+                              f'while not Path({str(ready)!r}).exists(): time.sleep(0.005)\n'
+                              + ('time.sleep(30)' if timeout else f'print({self.output(self.returned())!r})'))
+                    pid = None
+                    try:
+                        state, _ = self.run_fake(source)
+                        pid = int(ready.read_text())
+                        self.assertIsNone(RUNNER.process_identity(pid), state)
+                        self.assertEqual(state['status'], 'incomplete' if timeout else 'returned')
+                    finally:
+                        if pid is None and ready.exists():
+                            pid = int(ready.read_text())
+                        if pid is not None:
+                            if RUNNER.process_identity(pid):
+                                os.kill(pid, signal.SIGKILL)
+                            os.waitpid(pid, 0)
+        finally:
+            libc.prctl(36, previous.value, 0, 0, 0)
 
     def test_cancel_marker_reaps_process(self):
         def cancel():
