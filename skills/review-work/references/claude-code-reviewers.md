@@ -53,10 +53,10 @@ Choose the high-effort profile when the selected reviewer level is `high`, and
 the other profile to inherit the session level. Its tools exclude `Agent`,
 editing tools and `Skill`, but `Bash` can still write files and reach
 credential-bearing CLIs. Record the restriction as that tool set with the shell
-retained. Record MCP tools as excluded only when the host shows this reviewer's
-received tools, such as the tool list in its subagent transcript's prompt
-snapshot where reading it is authorized; otherwise record them as
-instruction-only. The profile preloads `code-review` and cannot load other
+retained. After launch and before accepting the return, check the tools this
+reviewer received, such as the tool list in its subagent transcript's prompt
+snapshot where reading it is authorized. Record MCP tools as excluded only when
+that evidence shows it; otherwise record them as instruction-only. The profile preloads `code-review` and cannot load other
 skills; the host skips a missing preloaded skill silently, so confirm
 `code-review` is available before briefing and treat a return without the
 assigned-axis mode as `incomplete`.

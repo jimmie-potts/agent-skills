@@ -56,12 +56,15 @@ with its `Agent` tool must use the `review-work-reviewer` or
 `review-work-reviewer-high` profile, and host evidence for that reviewer must
 show that its tools exclude `Agent`, editing tools, `Skill` and MCP tools, as
 `review-work`'s Claude Code adapter describes. Without that evidence, the axis
-is `incomplete`. The profile keeps `Bash`, so file writes, publication and
-agents launched through the shell stay instruction-only; record them that way. A
-packet-only process reviewer under `review-work`'s separate-process adapter
-meets this requirement once host evidence verifies its empty tool set, as that
-adapter requires. On Codex, restriction stays instruction-only until a surface
-can select the named profile, as the Codex adapter records. Evidence:
+is `incomplete`. For this check, a coordinator may read the metadata of its own
+reviewers' subagent transcripts, such as the tool list each reviewer received,
+but not other sessions' transcripts. The profile keeps `Bash`, so file writes,
+publication and agents launched through the shell stay instruction-only; record
+them that way. A packet-only process reviewer under `review-work`'s
+separate-process adapter meets this requirement once host evidence verifies its
+empty tool set, as that adapter requires. On Codex, restriction stays
+instruction-only, as the Codex adapter records; revisit this declaration when a
+Codex surface can select the `review_work_reviewer` profile. Evidence:
 [#80](https://github.com/jimmie-potts/agent-skills/issues/80) and
 [#108](https://github.com/jimmie-potts/agent-skills/issues/108).
 
