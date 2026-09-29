@@ -135,10 +135,9 @@ history. A failed return has not assessed the axis, so its findings do not make
 the axis `action-required`. List and count them as unresolved. Replace the
 reviewer with a fresh compliant one in the same round; never resume a failed
 one. After the replacement's independent initial return, send it the retained
-findings in a follow-up within that round. Its reply must restate the axis's
-complete verdict, its coverage and every finding with its disposition and
-evidence; that reply is its final message, retained as its return, and a reply
-missing any of them is `partial`. When the host cannot continue the
+findings in a follow-up within that round; the
+[result contract](result-contract.md#retain-reviewer-returns) says what its
+reply must restate and how it is retained. When the host cannot continue the
 replacement, the axis stays `incomplete` and the retained findings carry to the
 next round as prior findings. Replace a reviewer the user stopped only with the
 user's agreement; until then its axis stays `incomplete`.

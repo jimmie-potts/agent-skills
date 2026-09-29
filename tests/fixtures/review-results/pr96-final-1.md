@@ -7,7 +7,7 @@ The posted comment stays unchanged as published history.
 
 Changes from the posted text:
 
-- 71-F1 list `standards+specification` in the axis slot instead of
+- 71-F1 lists `standards+specification` in the axis slot instead of
   `standards` plus an "also raised on the specification axis" clause.
 - Coverage prose that explained the one-axis workaround says the finding lists
   both axes.

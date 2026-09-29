@@ -105,8 +105,9 @@ After the table, write `**Findings:**` followed by one line per finding, or
 - <ID> (<severity>, <axes>, <state>): <file:line>, <failure condition>; first <round>, latest <round>
 ```
 
-The ID is a stable task-local identifier without spaces, such as `F1` or
-`71-F1`. The axes are each axis whose reviewer raised this failure condition,
+The ID is a stable task-local identifier of letters and digits, with single
+hyphens between parts, such as `F1` or `71-F1`. The location is a file and
+line. The axes are each axis whose reviewer raised this failure condition,
 joined by `+` when there are several, such as `standards+specification`. List
 each axis once and never write `both`, even in a task round. One failure
 condition keeps one ID however many axes raise it:
@@ -115,7 +116,9 @@ condition keeps one ID however many axes raise it:
   P0 to P2 or project-defined blocker.
 - Counts: `Open findings` counts the finding once.
 - Support: each listed axis's retained return in the finding's latest round
-  must raise or reassess it.
+  must raise or reassess it among its findings; naming the file only in its
+  coverage is not support. The finding becomes `resolved` only when every
+  listed axis's return confirms the fix; until then it keeps its earlier state.
 
 The state is `unresolved`, `resolved`, `regression`, or, for P3 only,
 `accepted` or `deferred` with its reason in the text. Findings keep their IDs
@@ -150,6 +153,12 @@ none` has no blocks:
   redactions. Never substitute a paraphrase, the reviewer's session
   transcript, tool output or runtime metadata. When nothing came back, the
   fence holds one line, `[no return: <reason>]`.
+- When the coordinator sends a reviewer a follow-up within the round, such as
+  a clarification, a reassessment request or prior findings for a
+  replacement, the reply must restate the axis's complete verdict, its
+  coverage and every finding with its disposition and evidence. That reply is
+  the reviewer's final message and its retained return; a reply missing any
+  of them is `partial`.
 - Replace credentials, secrets, private paths, host or session identifiers and
   unrelated personal data with `[redacted: <kind>]`, and list them in
   `Redactions` as `<count>: <kind>, <kind>`, or `none`. Change nothing else;
@@ -164,10 +173,8 @@ the result, reconcile it with the returns. Each of these is an error to
 correct, not a disposition:
 
 - a summary finding that no return supports;
-- a listed axis whose return in the finding's latest round neither raises nor
-  reassesses it;
-- a returned blocker the summary omits;
-- one failure condition that two returns raised, recorded under two IDs.
+- a finding that breaks the ID and axis rules above;
+- a returned blocker the summary omits.
 
 Task rounds keep their returns in the task evidence only.
 Review-work publishes none of this; keeping it beyond the conversation needs an

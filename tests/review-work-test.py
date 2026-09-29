@@ -54,9 +54,20 @@ CELLS = {
 }
 FINDING = re.compile(
     r'- ([A-Za-z0-9]+(?:-[A-Za-z0-9]+)*) \((P[0-3]), ([a-z]+(?:\+[a-z]+)*), '
-    r'(unresolved|resolved|regression|accepted|deferred)\): ([^\s:,]+).*; '
+    r'(unresolved|resolved|regression|accepted|deferred)\): ([^\s:,]+):\d.*; '
     r'first ((?:final|task) \d+), latest ((?:final|task) \d+)')
 OPEN = ('unresolved', 'regression')
+# A return's own headings: Markdown, a bold line, or a short `Label:` line.
+HEADING = re.compile(r'(#{1,6} .+|\*\*[^*]+\*\*)|([A-Z][\w ()/-]{0,40}):(?: .*)?')
+# The first matching kind sets a heading's section; any other heading, such as
+# one finding's own title, continues the section it sits in.
+SECTIONS = (
+    ('p3', re.compile(r'non-blocking|\bP3\b|observation', re.I)),
+    ('blocker', re.compile(r'block|\bP[0-2]\b', re.I)),
+    ('reassessed', re.compile(r'finding', re.I)),
+    (None, re.compile(r'coverage|status|verdict|model|comparison|command|check'
+                      r'|acceptance|requirement trace|critical files', re.I)),
+)
 RETURN_ROWS = ('Axis', 'Comparison', 'Requirements', 'Policy', 'Return',
                'Digest', 'Redactions')
 RETURN_CELLS = {
@@ -108,6 +119,41 @@ def parse_returns(text):
             raise ValueError(f'digest does not match the return: {match.group(1)}')
         returns.append((match.group(1), rows, body))
     return returns
+
+
+def finding_sections(body):
+    """Split a return into its P3, blocker and earlier-finding sections."""
+    kind, sections = None, {'p3': [], 'blocker': [], 'reassessed': []}
+    for line in body.splitlines():
+        heading = HEADING.fullmatch(line)
+        if heading:
+            title = heading.group(1) or heading.group(2)
+            kind = next((name for name, pattern in SECTIONS
+                         if pattern.search(title)), kind)
+        if kind:
+            sections[kind].append(line)
+    return {name: '\n'.join(lines) for name, lines in sections.items()}
+
+
+def supports(finding, body, round_):
+    """Whether one return raises or reassesses a finding in its own sections.
+
+    A finding first raised in this round needs its file, by the cited path or
+    a trailing part of it, in the section for its severity. A finding carried
+    from an earlier round needs its ID in any finding section, because its
+    reviewers were briefed with it. This is a static proxy for the
+    coordinator's reconciliation: it cannot tell whether the return describes
+    the same failure condition.
+    """
+    fid, severity, _, _, location, first, _ = finding
+    sections = finding_sections(body)
+    if first != round_:
+        return any(re.search(rf'(?<![\w-]){re.escape(fid)}(?![\w-])', text)
+                   for text in sections.values())
+    own = sections['p3' if severity == 'P3' else 'blocker']
+    name = re.escape(location.rsplit('/', 1)[-1])
+    return any(token == location or location.endswith('/' + token)
+               for token in re.findall(rf'[\w./-]*{name}(?![\w-])', own))
 
 
 def covered(axis):
@@ -162,28 +208,20 @@ def parse_review_result(text):
         raise ValueError('repeated finding ID')
     known = {'standards', 'specification'} | {
         axis for _, axis in reviewers if axis != 'both'}
-    for fid, severity, axes, state, location, _, latest in findings:
+    for finding in findings:
+        fid, severity, axes, state, _, _, latest = finding
         if 'both' in axes:
             raise ValueError('a finding lists its axes, never both')
         if len(set(axes)) != len(axes):
             raise ValueError(f'{fid} lists an axis twice')
-        if set(axes) - known:
-            raise ValueError(f'{fid} lists an unknown axis')
         if state in ('accepted', 'deferred') and severity != 'P3':
             raise ValueError('only P3 findings take accepted or deferred')
         latest_kind, latest_number = latest.split()
         if latest_kind == kind and int(latest_number) > int(number):
             raise ValueError('finding reviewed in a later round than this one')
-        # Support: each listed axis's return in this round names the finding's
-        # file. This is a static proxy for the coordinator's reconciliation; it
-        # cannot tell whether the return raises the same failure condition.
-        if latest == rows['Round']:
-            cited = location.rsplit('/', 1)[-1]
-            for axis in axes:
-                if not any(axis in covered(ret['Axis']) and cited in body
-                           for _, ret, body in returns):
-                    raise ValueError(f'{fid} lists {axis}, but no {axis} return '
-                                     'in this round supports it')
+        # A finding carried from an earlier round keeps that round's axes.
+        if latest == rows['Round'] and set(axes) - known:
+            raise ValueError(f'{fid} lists an unknown axis')
 
     counts = dict(re.findall(r'(P\d) (\d+)', rows['Open findings']))
     for severity in ('P0', 'P1', 'P2', 'P3'):
@@ -204,6 +242,23 @@ def parse_review_result(text):
             raise ValueError(f'{axis} action-required without a blocker')
     if rows['Specification'] == 'satisfied' and rows['Requirements'] == 'none':
         raise ValueError('Specification satisfied without a requirement')
+
+    # Each listed axis's return in this round must support the finding. Only
+    # a return for these inputs counts, and only a complete one can resolve or
+    # dispose of a finding; a failed or partial one still supports the open
+    # findings it raised, which leave its axis incomplete.
+    for finding in findings:
+        fid, _, axes, state, _, _, latest = finding
+        if latest != rows['Round']:
+            continue
+        for axis in axes:
+            if not any(axis in covered(ret['Axis'])
+                       and all(ret[field] == rows[field] for field in PROVENANCE)
+                       and (ret['Return'] == 'complete' or state in OPEN)
+                       and supports(finding, body, rows['Round'])
+                       for _, ret, body in returns):
+                raise ValueError(f'{fid} lists {axis}, but no {axis} return '
+                                 'for these inputs supports it')
     return {'rows': rows, 'reviewers': reviewers, 'findings': findings,
             'returns': returns}
 
@@ -300,10 +355,11 @@ class ResultContractTest(unittest.TestCase):
 
     def test_one_task_reviewer_covers_both_verdicts(self):
         summary, blocks = split_returns(examples()[0])
-        good = summary + '\n' + blocks[0].replace(
-            '### Reviewer return: standards-reviewer-2',
+        # The specification return is the one that reassesses F1.
+        good = summary + '\n' + blocks[1].replace(
+            '### Reviewer return: specification-reviewer-2',
             '### Reviewer return: task-reviewer-1').replace(
-            '| Axis | standards |', '| Axis | both |')
+            '| Axis | specification |', '| Axis | both |')
         entries = good.split('| Reviewers | ', 1)[1].split(' |\n', 1)[0]
         task = (good.replace('| Round | final 2 |', '| Round | task 2 |')
                 .replace('first final 1, latest final 2', 'first task 1, latest task 2')
@@ -463,8 +519,6 @@ class ResultContractTest(unittest.TestCase):
         alone = alone.replace('; specification-reviewer-2: specification, requested '
                               'opus at default, model claude-opus-5-5 (self-reported), '
                               'level high (user-stated)', '')
-        with self.assertRaisesRegex(ValueError, 'no specification return'):
-            parse_review_result(alone)
         # A failed reviewer reassesses nothing, so F1 stays as final 1 left it.
         alone = (alone.replace('F1 (P2, specification, resolved)',
                                'F1 (P2, specification, unresolved)')
@@ -526,16 +580,30 @@ def posted(name):
     return text[text.index('\n## Review result\n') + 1:]
 
 
-def rewrite_return(text, label, old, new):
+def rewrite_return(text, label, edit):
     """Edit one retained return's text and give it the matching digest."""
     head, rest = text.split(f'### Reviewer return: {label}\n', 1)
     table, rest = rest.split('~~~text\n', 1)
     body, tail = rest.split('\n~~~\n', 1)
-    body = body.replace(old, new)
+    body = edit(body)
     digest = hashlib.sha256((body + '\n').encode()).hexdigest()
     table = re.sub(r'sha256:[0-9a-f]{64}', 'sha256:' + digest, table)
     return (f'{head}### Reviewer return: {label}\n{table}~~~text\n{body}'
             f'\n~~~\n{tail}')
+
+
+def blockers_none(first, after):
+    """An edit that empties the section from heading `first` to `after`."""
+    def edit(body):
+        head, rest = body.split(f'{first}\n', 1)
+        _, tail = rest.split(f'\n{after}\n', 1)
+        return f'{head}{first}\n\nNone.\n\n{after}\n{tail}'
+    return edit
+
+
+def drop_lines(pattern):
+    """An edit that removes every return line matching a pattern."""
+    return lambda body: re.sub(rf'^.*{pattern}.*\n', '', body, flags=re.M)
 
 
 class SharedFindingTest(unittest.TestCase):
@@ -572,15 +640,40 @@ class SharedFindingTest(unittest.TestCase):
                     f'{blocker} (P2, standards+specification,',
                     f'{blocker} (P2, standards,'))
 
+    # The heading that opens each return's blocker section and the heading
+    # after it, in (standards, specification) order.
+    BLOCKERS = {
+        'pr96-final-1.md': (('## Blockers (P0-P2)', '## Non-blocking P3 observations'),
+                            ('## Blockers (P0-P2)', '## Non-blocking P3 observations')),
+        'pr97-final-1.md': (('### Blocking findings', '### Non-blocking P3 observations'),
+                            ('### Blockers (P0-P2)', '### Non-blocking P3 observations')),
+        'pr100-final-2.md': (('**Blockers**', '**Verdicts on the round-1 findings**'),
+                             ('## Blockers (P0-P2)', '## Round-1 findings')),
+    }
+    LABELS = ('standards-reviewer-1', 'specification-reviewer-1')
+
+    def test_shared_blocker_missing_from_one_return(self):
+        # A reviewer whose blocker section says "None." does not support the
+        # shared blocker, even though its coverage still names the file.
+        for name, shared in self.REPORTS.items():
+            blocker = next(i for i in shared if f'{i} (P2,' in posted(name))
+            for label, (first, after) in zip(self.LABELS, self.BLOCKERS[name]):
+                axis = label.split('-')[0]
+                with self.subTest(report=name, axis=axis), self.assertRaisesRegex(
+                        ValueError, f'{blocker} lists {axis}, but no {axis} return'):
+                    parse_review_result(rewrite_return(
+                        posted(name), label, blockers_none(first, after)))
+
     def test_rejects_known_bad_shared_findings(self):
         good = posted('pr96-final-1.md')
         shared = '71-F1 (P2, standards+specification, unresolved)'
+        head = 'head 338cec6a550315e69baafa7662941e915358504d'
+        stale = good.replace('| Specification | action-required |',
+                             '| Specification | incomplete |')
+        stale = stale[:stale.index('### Reviewer return: specification')] + (
+            stale[stale.index('### Reviewer return: specification'):]
+            .replace(head, head.replace('338cec6', '4444444'), 1))
         mutations = {
-            'shared blocker missing from one return': (
-                rewrite_return(good, 'specification-reviewer-1',
-                               'execution-recommendations.md',
-                               'another-reference.md'),
-                '71-F1 lists specification, but no specification return'),
             'shared blocker counted twice': (
                 good.replace('P0 0; P1 0; P2 1;', 'P0 0; P1 0; P2 2;'),
                 'P2 count disagrees'),
@@ -600,10 +693,17 @@ class SharedFindingTest(unittest.TestCase):
                 good.replace(shared, shared.replace('+specification',
                                                     '+both')),
                 'never both'),
-            'spaced finding ID': (
+            'hyphen-joined words as an ID': (
                 good.replace('- 71-F1 (', '- 71 F1 ('), 'bad finding'),
+            'location without a line': (
+                good.replace('skills/plan-work/references/execution-recommendations'
+                             '.md:115-120, the clause', 'the clause'),
+                'bad finding'),
+            'return for another head supports a blocker': (
+                stale, '71-F1 lists specification, but no specification return'),
         }
         self.assertIn(shared, good)
+        self.assertIn(head, stale)
         for name, (mutated, message) in mutations.items():
             with self.subTest(mutation=name):
                 self.assertNotEqual(mutated, good)
@@ -612,15 +712,40 @@ class SharedFindingTest(unittest.TestCase):
 
     def test_resolved_shared_finding_needs_both_returns(self):
         # Fix verification: 99-F2 is resolved in final 2 on both axes, so
-        # each axis's final 2 return must reassess README.md.
+        # each axis's complete final 2 return must reassess it.
         good = posted('pr100-final-2.md')
         self.assertIn('99-F2 (P3, standards+specification, resolved)', good)
-        for label, axis in (('standards-reviewer-1', 'standards'),
-                            ('specification-reviewer-1', 'specification')):
+        for label in self.LABELS:
+            axis = label.split('-')[0]
             with self.subTest(axis=axis), self.assertRaisesRegex(
                     ValueError, f'99-F2 lists {axis}, but no {axis} return'):
-                parse_review_result(rewrite_return(good, label, 'README',
-                                                   'OVERVIEW'))
+                parse_review_result(rewrite_return(good, label,
+                                                   drop_lines(r'\*\*99-F2')))
+        # A failed return can keep 99-F6 open, which leaves its axis
+        # incomplete, but it cannot resolve 99-F2.
+        failed = good.replace('| Specification | action-required |',
+                              '| Specification | incomplete |')
+        at = failed.index('### Reviewer return: specification')
+        failed = failed[:at] + failed[at:].replace('| Return | complete |',
+                                                   '| Return | failed |', 1)
+        with self.assertRaisesRegex(ValueError, '99-F2 lists specification'):
+            parse_review_result(failed)
+        kept = parse_review_result(failed.replace(
+            '99-F2 (P3, standards+specification, resolved)',
+            '99-F2 (P3, standards, resolved)'))
+        self.assertEqual(kept['rows']['Specification'], 'incomplete')
+
+    def test_carried_specialist_finding_is_accepted(self):
+        # A security finding accepted in final 1 is carried into a final 2
+        # that has no security reviewer.
+        good = examples()[0]
+        carried = good.replace('F2 (P3, standards, accepted)',
+                               'F2 (P3, security, accepted)')
+        self.assertNotEqual(carried, good)
+        parse_review_result(carried)
+        with self.assertRaisesRegex(ValueError, 'unknown axis'):
+            parse_review_result(carried.replace(
+                'latest final 1\n\n**Coverage', 'latest final 2\n\n**Coverage'))
 
 
 class MigrationTest(unittest.TestCase):
