@@ -63,6 +63,7 @@ Then run:
 python3 scripts/validate-skills.py
 python3 tests/architect-test.py
 python3 tests/blast-radius-test.py
+python3 tests/close-work-test.py
 python3 tests/deliver-work-test.py
 python3 tests/plan-work-test.py
 python3 tests/review-work-test.py

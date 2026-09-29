@@ -1,0 +1,6 @@
+interface:
+  display_name: "Close Work"
+  short_description: "Run a session closeout that files, comments and records"
+  default_prompt: "Use $close-work to run the final cleanup and handoff sweep for this task before I archive it."
+policy:
+  allow_implicit_invocation: false
