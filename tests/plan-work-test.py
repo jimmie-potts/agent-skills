@@ -261,6 +261,9 @@ class PlanWorkStructureTest(unittest.TestCase):
         ):
             with self.subTest(anchor=anchor):
                 self.assertIn(anchor, routing)
+        self.assertIn('keeping them current belongs to [verification maintenance]'
+                      '(verification-maintenance.md)', routing)
+        self.assertTrue((deliver / 'references/verification-maintenance.md').is_file())
         link = '](uncertainty-routing.md)'
         self.assertIn(link, (deliver / 'references/work-assessment.md').read_text())
         self.assertIn('](references/uncertainty-routing.md)',
