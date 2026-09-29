@@ -18,8 +18,8 @@ read its issue forms, its wording for backlog placeholders, its Guide fields
 and the established meanings of its labels. When a convention is absent, use
 a plain issue and report the absence; never borrow another project's template.
 
-Guide fields are the idea-marker fields that a repository's issue form
-declares, for example a `## Guide` section with `**Topic:**`,
+Guide fields are the repository's Guide or story-trailer fields that its
+issue form declares, for example a `## Guide` section with `**Topic:**`,
 `**Highlight:**` and `**Extends:**`. Apply them only where the form declares
 them.
 

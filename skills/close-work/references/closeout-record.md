@@ -40,9 +40,11 @@ with a bold key.
 
 ## Reruns
 
-A rerun that writes something posts a second record under the same rules. Its
-keys hold only that sweep's writes, `none` where it wrote nothing, and its
-Handoff links the earlier record, which stays unchanged.
+A rerun that writes something posts a second record under the same rules.
+Its `Session`, `Delivered` and `Deployment gap` keys carry the current state.
+Its `Filed`, `Commented`, `Learnings` and `Capture receipt` keys hold only
+that sweep's writes, `none` where it wrote nothing. Its Handoff links the
+earlier record, which stays unchanged.
 
 ## Example
 

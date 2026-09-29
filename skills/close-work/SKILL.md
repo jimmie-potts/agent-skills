@@ -29,8 +29,11 @@ others:
 - Temporary files: remove this task's own disposable temporary files.
 - Local branches: delete this task's completed local delivery branches only
   under every guard in [Delete completed local branches](#delete-completed-local-branches).
-  This grant overrides older project guidance that reserves deleting the
-  task's own completed local delivery branches for the owner.
+  The explicit invocation is the owner's permission for that deletion, so it
+  satisfies a project rule that reserves deleting the delivery branch for the
+  owner, such as a cleanup rule that says not to delete it yourself. It does
+  not override a limit the user states for the session, a protected or base
+  branch, or any other project rule.
 
 It never changes product code, installs anything, contacts devices, deletes
 remote branches, removes or detaches worktrees, merges, closes or reopens

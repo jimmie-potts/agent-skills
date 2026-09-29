@@ -13,6 +13,7 @@ Handoff prompt. `--expect-session <label>` also requires that Session value;
 the no-label simulation passes `--expect-session unknown`.
 """
 from pathlib import Path
+import argparse
 import importlib.util
 import re
 import sys
@@ -38,9 +39,13 @@ GRANTS = {
     'Temporary files': ("this task's own disposable temporary files",),
     'Local branches': ("this task's completed local delivery branches",
                        'under every guard',
-                       'overrides older project guidance that reserves '
-                       "deleting the task's own completed local delivery "
-                       'branches for the owner'),
+                       "the explicit invocation is the owner's permission "
+                       'for that deletion',
+                       'satisfies a project rule that reserves deleting the '
+                       'delivery branch for the owner',
+                       'does not override a limit the user states for the '
+                       'session, a protected or base branch, or any other '
+                       'project rule'),
 }
 LIMITS = ('never changes product code', 'installs anything',
           'contacts devices', 'deletes remote branches',
@@ -80,8 +85,8 @@ SECTION_ANCHORS = {
     '## Resolve the task': (
         "its wording for backlog placeholders, its guide fields",
         'when a convention is absent, use a plain issue and report the absence',
-        "guide fields are the idea-marker fields that a repository's issue "
-        'form declares',
+        "guide fields are the repository's guide or story-trailer fields that "
+        'its issue form declares',
         'apply them only where the form declares them'),
     '## Pass the pre-write gate': (
         'finish or poll every ci run and background task this task started',
@@ -157,7 +162,10 @@ SECTION_ANCHORS = {
 }
 KEYS = ('Session', 'Delivered', 'Deployment gap', 'Filed', 'Commented',
         'Learnings', 'Handoff', 'Capture receipt')
-RERUN_RECORD = ("keys hold only that sweep's writes",
+RERUN_RECORD = ('`session`, `delivered` and `deployment gap` keys carry the '
+                'current state',
+                '`filed`, `commented`, `learnings` and `capture receipt` keys '
+                "hold only that sweep's writes",
                 'handoff links the earlier record, which stays unchanged')
 RECORD_SUBSECTIONS = ('learnings preserved here because memory could not be '
                       'written', 'pending items with what they gate')
@@ -168,7 +176,8 @@ SINGLE_HOMES = {
                         'saved and doc prs opened during this sweep, including '
                         'this comment, and naming anything that could not be '
                         'written and why'),
-    'guide fields': ('sections.md', 'idea-marker fields'),
+    'guide fields': ('sections.md', 'guide or story-trailer fields that its '
+                     'issue form declares'),
     'rerun record': ('closeout-record.md', "keys hold only that sweep's"),
     'memory fallback': ('SKILL.md', 'does not block archival when its '
                         'information is durably preserved'),
@@ -579,9 +588,13 @@ class CloseWorkStructureTest(unittest.TestCase):
 
 if __name__ == '__main__':
     if sys.argv[1:2] == ['--check-record']:
-        expected = (sys.argv[4] if sys.argv[3:4] == ['--expect-session']
-                    else None)
-        problems = record_errors(Path(sys.argv[2]).read_text(), expected)
+        parser = argparse.ArgumentParser(
+            prog='close-work-test.py --check-record',
+            description='Check the first ## Closeout record in a file.')
+        parser.add_argument('file', type=Path)
+        parser.add_argument('--expect-session', metavar='LABEL')
+        args = parser.parse_args(sys.argv[2:])
+        problems = record_errors(args.file.read_text(), args.expect_session)
         print('\n'.join(problems) or 'closeout record OK')
         sys.exit(1 if problems else 0)
     unittest.main()
