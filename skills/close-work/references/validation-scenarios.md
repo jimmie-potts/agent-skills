@@ -56,11 +56,11 @@ the device range", delivered by this session with `deliver-work`:
 
 | Case | Input |
 | --- | --- |
-| CW01 | `$close-work` after the delivered issue, in the repository with a Guide marker. |
-| CW02 | `$close-work` after the same facts transposed to the repository without a Guide marker: `example-org/tools#12`, PR #19, the uncovered follow-up rated P1, no installation declaration and no issue #58. |
+| CW01 | An explicit close-work invocation after the delivered issue, in the repository with a Guide marker. |
+| CW02 | An explicit close-work invocation after the same facts transposed to the repository without a Guide marker: `example-org/tools#12`, PR #19, the uncovered follow-up rated P1, no installation declaration and no issue #58. |
 | CW03 | CW01, but the host has no supported memory-update mechanism; `example-org/device-hub` is public and the learnings are not private. |
 | CW04 | CW01, but post-merge CI run 812 on `main` is still in progress and cannot finish within the sweep. |
-| CW05 | CW01, and the sweep also finds the remote branch still present, an attached worktree `.local/worktrees/41-spike` on branch `spike/41`, and issue #60 lacking any note about PR #57's change to `scenes/render.ts`. The invocation is plain `$close-work`. |
+| CW05 | CW01, and the sweep also finds the remote branch still present, an attached worktree `.local/worktrees/41-spike` on branch `spike/41`, and issue #60 lacking any note about PR #57's change to `scenes/render.ts`. The invocation is a plain explicit close-work invocation with no further request. |
 | CW06 | CW01's local branch `feat/41-brightness-clamp`: the code host reports PR #57 merged into `main` with head `9c8d7e6`, `4e5f6a7` is on `origin/main`, and the local tip still reads `9c8d7e6` at the recheck. |
 | CW07 A | CW06, but the code host read of PR #57's head fails, so only Git's merged-branch list is available for the squash merge. |
 | CW07 B | CW06, but the local branch has one later commit `aa11bb2` that is in no PR. |
@@ -73,7 +73,7 @@ the device range", delivered by this session with `deliver-work`:
 | CW11 B | CW03, but the simulator learning includes the lab host's internal address, and no private durable location is available. |
 | CW12 A | CW01, but the delivery request said "deliver and install #41", the owner did not defer, and installation was never run. |
 | CW12 B | CW02; the tools repository offers an optional publish step that neither the project requires nor the user authorized. |
-| CW13 | A second `$close-work` one hour after CW01's sweep completed; no issue, PR, branch or CI state has changed since. |
-| CW14 | `$close-work` after a planning-only session that refined `example-org/tools#20` and filed `example-org/tools#21`; no code, branches, worktrees or temporary files. |
+| CW13 | A second explicit close-work invocation one hour after CW01's sweep completed; no issue, PR, branch or CI state has changed since. |
+| CW14 | An explicit close-work invocation after a planning-only session that refined `example-org/tools#20` and filed `example-org/tools#21`; no code, branches, worktrees or temporary files. |
 | CW15 | CW01, but the memory write returns an error and a readback finds no note, and the first attempt to file the P2 issue times out; a search then shows no new issue, but reading the repository's recent issues shows it was created as #62. |
-| CW16 | Mid-session, without `$close-work`: "Anything we might have missed?" |
+| CW16 | Mid-session, with no explicit close-work invocation: "Anything we might have missed?" |

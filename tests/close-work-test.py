@@ -175,7 +175,8 @@ SCENARIO_TOPICS = (
     'squash', 'later commit', 'another session created',
     'filed issue #61 for it instead', 'other device families',
     'no private durable location', 'deliver and install #41',
-    'optional publish step', 'second `$close-work`', 'planning-only session',
+    'optional publish step', 'second explicit close-work invocation',
+    'planning-only session',
     'times out', 'Anything we might have missed?')
 
 
