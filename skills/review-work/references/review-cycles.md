@@ -66,7 +66,8 @@ Link existing feedback records rather than copying transcripts.
   own identifier, linking related causes when useful.
 
 Rewording, changing reviewers or workers, and resuming preserve identity and
-history. Keep aliases for duplicate descriptions. For a failure condition that
+history. Keep aliases for duplicate descriptions, and record a reviewer's own
+IDs as the result contract's axis aliases. For a failure condition that
 reviewers on more than one axis raise, follow the
 [result contract](result-contract.md#write-the-result).
 Reconcile ambiguous identity against behavior and evidence before reporting it.

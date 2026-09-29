@@ -52,13 +52,19 @@ CELLS = {
     'Reviewers': rf'none|{REVIEWER}(?:; {REVIEWER})*',
     'Open findings': r'P0 \d+; P1 \d+; P2 \d+; P3 \d+',
 }
+FINDING_ID = r'[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*'
+ALIAS = rf'[a-z]+:{FINDING_ID}'
 FINDING = re.compile(
-    r'- ([A-Za-z0-9]+(?:-[A-Za-z0-9]+)*) \((P[0-3]), ([a-z]+(?:\+[a-z]+)*), '
-    r'(unresolved|resolved|regression|accepted|deferred)\): ([^\s:,]+):\d.*; '
+    rf'- ({FINDING_ID}) \((P[0-3]), ([a-z]+(?:\+[a-z]+)*), '
+    r'(unresolved|resolved|regression|accepted|deferred)\): ([^\s:,]+):\d'
+    r'(?:(?!; aliases ).)*?'
+    rf'(?:; aliases ({ALIAS}(?:, {ALIAS})*))?; '
     r'first ((?:final|task) \d+), latest ((?:final|task) \d+)')
 OPEN = ('unresolved', 'regression')
-# A return's own headings: Markdown, a bold line, or a short `Label:` line.
-HEADING = re.compile(r'(#{1,6} .+|\*\*[^*]+\*\*)|([A-Z][\w ()/-]{0,40}):(?: .*)?')
+# A return's own headings: Markdown, a bold line, a bold label that opens its
+# line such as `**Blocking findings:** none open.`, or a short `Label:` line.
+HEADING = re.compile(r'(#{1,6} .+|\*\*[^*]+\*\*)(?: .*)?'
+                     r'|([A-Z][\w ()/-]{0,40}):(?: .*)?')
 # The first matching kind sets a heading's section; any other heading, such as
 # one finding's own title, continues the section it sits in.
 SECTIONS = (
@@ -135,21 +141,22 @@ def finding_sections(body):
     return {name: '\n'.join(lines) for name, lines in sections.items()}
 
 
-def supports(finding, body, round_):
+def supports(finding, body, round_, aliases=()):
     """Whether one return raises or reassesses a finding in its own sections.
 
     A finding first raised in this round needs its file, by the cited path or
     a trailing part of it, in the section for its severity. A finding carried
-    from an earlier round needs its ID in any finding section, because its
-    reviewers were briefed with it. This is a static proxy for the
+    from an earlier round needs its ID, or one of this return's axis aliases
+    for it, in any finding section, because its reviewers were briefed with
+    it. This is a static proxy for the
     coordinator's reconciliation: it cannot tell whether the return describes
     the same failure condition.
     """
     fid, severity, _, _, location, first, _ = finding
     sections = finding_sections(body)
     if first != round_:
-        return any(re.search(rf'(?<![\w-]){re.escape(fid)}(?![\w-])', text)
-                   for text in sections.values())
+        return any(re.search(rf'(?<![\w-]){re.escape(name)}(?![\w-])', text)
+                   for name in (fid, *aliases) for text in sections.values())
     own = sections['p3' if severity == 'P3' else 'blocker']
     name = re.escape(location.rsplit('/', 1)[-1])
     return any(token == location or location.endswith('/' + token)
@@ -194,18 +201,39 @@ def parse_review_result(text):
                 ret[field] == rows[field] for field in PROVENANCE):
             reviewed |= covered(ret['Axis'])
 
-    findings = []
+    # Raw IDs that reviewers gave a finding, by the axis whose return used them.
+    findings, aliases, named = [], {}, {}
     if match.group(2) != 'none\n':
         for line in match.group(2).splitlines():
             parsed = FINDING.fullmatch(line)
             if not parsed:
                 raise ValueError(f'bad finding: {line}')
-            fid, severity, axes, state, location, first, latest = parsed.groups()
+            fid, severity, axes, state, location, listed, first, latest = (
+                parsed.groups())
             findings.append((fid, severity, axes.split('+'), state, location,
                              first, latest))
+            aliases[fid] = {}
+            for alias in listed.split(', ') if listed else ():
+                axis, raw = alias.split(':')
+                if axis not in axes.split('+'):
+                    raise ValueError(f'{fid} gives an alias for an axis it '
+                                     'does not list')
+                if raw in aliases[fid].get(axis, []):
+                    raise ValueError(f'{fid} lists an alias twice')
+                if raw in named.setdefault(axis, {}):
+                    raise ValueError(f'{axis} alias {raw} names two findings')
+                named[axis][raw] = fid
+                aliases[fid].setdefault(axis, []).append(raw)
     ids = [finding[0] for finding in findings]
     if len(set(ids)) != len(ids):
         raise ValueError('repeated finding ID')
+    for fid, *_, latest in findings:
+        if aliases[fid] and latest != rows['Round']:
+            raise ValueError(f'{fid} keeps aliases from an earlier round')
+        for raws in aliases[fid].values():
+            if set(raws) & set(ids):
+                raise ValueError(f'{fid} gives another finding\'s ID as an '
+                                 'alias')
     known = {'standards', 'specification'} | {
         axis for _, axis in reviewers if axis != 'both'}
     for finding in findings:
@@ -251,16 +279,29 @@ def parse_review_result(text):
         fid, _, axes, state, _, _, latest = finding
         if latest != rows['Round']:
             continue
+        # An alias describes this round's returns, so its axis must use it.
+        for axis, raws in aliases[fid].items():
+            for raw in raws:
+                if not any(axis in covered(ret['Axis'])
+                           and all(ret[field] == rows[field]
+                                   for field in PROVENANCE)
+                           and re.search(rf'(?<![\w-]){re.escape(raw)}(?![\w-])',
+                                         '\n'.join(finding_sections(body)
+                                                   .values()))
+                           for _, ret, body in returns):
+                    raise ValueError(f'{axis} alias {raw} of {fid} is not in '
+                                     f'this round\'s {axis} return')
         for axis in axes:
             if not any(axis in covered(ret['Axis'])
                        and all(ret[field] == rows[field] for field in PROVENANCE)
                        and (ret['Return'] == 'complete' or state in OPEN)
-                       and supports(finding, body, rows['Round'])
+                       and supports(finding, body, rows['Round'],
+                                    aliases[fid].get(axis, ()))
                        for _, ret, body in returns):
                 raise ValueError(f'{fid} lists {axis}, but no {axis} return '
                                  'for these inputs supports it')
     return {'rows': rows, 'reviewers': reviewers, 'findings': findings,
-            'returns': returns}
+            'aliases': aliases, 'returns': returns}
 
 
 def accepts(result, comparison, requirements, policy):
@@ -734,6 +775,105 @@ class SharedFindingTest(unittest.TestCase):
             '99-F2 (P3, standards+specification, resolved)',
             '99-F2 (P3, standards, resolved)'))
         self.assertEqual(kept['rows']['Specification'], 'incomplete')
+
+    def test_carried_finding_confirmed_under_raw_ids(self):
+        # Issue #109: reviewers reassess a carried shared finding under their
+        # own raw IDs, which the result records as axis-qualified aliases.
+        line = '99-F2 (P3, standards+specification, resolved)'
+        good = posted('pr100-final-2.md')
+        self.assertIn(line, good)
+        raw = rewrite_return(good, 'standards-reviewer-1',
+                             lambda body: body.replace('99-F2', 'S-7'))
+        raw = rewrite_return(raw, 'specification-reviewer-1',
+                             lambda body: body.replace('99-F2', 'P-3'))
+        self.assertEqual(raw.split('### Reviewer return:', 1)[1].count('99-F2'),
+                         0)
+
+        def aliased(text, fid, aliases):
+            return re.sub(rf'^(- {re.escape(fid)} \(.*?)(; first final 1)',
+                          rf'\1; aliases {aliases}\2', text, count=1,
+                          flags=re.M)
+
+        with self.assertRaisesRegex(ValueError, '99-F2 lists standards'):
+            parse_review_result(raw)
+        both = aliased(raw, '99-F2', 'standards:S-7, specification:P-3')
+        result = parse_review_result(both)
+        self.assertEqual(result['aliases']['99-F2'],
+                         {'standards': ['S-7'], 'specification': ['P-3']})
+        self.assertEqual(
+            [f[:4] for f in result['findings'] if f[0] == '99-F2'],
+            [('99-F2', 'P3', ['standards', 'specification'], 'resolved')])
+        mutations = {
+            'one axis aliased': ('standards:S-7', '99-F2 lists specification'),
+            # The same raw ID from another axis names another finding.
+            'aliases swapped between axes': (
+                'standards:P-3, specification:S-7',
+                "standards alias P-3 of 99-F2 is not in this round's"),
+            'alias the return never uses': (
+                'standards:S-7, specification:P-3, standards:S-9',
+                "standards alias S-9 of 99-F2 is not in this round's"),
+            'alias for an axis the finding does not list': (
+                'standards:S-7, security:S-8', 'alias for an axis'),
+            'alias without an axis': ('S-7, specification:P-3', 'bad finding'),
+            'alias repeated': ('standards:S-7, standards:S-7', 'alias twice'),
+            'alias equal to another finding\'s ID': (
+                'standards:S-7, specification:P-3, standards:99-F1',
+                "another finding's ID"),
+        }
+        for name, (aliases, message) in mutations.items():
+            with self.subTest(mutation=name), self.assertRaisesRegex(
+                    ValueError, message):
+                parse_review_result(aliased(raw, '99-F2', aliases))
+        # Aliases describe the round whose returns used them; a finding carried
+        # without reassessment in this round keeps none.
+        stale = aliased(both.replace(
+            'the old own-rename phrase; accepted because it matches the file\'s '
+            'convention and the positive assertions on the new wording carry the '
+            'rule; first final 1, latest final 2',
+            'the old own-rename phrase; accepted because it matches the file\'s '
+            'convention and the positive assertions on the new wording carry the '
+            'rule; first final 1, latest final 1'), '99-F4', 'standards:S-7x')
+        self.assertIn('99-F4 (P3, standards, accepted)', stale)
+        self.assertIn('aliases standards:S-7x; first final 1, latest final 1',
+                      stale)
+        with self.assertRaisesRegex(ValueError, 'aliases from an earlier round'):
+            parse_review_result(stale)
+        # One axis's raw ID names one finding; the other axis may reuse it for
+        # a different condition, as the #80 P2 reviewers did.
+        with self.assertRaisesRegex(ValueError, 'names two findings'):
+            parse_review_result(aliased(both, '99-F1', 'standards:S-7'))
+        reused = rewrite_return(both, 'specification-reviewer-1',
+                                lambda body: body.replace('99-F1', 'S-7'))
+        with self.assertRaisesRegex(ValueError, '99-F1 lists specification'):
+            parse_review_result(reused)
+        parse_review_result(aliased(reused, '99-F1', 'specification:S-7'))
+        # The contract's documented alias clause is the one the parser reads.
+        contract = (SKILL / 'references/result-contract.md').read_text()
+        self.assertIn('[; aliases <axis>:<raw ID>, ...]', contract)
+        clause = re.search(r'`; aliases ([^`]+)`', contract).group(1)
+        parsed = FINDING.fullmatch(
+            '- F9 (P1, standards+specification, unresolved): a.py:1, fails; '
+            f'aliases {clause}; first final 1, latest final 1')
+        self.assertEqual(parsed.group(6), clause)
+
+    def test_bold_label_opening_a_line_starts_a_section(self):
+        # A return may put its section label inline, as in
+        # `**Blocking findings:** none open.`, with its findings below.
+        heading = '\n**Verdicts on the round-1 findings**\n'
+        good = posted('pr100-final-2.md')
+        self.assertIn(heading, good)
+
+        def relabel(replacement):
+            return rewrite_return(good, 'standards-reviewer-1',
+                                  lambda body: body.replace(heading, replacement))
+
+        parse_review_result(relabel(
+            '\nCoverage: see the end.\n\n'
+            '**Verdicts on the round-1 findings:** as follows.\n'))
+        with self.assertRaisesRegex(ValueError, r'99-F\d lists standards'):
+            parse_review_result(relabel(
+                '\nCoverage: see the end.\n\n'
+                'The verdicts on the round-1 findings follow.\n'))
 
     def test_carried_specialist_finding_is_accepted(self):
         # A security finding accepted in final 1 is carried into a final 2
