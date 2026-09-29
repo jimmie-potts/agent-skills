@@ -1,7 +1,8 @@
 # Section procedure
 
-Read at the start of every sweep. `SKILL.md` holds the authority boundary and
-the local-branch guards; nothing here relaxes them.
+Read at the start of every sweep. This file is the only home of each step's
+rules. `SKILL.md` holds the authority boundary and the local-branch guards;
+nothing here relaxes them.
 
 ## Resolve the task
 
@@ -13,17 +14,23 @@ coordinator set one.
 Discover each owning repository's conventions through the host, the way
 `plan-work`'s GitHub reference does. Resolve the owner and repository from
 authorized sources, read its agent instructions and contributing policy, and
-read its issue forms, its wording for backlog placeholders, any Guide fields
+read its issue forms, its wording for backlog placeholders, its Guide fields
 and the established meanings of its labels. When a convention is absent, use
 a plain issue and report the absence; never borrow another project's template.
+
+Guide fields are the idea-marker fields that a repository's issue form
+declares, for example a `## Guide` section with `**Topic:**`,
+`**Highlight:**` and `**Extends:**`. Apply them only where the form declares
+them.
 
 ## Pass the pre-write gate
 
 1. Finish or poll every CI run and background task this task started. Do not
    rerun an unchanged successful test without a reason.
 2. Re-read live state: each touched issue (open or closed, labels, closing
-   references), PR (state, head, merge revision, checks) and branch (tip,
-   upstream, worktree attachment). Report from these reads, never from
+   references), PR (state, head, merge revision, checks), branch (tip,
+   upstream, worktree attachment) and this task's worktrees (worktree
+   attachment and dirty state). Report from these reads, never from
    recollection.
 3. Check relevant recent work for actual conflicts or dependencies: issues and
    PRs by other sessions that touch the same files, stories or data. Avoid a
@@ -44,8 +51,8 @@ commented or already covered:
   as already covered when there is nothing new. Never file a duplicate.
 - Uncovered P1 or P2: file it in the owning repository with its issue form and
   required fields, its wording for backlog placeholders when the item is not
-  yet defined, and its Guide fields where the project defines them. Link the
-  delivered issue and read the new issue back.
+  yet defined, and its Guide fields. Link the delivered issue and read the new
+  issue back.
 - Uncovered P3: list it in the closing comment.
 - Another session's active issue: never comment on or edit it. Record in this
   task's handoff what its owner should add.
@@ -63,32 +70,33 @@ supported mechanism and read each back. For a change to agent instructions or
 documentation, open a docs-only PR or put the proposed change and its target
 file in the closing comment. Report what was written, not what is worth
 adding. When memory cannot be written, including when the host only generates
-memories in the background, preserve the note in the closing comment or
-another authorized durable location and report "not saved to memory" with the
-reason. Private information that has no private durable location is
-unpreserved work: report it as a Loose End.
+memories in the background, apply the memory fallback in `SKILL.md`'s
+authority boundary and give the reason. Private information that has no
+private durable location is unpreserved work: report it as a Loose End.
 
 ## Clean up
 
 Preserve needed evidence outside disposable worktrees before removing
 anything. Remove only temporary files this task created and nothing else uses.
+Leave uncertain, shared or actively used resources untouched.
 
 For each local branch this task created, apply every guard in `SKILL.md`. On a
 GitHub-hosted Git repository, the checks can read:
 
 - `git worktree list --porcelain`: any worktree on the branch retains it;
-- the merged PR's state, target, merge commit and head SHA from the code host,
-  and `git merge-base --is-ancestor <merge commit> <remote target>`;
+- the merged PR's state, target, merge commit, head SHA and required checks
+  from the code host, the required post-merge CI result on the target where
+  the project requires one, and
+  `git merge-base --is-ancestor <merge commit> <remote target>`;
 - `git rev-parse refs/heads/<branch>`, which must equal the PR's head SHA.
 
 Delete with `git update-ref -d refs/heads/<branch> <verified tip>`, which
 refuses when the tip moved, then confirm that
 `git rev-parse --verify --quiet refs/heads/<branch>` finds nothing. Retain the
-branch when any read fails or disagrees.
+branch when any read fails, disagrees or is still pending.
 
 Never remove or detach a worktree and never delete a remote branch; report
-each with its owner and the reason it remains. Report this task's uncommitted,
-unpushed or unmerged work; unpreserved work is a Loose End.
+each with its owner and the reason it remains.
 
 ## Post the closing comment
 
@@ -96,12 +104,8 @@ Draft the closing comment from [the closeout record](closeout-record.md) and
 post it on the owning issue: the delivered issue, or for a planning session
 the issue it planned. Another owning issue gets its own comment only when it
 needs its own resume prompt. Read each comment back. Without any owning issue,
-put the record in the reply and create no issue just to hold it.
-
-On a rerun, re-read the earlier record. Update this task's own closing comment
-in place where the host allows it, otherwise post a record holding only the
-new values; either way the capture receipt separates this sweep's writes from
-earlier ones.
+put the record in the reply and create no issue just to hold it. On a rerun,
+follow [Reruns](#reruns) instead of repeating the earlier comment.
 
 ## Report
 
@@ -113,8 +117,9 @@ section rather than padding it.
 
 ### 1. Recorded
 
-Compact links and the capture receipt for issues, comments, decisions, memory
-notes and doc PRs written during this sweep. Omit empty categories. Put
+Compact links for issues, comments, decisions, memory notes and doc PRs
+written during this sweep, and the capture receipt that
+[the closeout record](closeout-record.md) defines. Omit empty categories. Put
 unresolved tracked work in Tracked Follow-ups instead of explaining it twice.
 
 ### 2. Verification
@@ -128,16 +133,26 @@ Give each installation, publication or registration one status: completed and
 verified (with its readback), required and previously authorized but omitted,
 available but outside authorized scope, blocked (with its blocker and owner),
 unnecessary, or unknown. This sweep never installs, and reporting a status
-grants no installation authority. A required and authorized step that was
-omitted is a Loose End; separate future work goes in Tracked Follow-ups.
+grants no installation authority.
+
+An installation that the project declares as a completion condition, and that
+the owner deferred or has not yet approved, is available but outside
+authorized scope or blocked on the owner's decision, and it is a required
+Tracked Follow-up. It becomes a Loose End only when it was required and
+previously authorized and then omitted. Separate future work goes in Tracked
+Follow-ups.
 
 ### 4. Cleanup
 
 Name each local branch deleted or retained and why. Summarize worktrees
 retained, temporary resources removed, evidence preserved, and any remaining
 uncommitted, unpushed or unmerged work. Report remote-branch cleanup needs
-without acting on them. Distinguish intentionally retained resources from
-incomplete required cleanup; put archival blockers in Loose Ends.
+without acting on them.
+
+A resource retained because it is uncertain, shared, actively used or another
+owner's is intentionally retained: report it here, not as a Loose End, unless
+it holds this task's own unpreserved work or evidence. Incomplete required
+cleanup and unpreserved work are Loose Ends.
 
 ### 5. Ideas
 
@@ -170,7 +185,8 @@ work or evidence, missing tracking, a pending item from the pre-write gate, or
 an unfinished obligation within the task's agreed scope. For each, state what
 is wrong, what must happen before archival, and who must act or authorize it.
 Filing an issue does not remove an archival blocker from this section. Do not
-repeat tracked follow-ups or ideas, and add no general reassurance.
+repeat tracked follow-ups, ideas or intentionally retained resources, and add
+no general reassurance.
 
 ### 8. TL;DR
 
@@ -179,8 +195,8 @@ the owner must act before archiving. When Loose Ends is "None", end with
 `Safe to archive.`; otherwise end with `Needs attention: <main archival
 blocker>.` Safe to archive means the work and evidence are preserved and
 remaining follow-ups are durably tracked, not that every follow-up is
-finished. A failed memory save alone does not block archival when its
-information is durably preserved.
+finished. Whether a failed memory save blocks archival follows the memory
+fallback in `SKILL.md`.
 
 ## Planning sessions
 
@@ -190,6 +206,13 @@ resources the session did create, and still consider Ideas.
 
 ## Reruns
 
-Add only new information. Recorded lists this sweep's writes separately from
-earlier work, and the capture receipt counts only this sweep. An unchanged
-rerun writes nothing, says so and links the earlier record.
+Re-read the earlier record and live state, then add only new information.
+Leave the earlier record as it is.
+
+- Unchanged: when the sweep finds no new information, post nothing. Report
+  the same eight sections briefly, say that no new information was found,
+  link the earlier record, and count this sweep's writes as zero, separately
+  from the earlier sweep's.
+- Changed: post a second closeout record in the rerun shape that
+  [the closeout record](closeout-record.md#reruns) defines. Recorded lists
+  this sweep's writes separately from earlier work.

@@ -23,15 +23,26 @@ value` lines follow, one per key, in this exact order, each key once:
 | `Handoff` | Nothing on the key's line; one fenced `text` block follows with a prompt a cold reader can paste to resume. When no work remains, the prompt says so and names where to start if the work reopens |
 | `Capture receipt` | One line counting issues filed, comments posted, memory notes saved and doc PRs opened during this sweep, including this comment, and naming anything that could not be written and why |
 
-Keep every value except `Handoff` on its key's line. Write issue links as
-`owner/repo#<n>` or full URLs. Keys are case-sensitive; consumers such as a
-cross-session digest or an installed-revisions view read `Session` and
-`Deployment gap`, so never rename or reorder them.
+This table is the only definition of the capture receipt; the reply's
+Recorded section reports the same line. Give every key a value, writing
+`none` rather than leaving one empty, and keep every value except `Handoff` on
+its key's line. Write issue links as `owner/repo#<n>` or full URLs. Keys are
+case-sensitive; consumers such as a cross-session digest or an
+installed-revisions view read `Session` and `Deployment gap`, so never rename
+or reorder them.
 
 Between `**Learnings:**` and `**Handoff:**`, optional `###` subsections may
 hold P3 findings, unrecorded decisions with the alternatives rejected, proposed
-documentation changes with their target files, and coordination that another
-session's owner should add. No line in them starts with a bold key.
+documentation changes with their target files, learnings preserved here
+because memory could not be written, pending items with what they gate, and
+coordination that another session's owner should add. No line in them starts
+with a bold key.
+
+## Reruns
+
+A rerun that writes something posts a second record under the same rules. Its
+keys hold only that sweep's writes, `none` where it wrote nothing, and its
+Handoff links the earlier record, which stays unchanged.
 
 ## Example
 
