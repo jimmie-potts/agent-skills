@@ -53,19 +53,19 @@ Choose the high-effort profile when the selected reviewer level is `high`, and
 the other profile to inherit the session level. Its tools exclude `Agent`,
 editing tools and `Skill`, but `Bash` can still write files and reach
 credential-bearing CLIs. Record the restriction as that tool set with the shell
-retained. Record MCP tools as excluded only for a foreground run or once
-qualification shows a background run excludes them; otherwise record inherited
-MCP tools as instruction-only. The profile preloads `code-review` and cannot
+retained, and record MCP tools as excluded. The profile preloads `code-review` and cannot
 load other skills; the host skips a missing preloaded skill silently, so confirm
 `code-review` is available before briefing and treat a return without the
 assigned-axis mode as `incomplete`.
 
-Qualification of the installed profiles belongs to the activation owner, not
-this skill. It must show that the allowlist resolves on the host, that a
-background run still delivers its result, including through any host hand-back
-tool the allowlist does not name, and that no MCP tool reaches the reviewer.
-Until then, a launch that reports unresolved tools or never returns is a failed
-return and a profile defect to report.
+Claude Code 2.1.283 and 2.1.284 qualified the installed profiles on
+2026-09-29. Background and dedicated-session runs received only `Read`, `Bash`
+and, in the background, the host's `SubagentHandback` tool, which delivered the
+result. No MCP tool reached a reviewer, although the parent had MCP tools.
+`Grep` and `Glob` were not delivered despite the allowlist, so reviewers search
+through `Bash`. After a host upgrade or profile change, a launch that reports
+unresolved tools or never returns is a failed return and a profile defect to
+report to the activation owner.
 
 Without a profile, use `general-purpose` or another non-fork type that fits.
 Its inherited tools include `Agent` and editing tools, so read-only conduct and

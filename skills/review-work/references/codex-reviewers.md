@@ -40,7 +40,10 @@ supporting `low` to `max`, with `ultra` also listed for Sol and Astra. A catalog
 is not the spawn schema, and whether a spawn on the active surface accepts each
 model and level is unverified. The `collaboration.spawn_agent` parameters
 `model`, `reasoning_effort` and `fork_turns` were last recorded from a Codex
-schema on 2026-09-26, and no agent-type parameter has been recorded. Inspect the
+schema on 2026-09-26. On 2026-09-29, `codex exec` in Codex CLI 0.156.0 listed an
+`agent_type` parameter with `review_work_reviewer` among its roles, but rejected
+a spawn that selected it: "agent type is currently not available". Treat
+profile selection as unsupported until such a spawn succeeds. Inspect the
 active surface's schema before relying on any of them, and never apply one
 surface's controls to another.
 
