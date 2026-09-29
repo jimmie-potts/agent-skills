@@ -167,6 +167,15 @@ Reusable SDLC workflows also include:
   owner. Every delivery ends with a cleanup outcome for the temporary
   resources it created: removed where the owning project's policy allows,
   otherwise retained with a reason, owner and next action;
+- [`close-work`](skills/close-work/SKILL.md), an explicit session closeout that
+  files, comments and records. It runs after a delivery's completion checks,
+  never in place of them. It files uncovered P1 and P2 follow-ups in the
+  owning repository's issue form, posts a parseable `## Closeout record` with a
+  resume prompt on the owning issue, saves verified memory notes, deletes only
+  guarded completed local branches, and reports in eight sections ending
+  `Safe to archive` or `Needs attention`. It never changes product code,
+  installs, merges, closes issues, deletes remote branches, removes worktrees
+  or changes another session's work;
 - the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
   `openspec-apply-change`, `openspec-update-change`, `openspec-sync-specs`, and
   `openspec-archive-change`. They use the consuming repository's pinned CLI.
@@ -225,6 +234,7 @@ the prompts.
 | `Where should rate limiting live?` | Select `how` Placement, not `codebase-design`. |
 | `Critique this module boundary` | Select `how` Critique, not `codebase-design`. |
 | `Research the current API limits using official sources` | Select `research`; implementation from supplied sources does not. |
+| Explicit `$close-work` at the end of a session | Select only `close-work` and run its closeout sweep within its authority boundary; an ordinary `Did we miss anything?` question does not select it or authorize its writes. |
 | Explicit `$prototype`, `$handoff`, or `$learning-workspace` | Select only the named explicit workflow; nearby ordinary requests do not. |
 | `Explain how this parser handles errors` | Do not select `learning-workspace`. |
 
@@ -302,6 +312,7 @@ credential, generated cache, or machine-specific configuration.
 python3 scripts/validate-skills.py
 python3 tests/architect-test.py
 python3 tests/blast-radius-test.py
+python3 tests/close-work-test.py
 python3 tests/deliver-work-test.py
 python3 tests/plan-work-test.py
 python3 tests/review-work-test.py
