@@ -56,10 +56,10 @@ credential-bearing CLIs. Record the restriction as that tool set with the shell
 retained. After launch and before accepting the return, check the tools this
 reviewer received, such as the tool list in its subagent transcript's prompt
 snapshot where reading it is authorized. Record MCP tools as excluded only when
-that evidence shows it; otherwise record them as instruction-only. The profile preloads `code-review` and cannot load other
-skills; the host skips a missing preloaded skill silently, so confirm
-`code-review` is available before briefing and treat a return without the
-assigned-axis mode as `incomplete`.
+that evidence shows it; otherwise record them as instruction-only. The profile
+preloads `code-review` and cannot load other skills; the host skips a missing
+preloaded skill silently, so confirm `code-review` is available before briefing
+and treat a return without the assigned-axis mode as `incomplete`.
 
 On 2026-09-29, background runs of `review-work-reviewer-high` in Claude Code
 2.1.284 received only `Read`, `Bash` and the host's `SubagentHandback` tool,
