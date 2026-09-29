@@ -108,7 +108,8 @@ matching entrypoint for the experiment's setup and observation. Without an
 adapter for the question, use the project's documented alternative, such as
 manual steps. Without either, report the gap as a limit of the experiment. Do
 not invent commands, copy scripts from another project or install tools.
-This reference only consumes them; keeping them current belongs to
+This reference only uses those entrypoints and maps. When one is stale for the
+changed behavior, fails unexpectedly or cannot run, read
 [verification maintenance](verification-maintenance.md).
 
 ## Record the result and replan
