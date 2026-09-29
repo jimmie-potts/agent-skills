@@ -131,13 +131,16 @@ consumed attempt, even if no PID was saved. Do not delete state or change the
 assignment label to recover an allowance. If the evidence is missing, reconcile
 the caller's known host job and history; never blindly launch again.
 
-Use `cancel` with the same arguments to request cancellation and stop only the
-recorded process identity. The supervisor terminates its process group on
+Use `cancel` with the same arguments to request cancellation from the original
+supervisor, after matching the assignment's input digests. The separate cancel
+caller sends no process signals. The supervisor terminates its process group on
 timeout or interruption, escalates to kill after one second, and reports
 unconfirmed cleanup. A user-stopped review needs user agreement before
-replacement. If identity cannot be verified, retain an incomplete handoff with
-the known host job; never kill an arbitrary or reused PID. Do not remove an
-assignment directory while its process or cleanup is uncertain.
+replacement. The supervisor reserves its unreaped leader until group cleanup
+finishes. If that supervisor is absent, `cancel` returns an incomplete handoff
+with cleanup unconfirmed; reconcile the known host job using its supported
+controls. Never signal an arbitrary or reused PID, or remove an assignment
+directory while its process or cleanup is uncertain.
 
 ## Accept the review, not the spawn
 

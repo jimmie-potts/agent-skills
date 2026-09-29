@@ -3,6 +3,7 @@
 
 import copy
 import ctypes
+import fcntl
 import importlib.util
 import json
 import os
@@ -233,7 +234,9 @@ class ProcessReviewerTests(unittest.TestCase):
         def cancel():
             while not (self.evidence/'state.json').exists():
                 time.sleep(0.005)
-            (self.evidence/'cancel').touch()
+            response = RUNNER.cancel(self.evidence, RUNNER.digest(self.packet_path.read_bytes()),
+                                     RUNNER.digest(self.launch_path.read_bytes()))
+            self.assertIn('cancellation requested', response['reason'])
         thread = threading.Thread(target=cancel)
         thread.start()
         state, _ = self.run_fake('import time; time.sleep(30)')
@@ -254,14 +257,36 @@ class ProcessReviewerTests(unittest.TestCase):
         result, count = self.run_fake()
         self.assertEqual(count, 0)
         self.assertIn('known process active', result['reason'])
-        wrong_identity = {**identity, 'start': '0'}
-        self.assertFalse(RUNNER.stop(wrong_identity))
+        # A caller that no longer owns the unreaped leader never signals its
+        # numeric group, including when that number could have been reused.
+        with patch.object(RUNNER.os, 'killpg') as signals:
+            response = RUNNER.cancel(self.evidence, state['packet_sha256'], state['launch_sha256'])
+            signals.assert_not_called()
+        self.assertIn('cleanup unconfirmed', response['reason'])
+        self.assertFalse((self.evidence/'cancel').exists())
         self.assertIsNone(child.poll())
         child.kill()
         child.wait()
         result, count = self.run_fake()
         self.assertEqual(count, 0)
         self.assertIn('exit status unknown', result['reason'])
+
+    def test_cancel_checks_assignment_and_delegates_only_to_lock_owner(self):
+        self.evidence.mkdir(mode=0o700)
+        state = dict(status='running', process={'pid': 123, 'start': 'old-start', 'boot': 'fixture'},
+                     packet_sha256=RUNNER.digest(self.packet_path.read_bytes()),
+                     launch_sha256=RUNNER.digest(self.launch_path.read_bytes()))
+        RUNNER.save(self.evidence/'state.json', state)
+        with (self.evidence/'lock').open('a') as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            with patch.object(RUNNER.os, 'killpg') as signals:
+                response = RUNNER.cancel(self.evidence, 'wrong-packet', state['launch_sha256'])
+                self.assertIn('not requested', response['reason'])
+                self.assertFalse((self.evidence/'cancel').exists())
+                response = RUNNER.cancel(self.evidence, state['packet_sha256'], state['launch_sha256'])
+                self.assertIn('await supervising job', response['reason'])
+                self.assertTrue((self.evidence/'cancel').exists())
+                signals.assert_not_called()
 
     def test_status_consistency_and_stable_finding_identity(self):
         value = self.returned(defect=True)

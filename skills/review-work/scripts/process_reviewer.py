@@ -195,17 +195,6 @@ def stop_group(group):
     return not group_alive(group)
 
 
-def stop(identity):
-    if not identity or process_identity(identity["pid"]) != identity:
-        return False
-    try:
-        if os.getpgid(identity["pid"]) != identity["pid"]:
-            return False
-        return stop_group(identity["pid"])
-    except ProcessLookupError:
-        return False
-
-
 def extract(host, raw):
     if host == "claude":
         response = json.loads(raw)
@@ -282,6 +271,23 @@ def reconcile(directory, packet_digest, launch_digest):
     return state
 
 
+def cancel(directory, packet_digest, launch_digest):
+    state, _ = load(directory / "state.json")
+    if state["packet_sha256"] != packet_digest or state["launch_sha256"] != launch_digest:
+        return {**state, "status": "incomplete", "reason": "inputs changed; cancellation not requested"}
+    with (directory / "lock").open("a") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            # Only the foreground owner can reserve the group leader through
+            # escalation. A separate caller requests cancellation without signals.
+            (directory / "cancel").touch(exist_ok=True)
+            return {**state, "status": "incomplete", "reason": "cancellation requested; await supervising job"}
+        if state["status"] == "running":
+            return {**state, "status": "incomplete", "reason": "supervisor absent; process cleanup unconfirmed; resume known host job"}
+        return reconcile(directory, packet_digest, launch_digest)
+
+
 def run(packet_path, launch_path, directory):
     packet, packet_digest = load(packet_path)
     launch, launch_digest = load(launch_path)
@@ -324,6 +330,8 @@ def run(packet_path, launch_path, directory):
         child = None
         group_stopped = False
         try:
+            if (directory / "cancel").exists():
+                raise Incomplete("cancelled; replacement needs owner agreement")
             with (directory / "prompt.txt").open("rb") as source, (directory / "stdout.json").open("wb") as stdout, (directory / "stderr.txt").open("wb") as stderr:
                 child = subprocess.Popen(command(launch, runtime, schema), cwd=runtime,
                                          env=launch["environment"], stdin=source,
@@ -390,12 +398,9 @@ def main():
     try:
         if args.action == "run":
             result = run(args.packet.resolve(), args.launch.resolve(), args.evidence.resolve())
+        elif args.action == "cancel":
+            result = cancel(args.evidence, load(args.packet)[1], load(args.launch)[1])
         else:
-            if args.action == "cancel":
-                (args.evidence / "cancel").touch(exist_ok=True)
-                state, _ = load(args.evidence / "state.json")
-                if state["status"] == "running":
-                    stop(state.get("process"))
             result = reconcile(args.evidence, load(args.packet)[1], load(args.launch)[1])
         # Private process IDs and raw host metadata stay in the evidence directory.
         print(json.dumps({k: result[k] for k in ("assignment", "status", "reason")}))
