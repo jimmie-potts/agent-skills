@@ -61,8 +61,10 @@ FINDING = re.compile(
     rf'(?:; aliases ({ALIAS}(?:, {ALIAS})*))?; '
     r'first ((?:final|task) \d+), latest ((?:final|task) \d+)')
 OPEN = ('unresolved', 'regression')
-# A return's own headings: Markdown, a bold line, or a short `Label:` line.
-HEADING = re.compile(r'(#{1,6} .+|\*\*[^*]+\*\*)|([A-Z][\w ()/-]{0,40}):(?: .*)?')
+# A return's own headings: Markdown, a bold line, a bold label that opens its
+# line such as `**Blocking findings:** none open.`, or a short `Label:` line.
+HEADING = re.compile(r'(#{1,6} .+|\*\*[^*]+\*\*)(?: .*)?'
+                     r'|([A-Z][\w ()/-]{0,40}):(?: .*)?')
 # The first matching kind sets a heading's section; any other heading, such as
 # one finding's own title, continues the section it sits in.
 SECTIONS = (
@@ -853,6 +855,25 @@ class SharedFindingTest(unittest.TestCase):
             '- F9 (P1, standards+specification, unresolved): a.py:1, fails; '
             f'aliases {clause}; first final 1, latest final 1')
         self.assertEqual(parsed.group(6), clause)
+
+    def test_bold_label_opening_a_line_starts_a_section(self):
+        # A return may put its section label inline, as in
+        # `**Blocking findings:** none open.`, with its findings below.
+        heading = '\n**Verdicts on the round-1 findings**\n'
+        good = posted('pr100-final-2.md')
+        self.assertIn(heading, good)
+
+        def relabel(replacement):
+            return rewrite_return(good, 'standards-reviewer-1',
+                                  lambda body: body.replace(heading, replacement))
+
+        parse_review_result(relabel(
+            '\nCoverage: see the end.\n\n'
+            '**Verdicts on the round-1 findings:** as follows.\n'))
+        with self.assertRaisesRegex(ValueError, r'99-F\d lists standards'):
+            parse_review_result(relabel(
+                '\nCoverage: see the end.\n\n'
+                'The verdicts on the round-1 findings follow.\n'))
 
     def test_carried_specialist_finding_is_accepted(self):
         # A security finding accepted in final 1 is carried into a final 2
