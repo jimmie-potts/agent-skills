@@ -122,11 +122,19 @@ condition keeps one ID however many axes raise it:
 
 When a reviewer's return names the finding by its own ID rather than this one,
 record that raw ID as an alias qualified by the axis whose return used it, such
-as `; aliases standards:S-1, specification:S-3`. Each alias names a listed
-axis, and one axis's raw ID names one finding; another axis may reuse the same
-raw ID for a different condition. A return supports a carried finding by its ID
-or by an alias for its own axis. Aliases never merge different failure
-conditions.
+as `; aliases standards:S-1, specification:S-3`; a task-round reviewer
+returning `both` qualifies it with each listed axis its return covers. A return
+supports a carried finding by its ID or by an alias for its own axis. Aliases
+never merge different failure conditions:
+
+- Scope: an alias describes this round's returns. Record it only on a finding
+  raised or reassessed in this round and only when that axis's return uses it;
+  carrying a finding into a later round drops its aliases.
+- Form: a raw ID has the ID form above, so brief reviewers to number findings
+  that way. The failure condition never contains `; aliases `.
+- Uniqueness: each alias names a listed axis, one axis's raw ID names one
+  finding, and no alias is another finding's ID. Another axis may reuse the
+  same raw ID for a different condition.
 
 The state is `unresolved`, `resolved`, `regression`, or, for P3 only,
 `accepted` or `deferred` with its reason in the text. Findings keep their IDs

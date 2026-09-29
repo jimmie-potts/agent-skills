@@ -47,8 +47,8 @@ Keep these kinds of evidence apart:
   `tests/fixtures/review-results/`, rejects known-bad records and checks the
   migration's reference closure. Its return-support check only confirms that
   each listed axis's return names a new finding's file in its findings, or a
-  carried finding's ID; it cannot tell whether that return raised the same
-  failure condition.
+  carried finding's ID or that axis's alias for it; it cannot tell whether that
+  return raised the same failure condition.
 - Simulated decisions: fresh read-only contexts decide the cases. Label the
   withholding as instruction-only unless available filesystem, Git and network
   tools were shown unable to reach the withheld files.

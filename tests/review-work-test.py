@@ -225,6 +225,13 @@ def parse_review_result(text):
     ids = [finding[0] for finding in findings]
     if len(set(ids)) != len(ids):
         raise ValueError('repeated finding ID')
+    for fid, *_, latest in findings:
+        if aliases[fid] and latest != rows['Round']:
+            raise ValueError(f'{fid} keeps aliases from an earlier round')
+        for raws in aliases[fid].values():
+            if set(raws) & set(ids):
+                raise ValueError(f'{fid} gives another finding\'s ID as an '
+                                 'alias')
     known = {'standards', 'specification'} | {
         axis for _, axis in reviewers if axis != 'both'}
     for finding in findings:
@@ -270,6 +277,18 @@ def parse_review_result(text):
         fid, _, axes, state, _, _, latest = finding
         if latest != rows['Round']:
             continue
+        # An alias describes this round's returns, so its axis must use it.
+        for axis, raws in aliases[fid].items():
+            for raw in raws:
+                if not any(axis in covered(ret['Axis'])
+                           and all(ret[field] == rows[field]
+                                   for field in PROVENANCE)
+                           and re.search(rf'(?<![\w-]){re.escape(raw)}(?![\w-])',
+                                         '\n'.join(finding_sections(body)
+                                                   .values()))
+                           for _, ret, body in returns):
+                    raise ValueError(f'{axis} alias {raw} of {fid} is not in '
+                                     f'this round\'s {axis} return')
         for axis in axes:
             if not any(axis in covered(ret['Axis'])
                        and all(ret[field] == rows[field] for field in PROVENANCE)
@@ -755,50 +774,77 @@ class SharedFindingTest(unittest.TestCase):
             '99-F2 (P3, standards, resolved)'))
         self.assertEqual(kept['rows']['Specification'], 'incomplete')
 
-    def test_carried_finding_confirmed_under_a_raw_id(self):
-        # Issue #109: a reviewer reassesses a carried shared finding under its
-        # own raw ID, which the result records as an axis-qualified alias.
+    def test_carried_finding_confirmed_under_raw_ids(self):
+        # Issue #109: reviewers reassess a carried shared finding under their
+        # own raw IDs, which the result records as axis-qualified aliases.
         line = '99-F2 (P3, standards+specification, resolved)'
         good = posted('pr100-final-2.md')
         self.assertIn(line, good)
         raw = rewrite_return(good, 'standards-reviewer-1',
                              lambda body: body.replace('99-F2', 'S-7'))
-        self.assertNotIn('99-F2', raw.split(
-            '### Reviewer return: standards-reviewer-1')[1].split(
-            '### Reviewer return: specification-reviewer-1')[0])
+        raw = rewrite_return(raw, 'specification-reviewer-1',
+                             lambda body: body.replace('99-F2', 'P-3'))
+        self.assertEqual(raw.split('### Reviewer return:', 1)[1].count('99-F2'),
+                         0)
 
-        def aliased(text, aliases):
-            return re.sub(rf'^(- {re.escape(line)}: .*?)(; first final 1)',
+        def aliased(text, fid, aliases):
+            return re.sub(rf'^(- {re.escape(fid)} \(.*?)(; first final 1)',
                           rf'\1; aliases {aliases}\2', text, count=1,
                           flags=re.M)
 
         with self.assertRaisesRegex(ValueError, '99-F2 lists standards'):
             parse_review_result(raw)
-        result = parse_review_result(aliased(raw, 'standards:S-7'))
-        self.assertEqual(result['aliases']['99-F2'], {'standards': ['S-7']})
+        both = aliased(raw, '99-F2', 'standards:S-7, specification:P-3')
+        result = parse_review_result(both)
+        self.assertEqual(result['aliases']['99-F2'],
+                         {'standards': ['S-7'], 'specification': ['P-3']})
         self.assertEqual(
             [f[:4] for f in result['findings'] if f[0] == '99-F2'],
             [('99-F2', 'P3', ['standards', 'specification'], 'resolved')])
         mutations = {
+            'one axis aliased': ('standards:S-7', '99-F2 lists specification'),
             # The same raw ID from another axis names another finding.
-            'alias for the other axis': (
-                'specification:S-7', '99-F2 lists standards'),
+            'aliases swapped between axes': (
+                'standards:P-3, specification:S-7',
+                "standards alias P-3 of 99-F2 is not in this round's"),
+            'alias the return never uses': (
+                'standards:S-7, specification:P-3, standards:S-9',
+                "standards alias S-9 of 99-F2 is not in this round's"),
             'alias for an axis the finding does not list': (
                 'standards:S-7, security:S-8', 'alias for an axis'),
-            'alias without an axis': ('S-7', 'bad finding'),
+            'alias without an axis': ('S-7, specification:P-3', 'bad finding'),
             'alias repeated': ('standards:S-7, standards:S-7', 'alias twice'),
+            'alias equal to another finding\'s ID': (
+                'standards:S-7, specification:P-3, standards:99-F1',
+                "another finding's ID"),
         }
         for name, (aliases, message) in mutations.items():
             with self.subTest(mutation=name), self.assertRaisesRegex(
                     ValueError, message):
-                parse_review_result(aliased(raw, aliases))
-        # One axis's raw ID cannot name two findings; the other axis may reuse
-        # it for a different condition, as the #80 P2 reviewers did.
-        taken = aliased(raw, 'standards:S-7')
-        f1 = re.search(r'^- 99-F1 \(.*?(?=; first )', taken, re.M).group(0)
+                parse_review_result(aliased(raw, '99-F2', aliases))
+        # Aliases describe the round whose returns used them; a finding carried
+        # without reassessment in this round keeps none.
+        stale = aliased(both.replace(
+            'the old own-rename phrase; accepted because it matches the file\'s '
+            'convention and the positive assertions on the new wording carry the '
+            'rule; first final 1, latest final 2',
+            'the old own-rename phrase; accepted because it matches the file\'s '
+            'convention and the positive assertions on the new wording carry the '
+            'rule; first final 1, latest final 1'), '99-F4', 'standards:S-7x')
+        self.assertIn('99-F4 (P3, standards, accepted)', stale)
+        self.assertIn('aliases standards:S-7x; first final 1, latest final 1',
+                      stale)
+        with self.assertRaisesRegex(ValueError, 'aliases from an earlier round'):
+            parse_review_result(stale)
+        # One axis's raw ID names one finding; the other axis may reuse it for
+        # a different condition, as the #80 P2 reviewers did.
         with self.assertRaisesRegex(ValueError, 'names two findings'):
-            parse_review_result(taken.replace(f1, f1 + '; aliases standards:S-7'))
-        parse_review_result(taken.replace(f1, f1 + '; aliases specification:S-7'))
+            parse_review_result(aliased(both, '99-F1', 'standards:S-7'))
+        reused = rewrite_return(both, 'specification-reviewer-1',
+                                lambda body: body.replace('99-F1', 'S-7'))
+        with self.assertRaisesRegex(ValueError, '99-F1 lists specification'):
+            parse_review_result(reused)
+        parse_review_result(aliased(reused, '99-F1', 'specification:S-7'))
         # The contract's documented alias clause is the one the parser reads.
         contract = (SKILL / 'references/result-contract.md').read_text()
         self.assertIn('[; aliases <axis>:<raw ID>, ...]', contract)
