@@ -11,8 +11,8 @@ implementer ran with.
 | Impact | Reviewer default | Rationale and limits |
 | --- | --- | --- |
 | Low or medium impact, bounded review task: work a Luna-level implementation suits, with settled requirements and reliable checks that cover the criteria | Luna (`gpt-6-luna`) at `high` for each axis | Capable lower-cost verification where the task and checks justify its coverage |
-| Low or medium impact, review task needing Sol-level judgment: several interacting interfaces, state transitions or invariants, or meaningful design judgment, as in work that planning or worker selection would start on Sol | Sol (`gpt-6-sol`) at `high` or stronger for each axis | The reviewer needs the cross-interface judgment the change needed. Luna at `high` or above is not a Sol equivalent; a Luna exception needs comparable evidence and stated coverage limits |
-| High impact, even with a tiny diff | Strongest evidenced relevant choice of Sol (`gpt-6-sol`) at `high` or Astra (`gpt-6-astra`) at `high` | Use separate fresh reviewer contexts; inspect high-impact negative cases |
+| Low or medium impact, review task needing Sol-level judgment: several interacting interfaces, state transitions or invariants, or meaningful design judgment, as in work that planning or worker selection would start on Sol | Sol (`gpt-6.1-sol`) at `high` or stronger for each axis | The reviewer needs the cross-interface judgment the change needed. Luna at `high` or above is not a Sol equivalent; a Luna exception needs comparable evidence and stated coverage limits |
+| High impact, even with a tiny diff | Strongest evidenced relevant choice of Sol (`gpt-6.1-sol`) at `high` or Astra (`gpt-6-astra`) at `high` | Use separate fresh reviewer contexts; inspect high-impact negative cases |
 
 Before spawning, run the [reviewer execution preflight](reviewer-execution.md)
 with the controls below.
@@ -31,7 +31,16 @@ with the controls below.
 | Delivery, cancellation and identity | Documented: the parent waits for the requested results and consolidates them; with `agents.interrupt_message` on, the default, an interrupted turn leaves a model-visible message. Recorded 2026-09-26 and unverified now: `wait_agent` returns a notification, and a timeout is not a result; `list_agents` shows lifecycle state; `interrupt_agent` stops a run; `followup_task` resumes an idle agent. No partial-output marker is documented | The delivered message and the retained agent ID or task name |
 | Surface | ChatGPT Work runs hosted subagents without local sandbox or approval controls, and the web sidebar shows activity without controls. CLI, IDE and app controls differ | The surface in use |
 
-Sources: [Codex subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents),
+The Sol default above is Sol 6.1 (`gpt-6.1-sol`), documented in the
+[Codex changelog](https://learn.chatgpt.com/docs/changelog) and
+[model page](https://developers.openai.com/api/docs/models/gpt-6.1-sol), read
+2026-09-30. The model page lists API reasoning levels `low`, `medium`, `high`,
+`xhigh` and `max`; check the active Codex schema for its supported levels and
+model availability before selecting it. The historical catalog below does
+not establish Sol 6.1 support, including `ultra`, on the current host.
+
+Sources and historical host observations:
+[Codex subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents),
 read 2026-09-27. The model catalog that Codex CLI 0.156.0 cached on 2026-09-27
 lists `gpt-6-luna` ("Fast and affordable model for easier tasks"), `gpt-6-sol`
 ("Workhorse model for coding and everyday work") and `gpt-6-astra` ("Frontier

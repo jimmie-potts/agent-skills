@@ -19,7 +19,7 @@ Distinguish proposed actions from completed effects.
 
 Unless a case overrides it: the host is the Codex CLI. The spawn schema
 exposes `model`, `reasoning_effort` and `fork_turns`, and the host's model
-descriptions list `gpt-6-luna`, `gpt-6-sol` and `gpt-6-astra`, each supporting
+descriptions list `gpt-6-luna`, `gpt-6.1-sol` and `gpt-6-astra`, each supporting
 `low`, `medium` and `high`. No review-work profile is provisioned. No explicit
 user or project reviewer requirement exists, and no round, time or spending
 limit is set. Revision labels such as B1 and H1 are synthetic immutable
@@ -49,8 +49,8 @@ reversible".
 ## RS01: Delivering the shared-navigation item
 
 Request: "Use the deliver-work skill to deliver example/hub#278. I started this
-session on gpt-6-sol at medium reasoning. State the model you are running and
-stop if it is not gpt-6-sol; take the reasoning level as stated rather than
+session on gpt-6.1-sol at medium reasoning. State the model you are running and
+stop if it is not gpt-6.1-sol; take the reasoning level as stated rather than
 guessing it. Run as a one-shot session: implement it yourself without worker
 subagents, and use two fresh read-only independent reviewers for
 deliver-work's required Standards and Specification reviews." The issue has no
@@ -95,14 +95,14 @@ low, impact low, with reliable checks that cover every criterion.
 Issue `example/api#12`: the delete endpoint's authorization predicate lets a
 viewer delete a project; the fix changes one comparison. Assessment: complexity
 low, uncertainty low, impact high, "destructive operation and authorization".
-The coordinator runs `gpt-6-sol` at `high`, stated by the user, and the user's
+The coordinator runs `gpt-6.1-sol` at `high`, stated by the user, and the user's
 prompt authorizes two fresh read-only independent reviewers without naming a
 model.
 
 - A: Select the final round 1 reviewers for the one-line fix H1.
 - B: Same as A. The project's evaluation log, linked from its contributing
   guide, records that on ten earlier one-line predicate fixes, reviewers on
-  `gpt-6-luna` at `high` found every P0 to P2 finding that `gpt-6-sol` at
+  `gpt-6-luna` at `high` found every P0 to P2 finding that `gpt-6.1-sol` at
   `high` found on the same comparisons. It is not a reviewer requirement.
 - C: Final round 1 returned Specification `action-required` with F1 (P1): no
   negative test for an editor. The fix H2 adds one test. Select the reviewers
@@ -123,7 +123,7 @@ Deliver the shared-navigation item as in RS01 A, on H1, with these changes.
 - C: No reviewer is named in the prompt. The project's evaluation log records
   that on twelve earlier changes that added a shared manifest read by several
   documentation generators, reviewers on `gpt-6-luna` at `high` and on
-  `gpt-6-sol` at `high` reviewed the same frozen comparisons, and Luna found
+  `gpt-6.1-sol` at `high` reviewed the same frozen comparisons, and Luna found
   every P0 to P2 finding that Sol found. None of those changes touched a
   dashboard bundle or its content security policy.
 
@@ -152,3 +152,19 @@ parent item's Execution recommendation for both hosts. Proposal only." Both
 hosts support the recommended models; neither host's controls can be inspected
 from this session. Return the `**Start with:**` line, the `Reviewers` row, both
 prompts and `**Why:**`.
+
+## RS08: Sol 6.1 availability on the active host
+
+Deliver the shared-navigation item as in RS01 A, on H1. The coordinator's
+model is unspecified. Select the two final reviewers; no reviewer has launched.
+
+- A: The active schema lists `gpt-6.1-sol` at `medium` and `high` and
+  `gpt-6-astra` at `high`. The user explicitly requires `gpt-6.1-sol` reviewers
+  at `high`.
+- B: The active schema lists only the older Sol identifier from the adapter's
+  dated catalog observation, `gpt-6-luna` and `gpt-6-astra`, all at `high`.
+  The same explicit Sol 6.1/high requirement applies. The coordinator has
+  read the public Sol 6.1 release announcement.
+- C: Same schema as B, but no explicit reviewer model requirement exists.
+- D: The schema lists `gpt-6.1-sol` at `medium` only, and `gpt-6-astra` at
+  `high`. The same explicit Sol 6.1/high requirement as A applies.

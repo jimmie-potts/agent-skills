@@ -54,7 +54,7 @@ opus; subagent runs on claude-sonnet-5 because of availableModels."
 
 The host is the Codex CLI. The current spawn schema exposes `model`,
 `reasoning_effort`, `fork_turns` and `agent_type`. Impact is high, and the
-selection is `gpt-6-sol` at `high` for both axes. `review_work_reviewer`
+selection is `gpt-6.1-sol` at `high` for both axes. `review_work_reviewer`
 resolves from `~/.codex/agents/review-work-reviewer.toml`. Its readback matches
 the catalog template except for two added lines: `model = "gpt-6-luna"` and
 `model_reasoning_effort = "medium"`.
@@ -62,7 +62,7 @@ the catalog template except for two added lines: `model = "gpt-6-luna"` and
 ## RX05: Codex sandbox overrides
 
 The host is the Codex CLI with the RX04 schema. `review_work_reviewer` resolves
-and reads back identical to the catalog template. The selection is `gpt-6-sol`
+and reads back identical to the catalog template. The selection is `gpt-6.1-sol`
 at `high`.
 
 - A: The parent session was started with `--yolo`. Project policy says:
@@ -115,7 +115,7 @@ resolves and reads back identical to the catalog template. The parent has no
 live sandbox or approval override. The parent's configuration includes a
 GitHub MCP server whose tools can comment on pull requests. Project policy
 says: "Reviewers must run with enforced read-only access and no descendant
-agents." The selection is `gpt-6-sol` at `high`.
+agents." The selection is `gpt-6.1-sol` at `high`.
 
 - A: The host does not show a spawned child's tools.
 - B: The host shows each spawned child's tools and applied sandbox before it
@@ -126,7 +126,7 @@ agents." The selection is `gpt-6-sol` at `high`.
 
 The host is the Codex CLI with the RX04 schema, plus `wait_agent`,
 `list_agents`, `interrupt_agent` and `followup_task`. Final round 2 on B1/H5 is
-running with one fresh `gpt-6-sol`/`high` reviewer per axis, spawned with
+running with one fresh `gpt-6.1-sol`/`high` reviewer per axis, spawned with
 `fork_turns="none"`. The coordinator recorded each reviewer's task name.
 
 - A: The standards reviewer's final message lists F9 (P1) and stops, with no
