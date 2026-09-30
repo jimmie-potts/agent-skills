@@ -5,8 +5,9 @@ operating references at the candidate revision. Do not read rubrics, recorded
 results, tests, or validation-scenarios. Perform no writes, actual delegation,
 tracker actions, or settings changes. State the selected role, strategy,
 model/effort request, next action, authority boundary, and evidence limits for
-each case. Assume Codex exposes GPT-6 Luna/Sol/Astra and low/medium/high plus
-higher effort values unless a case says otherwise. Coordinator writes remain
+each case. Assume Codex exposes Luna (`gpt-6-luna`), Sol (`gpt-6.1-sol`) and
+Astra (`gpt-6-astra`) and low/medium/high plus higher effort values unless a
+case says otherwise. Coordinator writes remain
 reserved. Original coordinator identity is verified Astra/medium unless stated.
 
 1. Locate the single file and two tests defining a named parser. Read-only, narrow question, strong source anchors; no independent second question.
