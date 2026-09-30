@@ -1033,7 +1033,7 @@ class ReviewerSelectionTest(unittest.TestCase):
         matches = [default for condition, default in below_high
                    if 'interfaces' in condition]
         self.assertEqual(len(matches), 1)
-        self.assertIn('Sol (`gpt-6-sol`) at `high` or stronger', matches[0])
+        self.assertIn('Sol (`gpt-6.1-sol`) at `high` or stronger', matches[0])
         self.assertNotIn('luna', matches[0].lower())
 
     def test_luna_reviewers_are_limited_to_bounded_work(self):
@@ -1055,7 +1055,7 @@ class ReviewerSelectionTest(unittest.TestCase):
         high = [default for condition, default in rows
                 if condition.startswith('High impact, even with a tiny diff')]
         self.assertEqual(high, ['Strongest evidenced relevant choice of Sol '
-                                '(`gpt-6-sol`) at `high` or Astra '
+                                '(`gpt-6.1-sol`) at `high` or Astra '
                                 '(`gpt-6-astra`) at `high`'])
 
     def test_claude_code_default_stays_opus(self):

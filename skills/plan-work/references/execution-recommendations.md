@@ -23,8 +23,8 @@ they do not change the current coordinator or replace worker-selection policy.
 | --- | --- | --- | --- |
 | Trivial, mechanical, low complexity/uncertainty/impact, with reliable checks | Opus (`opus`) / `low` | Luna (`gpt-6-luna`) / `low` | Implement directly |
 | Bounded implementation, low/medium complexity and impact, settled requirements and reliable checks | Opus (`opus`) / `medium` | Luna (`gpt-6-luna`) / `medium` | Implement directly |
-| Several interfaces or meaningful design judgment within a bounded outcome | Opus (`opus`) / `medium` | Sol (`gpt-6-sol`) / `medium` | Implement; identify design checkpoints |
-| High complexity or impact within a bounded outcome | Opus (`opus`) / `high` | Sol (`gpt-6-sol`) / `high` | Implement with the stronger capability floor |
+| Several interfaces or meaningful design judgment within a bounded outcome | Opus (`opus`) / `medium` | Sol (`gpt-6.1-sol`) / `medium` | Implement; identify design checkpoints |
+| High complexity or impact within a bounded outcome | Opus (`opus`) / `high` | Sol (`gpt-6.1-sol`) / `high` | Implement with the stronger capability floor |
 | Sustained difficult reasoning, architecture tradeoffs, or substantial coordination across dependent work | Fable (`fable`) / `high` | Astra (`gpt-6-astra`) / `high` | Orchestrate bounded workers, or implement directly when reasoning cannot be separated |
 
 These are planning heuristics, not benchmark results or guaranteed savings.

@@ -39,7 +39,7 @@ selection.
 | --- | --- | --- |
 | Narrow read-only lookup, extraction, classification, structured transformation | Luna (`gpt-6-luna`) at `low` | Assigned scout; parallel only for independent questions; no advisory loop |
 | Bounded investigation or implementation; low/medium complexity and impact, reliable acceptance checks, no unresolved material requirement | Luna (`gpt-6-luna`) at `medium` | Assigned worker, or worker-with-astra when approach/blocker advice helps |
-| Open-ended implementation requiring additional design judgment | Sol (`gpt-6-sol`) at `medium` | Assigned worker or advisory pairing at separable decision points |
+| Open-ended implementation requiring additional design judgment | Sol (`gpt-6.1-sol`) at `medium` | Assigned worker or advisory pairing at separable decision points |
 | High complexity or impact | Sol at `high`, or original coordinator | Stronger implementation floor; direct coordination when difficult reasoning is continuous |
 | High uncertainty or missing material facts | Investigate before dependent implementation | Luna at `low` for a narrow fact lookup and at `medium` for bounded read-only investigation with checks; Sol when open-ended reasoning warrants it; user owns product decisions |
 | Many independent pieces | Select each piece using the rows above | Parallel workers only where pieces are independent; coordinator integrates |

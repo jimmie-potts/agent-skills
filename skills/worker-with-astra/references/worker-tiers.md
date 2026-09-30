@@ -6,7 +6,7 @@ current host; names and defaults are hypotheses, not measured savings.
 | Work | Default | Routine decisions | Consult before |
 | --- | --- | --- | --- |
 | Bounded low/medium complexity and impact with reliable checks | Luna (`gpt-6-luna`) at `medium` | Local implementation and tests within agreed interfaces | Changing interfaces, scope, ownership, or acceptance; consequential uncertainty |
-| Open-ended implementation with separable decision points | Sol (`gpt-6-sol`) at `medium` | Design details within the agreed approach and constraints | Cross-component decisions, disproved assumptions, or changed risk |
+| Open-ended implementation with separable decision points | Sol (`gpt-6.1-sol`) at `medium` | Design details within the agreed approach and constraints | Cross-component decisions, disproved assumptions, or changed risk |
 | High complexity or impact with useful checkpoints | Sol at `high`, or direct coordinator work | Agreed bounded steps with coordinator-owned writes | Consequential decisions and blockers |
 
 Preserve a stronger supported choice supplied by the composing workflow or
