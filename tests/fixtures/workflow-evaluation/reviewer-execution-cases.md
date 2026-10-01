@@ -45,7 +45,7 @@ catalog template at the policy revision.
 ## RX03: Model substitution
 
 After each reviewer launches with `model: "opus"`, the host shows: "Requested
-opus; subagent runs on claude-sonnet-5 because of availableModels."
+opus; subagent runs on claude-sonnet-5-5 because of availableModels."
 
 - A: The user's prompt says: "Reviewers must run claude-opus-5-5."
 - B: No explicit model requirement exists.

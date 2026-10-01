@@ -38,7 +38,7 @@ cost hypothesis pending measurement, not a measured result.
 
 | Tier | Use for | Decides alone | Returns to Fable |
 | --- | --- | --- | --- |
-| `sonnet` (Claude Sonnet 5) | Default worker for coding, debugging, tests, mechanical edits, and agentic tool use on bounded work with low or medium assessment ratings | Routine implementation choices consistent with the approved approach | Approach, blockers, final review |
+| `sonnet` (Claude Sonnet 5.5) | Default worker for coding, debugging, tests, mechanical edits, and agentic tool use on bounded work with low or medium assessment ratings | Routine implementation choices consistent with the approved approach | Approach, blockers, final review |
 | `opus` (Claude Opus 5.5) | Work whose implementation itself needs deep reasoning: high complexity, high impact, large refactors, or a default Sonnet attempt that failed after diagnosis and reassessment | Routine design choices within the approved approach and scope | Approach, blockers, final review; expect a smaller advisor gain |
 | `fable` | Not a worker tier. Fable implements directly when the task needs it. | | |
 | `haiku` | Not a worker tier. An explicit `haiku` request is reported as unsupported, not substituted. | | |
