@@ -101,6 +101,9 @@ until its accepted disposition is verified.
 Never dismiss a review, resolve a thread or alter issue state merely to clear
 the merge gate.
 
+Use [the guarded action](guarded-merge.md) to couple the final repository-owned
+preflight to dispatch. A status check alone never authorizes a merge; preserve
+its zero-action failure path and reconcile ambiguous results before retry.
 Use the allowed merge strategy and GitHub CLI's
 `--match-head-commit <reviewed-head>` guard, or an equivalent API precondition.
 Never use `--admin`. Honor required queues and target-update protections. If the
