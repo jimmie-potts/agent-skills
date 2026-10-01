@@ -1,0 +1,119 @@
+{
+  "tool": "delivery-preflight",
+  "schema": 1,
+  "readAt": "2026-10-01T12:00:00+00:00",
+  "notice": "Synthetic output, not live acceptance or authorization",
+  "formats": {},
+  "declared": {
+    "pr": 999,
+    "head": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "base": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "finishLine": "source"
+  },
+  "candidate": {
+    "repository": "jimmie-potts/agent-device-hub",
+    "pr": 999,
+    "baseRef": "main",
+    "base": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "head": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "mergeBase": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "state": "open",
+    "draft": false
+  },
+  "finishLine": "source",
+  "gates": [
+    {
+      "id": "identity",
+      "title": "identity",
+      "rule": "docs/sdlc.md#review-and-merge",
+      "status": "satisfied",
+      "reasons": [],
+      "evidence": {
+        "fixtureSource": "representative current Hub preflight output"
+      }
+    },
+    {
+      "id": "ci-pr",
+      "title": "ci-pr",
+      "rule": "docs/sdlc.md#review-and-merge",
+      "status": "satisfied",
+      "reasons": [],
+      "evidence": {
+        "fixtureSource": "representative current Hub preflight output"
+      }
+    },
+    {
+      "id": "ci-main",
+      "title": "ci-main",
+      "rule": "docs/sdlc.md#review-and-merge",
+      "status": "not-applicable",
+      "reasons": [
+        "synthetic source-only candidate; owning preflight verified applicability"
+      ],
+      "evidence": {}
+    },
+    {
+      "id": "review",
+      "title": "review",
+      "rule": "docs/sdlc.md#review-and-merge",
+      "status": "satisfied",
+      "reasons": [],
+      "evidence": {
+        "fixtureSource": "representative current Hub preflight output"
+      }
+    },
+    {
+      "id": "feedback",
+      "title": "feedback",
+      "rule": "docs/sdlc.md#review-and-merge",
+      "status": "satisfied",
+      "reasons": [],
+      "evidence": {
+        "fixtureSource": "representative current Hub preflight output"
+      }
+    },
+    {
+      "id": "ui-approval",
+      "title": "ui-approval",
+      "rule": "docs/sdlc.md#review-and-merge",
+      "status": "not-applicable",
+      "reasons": [
+        "synthetic source-only candidate; owning preflight verified applicability"
+      ],
+      "evidence": {}
+    },
+    {
+      "id": "proof",
+      "title": "proof",
+      "rule": "docs/sdlc.md#review-and-merge",
+      "status": "not-applicable",
+      "reasons": [
+        "synthetic source-only candidate; owning preflight verified applicability"
+      ],
+      "evidence": {}
+    },
+    {
+      "id": "counterparts",
+      "title": "counterparts",
+      "rule": "docs/sdlc.md#review-and-merge",
+      "status": "satisfied",
+      "reasons": [],
+      "evidence": {
+        "fixtureSource": "representative current Hub preflight output"
+      }
+    },
+    {
+      "id": "live-acceptance",
+      "title": "live-acceptance",
+      "rule": "docs/sdlc.md#review-and-merge",
+      "status": "not-applicable",
+      "reasons": [
+        "synthetic source-only candidate; owning preflight verified applicability"
+      ],
+      "evidence": {}
+    }
+  ],
+  "result": "satisfied",
+  "exitCode": 0,
+  "readFailures": []
+}

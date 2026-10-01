@@ -216,6 +216,10 @@ its coordinator-owned loop through the requested finish line.
 
 ## Merge and verify completion
 
+Before a GitHub merge, read [the guarded action](references/guarded-merge.md)
+and couple the owning repository's successful current preflight to the authorized
+merge invocation. A failed, missing or unresolved result stops execution.
+
 Immediately before merge, refresh source scope, blockers, target revision, PR
 head, reviews, checks and protections. Refresh the candidate against the current
 target as policy requires and renew affected gates. Use the provider's normal
