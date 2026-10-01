@@ -232,6 +232,11 @@ required artifacts, and required post-merge CI. Verify the published result is
 included in the actual target under the selected merge strategy. Queue entry
 or merge acceptance alone is not a verified merge.
 
+Before claiming any completion stage, apply the
+[evidence-to-claim and acceptance handoff](references/completion-evidence.md)
+check. Lead with the finished outcome, remaining work and owner action; retain
+stage-specific sources, targets, observation times and verification limits.
+
 Evaluate all completion conditions. When the owning project declares
 installation or deployment as a completion condition and defines its
 procedure, offer that procedure at a checkpoint after verified merge and

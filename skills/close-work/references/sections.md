@@ -37,6 +37,16 @@ them.
    repository-wide activity inventory.
 4. Distinguish source completion, publication, installation, client
    verification and physical acceptance. Missing evidence means unknown.
+   For each claim, retain its existing evidence source/link, observed revision
+   and target, observation time and verification limit. Re-read volatile facts
+   immediately before posting when the read is authorized. If the fresh read
+   fails or is outside scope, label the old evidence historical or current
+   status unknown; do not reuse an old installed revision as today's claim.
+   Match the proof to the stage: a merged PR proves source, transport success
+   proves transport, and a simulator frame proves only its simulated view.
+   Neither establishes installed content, client discovery or physical
+   acceptance. Use project verification tools and structured provider records;
+   a parser finding a success-like phrase in prose is not evidence.
 5. When something cannot finish now, name it, what it gates and how to
    recheck it. The verdict is then provisional: a pending item is a Loose End,
    and only a rerun after it settles can reach `Safe to archive`.
@@ -65,7 +75,10 @@ Decisions: record only decisions not already in a PR body, ADR, design record
 or issue comment, with the alternatives rejected, in the closing comment. For
 recorded ones, link where they live.
 
-Learnings: save host-useful gotchas as memory notes through the host's
+Learnings: attempt capture only with explicit authority and a supported
+private or appropriately shareable destination. An explicit close-work invocation
+supplies only its stated memory grant; ordinary delivery does not invoke it.
+Save host-useful gotchas as memory notes through the host's
 supported mechanism and read each back. For a change to agent instructions or
 documentation, open a docs-only PR or put the proposed change and its target
 file in the closing comment. Report what was written, not what is worth
@@ -109,7 +122,9 @@ follow [Reruns](#reruns) instead of repeating the earlier comment.
 
 ## Report
 
-Report in this exact order. Target 250-350 words for a routine sweep; exceed
+Open with one or two sentences naming what finished, what remains and the
+owner's next action (or none). Put supporting evidence links after that outcome.
+Then report in this exact order. Target 250-350 words for a routine sweep; exceed
 that only when material findings need explanation. Link detailed evidence,
 avoid repetition, and keep supporting information near the top and
 decision-relevant information near the bottom. Write "None" for an empty
