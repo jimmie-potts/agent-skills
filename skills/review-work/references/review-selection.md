@@ -68,6 +68,16 @@ relative recommendations, not portable API enum names; map them to supported
 controls and record the mapping. Maximum reasoning is not automatic. Both axes
 may use the same model in separate fresh contexts.
 
+## Select the provider without duplicating coverage
+
+After selecting the required capability tier and impact floor, apply
+[selective cross-provider routing](cross-provider.md) for high-impact work or a
+substantive unresolved correctness, requirements or evidence dispute. Routine
+work and cosmetic disagreement need no extra provider. Provider preference
+never lowers the chosen tier, independent axes, required controls or stop rules.
+Use an eligible other-provider reviewer for an existing required axis when it
+can cover that axis. Record a qualified fallback when the provider is unavailable.
+
 ## Brief each reviewer
 
 Compose `code-review` in its assigned-axis mode for each context. Supply the

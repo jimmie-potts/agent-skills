@@ -34,7 +34,10 @@ Record these before the first reviewer starts, and again for each round:
   made from them with its rationale: the impact, the review task in a line or
   two, the selected tier and any exception with its evidence and coverage
   limits; and the reviewer execution preflight: each control's evidence class,
-  whether it is mandatory, and any unsupported or unverified control.
+  whether it is mandatory, and any unsupported or unverified control. When
+  cross-provider routing applies, include its trigger, selected provider/axis,
+  qualification evidence or fallback reason, and actual coverage. Provider
+  diversity alone supplies no verdict or extra axis.
 - Limits: each explicit round, time or spending limit with its source, scope,
   unit, threshold, consumed amount and accounting source. `none` when no limit
   was set; missing accounting is unknown, never zero.

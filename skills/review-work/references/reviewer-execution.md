@@ -165,3 +165,14 @@ compares them with the template. It never creates, edits, links or removes a
 definition, changes settings or account access, or restarts a host. Profile
 metadata and a passing preflight are source and configuration evidence; only a
 live run qualifies the installed workflow.
+
+## Cross-provider qualification and fallback
+
+Apply [selective routing](cross-provider.md) before launching an alternate
+provider. Provider availability means a permitted, qualified execution path
+meeting the selected tier and all mandatory host restrictions, not just an
+installed executable or accepted spawn. Preserve the active host's adapter and
+any stronger repository rule; do not lower tool restrictions to obtain diversity.
+When qualification fails, report the exact missing capability and use eligible
+ordinary independent coverage only where no explicit requirement forbids fallback.
+No hidden API call, credential setup, account switch or nested reviewer team.
