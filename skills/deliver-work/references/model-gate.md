@@ -81,17 +81,33 @@ verification stays unknown. `run_if_allowed` does not execute assignment work
 for this result. Exit 3 is a distinct launch checkpoint, not a successful
 active-role check; never append assignment execution after it.
 
-The coordinator may then launch only a restricted bootstrap context using those
-parameters, with instructions to return available setting evidence and perform
-no assignment work, publication or delegation. Apply the existing role adapter's
-read-only/no-descendant controls. After launch, refresh the role's `pickup` input
-from actual exposed evidence. A successful spawn remains only a successful
-request: use launch selection as a declaration only if the host separately
-exposes that selection or the owner explicitly declares it. Otherwise ask for
-the missing input; do not turn launch parameters into observed identity.
-Explicit verified identity still requires a qualified observation. Dispatch the
-assignment to that context only after `continue`; retain blocked bootstrap
-contexts as pending or stop them through the host's supported control.
+Choose the handoff supported by the selected role adapter. Apply its existing
+read-only/no-descendant controls; this gate does not add a resumability requirement.
+
+- **Resumable context:** launch an evidence-only bootstrap with the selected
+  parameters. It returns available setting evidence and performs no assignment
+  work, publication or delegation. Refresh its `pickup` input and dispatch the
+  assignment to that context only after `continue`.
+- **One-assignment context:** include the evidence check as the first step in
+  its sole assignment. Supply the selected requirements and available evidence;
+  the child must evaluate `pickup` before any implementation or review. It may
+  perform the conditional assignment in that same turn only on `continue`.
+  Otherwise its sole return reports the blocked gate and does no assignment
+  work; a review axis remains incomplete. When the adapter restricts tools,
+  provide this reference's decision rules as packet instructions and
+  require its decision/evidence in the return; do not add tools, persistence or
+  a second conversation to obtain a mechanical check. The coordinator checks
+  the returned decision before accepting any artifact. This packet path is
+  instruction-only, not execution of the helper or host enforcement.
+
+After launch, use only actual exposed evidence for `pickup`. A successful spawn
+remains a successful request: use launch selection as a declaration only if the
+host separately exposes that selection or the owner explicitly declares it.
+Otherwise ask for missing required input; do not turn launch parameters into
+observed identity. Explicit verified identity still requires a qualified
+observation. Advisory-only unknown settings can continue, with their limits
+reported. Retain blocked contexts/results as pending or stop owned contexts
+through supported controls; do not silently retry an ephemeral assignment.
 
 ## Act on the result
 
