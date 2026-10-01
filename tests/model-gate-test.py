@@ -101,6 +101,24 @@ class ModelGateTests(unittest.TestCase):
             self.assertEqual(gate.run_if_allowed(document, lambda: calls.append(1))['decision'], 'stop')
             self.assertEqual(calls, [])
 
+    def test_prelaunch_only_permits_bootstrap_not_assignment(self):
+        for verified in (False, True):
+            document = request(verified=verified, requested=[evidence('model-a')])
+            document['phase'] = 'pre-launch'
+            calls = []
+            result = gate.run_if_allowed(document, lambda: calls.append('work'))
+            self.assertEqual(result['decision'], 'bootstrap-only')
+            self.assertEqual(result['settings'][0]['runtime_verification'], 'unknown')
+            self.assertEqual(calls, [])
+            document['phase'] = 'pickup'
+            self.assertEqual(gate.evaluate(document)['decision'], 'ask')
+            document['settings'][0]['declared'] = [evidence('model-a')]
+            self.assertEqual(gate.evaluate(document)['decision'], 'stop' if verified else 'continue')
+        for values, outcome in [([], 'ask'), ([evidence('model-b')], 'stop')]:
+            document = request(requested=values)
+            document['phase'] = 'pre-launch'
+            self.assertEqual(gate.evaluate(document)['decision'], outcome)
+
     def test_cli_reports_unknown_and_nonzero_blocks(self):
         for document, expected in [(request(), 2), (request(observed=[evidence('model-b')]), 1),
                                    (request(declared=[evidence('model-a')]), 0)]:

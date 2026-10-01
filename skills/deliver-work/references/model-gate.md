@@ -7,7 +7,7 @@ reviewer roles; a coordinator's evidence says nothing about another agent.
 Use [the decision helper](../scripts/model_gate.py) with Python 3 and an explicit
 JSON evidence file: `python3 <skill-directory>/scripts/model_gate.py <input>`.
 It reads only that file (or stdin with `-`), emits JSON and exits 0 for
-`continue`, 2 for `ask`, or 1 for `stop`. Run it as a separate step and inspect
+`continue`, 2 for `ask`, 1 for `stop`, or 3 for `bootstrap-only`. Run it as a separate step and inspect
 both status and output before the dependent action. Missing Python, unreadable
 input, a failed command or an unresolved result leaves that action blocked.
 Do not continue after a failed check through a semicolon-separated command.
@@ -43,7 +43,7 @@ do not carry a previous agent's observations forward as current evidence.
 }
 ```
 
-`phase` is `pickup`, `resume` or `setting-change`. `name` is `model` or
+`phase` is `pickup`, `resume`, `setting-change` or `pre-launch`. `name` is `model` or
 `reasoning`; a setting appears once. `verified: true` means the owner explicitly
 requires independently verified identity/settings, and requires `required: true`.
 An issue recommendation alone is advisory; a pasted prompt actually adopted by
@@ -68,6 +68,30 @@ Documented aliases use entries with `name`, `alias`, `canonical`, and `source`.
 Supply a qualified mapping's evidence pointer; an alias without proof stays a
 literal mismatch. Mappings are setting-specific, one step only. Never translate
 one provider's effort names to another provider's levels without evidence.
+
+## Check an unstarted role without inventing runtime evidence
+
+Before delegation, first check the active coordinator's evidence. For an
+unstarted worker or reviewer, verify that the host exposes the selected launch
+controls and no known override contradicts a required setting. Run the helper
+with `phase: pre-launch` and the exact planned parameters in `requested`.
+A required mismatch stops; missing required launch parameters asks for input.
+A matching request returns `bootstrap-only`, never `continue`, and runtime
+verification stays unknown. `run_if_allowed` does not execute assignment work
+for this result. Exit 3 is a distinct launch checkpoint, not a successful
+active-role check; never append assignment execution after it.
+
+The coordinator may then launch only a restricted bootstrap context using those
+parameters, with instructions to return available setting evidence and perform
+no assignment work, publication or delegation. Apply the existing role adapter's
+read-only/no-descendant controls. After launch, refresh the role's `pickup` input
+from actual exposed evidence. A successful spawn remains only a successful
+request: use launch selection as a declaration only if the host separately
+exposes that selection or the owner explicitly declares it. Otherwise ask for
+the missing input; do not turn launch parameters into observed identity.
+Explicit verified identity still requires a qualified observation. Dispatch the
+assignment to that context only after `continue`; retain blocked bootstrap
+contexts as pending or stop them through the host's supported control.
 
 ## Act on the result
 

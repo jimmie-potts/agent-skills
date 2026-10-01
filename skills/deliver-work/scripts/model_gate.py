@@ -35,7 +35,7 @@ def evaluate(document):
     try:
         fields(document, ('role', 'phase', 'settings', 'aliases'))
         nonempty(document['role'])
-        if document['phase'] not in ('pickup', 'resume', 'setting-change'):
+        if document['phase'] not in ('pickup', 'resume', 'setting-change', 'pre-launch'):
             raise InvalidEvidence('unknown phase')
         if not isinstance(document['aliases'], list):
             raise InvalidEvidence('aliases must be a list')
@@ -70,24 +70,28 @@ def evaluate(document):
                 raise InvalidEvidence('verified identity requires a required setting')
             observed = records(setting['observed'])
             declared = records(setting['declared'])
-            records(setting['requested'])  # A request alone is never evidence.
+            requested = records(setting['requested'])  # Never runtime evidence.
             normalize = lambda value: aliases.get((name, value), value)
-            values = observed or declared
+            values = (requested if document['phase'] == 'pre-launch' else
+                      observed or declared)
             mismatch = any(normalize(item['value']) != normalize(expected) for item in values)
             if mismatch:
                 status, reason = ('stop' if setting['required'] else 'continue'), 'mismatch'
             elif setting['required'] and not values:
                 status, reason = 'ask', 'missing declaration or observation'
+            elif document['phase'] == 'pre-launch':
+                status, reason = 'bootstrap-only', 'launch controls only; assignment work blocked'
             elif setting['verified'] and not observed:
                 status, reason = 'stop', 'verified identity unavailable'
             else:
                 status, reason = 'continue', ('observed match' if observed else
                                              'declaration only' if declared else 'advisory unknown')
             outcomes.append(dict(name=name, decision=status, reason=reason,
-                                 runtime_verification='observed' if observed else 'unknown',
+                                 runtime_verification=('observed' if observed and document['phase'] != 'pre-launch' else 'unknown'),
                                  evidence=setting))
         decision = ('stop' if any(x['decision'] == 'stop' for x in outcomes) else
-                    'ask' if any(x['decision'] == 'ask' for x in outcomes) else 'continue')
+                    'ask' if any(x['decision'] == 'ask' for x in outcomes) else
+                    'bootstrap-only' if document['phase'] == 'pre-launch' else 'continue')
         return dict(decision=decision, role=document['role'], phase=document['phase'],
                     settings=outcomes, aliases=document['aliases'])
     except (InvalidEvidence, TypeError) as error:
@@ -116,7 +120,7 @@ def main():
     except (OSError, ValueError) as error:
         result = dict(decision='stop', reason=f'unreadable evidence: {error}')
     print(json.dumps(result, sort_keys=True))
-    return {'continue': 0, 'ask': 2, 'stop': 1}[result['decision']]
+    return {'continue': 0, 'ask': 2, 'stop': 1, 'bootstrap-only': 3}[result['decision']]
 
 
 if __name__ == '__main__':
