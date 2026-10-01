@@ -79,6 +79,8 @@ For non-root agents or incomplete/resumed history, use
 earlier participation cannot become an exact count or zero retries. A verified
 direct-only run uses the entrypoint fields.
 
+Before resumed implementation or delegation, refresh each active role through the [model-setting decision](model-gate.md); a saved launch request is not a current observation.
+
 ## Reconcile before continuing
 
 1. Read the current authoritative scope, acceptance criteria, dependencies and

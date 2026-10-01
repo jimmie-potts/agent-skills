@@ -3,6 +3,8 @@
 from pathlib import Path
 import importlib.util
 import re
+import subprocess
+import sys
 import unittest
 import yaml
 
@@ -176,12 +178,14 @@ class DeliverWorkStructureTest(unittest.TestCase):
         self.assertTrue(references)
         self.assertTrue(references <= visited, references - visited)
 
-    def test_instruction_only_package(self):
+    def test_package_resources(self):
         for path in SKILL.rglob('*'):
             self.assertFalse(path.is_symlink(), str(path))
             if path.is_file():
-                self.assertIn(path.suffix, {'.md', '.yaml'})
-        self.assertFalse((SKILL / 'scripts').exists())
+                self.assertTrue(path.suffix in {'.md', '.yaml'} or
+                                path == SKILL / 'scripts/model_gate.py', str(path))
+        self.assertEqual({p.name for p in (SKILL / 'scripts').iterdir()},
+                         {'model_gate.py'})
 
     def test_shared_resources_are_exposed_to_consumers(self):
         # Stable pointers expose shared contracts without copied definitions.
@@ -801,4 +805,5 @@ class BoundariesTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    subprocess.run([sys.executable, str(ROOT / 'tests/model-gate-test.py')], check=True)
     unittest.main()
