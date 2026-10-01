@@ -11,6 +11,8 @@ conversation is the default output, so the user can see it while work proceeds
 and find it in the final response. These instructions require agent-authored
 reporting; they do not install automatic host telemetry or a dashboard.
 
+At pickup, resume and setting changes, retain the [model-setting decision](model-gate.md) and its evidence with this record. A declaration-only continuation does not verify runtime identity. Keep the existing rows and provenance terms.
+
 ## Publish at the decision and keep it current
 
 1. Before implementation or the first delegation, publish the selected strategy

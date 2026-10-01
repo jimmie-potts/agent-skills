@@ -95,19 +95,21 @@ sources, including scope fit at pickup. Map acceptance criteria to verification
 and identify conditional reviews and operational handoffs. Preserve the
 project's mandatory gates.
 
-At pickup, read the item's Execution recommendation when present and copy it
-into the Execution record's `Recommended` row. Treat the model, level, session
-type, worker and reviewer settings stated in the user's prompt as explicit
-requirements; a later user instruction overrides them. Confirm only the model
-from your runtime instructions; stop when it differs. Record the stated level
-as `user-stated`; never ask an agent, including yourself, to verify its own
-effort. Record the session's reasoning setting as exposed or stated, otherwise
-unknown; report a difference from a role's selected setting without claiming
-to change it. When current sources no longer fit the recommendation, say so
-before changing strategy. The session type governs implementation; the
-prompt's reviewer clause authorizes the required independent reviewers. When
-the user forbids all subagents, say at pickup that delivery stops at a ready
-PR with review pending.
+At pickup, read the item's Execution recommendation and copy it into the
+Execution record's `Recommended` row. Before implementation or delegation,
+on resume and after observed setting changes, read and apply the
+[model-setting decision](references/model-gate.md). Distinguish required
+settings from advice, and requested, declared and independently observed
+values. Stop dependent work on a known required mismatch; ask for missing
+required evidence. A matching owner declaration or named launch selection can
+permit continuation with runtime verification unknown, unless the owner
+explicitly requires verified identity. Never infer model equivalence or effort,
+ask an agent to verify its own effort, or claim to switch the running model.
+Record the session's reasoning setting as exposed or user-stated, otherwise
+unknown. Report advisory differences before changing strategy. The session type
+governs implementation; the prompt's reviewer clause authorizes the required
+independent reviewers. When the user forbids all subagents, say at pickup that
+delivery stops at a ready PR with review pending.
 
 Read each reference below at its trigger:
 

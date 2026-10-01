@@ -8,6 +8,8 @@ entrypoint and assessment; it does not select a worker. Ratings describe work;
 this policy owns selection. Keep the original coordinator's settings and durable
 write ownership. Never claim to switch its running model.
 
+Before selecting or dispatching a role, apply the [model-setting decision](model-gate.md). Preserve required/advisory distinctions and unknown runtime evidence.
+
 ## Establish available choices
 
 
