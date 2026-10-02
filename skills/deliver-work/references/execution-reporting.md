@@ -33,8 +33,10 @@ At pickup, resume and setting changes, retain the [model-setting decision](model
    rosters and settings. Immediately expose consequential strategy, setting,
    team or authority changes, failed attempts and capability gaps, with reasons
    and affected counts/history. Keep the complete summary in existing evidence
-   and publish it at substantive checkpoints and final handoff, including blocked
-   or limited delivery. Retaining details in evidence never delays a material
+   and publish it at substantive checkpoints and genuine final handoff, including
+   blocked or limited delivery. An ordinary continued turn or unchanged blocked
+   check needs only the meaningful delta and any host-required message or audit,
+   not another complete summary. Retaining details in evidence never delays a material
    change notice. Do not turn missing history or telemetry into zero by omission.
 
 Use settings from the current host records or runtime reports and label their
@@ -110,6 +112,13 @@ At checkpoints and on resumption, use [the task packet](resumption.md) to retain
 completed tasks, accepted revisions, findings, pending effects and the next
 incomplete step alongside this execution summary. Link the same record instead
 of creating a separate roster ledger.
+
+Update that current record at the [resumption triggers](resumption.md#update-the-current-record-when-state-changes),
+rather than producing a new narrative on a fixed interval or every continued
+turn. Link distinct review rounds and failure/action receipts; retain their full
+evidence under the owning contracts. Keep elapsed-time/deadline and consumed
+limit accounting alongside the execution history. A resume or new commit never
+resets them. Preserve host progress, interruption and blocked-turn requirements.
 If project policy or the user already authorizes a durable delivery record,
 update that record and link it from the task. For an authorized public PR or
 tracker update, include only the strategy and the Execution record below,

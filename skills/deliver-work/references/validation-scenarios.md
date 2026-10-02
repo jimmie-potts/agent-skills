@@ -480,3 +480,13 @@ when changing thread attribution, fix replies or resolution. It covers positive
 resolution/readback, human/disputed and wrong-candidate negatives, pagination,
 publication uncertainty and the read-to-mutation race. These paper scenarios
 verify instruction decisions; they do not qualify live GitHub enforcement.
+
+## Current recovery record and output cadence
+
+Use `tests/fixtures/workflow-evaluation/recovery-record-cases.md` for update
+triggers, ordinary continuation and retained limits. Withhold
+`recovery-record-graders.md` from evaluated contexts. Freeze the candidate,
+inputs and rubric before trials; retain concrete returned records, messages
+and decisions outside the candidate commit. Distinguish observed fixture
+outputs from illustrative traces. Neither proves actual unattended recovery
+or token, cost or delivery-speed savings.

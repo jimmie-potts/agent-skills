@@ -6,6 +6,34 @@ or replacement. Keep one compact packet in the task's existing evidence or
 authorized project record. It indexes recovery; authoritative scope, repository,
 host and provider records still determine what is current and complete.
 
+## Update the current record when state changes
+
+The packet is one mutable recovery record. Create it in the existing authorized
+destination, then update that same record:
+
+- when work, evidence, authority, ownership, source HEAD or pending effects
+  materially change;
+- before a real handoff or anticipated context loss;
+- before a consequential external action, retaining intent and guards, and
+  after its readback or when its result becomes uncertain.
+
+Unexpected interruption may prevent the last update. Recover from retained
+evidence and authoritative state; do not invent a checkpoint that never happened.
+
+An ordinary continued turn or unchanged blocked check does not require another
+full packet, initial checkpoint or full preflight. Retain still-valid evidence
+and send only a meaningful progress delta, new blocker or decision request.
+Preserve host-required progress updates, interruption handling and blocked-turn
+or no-progress audits, including their required state transitions. Runtime
+requirements prevail; compact reporting cannot suppress them.
+
+Continuation still requires fresh reads when a prerequisite is volatile,
+changed, uncertain or required by the impending action's guard. Recheck the
+relevant authority, ownership, revision, provider state or pending effect before
+dependent work. After actual context loss, interruption or replacement, perform
+the reconciliation below and the applicable model-setting decision. A new turn
+alone is not evidence that context was lost.
+
 ## Keep one task packet
 
 Use the fields below within the existing delivery record, not a second ledger
@@ -40,6 +68,20 @@ accounting in Progress and evidence and Execution history: round
 identities/comparisons, stable findings and correction outcomes, dispositions,
 limits, consumed allowance and unknown or in-flight accounting.
 Reconcile these before dependent work; a resumed session gets no fresh allowance.
+
+Retain each applicable limit's original start, elapsed-time accounting source,
+deadline, consumed corrections/review rounds and in-flight commitments. Update
+elapsed time from that source; unavailable accounting stays unknown. An
+interruption, replacement, new commit or new record version never resets a
+count or deadline. These fields preserve existing limits; they introduce none.
+
+Link immutable review inputs/returns, round reports, failure receipts and action
+evidence by their identities, comparisons and locations. The current record
+summarizes their status; it never replaces them or copies their full text into
+every checkpoint. Keep independent rounds distinct and attributable. Follow
+[review reports](review-reports.md) for a required append to a stopped or
+incomplete report, preserving its earlier content. Compacting the recovery
+record grants no evidence-deletion authority.
 
 ## Exchange artifacts within existing authority
 
@@ -82,6 +124,11 @@ direct-only run uses the entrypoint fields.
 Before resumed implementation or delegation, refresh each active role through the [model-setting decision](model-gate.md); a saved launch request is not a current observation.
 
 ## Reconcile before continuing
+
+Use this full sequence after actual interruption, context loss or replacement.
+During ordinary continuation, refresh the prerequisites affected by current
+changes or the next action, preserving every applicable gate. Neither route
+permits a retry while the earlier effect remains uncertain.
 
 1. Read the current authoritative scope, acceptance criteria, dependencies and
    tracker state, plus the user's current authority and requested finish line.
