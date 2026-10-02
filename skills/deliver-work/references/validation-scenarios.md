@@ -472,3 +472,11 @@ Text exposure is not a native-host cost, speed or model-quality measurement.
 The recorded comparison, raw returns, corrections, excluded run, receipts and
 behavioral limits are in
 `tests/fixtures/workflow-evaluation/context-reporting-observations.md`.
+
+## Delivery-owned review-thread resolution
+
+Exercise the repository fixture `tests/fixtures/workflow-evaluation/thread-resolution-cases.md`
+when changing thread attribution, fix replies or resolution. It covers positive
+resolution/readback, human/disputed and wrong-candidate negatives, pagination,
+publication uncertainty and the read-to-mutation race. These paper scenarios
+verify instruction decisions; they do not qualify live GitHub enforcement.

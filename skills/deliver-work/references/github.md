@@ -98,10 +98,12 @@ a consequential write. Reuse only a verified owned watch session. If it stops,
 reconcile its owner/state and resume through available reads or watch tools in
 the active session. Preserve the shared wait and inactive-monitoring rules.
 
-Code fixes do not grant permission to resolve threads or to reply beyond the
-factual fix replies in [review reports](review-reports.md). For any other
-response, draft it in the task and identify the outstanding reply/resolution
-decision while continuing independent work. Existing approval for the exact
+Code fixes alone do not authorize thread resolution. Apply the attribution,
+independent current-candidate verification and fresh complete thread-read gates
+in [review reports](review-reports.md#resolve-a-delivery-owned-thread) for
+authorized delivery-owned threads. For human, disputed, unknown-origin or
+out-of-scope threads, draft the needed response and retain the owner's
+disposition while continuing independent work. Existing approval for the exact
 response or scoped resolution persists; do not ask again. When authorized,
 verify the current thread/fix, perform the approved effect once and read it
 back. Keep any required unresolved thread or change request as a merge blocker
@@ -143,6 +145,11 @@ Apply [review reports](review-reports.md) with these operations:
   `REQUEST_CHANGES` from the delivery's account.
 - Reply in a review thread through the review comment replies endpoint. An
   issue comment has no thread, so reply with a new issue comment linking it.
+- Resolve an eligible thread with GitHub GraphQL `resolveReviewThread`, using
+  its exact thread node ID. Read `isResolved` and all comment pages afterward.
+  The mutation has no expected-head or expected-comment-version guard; retain
+  the race checks and uncertain-effect handling in review reports. A failed or
+  partial thread query never establishes eligibility.
 - Update the description's review section through the pull request update
   operation, then read the body back.
 - Find an existing effect by listing every page of issue comments, reviews or

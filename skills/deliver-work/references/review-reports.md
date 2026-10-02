@@ -1,8 +1,8 @@
 # Publish and retain review evidence
 
-Read before publishing a review-round report, an inline finding or a reply
-about a fix, before updating the change review's summary, and when reconciling
-any of these after an interruption. `review-work` returns each round's result
+Read before publishing a review-round report, an inline finding or a factual
+fix reply, updating the change review's summary, resolving a delivery-owned
+thread, or reconciling any of these after interruption. `review-work` returns each round's result
 with the reviewers' retained returns; this coordinator is their only
 publisher. [PR supervision](pr-supervision.md) owns reading feedback, and the
 code-host adapter supplies the operations.
@@ -14,8 +14,10 @@ code-host adapter supplies the operations.
   comments for its own blocking findings, the description's review section,
   and factual replies about its findings' states and its scoped fixes.
   Repository policy and narrower user limits prevail.
-- It does not authorize replying to a disagreement, arguing a disputed finding
-  or disposition, resolving any thread, submitting an approving or
+- It also authorizes resolution of an attributable delivery-owned thread only
+  through [the verified-fix procedure](#resolve-a-delivery-owned-thread) below.
+  It does not authorize replying to a disagreement, arguing a disputed finding
+  or disposition, resolving other threads, submitting an approving or
   change-requesting review, dismissing a review, or posting anywhere else.
   Draft the needed response in the task, name the decision and its owner, and
   continue independent work. Existing explicit approval of an exact reply or
@@ -123,14 +125,81 @@ the revision and the round that established it.
 After a pushed head fixes published feedback within scope, reply once in that
 item's thread: what changed, the revision, and the check or round that verified
 it. Facts only. Feedback that is declined, disputed or out of scope gets a
-drafted response for its owner, not a reply. Never resolve the thread.
+drafted response for its owner, not a reply. Thread resolution is a separate
+operation with the requirements below.
+
+## Resolve a delivery-owned thread
+
+Use this procedure only within an authorized delivery. Explicit owner limits
+and stronger project rules requiring owner disposition prevail. Do not use
+the new resolution authority to deliver the change that introduces it: that
+delivery follows its original policy unless the owner separately authorizes
+the scoped resolution.
+
+1. Establish attribution from this delivery's recorded publication intent,
+   marker, publishing account, stable finding identity and exact provider thread
+   ID. Match the originating comment to that record. A shared account, bot-like
+   wording or a copied marker alone is insufficient. Unknown origin stays with
+   its owner; do not infer agent authorship.
+2. Require an actual scoped fix and independent verification under review-work
+   on the current frozen base/head, requirements and policy. The finding must
+   be `resolved`: every axis listed for it must confirm the fix in its retained
+   return. The verifier must not have implemented, advised or coordinated the
+   change.
+   An accepted risk, P3 disposition, self-check or outdated diff marker does not
+   establish a fixed finding. Changed scope, policy, requirements, base or head invalidates affected proof.
+3. Read the whole current thread, including every comment page, edits and
+   follow-ups, immediately before acting. Reconcile it with the verified
+   finding and publication record. Human-authored or unknown-origin follow-ups, a substantive
+   disagreement, out-of-scope content, changed content not yet assessed or an
+   incomplete read stops automatic resolution. Obtain the owner's disposition
+   for human, disputed or unknown-origin content; a shared account does not
+   establish a follow-up's origin, and silence is not consent.
+4. Publish any necessary factual fix/evidence reply once using the effect key
+   below. A verified existing reply is reused. Record resolution intent with
+   the exact thread ID, current candidate, fix-verification reference and last
+   complete thread version/read. Refresh authority, requirements, policy, base/head and complete thread
+   content after a reply or any intervening change before dispatch. Stop on a changed prerequisite.
+5. Resolve that thread through the supported provider operation, then read back
+   its resolved state and complete content. Record the returned identity and
+   last confirmed effect. Providers may lack an atomic thread-version guard:
+   a fresh read narrows the race but cannot eliminate it. If readback exposes
+   new human/disputed or unknown-origin content, incomplete readback or drift,
+   report the observed state and gap, keep disposition and
+   merge eligibility pending, and obtain its owner's decision. Do not claim
+   that the resolved flag settles the new content, or automatically undo it.
+
+A timeout, lost response or failed readback for a reply or resolution is an
+uncertain effect. Pause resolution and dependent merge actions. Reconcile the
+exact recorded intent under [recovery](recovery.md), reading the complete
+thread and refreshing current prerequisites before another request. A matching
+reply or confirmed resolved state requires no repeated operation; retain the
+observed effect without inferring who caused it.
+
+An unresolved thread or absent reply alone does not prove that a delayed
+request cannot still apply. Retry only after the prior attempt is verified not
+applied, no attempt remains in flight, all prerequisites are refreshed, and
+existing authority and limits permit it. Incomplete or changed evidence
+permits no retry. Retain intent, attempts, limits and new follow-ups in the
+same task packet. Neither a new turn nor a new effect key resets that history
+or creates another allowance.
+
+| Operation | Authority and evidence |
+| --- | --- |
+| Factual scoped fix reply | Existing delivery authority; deduplicated publication and factual evidence |
+| Delivery-owned thread resolution | All five steps above; no extra owner question when they pass |
+| Human, disputed, unknown-origin or out-of-scope thread | Owner disposition; draft the requested action while independent work continues |
+| Native approval/change request or review dismissal | Not authorized by this procedure |
+| Merge | Both fresh final axes, required specialist/human reviews, project review-count floors, unresolved-finding rules, current CI and guarded merge remain required |
 
 ## Identify each effect and recover it
 
 Key each posted effect by work and purpose: `report final <n>`, with
 `part <i>/<m>` when split, `finding <ID>`,
 `reply <ID> <state> final <n>`, or `reply <feedback ID> <version>` for another
-author's item. Embed the key, the work reference and the reviewed head in a
+author's item. A resolution uses `resolve <thread ID> <finding ID> <head>`
+in the local intent record; the provider operation has no comment body. Embed
+posted effects' key, the work reference and the reviewed head in a
 hidden marker in the body. Before the request, record the intent, key and
 intended digest in the [task packet](resumption.md); after it, read the effect
 back by its returned ID and record that ID and link.
