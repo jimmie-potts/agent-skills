@@ -4,6 +4,9 @@ from pathlib import Path
 import importlib.util
 import re
 import unittest
+import sys
+
+sys.dont_write_bytecode = True
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -122,13 +125,48 @@ class PlanWorkStructureTest(unittest.TestCase):
         prompt = prompts[0]
         self.assertTrue(prompt.endswith(
             "If deliver-work isn't available here, say so and stop."))
-        self.assertIn('stop if it is not', prompt)
-        self.assertIn('take the effort as stated rather than guessing it', prompt)
+        self.assertIn('my declared launch settings for each role it names', prompt)
+        self.assertIn('unavailable runtime observation stays unknown', prompt)
+        self.assertIn('observed required-setting mismatch', prompt)
+        self.assertNotIn('State the model you are running', prompt)
         self.assertIn('Execution recommendation (assessed', prompt)
         self.assertIn('without worker subagents', prompt)
         self.assertRegex(prompt, r'two fresh read-only \w+ reviewers')
         self.assertNotIn('without subagents', prompt)
         self.assertNotRegex(prompt.lower(), r'(report|verify|confirm)\w* (your|its) effort')
+
+    def test_rendered_example_declarations_gate_both_named_roles(self):
+        reference = (SKILL / 'references/execution-recommendations.md').read_text()
+        prompt, = re.findall(r'```text\n(.+?)\n```', reference, re.DOTALL)
+        coordinator = re.search(r'I started this session on (\w+) at (\w+) effort', prompt)
+        reviewer = re.search(r'two fresh read-only (\w+) reviewers at (\w+) effort', prompt)
+        self.assertIsNotNone(coordinator)
+        self.assertIsNotNone(reviewer)
+        spec = importlib.util.spec_from_file_location(
+            'prompt_model_gate', ROOT / 'skills/deliver-work/scripts/model_gate.py')
+        gate = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(gate)
+        # The adopted example declares these named roles. Scope validation is
+        # the caller's responsibility; this tests the resulting gate inputs.
+        for role, match in [('coordinator', coordinator), ('reviewer', reviewer)]:
+            values = dict(zip(('model', 'reasoning'), match.groups()))
+            document = dict(role=role, phase='pickup', aliases=[], settings=[
+                dict(name=name, value=value, required=True, verified=False,
+                     requested=[dict(value=value, source='example selection')],
+                     declared=[dict(value=value, source='owner-adopted example, named role')],
+                     observed=[]) for name, value in values.items()])
+            calls = []
+            result = gate.run_if_allowed(document, lambda: calls.append(role))
+            self.assertEqual(result['decision'], 'continue')
+            self.assertEqual(calls, [role])
+            self.assertTrue(all(x['runtime_verification'] == 'unknown'
+                                for x in result['settings']))
+            document['settings'][0]['observed'] = [
+                dict(value='different-model', source='qualified current observation')]
+            calls.clear()
+            self.assertEqual(gate.run_if_allowed(document, lambda: calls.append(role))
+                             ['decision'], 'stop')
+            self.assertEqual(calls, [])
 
     def test_reviewers_follow_the_canonical_review_policy(self):
         # Issue #71: reviewer settings come from review-work's review selection

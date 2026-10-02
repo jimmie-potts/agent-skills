@@ -122,3 +122,10 @@ cross-provider reviewer or a required native-control gap, use only the bounded
 [separate-process adapter](process-reviewers.md). The owning environment provisions profiles, as
 [reviewer execution](reviewer-execution.md#discover-provisioned-profiles)
 describes.
+
+For required settings, use [reviewer execution](reviewer-execution.md)'s
+canonical model-setting decision and scope check. A user-stated parent level
+does not automatically declare a reviewer's level. Preserve an explicit
+reviewer declaration separately from requested profile values and qualified
+runtime observations; unknown runtime telemetry creates no extra identity gate.
+Declarations do not qualify received-tool restrictions or other host controls.

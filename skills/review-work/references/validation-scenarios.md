@@ -60,3 +60,13 @@ For the bounded cross-provider policy change, use
 until the independent response. These are scoped routing fixtures, not the
 postponed workflow benchmark or preparation for that benchmark. They launch
 no provider sessions themselves and establish no live host qualification.
+
+## Scoped model-setting declarations
+
+Use `tests/fixtures/workflow-evaluation/model-setting-cases.md` when changing
+launch prompts, declaration scope or reviewer pickup. Withhold
+`model-setting-graders.md` and prior responses from evaluated contexts. Exercise
+unchanged recovery, changed requirements, replacement roles, observed mismatch,
+explicit verified identity and rendered prompts. Retain actual decisions and
+sourced settings; these simulations do not establish runtime identity or host
+enforcement.

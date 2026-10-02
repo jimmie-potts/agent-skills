@@ -232,10 +232,13 @@ Each implementation prompt is one paragraph that:
 - asks the agent to use the deliver-work skill on the live work-item URL;
 - states the model and thinking level the user selected, using the host's
   term (effort for Claude Code, reasoning for Codex);
-- asks the agent to state its model and stop if it differs;
-- tells it to take the level as stated rather than guess it, because an agent
-  cannot reliably read its own effort; never ask it to report or verify its
-  level;
+- declares those selected settings for the coordinator and each named worker
+  or reviewer role, without implying settings for unnamed roles;
+- keeps requested, declared and independently observed settings separate;
+  unavailable runtime observation stays unknown;
+- stops on an observed required-setting mismatch or an unmet explicit
+  verified-identity requirement; never asks an agent to infer its model or
+  report or verify its own effort;
 - states the session type, the worker subagent settings, and authorizes the
   required reviewers by count and model; a cheaper prompt states the cheaper
   start's model and level in the same way;
@@ -246,8 +249,15 @@ Each implementation prompt is one paragraph that:
 For example:
 
 ```text
-Use the deliver-work skill to deliver <work-item URL>. I started this session on Opus at medium effort. State the model you are running and stop if it is not Opus; take the effort as stated rather than guessing it. Run as a one-shot session: implement it yourself without worker subagents, and use two fresh read-only Opus reviewers for deliver-work's required Standards and Specification reviews. The issue's Execution recommendation (assessed <date>) is the basis; if what you find no longer fits it, say so before changing strategy. If deliver-work isn't available here, say so and stop.
+Use the deliver-work skill to deliver <work-item URL>. I started this session on Opus at medium effort. Treat the selected model and level settings in this prompt as my declared launch settings for each role it names. Record requested, declared and independently observed settings separately; unavailable runtime observation stays unknown. Stop on an observed required-setting mismatch or an unmet explicit verified-identity requirement. Run as a one-shot session: implement it yourself without worker subagents, and use two fresh read-only Opus reviewers at medium effort for deliver-work's required Standards and Specification reviews. The issue's Execution recommendation (assessed <date>) is the basis; if what you find no longer fits it, say so before changing strategy. If deliver-work isn't available here, say so and stop.
 ```
+
+The declaration covers only the roles and settings explicitly named in the
+adopted prompt. It is not runtime verification or proof of host enforcement,
+and does not cover unnamed replacements or fallback settings. Retain its
+source and scope across ordinary continuation and recovery; an unchanged,
+still-applicable declaration needs no repeated owner question. Apply the
+canonical deliver-work model-setting decision for changed scope or evidence.
 
 `Investigate first` prompts replace deliver-work with a read-only request: name
 the work-item URL and the question, the evidence to return and the authority

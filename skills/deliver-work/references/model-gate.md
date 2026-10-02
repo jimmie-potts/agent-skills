@@ -2,7 +2,8 @@
 
 Read at pickup, before implementation or delegation, on resume and when setting
 evidence changes. Apply the same decision separately to coordinator, worker and
-reviewer roles; a coordinator's evidence says nothing about another agent.
+reviewer roles. Observations are context-specific; a declaration applies only
+to the roles, contexts and settings its source explicitly covers.
 
 Use [the decision helper](../scripts/model_gate.py) with Python 3 and an explicit
 JSON evidence file: `python3 <skill-directory>/scripts/model_gate.py <input>`.
@@ -68,6 +69,32 @@ Documented aliases use entries with `name`, `alias`, `canonical`, and `source`.
 Supply a qualified mapping's evidence pointer; an alias without proof stays a
 literal mismatch. Mappings are setting-specific, one step only. Never translate
 one provider's effort names to another provider's levels without evidence.
+
+## Retain and recheck declaration scope
+
+In the existing task packet, retain the declaration's exact source or pointer,
+its authority, work/task, covered roles and contexts, selected values, and
+whether it covers one context or explicitly named future roles/replacements.
+A source string identifies this record; it does not authenticate it.
+
+Before preparing a role's input, check that scope against the current assignment.
+Supply only applicable declarations to the helper. Preserve excluded or
+superseded declarations in history with the reason; do not silently discard
+conflicts that still apply. Scope validation is the caller's instruction-level
+responsibility, not a capability of the helper or a new evidence schema.
+
+Reuse a sourced declaration across continuation, compaction or recovery when
+its authority, task, covered role/context and required values still apply.
+Rebuild current observations and rerun the applicable gate; unknown observation
+alone neither invalidates the declaration nor requires another owner question.
+
+Recheck applicability after changed requirements, replacement, authority changes
+or contrary evidence. A declaration for one context cannot satisfy a different
+worker or reviewer. An explicit standing declaration may cover the future roles
+or replacements it names at their selected settings; recheck each against that
+scope. A changed request is not a declaration, and neither model-family labels
+nor a parent's settings establish another role's values. Current observed
+mismatches and explicit verified-identity requirements still stop dependent work.
 
 ## Check an unstarted role without inventing runtime evidence
 

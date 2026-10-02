@@ -126,3 +126,13 @@ For project-owned guide/publication checkpoints, also use the isolated inputs in
 These cases include no-policy, unavailable-policy, read-only, tracker-only, and
 authorized document/publication branches. Reading the shared documentation
 resource must not invoke delivery or expand planning authority.
+
+## Scoped model-setting declarations
+
+Use `tests/fixtures/workflow-evaluation/model-setting-cases.md` when changing
+launch prompts, declaration scope or reviewer pickup. Withhold
+`model-setting-graders.md` and prior responses from evaluated contexts. Exercise
+unchanged recovery, changed requirements, replacement roles, observed mismatch,
+explicit verified identity and rendered prompts. Retain actual decisions and
+sourced settings; these simulations do not establish runtime identity or host
+enforcement.
