@@ -184,9 +184,10 @@ class DeliverWorkStructureTest(unittest.TestCase):
             if path.is_file():
                 self.assertTrue(path.suffix in {'.md', '.yaml'} or
                                 path in {SKILL / 'scripts/model_gate.py',
-                                         SKILL / 'scripts/merge_guard.py'}, str(path))
+                                         SKILL / 'scripts/merge_guard.py',
+                                         SKILL / 'scripts/github_io.py'}, str(path))
         self.assertEqual({p.name for p in (SKILL / 'scripts').iterdir()},
-                         {'model_gate.py', 'merge_guard.py'})
+                         {'model_gate.py', 'merge_guard.py', 'github_io.py'})
 
     def test_shared_resources_are_exposed_to_consumers(self):
         # Stable pointers expose shared contracts without copied definitions.
@@ -808,4 +809,5 @@ class BoundariesTest(unittest.TestCase):
 if __name__ == '__main__':
     subprocess.run([sys.executable, str(ROOT / 'tests/model-gate-test.py')], check=True)
     subprocess.run([sys.executable, str(ROOT / 'tests/merge-guard-test.py')], check=True)
+    subprocess.run([sys.executable, str(ROOT / 'tests/github-io-test.py')], check=True)
     unittest.main()

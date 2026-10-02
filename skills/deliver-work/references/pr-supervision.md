@@ -52,6 +52,11 @@ Process that refreshed state in this order:
    evidence/decision needed. Keep unresolved blockers visible.
 3. Diagnose failed required checks from their logs and changed-code evidence.
 4. Wait for required pending checks/reviews with responsive bounded waits.
+   On GitHub, use [bounded GitHub I/O](github-io.md): discover association before
+   completion, with a caller-supplied time budget. A time-limit receipt is a
+   checkpoint, not success or permission to end an explicitly requested watch.
+   Refresh scope/head before another bounded read-only wait; never rerun a job
+   or repost a comment merely because a wait expired.
 5. Evaluate the user's finish line and hand off or stop as described below.
 
 When feedback requires a commit, apply and validate the authorized fix, commit
