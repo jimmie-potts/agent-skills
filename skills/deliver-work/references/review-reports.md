@@ -209,8 +209,11 @@ page of the destination for the key. A cached or incomplete read proves
 nothing, so the result stays unknown and dependent effects pause.
 
 - One match with the intended content: applied. Record it; do not repeat it.
-- No match after a complete read: not applied. Publish once with fresh
-  prerequisites.
+- No match after a complete read: absent at that read. Before the first
+  attempt, publish once with fresh prerequisites. After a prior attempt,
+  keep the effect unknown until non-application is verified and no attempt
+  remains in flight; absence alone does not establish either. Retry only
+  with refreshed prerequisites and within the existing authority and limits.
 - Several matches for the same key: the earliest is canonical. Record the
   others as duplicates and link only the canonical one; removing them needs
   authority. Parts of one report have distinct keys, so they are never
