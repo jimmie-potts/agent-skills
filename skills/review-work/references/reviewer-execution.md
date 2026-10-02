@@ -16,8 +16,12 @@ thinking, context, tools and profile:
 - Supported: what the current host's tool schema, agent listing or profile
   readback shows it can express. Documentation alone is `documented,
   unverified` until the active host shows the control.
-- Observed: what the host reports, such as returned runtime metadata, a task
-  row, a substitution warning or an agent listing, and a user-stated setting.
+- Declared: an applicable owner declaration or a separately exposed named
+  launch selection, with its source and covered role/context/settings. A
+  successful request alone supplies no declaration.
+- Observed: independently exposed current runtime values from a qualified host
+  source, such as returned runtime metadata or a substitution warning. A task
+  row or agent listing is observation only for what it actually reports.
 - Self-reported: what the reviewer states from its own runtime instructions.
   Never ask a reviewer for its effort.
 - Unknown: everything else. Never fill it from the request.
@@ -32,9 +36,17 @@ request was accepted, not the executing settings.
 A control is mandatory when the user, the project or review-work's boundaries
 require it. The boundaries require a fresh context, read-only conduct and no
 descendant agents. A model, level, profile or enforced restriction is mandatory
-only when an explicit requirement names it. When a mandatory control is
-unsupported, unverifiable or contradicted, do not launch or simulate that
-reviewer: the affected axis is `incomplete`, with the gap named. An unsupported
+only when an explicit requirement names it. For required model and level,
+apply the discovered canonical deliver-work package's `references/model-gate.md`
+before dispatch and on pickup/resume. An applicable sourced declaration can
+satisfy an ordinary required setting with runtime observation unknown; an
+observed required mismatch or unmet explicit verified-identity requirement
+stops dependent review. A missing canonical decision resource blocks that
+required-setting check; do not recreate its rules here.
+
+Declarations establish no host enforcement, tool restriction, freshness or
+independence. When any other mandatory control is unsupported, unverifiable or
+contradicted, do not launch or simulate that reviewer: the affected axis is `incomplete`, with the gap named. An unsupported
 optional control keeps the host's default, is disclosed as a limit and creates
 no new gate.
 
@@ -46,6 +58,14 @@ available path meets an explicit requirement, the axis is `incomplete`. When the
 setting the coordinator cannot control, such as an inherited level or a
 substitution, record a known mismatch; it leaves the axis `incomplete` only
 under an explicit requirement for that setting.
+
+Retain declaration scope and provenance in the existing review input and
+recovery record. Recheck applicability for each role, replacement and changed
+requirement; a parent-only declaration does not cover a reviewer. Reuse an
+unchanged applicable declaration without another owner question. With restricted
+reviewers, put the canonical decision rules and applicable evidence in the
+brief; require its decision and evidence before conditional review work and
+check the returned decision. Do not add tools to perform that check.
 
 ## Preflight before launch
 

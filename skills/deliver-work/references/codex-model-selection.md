@@ -12,8 +12,10 @@ settings only to the extent observable. Do not guess a reasoning enum.
 
 Record requested parameters and actual returned runtime metadata separately.
 A successful spawn establishes the request succeeded, not independent proof of
-the executing model's identity. Disclose unknown identity; handle a verified
-mismatch against explicit requirements before dependent work. Model options
+the executing model's identity. Apply [the model-setting decision](model-gate.md)
+with applicable declarations and current observations. Unknown runtime identity
+does not invalidate an applicable declaration; required observed mismatches and
+explicit verified-identity requirements still stop dependent work. Model options
 alone never prove that the current coordinator is Astra.
 
 Read [worker settings and continuation](codex-worker-selection.md) only for an

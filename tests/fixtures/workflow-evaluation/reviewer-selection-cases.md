@@ -49,9 +49,7 @@ reversible".
 ## RS01: Delivering the shared-navigation item
 
 Request: "Use the deliver-work skill to deliver example/hub#278. I started this
-session on gpt-6.1-sol at medium reasoning. State the model you are running and
-stop if it is not gpt-6.1-sol; take the reasoning level as stated rather than
-guessing it. Run as a one-shot session: implement it yourself without worker
+session on gpt-6.1-sol at medium reasoning. Treat the selected model and level settings in this prompt as my declared launch settings for each role it names. Record requested, declared and independently observed settings separately; unavailable runtime observation stays unknown. Stop on an observed required-setting mismatch or an unmet explicit verified-identity requirement. Run as a one-shot session: implement it yourself without worker
 subagents, and use two fresh read-only independent reviewers for
 deliver-work's required Standards and Specification reviews." The issue has no
 Execution recommendation. The implementation is committed as H1 on B1, and
@@ -82,8 +80,7 @@ consumer search finds no other reader. Assessment: complexity low, uncertainty
 low, impact low, with reliable checks that cover every criterion.
 
 - A: Request: "Use the deliver-work skill to deliver example/app#31. I started
-  this session on gpt-6-luna at medium reasoning. State the model you are
-  running and stop if it is not gpt-6-luna; take the reasoning level as stated.
+  this session on gpt-6-luna at medium reasoning. Treat the selected model and level settings in this prompt as my declared launch settings for each role it names. Record requested, declared and independently observed settings separately; unavailable runtime observation stays unknown. Stop on an observed required-setting mismatch or an unmet explicit verified-identity requirement.
   Run as a one-shot session without worker subagents, and use two fresh
   read-only independent reviewers." The change is committed as H1. Select the
   final round 1 reviewers.
@@ -134,8 +131,7 @@ The host is Claude Code 2.1.283. The `Agent` tool exposes `model` (`sonnet`,
 `isolation`, with no effort parameter. The listing shows `general-purpose`
 with all tools and `Plan` without `Agent`, `Edit` or `Write`, and no
 review-work profile. Request: "Use the deliver-work skill to deliver
-example/hub#278. I started this session on Opus at medium effort. State the
-model you are running and stop if it is not Opus; take the effort as stated.
+example/hub#278. I started this session on Opus at medium effort. Treat the selected model and level settings in this prompt as my declared launch settings for each role it names. Record requested, declared and independently observed settings separately; unavailable runtime observation stays unknown. Stop on an observed required-setting mismatch or an unmet explicit verified-identity requirement.
 Run as a one-shot session without worker subagents, and use two fresh
 read-only independent reviewers for deliver-work's required reviews." The
 implementation is committed as H1. Select the final round 1 reviewers.

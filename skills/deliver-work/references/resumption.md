@@ -39,8 +39,10 @@ alone is not evidence that context was lost.
 Use the fields below within the existing delivery record, not a second ledger
 or required storage format. Link established records instead of copying them.
 Use `unknown`, `none`, or `not applicable` explicitly. An unknown required
-identity or revision prevents acceptance of the dependent artifact, not useful
-independent work.
+task/artifact identity or revision prevents acceptance of the dependent
+artifact, not useful independent work. Apply [model-setting evidence](model-gate.md)
+separately: ordinary required settings may be satisfied by an applicable sourced
+declaration while runtime observation stays unknown.
 Silence about pending effects or earlier activity means `unknown`, not `none`
 or zero. Keep that gap visible until authoritative readbacks establish absence;
 pause only the mutations that depend on resolving it.
@@ -52,7 +54,7 @@ pause only the mutations that depend on resolving it.
 | Ownership | Coordinating writer, current assignment/attempt and worker identity when known, permitted paths/effects, and any pending ownership transfer. Keep private host IDs in private task evidence. |
 | Artifacts | Each brief, proposed patch, accepted artifact and report's location or inline content; producer/task/attempt, source revision, version or digest, and proposed versus applied/accepted state. Record the resulting candidate revision separately after application. |
 | Progress and evidence | Completed and remaining tasks, acceptance evidence and accepted artifact revisions; exact checks/results and reviewed comparison, unresolved findings with owners/dispositions, and evidence that still needs renewal. |
-| Execution history | Existing model/agent/consultation summary, requested versus reported settings and their sources, corrections, effort increases, promotions/replacements and failed attempts. Preserve missing history as unknown. |
+| Execution history | Existing model/agent/consultation summary, requested versus reported settings, declaration sources and covered task/roles/contexts/values, corrections, effort increases, promotions/replacements and failed attempts. Preserve missing history as unknown. |
 | Pending effects | Intent, affected object, expected prior state, guard, known IDs, attempt history and applied/not-applied/partial/unknown result for each uncertain external effect. |
 | Continuation | Last verified checkpoint, next incomplete step, dependencies paused by missing evidence or decisions, and who owns each next action. |
 
@@ -121,7 +123,12 @@ For non-root agents or incomplete/resumed history, use
 earlier participation cannot become an exact count or zero retries. A verified
 direct-only run uses the entrypoint fields.
 
-Before resumed implementation or delegation, refresh each active role through the [model-setting decision](model-gate.md); a saved launch request is not a current observation.
+Before resumed implementation or delegation, refresh each active role through
+the [model-setting decision](model-gate.md). Recheck retained declaration scope
+and rebuild current observations; reuse an unchanged applicable declaration
+without asking again. A saved launch request is not a declaration or a current
+observation. Replacement or changed requirements require a fresh applicability
+check, not automatic inheritance of the previous agent's evidence.
 
 ## Reconcile before continuing
 

@@ -67,6 +67,59 @@ class ModelGateTests(unittest.TestCase):
         self.assertEqual(result['settings'][0]['runtime_verification'], 'unknown')
         self.assertEqual(result['settings'][0]['reason'], 'declaration only')
 
+    def test_scoped_declaration_survives_packet_roundtrip(self):
+        # The caller validates scope and supplies only applicable declarations;
+        # the helper does not authenticate source pointers or scope metadata.
+        packet = dict(task='T1', context='C1', declaration=dict(
+            authority='owner', source='adopted prompt D1', task='T1',
+            contexts=['C1'], values={'model': 'model-a', 'reasoning': 'high'}))
+        packet = json.loads(json.dumps(packet))
+        document = request(declared=[dict(value='model-a', source='D1: T1/C1 model')])
+        document['settings'].append(dict(name='reasoning', value='high',
+            required=True, verified=False, observed=[], requested=[],
+            declared=[dict(value=packet['declaration']['values']['reasoning'],
+                           source='D1: T1/C1 reasoning')]))
+        document = json.loads(json.dumps(document))
+        for phase in ('pickup', 'resume'):
+            document['phase'] = phase
+            calls = []
+            result = gate.run_if_allowed(document, lambda: calls.append('work'))
+            self.assertEqual(result['decision'], 'continue')
+            self.assertEqual(calls, ['work'])
+            self.assertTrue(all(x['runtime_verification'] == 'unknown'
+                                for x in result['settings']))
+        for setting in document['settings']:
+            setting['declared'] = []  # D1 excluded by caller for replacement C2.
+            setting['requested'] = [dict(value=setting['value'], source='new request C2')]
+        calls = []
+        self.assertEqual(gate.run_if_allowed(document, lambda: calls.append(1))
+                         ['decision'], 'ask')
+        self.assertEqual(calls, [])
+
+    def test_changed_requirement_and_standing_role_declarations(self):
+        document = request(name='reasoning', value='medium',
+                           declared=[dict(value='high', source='still-applicable D1')])
+        calls = []
+        self.assertEqual(gate.run_if_allowed(document, lambda: calls.append(1))
+                         ['decision'], 'stop')
+        self.assertEqual(calls, [])
+        document['settings'][0]['declared'] = []  # Owner superseded D1 for this setting.
+        self.assertEqual(gate.evaluate(document)['decision'], 'ask')
+        for role in ('worker-2', 'standards-reviewer-2', 'specification-reviewer-2'):
+            document = request(declared=[dict(value='model-a',
+                source='owner D2 explicitly covers named future roles and replacements')])
+            document['role'] = role
+            calls = []
+            result = gate.run_if_allowed(document, lambda: calls.append(role))
+            self.assertEqual(result['decision'], 'continue')
+            self.assertEqual(calls, [role])
+            self.assertEqual(result['settings'][0]['runtime_verification'], 'unknown')
+            document['settings'][0]['verified'] = True
+            calls.clear()
+            self.assertEqual(gate.run_if_allowed(document, lambda: calls.append(role))
+                             ['decision'], 'stop')
+            self.assertEqual(calls, [])
+
     def test_alias_requires_provenance_and_is_setting_scoped(self):
         document = request(observed=[evidence('alias-a')])
         document['aliases'] = [dict(name='model', alias='alias-a', canonical='model-a', source='qualified provider mapping')]

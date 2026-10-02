@@ -105,3 +105,9 @@ requirements override these defaults; comparable evidence supports only the
 exceptions review selection allows. Different models for the two axes remain
 optional. A fallback for a rejected default stays within the GPT-6 models named
 here, never a GPT-5.x model.
+
+Apply [reviewer execution](reviewer-execution.md)'s canonical model-setting
+decision separately for every reviewer. Selected call parameters remain requests
+unless the owner declares them or the host separately exposes a launch selection.
+Retain applicable declaration scope through recovery and recheck replacements;
+unknown observations are not mismatches. Declarations do not prove host controls.
