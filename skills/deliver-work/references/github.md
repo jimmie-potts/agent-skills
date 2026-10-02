@@ -33,6 +33,14 @@ and delivery evidence, not automatic reopening or a false completion claim.
 References: [Issue closure](https://docs.github.com/en/issues/tracking-your-work-with-issues/administering-issues/closing-an-issue),
 [Projects fields](https://docs.github.com/en/issues/planning-and-tracking-with-projects/understanding-fields/about-single-select-fields).
 
+## Preserve publication and wait evidence
+
+Before publishing text or waiting for CI, read [bounded GitHub I/O](github-io.md).
+Use structured body arguments when available; never interpolate publication text
+into a shell command. The small helper validates body files, reconciles one
+publication attempt and classifies revision-bound check snapshots. It does not
+replace provider reads, project applicability policy or the existing retry owner.
+
 ## Publish, review and merge code
 
 Find an existing PR by verified source, branch, base and ownership before
