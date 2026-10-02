@@ -54,3 +54,9 @@ Keep these kinds of evidence apart:
   tools were shown unable to reach the withheld files.
 - Host discovery and live review: a fresh host session discovering this skill
   and running real reviewers. Static checks and simulations prove neither.
+
+For the bounded cross-provider policy change, use
+`tests/fixtures/review-routing/cases.md` and withhold its `expectations.md`
+until the independent response. These are scoped routing fixtures, not the
+postponed workflow benchmark or preparation for that benchmark. They launch
+no provider sessions themselves and establish no live host qualification.

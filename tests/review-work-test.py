@@ -1014,6 +1014,33 @@ class ReviewerProfileTest(unittest.TestCase):
         self.assertIn('reviewer-execution-graders.md', scenarios)
 
 
+class CrossProviderPolicyTest(unittest.TestCase):
+    def test_routing_guards_and_negative_controls(self):
+        text = ' '.join((SKILL / 'references/cross-provider.md').read_text().lower().split())
+        guards = ('high-impact', 'cosmetic', 'same qualification rules',
+                  'owner-selected settings', 'qualified existing results',
+                  'current committed comparison', 'requirement version',
+                  'mandatory host restriction', 'blocking finding remains open',
+                  'do not keep launching providers', 'actual complete returns',
+                  'no universal provider mandate')
+        for guard in guards:
+            with self.subTest(guard=guard):
+                self.assertIn(guard, text)
+                self.assertNotIn(guard, text.replace(guard, ''))
+
+    def test_routing_cases_have_separate_expected_results(self):
+        directory = ROOT / 'tests/fixtures/review-routing'
+        cases = (directory / 'cases.md').read_text()
+        expectations = (directory / 'expectations.md').read_text()
+        ids = re.findall(r'^## (CP\d+):', cases, re.MULTILINE)
+        self.assertEqual(ids, [f'CP{n:02}' for n in range(1,12)])
+        self.assertEqual(ids, re.findall(r'^\| (CP\d+) \|', expectations, re.MULTILINE))
+        self.assertNotIn('| Required result |', cases)
+        scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
+        self.assertIn('tests/fixtures/review-routing/cases.md', scenarios)
+        self.assertIn('expectations.md', scenarios)
+
+
 def reviewer_table(adapter):
     """Return (condition, default) rows of a host adapter's reviewer table."""
     text = (SKILL / 'references' / adapter).read_text()

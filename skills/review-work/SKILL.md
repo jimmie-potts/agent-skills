@@ -77,9 +77,12 @@ high-impact reviewer floor.
 
 ## Select, brief and run reviewers
 
-Read [review selection](references/review-selection.md), then only the active
-host's reviewer adapter. When native controls cannot meet a requirement or the
-owner explicitly selects cross-provider review, read the optional
+Read [review selection](references/review-selection.md), including
+[selective cross-provider routing](references/cross-provider.md) when impact is
+high, a substantive correctness/requirements/evidence dispute remains, or the
+owner selects it. Then read only the selected execution host's reviewer adapter.
+When native controls cannot meet a requirement, routing selects an eligible
+other-provider reviewer, or the owner explicitly selects that review, read the optional
 [separate-process adapter](references/process-reviewers.md). Reviewers need the
 canonical `code-review` skill; if it is unavailable, report the gap before briefing and do not reconstruct it. Brief
 each reviewer with code-review's assigned-axis mode, its axis rubric, the frozen

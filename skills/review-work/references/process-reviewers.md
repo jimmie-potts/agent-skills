@@ -1,7 +1,9 @@
 # Supervise a separate CLI reviewer
 
-Read only when native review cannot express a required control, or the owner
-explicitly selects cross-provider review. Prefer a suitable native reviewer.
+Read only when native review cannot express a required control,
+[selective routing](cross-provider.md) chooses an eligible other-provider
+reviewer, or the owner explicitly selects cross-provider review. Prefer suitable
+native execution for the selected provider when available.
 This optional Linux adapter lets a Codex coordinator use Claude Code, or a
 Claude Code coordinator use Codex. It never replaces the coordinator, writer,
 authority, mandatory gates, round history or cumulative limits.
