@@ -15,7 +15,7 @@ logical check/matrix entry and failure key, allowance, request intent, provider
 IDs and attempt history. Reconcile authoritative run/job attempts before another
 request; a new run ID or resumed context does not reset the allowance.
 
-An ambiguous report, inline comment, reply or description update is a pending
+An ambiguous report, inline comment, reply, thread resolution or description update is a pending
 external effect too. Before repeating it, reconcile a posted item by its
 identity key and a description update by reading its section back, as
 [review reports](review-reports.md) describes; a duplicate is recorded, not
@@ -47,3 +47,8 @@ Retain open or established waiting tracking state, report the failure and its
 owner, and repair only within the authorized scope. Do not close the issue just
 because merge succeeded, or automatically reopen issues closed by another actor
 without reconciling their disposition.
+
+For thread resolution, reconcile the exact thread's current state and complete
+content under [review reports](review-reports.md#resolve-a-delivery-owned-thread).
+An unresolved state alone does not establish that a delayed request cannot
+still apply.

@@ -26,8 +26,11 @@ These hold at every step. References elaborate them and never relax them.
   for that effect. The delivery request itself authorizes its own review
   evidence on its change review: round reports, inline blocking findings, the
   description's review section, and factual replies about finding states and
-  scoped fixes, within repository policy and narrower user limits. Disputes
-  and thread resolution keep their owner's decision.
+  scoped fixes, within repository policy and narrower user limits. It also
+  covers attributable delivery-owned thread resolution after independent
+  current-candidate fix verification under [review reports](references/review-reports.md#resolve-a-delivery-owned-thread).
+  Human-authored, disputed, unknown-origin and out-of-scope threads retain
+  their owner's disposition; stronger project rules prevail.
 - Ownership: the coordinating root owns repository writes, Git/worktree changes,
   tracking updates, PR publication, merge, and readbacks. Workers and reviewers
   return proposals or evidence without durable effects. Preserve unrelated

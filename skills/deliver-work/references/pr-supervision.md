@@ -33,6 +33,10 @@ repeated appearances of the same published item/version. Reassess edits and new
 follow-ups. Older-head feedback can still apply to the current candidate.
 Record a disposition with evidence rather than treating retrieval as handling.
 Fixing code, replying and resolving a provider thread are separate actions.
+Use [verified delivery-owned resolution](review-reports.md#resolve-a-delivery-owned-thread)
+only after independent current-candidate fix verification and a fresh complete
+thread read. Human/disputed or unattributable content retains owner disposition.
+A resolved flag does not clear new feedback or other merge gates.
 This delivery's own reports and replies are not feedback; publish and
 recognize them under [review reports](review-reports.md).
 
