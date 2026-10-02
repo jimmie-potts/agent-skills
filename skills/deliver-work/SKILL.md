@@ -144,7 +144,11 @@ Read each reference below at its trigger:
   record.
 
 Before implementation or delegation, publish the complete checkpoint fields
-below.
+below. Publish that initial checkpoint once. An ordinary continued turn is not
+a new delivery, context-loss recovery or full preflight. Keep the current
+recovery record and send meaningful deltas under [resumption](references/resumption.md).
+Changed volatile prerequisites still require the relevant fresh reads before
+dependent work.
 
 Use the project's planning method and acceptance criteria; add no specification
 framework or delivery runtime to fit this skill. Load shared skills only for
@@ -268,11 +272,17 @@ back the result and retain its identifier. Repair definite failures within
 scope. For an ambiguous or partial effect, read [recovery](references/recovery.md)
 and suspend dependent mutations until authoritative state is reconciled.
 
-Routine updates give the change, blocker and next action. Expose consequential
-strategy, setting, team or authority changes, failed attempts and capability
-gaps immediately.
+Routine updates give the meaningful change, new blocker or decision request,
+and next action. Expose consequential strategy, setting, team or authority
+changes, failed attempts and capability gaps immediately. Link the current
+recovery record and retained evidence instead of repeating their full contents.
 
-At substantive checkpoints, handoff and final response, open with what needs
+Preserve host-required progress messages, interruption handling and blocked-turn
+or no-progress audits. These instructions never override higher-priority runtime
+requirements. An unchanged check needs no full packet or completion summary;
+do not end a turn solely to manufacture another resumption summary.
+
+At substantive checkpoints, genuine handoff and delivery completion, open with what needs
 the user: decisions, approvals or blocked steps only they can move, or `none`.
 Then give one or two plain sentences on what is delivered, what is blocked and
 what happens next.
