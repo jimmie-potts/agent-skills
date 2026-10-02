@@ -52,6 +52,10 @@ override contradicts them. Evaluate pre-launch and conditional pickup, then
 one covered replacement. Contrast an unnamed fallback at different settings.
 The project separately requires host-enforced reviewer tool restrictions, whose
 received-tool evidence is unavailable. Does D2 satisfy that separate control?
+For a separate-process reviewer, now supply qualified evidence for the empty
+tool set and every other required host control. Keep ordinary model/level
+observations unavailable and D2 applicable. Apply the process adapter's envelope
+acceptance check; then contrast an explicit verified-runtime-identity demand.
 
 ## MG07: Explicit verified identity
 

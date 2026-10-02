@@ -157,10 +157,16 @@ Before accepting that envelope:
 1. Re-read the live source/comparison, authoritative requirements and governing
    policy. Rebuild their packet identity when anything changed. A stale return
    stays incomplete, even if its private packet has not changed on disk.
-2. Verify actual host controls, account mode, substitutions, output completion
-   and any mandatory settings using host evidence. Do not promote reviewer
-   self-reports or the requested launch values to observed settings. Unknown
-   optional metadata narrows the claim; unknown mandatory metadata blocks it.
+2. Verify actual host controls, account mode, substitutions and output completion
+   using host evidence; unknown mandatory host-control evidence blocks acceptance.
+   Evaluate model/level settings through the canonical model gate in
+   [reviewer execution](reviewer-execution.md), after checking declaration scope.
+   An applicable owner declaration can satisfy an ordinary required setting
+   while runtime observation stays unknown. An observed required mismatch or
+   unmet explicit verified-identity requirement still stops acceptance. Do not
+   promote self-reports, declarations or requested values to host observations.
+   Model declarations never satisfy separate host-control requirements; unknown
+   optional metadata narrows the claim.
 3. Check `reviewer-return.json` against the actual `reviewer-return.txt`, raw
    final host return and recorded digest. Reconcile findings, status, coverage
    and all limits. Tool use, publication, writing or descendants exceed the
