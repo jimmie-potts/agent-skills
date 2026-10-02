@@ -38,6 +38,37 @@ because memory could not be written, pending items with what they gate, and
 coordination that another session's owner should add. No line in them starts
 with a bold key.
 
+## Evidence and acceptance details
+
+Keep the keys and their order unchanged. Put evidence-to-claim detail in the
+existing Verification reply section or an optional `### Evidence` subsection
+between Learnings and Handoff. For each claimed stage, include the evidence
+source, observed revision/target, observation time and verification limit.
+Record unavailable current facts as unknown or label earlier observations
+historical. A parseable record validates its shape, never the truth of a claim.
+Do not add a new key, success flag or prose classifier for downstream consumers.
+
+For an owner acceptance handoff, use the existing Handoff prompt. State:
+- current candidate revision and the exact surface/target it applies to;
+- starting condition, using previously approved setup facts from authorized
+  context rather than asking the owner to repeat them;
+- numbered actions with the expected visible observation after each action;
+- the precise resume point, remaining gate, owner and next verification.
+
+Follow the owning preview procedure and capability preflight. A located target
+is not authority to control it; do not contact devices, repair settings or read
+private runtime stores to fill a closeout gap. For an authorized recording,
+show a clear pointer/control marker at each action and allow its visible result
+to settle. If the recording omits the target, marker or expected observation,
+retain that acceptance gap. A recording of a simulator does not prove a physical
+result. A transport acknowledgment cannot establish visible acceptance.
+This reporting change adds no preview-control capability or new UI gate.
+
+Optional memory capture failure does not undo accepted source delivery. Report
+it separately with the existing Learnings and Capture receipt values, follow
+the existing memory-preservation rule, and keep required installation, client
+or physical acceptance pending until its own evidence is satisfied.
+
 ## Reruns
 
 A rerun that writes something posts a second record under the same rules.
