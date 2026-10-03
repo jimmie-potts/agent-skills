@@ -93,10 +93,12 @@ These hold at every step. References elaborate them and never relax them.
 ## Plan, implement and validate
 
 Before deciding readiness and checks, read [work assessment](references/work-assessment.md).
-Assess unclassified work or refresh its planning assessment against current
-sources, including scope fit at pickup. Map acceptance criteria to verification
-and identify conditional reviews and operational handoffs. Preserve the
-project's mandatory gates.
+At every issue pickup, assess current scope and alignment, with or without a
+planning record. Include newly relevant direction, architecture, contracts,
+reuse opportunities and related work under the assessment contract; update the
+existing assessment. Map acceptance criteria to verification and identify
+conditional reviews and operational handoffs. Preserve the project's mandatory
+gates.
 
 At pickup, read the item's Execution recommendation and copy it into the
 Execution record's `Recommended` row. Before implementation or delegation,
@@ -246,13 +248,14 @@ stage-specific sources, targets, observation times and verification limits.
 
 Evaluate all completion conditions. When the owning project declares
 installation or deployment as a completion condition and defines its
-procedure, offer that procedure at a checkpoint after verified merge and
-post-merge CI. Perform it only on the owner's approval of the presented step
-at that checkpoint, or on explicit authorization in the request that names the
-step, which covers only installing or updating this change, never an
-uninstall, rename or retirement. Without a declared procedure, never
-improvise one; report the step to its owner, pending while the item or
-project policy still requires it. Before offering, skipping or recording such
+procedure, prepare the complete step after verified merge and post-merge CI.
+Run it without renewed approval when the current request or an applicable
+owner instruction grants authority covering that step, including scoped
+standing installation authority. A completion condition alone grants no
+permission; preserve narrower requests and ask only for effects outside
+existing authority. Without a declared procedure, never improvise one;
+report the step to its owner, pending while the item or
+project policy still requires it. Before preparing, skipping or recording such
 a step, read [declared completion steps](references/project-discovery.md#declared-completion-steps).
 If a required deployment, installation, physical check or human acceptance
 remains, retain the established waiting/current tracking state and report its

@@ -89,13 +89,26 @@ When an unresolved question governs scope, approach or acceptance, read
 [uncertainty routing](uncertainty-routing.md) to choose its cheapest decisive
 step before detailing the work it governs.
 
-Planning compares each item with the owning project's accepted direction,
-architecture and related backlog before calling it ready. An unsettled
-conflict with an accepted decision leaves the affected work needing
-clarification. At pickup, delivery checks the stored alignment result's
-sources, and the decision and backlog locations within its recorded search
-limit, for changes with the rest of the assessment. It refreshes only what
-changed; it runs no second planning comparison or wider backlog search.
+Before calling an item ready, compare it with the owning project's current
+accepted direction, architecture, contracts, reusable components and patterns,
+dependencies and related open, closed and active work. Repeat this current
+comparison at every issue pickup, even without a stored alignment result, and
+after a material scope or assumption change. Prior planning is a starting
+point, not a limit on the sources or search boundary: include newly relevant
+decisions, implementations and related work since drafting. Scale inspection
+to the affected outcome and integration seams; do not audit the entire backlog
+or restart planning routinely.
+
+Reuse current components and adapt routine implementation details within the
+accepted outcome and authority. Distinguish binding decisions and contracts
+from observed conventions; explain a pattern departure without inventing a
+policy. An unresolved material change to scope, acceptance, compatibility,
+authority or accepted risk needs the owner's decision. Record the affected
+work as needing clarification and continue independent work; during authorized
+unattended work, defer that branch instead of waiting for an owner response.
+Missing evidence stays unknown and cannot establish that an item is obsolete.
+Reconcile duplicate or superseded work only within tracker authority, preserving
+accepted capabilities and dependencies.
 
 These are meanings, not mandated tracker statuses. If both a blocker and a
 clarification exist, report both. Unknown evidence affecting scope, acceptance,
@@ -140,7 +153,7 @@ work document, with:
 - each rating, rationale, evidence, and unknowns;
 - readiness, blockers, unresolved decisions, and bounded investigations with
   their outcomes, including refuted and inconclusive ones;
-- when planning supplied one, the alignment result with its sources,
+- the current alignment result with its sources,
   observation dates and remaining uncertainty;
 - acceptance-to-verification mapping and conditional review/handoff needs;
 - reassessment triggers.
@@ -154,8 +167,10 @@ current copies. If tracker writes are not authorized, report the assessment in
 the response or existing permitted task evidence.
 
 Delivery assesses unclassified work itself; no planning migration is required.
-At pickup, check the stored scope and operating assumptions against current
-sources and refresh only what changed.
+At every pickup, check scope, operating assumptions and alignment against
+current sources, recording the inspected revisions or observation dates and
+the result in the same assessment. An unchanged result can be one concise
+entry; update affected conclusions when evidence changed.
 Refresh on material scope/base changes, disproved assumptions, repeated failure
 without new progress, or blocking findings that expose misunderstood behavior.
 Record what changed, why, and which verification/review requirements it affects.

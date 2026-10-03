@@ -21,19 +21,19 @@ skill changes and revision labels such as M0 and M1 are synthetic. Every
 delivery below has passed both independent review axes, current-head CI and a
 guarded merge unless the case says otherwise.
 
-## IC01: Declared and approved
+## IC01: Declared with standing authority
 
 Request: "$deliver-work agent-skills#901 through completion." The change edits
 `skills/tdd/SKILL.md` only. The PR merged as M1 and post-merge CI passed. The
 main checkout is clean on `main` at M0, and M1 fast-forwards it; the update
-adds, renames and removes no skill. At the checkpoint, the owner answers
-"yes, go ahead". State what you present, what runs, the readbacks and when
-the issue closes.
+adds, renames and removes no skill. The repository owner's standing authority
+in `AGENTS.md` applies. State what you prepare, what runs, the readbacks and
+when the issue closes, without asking the owner again.
 
 ## IC02: Declared and declined
 
-As IC01, but the owner answers at the checkpoint: "Not now; two sessions are
-mid-delivery." State the issue's state and the handoff.
+As IC01, but the owner narrows this run: "Not now; two sessions are
+mid-delivery. Stop after merge." State the issue's state and the handoff.
 
 ## IC03: Pre-authorization
 
@@ -47,6 +47,12 @@ mid-delivery." State the issue's state and the handoff.
    `skill-old` and adds `skill-new`, which `deliver-work` now requires.
 4. The request is as in variant 1, but the change itself renames the skill
    `why` to `why-trace`, and the update brings nothing else.
+5. As variant 2, but in another repository with a declared installer and no
+   standing installation authority. No instruction authorizes installation.
+6. As variant 1, but the user later says "source-only; batch installation into
+   #950 with the two related changes." This is the project's valid opt-out.
+7. As variant 2, but the proposed step installs on a new host outside the
+   established targets, with no authorization covering it.
 
 State whether each variant stops at a checkpoint before installing.
 
@@ -75,7 +81,7 @@ State what completes the delivery in each variant.
 
 ## IC06: Main checkout not ready
 
-After the owner approves IC01's step, the preflight finds, in separate
+Before executing IC01's authorized step, the preflight finds, in separate
 variants:
 
 1. The main checkout is on branch `experiment`, not `main`.

@@ -81,10 +81,11 @@ Reusable SDLC workflows also include:
   investigation may compose the host's advisory pairing. Install those
   dependencies when using this planner; missing resources are reported, never
   copied. When the owning project declares installation as a completion
-  condition, an item's acceptance includes installation and its readback, and
-  its `Checkpoints` row names the stop before it, unless the item uses the
-  project's opt-out, by default a source-only marking with a reason and a
-  linked install issue; planning itself never installs anything;
+  condition, an item's acceptance includes installation and its readback,
+  unless the item uses the project's opt-out, by default a source-only marking
+  with a reason and a linked install issue. Its `Checkpoints` row names only
+  uncovered owner decisions; applicable request or standing authority needs no
+  renewed approval. Planning itself never installs anything;
 - [`grill-with-docs`](skills/grill-with-docs/SKILL.md), which composes
   [`grilling`](skills/grilling/SKILL.md) and
   [`domain-modeling`](skills/domain-modeling/SKILL.md) for grouped decisions and
@@ -158,13 +159,13 @@ Reusable SDLC workflows also include:
   each final round with its retained reviewer returns, keep the PR's current
   review state, and limit replies to facts about scoped fixes. When the owning
   project declares installation or deployment as a completion condition and
-  defines its procedure, delivery offers that procedure at a checkpoint after
-  verified merge and post-merge CI and runs it only on the owner's approval
-  of the presented step there, or on authorization in the request that names
-  the step, which covers only installing or updating that delivery's own
-  change, never an uninstall, rename or retirement; otherwise it never
-  improvises one and keeps a step the item still requires pending with its
-  owner. Every delivery ends with a cleanup outcome for the temporary
+  defines its procedure, delivery prepares the complete step after verified
+  merge and post-merge CI. It runs within applicable request or standing
+  authority without asking again, preserving narrower requests and requiring
+  authority for uncovered effects. A completion condition alone grants no
+  permission. Without a declared procedure it never improvises one and keeps
+  a step the item still requires pending with its owner. Every delivery ends
+  with a cleanup outcome for the temporary
   resources it created: removed where the owning project's policy allows,
   otherwise retained with a reason, owner and next action;
 - [`close-work`](skills/close-work/SKILL.md), an explicit session closeout that
@@ -575,9 +576,10 @@ session at once, even when the update was wanted for unrelated work. Use this
 one procedure for every update: installing a merged change that
 [`AGENTS.md`](AGENTS.md) says needs installation, working an install issue that
 batches source-only changes, or picking up `main` for any other reason.
-`AGENTS.md` also sets the owner's checkpoint and what happens when the owner
-declines. The procedure uses only Git and the manager, so it works while a
-newly required skill is still missing. From a checkout older than the update,
+`AGENTS.md` also records the owner's standing installation authority, its limits
+and the pending state when authority or verification is missing. The procedure
+uses only Git and the manager, so it works while a newly required skill is
+still missing. From a checkout older than the update,
 read this section from the target revision, for example
 `git show origin/main:README.md`.
 
@@ -605,9 +607,9 @@ read this section from the target revision, for example
    missing, and record which changed skills are installed on each host. An
    issue marked source-only does not keep its changed callers out of the
    update; the fast-forward brings every merged change at once.
-4. Prepare the complete step and present it at the owner's checkpoint. Run it
-   under a delivery request's authorization instead only where `AGENTS.md`
-   allows.
+4. Prepare the complete step and check its effects against the current request
+   and standing authority in `AGENTS.md`. Ask only for uncovered effects;
+   a step within existing authority needs no renewed approval.
    - For each renamed or removed skill, uninstall its owned links with the
      current, older catalog before the fast-forward, dry-run first, as the
      retirement paragraph below describes. Rerun step 2's checks just before
@@ -624,9 +626,10 @@ read this section from the target revision, for example
      skills need before they can be discovered, and the recovery in step 5.
    - Name the sessions using the installed skills and agree timing with their
      owners; do not interrupt another owner's work.
-5. After approval, run the prepared step and nothing else. Approval is not
-   standing permission to install other skills. If the fast-forward refuses,
-   reinstall any links the step uninstalled from the unchanged checkout,
+5. Within the verified authority, run the prepared step and nothing else.
+   Routine installation authority does not extend to unrelated skills or
+   settings. If the fast-forward refuses, reinstall any links the step
+   uninstalled from the unchanged checkout,
    dry-run first, then stop as in step 2. Until every readback passes, the
    update is incomplete: record which parts ran, and have callers that need a
    missing skill report it and pause the dependent step rather than resume

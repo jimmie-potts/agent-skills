@@ -226,8 +226,9 @@ class PlanWorkStructureTest(unittest.TestCase):
         entry = ' '.join((SKILL / 'SKILL.md').read_text().split())
         for rule in ('declares installation or deployment as a completion '
                      'condition', "the item's acceptance includes that step "
-                     'and its readback by default', "recommendation's "
-                     '`Checkpoints` row names the stop before it',
+                     'and its readback by default', 'Record applicable request or '
+                     'standing authority', "recommendation's `Checkpoints` row "
+                     'names only uncovered owner decisions',
                      "use the project's declared opt-out or, by default, be "
                      'marked source-only, but only with a reason and a link to '
                      'the install issue', 'Write no blanket exclusion',
@@ -237,8 +238,8 @@ class PlanWorkStructureTest(unittest.TestCase):
                 self.assertIn(rule, entry)
         reference = ' '.join(
             (SKILL / 'references/execution-recommendations.md').read_text().split())
-        self.assertIn('including the stop before an installation or deployment '
-                      "step that the item's acceptance includes", reference)
+        self.assertIn('including any uncovered authority for an installation or '
+                      'deployment step in acceptance', reference)
         scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
         self.assertIn('IC11 to IC13', scenarios)
         self.assertIn('installation-graders.md', scenarios)

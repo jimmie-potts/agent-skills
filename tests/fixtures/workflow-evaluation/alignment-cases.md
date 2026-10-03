@@ -86,6 +86,14 @@ merge. Do not implement.
 - Variant B: since planning, the owner accepted ADR-012, which requires every
   bulk account write to run as a queued `AccountStore` job. The account code
   and the finch backlog are unchanged.
+- Variant C: a newly merged item introduced `AccountStore.importBatch` in a
+  component absent from the original source list. It meets finch#41's accepted
+  behavior, audit contract and performance criteria, without changing the
+  authorized outcome. The old plan proposed a separate importer.
+- Variant D: a newer accepted direction replaces bulk import with an external
+  service that omits finch#41's required audit events. No owner decision resolves
+  that acceptance conflict. An independent typo correction is also authorized;
+  this run is unattended and must not wait for an owner response.
 
 ## 6. Superseded and conflicting backlog items
 

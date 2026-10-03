@@ -353,12 +353,10 @@ class DeliverWorkStructureTest(unittest.TestCase):
         declaration = flat(section(agents, '## Installation'))
         for rule in ('is complete only after it is installed and its readback '
                      'passes', 'source-only, with a reason and a link to the '
-                     'install issue', 'Ask the owner at a checkpoint before '
-                     'the fast-forward or install, unless the delivery request '
-                     'names that step', 'covers only a step that installs or '
-                     "updates its own change's skills", 'Present the step at '
-                     'the checkpoint anyway when it would uninstall, rename or '
-                     "retire any skill, including the change's own",
+                     'install issue', 'grants standing authority for routine '
+                     'installation or update', 'without renewed approval',
+                     'Preserve narrower read-only, planning-only or source-only '
+                     'requests', 'does not cover uninstall, rename or retirement',
                      'the issue stays open'):
             with self.subTest(rule=rule):
                 self.assertIn(rule, declaration)
@@ -382,8 +380,7 @@ class DeliverWorkStructureTest(unittest.TestCase):
                      'catalog before the fast-forward',
                      "Rerun step 2's checks just before the uninstall",
                      'A local change inside a skill the update changes or adds',
-                     "Run it under a delivery request's authorization instead "
-                     'only where `AGENTS.md` allows.',
+                     'a step within existing authority needs no renewed approval',
                      '`git merge --ff-only origin/main`', '--dry-run',
                      '`worker-with-fable` for Claude Code',
                      '`worker-with-astra` for Codex',
@@ -399,45 +396,37 @@ class DeliverWorkStructureTest(unittest.TestCase):
         # unrelated local change is preserved.
         self.assertNotIn('`git status --short -- skills/` is empty', procedure)
 
-    def test_declared_completion_step_is_offered_at_a_checkpoint(self):
+    def test_declared_completion_step_uses_scoped_authority(self):
         entry = (SKILL / 'SKILL.md').read_text()
         completion = flat(section(entry, '## Merge and verify completion'))
         for rule in ('declares installation or deployment as a completion '
-                     'condition', 'at a checkpoint after verified merge and '
-                     "post-merge CI", "only on the owner's approval of the "
-                     'presented step at that checkpoint, or on explicit '
-                     'authorization in the request that names the step, which '
-                     'covers only installing or updating this change, never an '
-                     'uninstall, rename or retirement', 'never improvise one',
-                     'If a required '
-                     'deployment, installation',
+                     'condition', 'after verified merge and post-merge CI',
+                     'current request or an applicable owner instruction',
+                     'scoped standing installation authority',
+                     'A completion condition alone grants no permission',
+                     'preserve narrower requests', 'never improvise one',
+                     'If a required deployment, installation',
                      '(references/project-discovery.md#declared-completion-steps)'):
             with self.subTest(rule=rule):
                 self.assertIn(rule, completion)
-        # Only the request's authorization is limited; the owner's approval
-        # covers whatever step the checkpoint presented.
-        self.assertIn("the owner's approval of the presented step", completion)
-        self.assertNotIn('either covers only', completion)
         discovery = (SKILL / 'references/project-discovery.md').read_text()
         row = next(line for line in discovery.splitlines()
                    if line.startswith('| Completion |'))
         for term in ('installation', '#declared-completion-steps', 'checkpoint',
-                     'opt-out'):
+                     'standing authority', 'opt-out'):
             self.assertIn(term, row)
         steps = flat(section(discovery, '## Declared completion steps'))
-        for rule in ('**Declared:**', 'Present it at the checkpoint and wait',
-                     '**Pre-authorized:**',
-                     'a finish line such as "through completion" does not',
-                     'It covers only a step that installs or updates this '
-                     "delivery's own change",
-                     'Present the prepared step at the checkpoint anyway when '
-                     'it would uninstall, rename or retire any resource, '
-                     "including this change's own",
-                     'run exactly the step presented or authorized and nothing '
-                     'else',
-                     '**Declined, or the owner is unavailable:** keep the item '
-                     'open', '**Stopped:**', 'Never stash, reset, switch '
-                     'branches', '**Interrupted:** the step stays incomplete',
+        for rule in ('**Declared:**', 'Check the complete step against existing '
+                     'authority', '**Authorized:**', 'Record that source and '
+                     'its scope', 'without asking again',
+                     'Honor a narrower current request', '**Uncovered effects:**',
+                     'a new target, uninstall, rename or retirement',
+                     'unrelated resources', 'unless its scope explicitly '
+                     'includes those effects',
+                     '**Declined, or required authority is unavailable:** keep '
+                     'the item open', '**Stopped:**',
+                     'Never stash, reset, switch branches',
+                     '**Interrupted:** the step stays incomplete',
                      "**Opted out:** when the item uses the project's declared "
                      'opt-out', 'name the install issue, or the follow-up',
                      'A marking that does not meet the rule is not an opt-out',
@@ -536,19 +525,18 @@ class DeliverWorkStructureTest(unittest.TestCase):
                          [f'D{n}' for n in range(1, 11)])
         self.assertRegex(flat(section(cases, '## IC03: Pre-authorization')),
                          r' 3\. .*removes the skill')
-        # A named request never covers an uninstall, rename or retirement,
-        # even the change's own (owner decision, #99).
+        # This fixture's ordinary installation authority excludes retirement.
+        # Other projects must evaluate their actual authority, not infer it.
         pre_authorized = next(line for line in graders.splitlines()
                               if line.startswith('| IC03 |'))
         self.assertIn('Variant 4:', pre_authorized)
-        rename = pre_authorized.split('Variant 4:', 1)[1]
+        rename = pre_authorized.split('Variant 4:', 1)[1].split('Variant 5:', 1)[0]
         self.assertIn('at the checkpoint and wait', rename)
         self.assertNotIn('without a checkpoint', rename)
         catalog = flat((ROOT / 'README.md').read_text())
-        self.assertIn("covers only installing or updating that delivery's own "
-                      'change, never an uninstall, rename or retirement',
-                      catalog)
-        self.assertIn("the owner's approval of the presented step", catalog)
+        self.assertIn('applicable request or standing authority without asking '
+                      'again', catalog)
+        self.assertIn('A completion condition alone grants no permission', catalog)
         for path in (ROOT / 'AGENTS.md',
                      SKILL / 'references/project-discovery.md'):
             with self.subTest(path=path.name):

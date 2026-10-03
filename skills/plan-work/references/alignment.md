@@ -81,8 +81,9 @@ separate alignment ledger.
 
 ## Leave delivery gates unchanged
 
-Delivery treats the stored alignment result under the assessment contract's
-pickup refresh and runs no second planning comparison. Its independent
-Standards and Specification reviews are unchanged. Planning changes no project
-architecture, style rule or backlog content except through authorized
-publication.
+At every pickup, delivery follows the assessment contract's current comparison,
+using this planning result as a starting point and including newly relevant
+sources beyond the earlier search boundary. It updates the existing assessment
+without restarting planning routinely. Its independent Standards and
+Specification reviews are unchanged. Planning changes no project architecture,
+style rule or backlog content except through authorized publication.
