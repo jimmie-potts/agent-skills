@@ -81,10 +81,11 @@ Reusable SDLC workflows also include:
   investigation may compose the host's advisory pairing. Install those
   dependencies when using this planner; missing resources are reported, never
   copied. When the owning project declares installation as a completion
-  condition, an item's acceptance includes installation and its readback, and
-  its `Checkpoints` row names the stop before it, unless the item uses the
-  project's opt-out, by default a source-only marking with a reason and a
-  linked install issue; planning itself never installs anything;
+  condition, an item's acceptance includes installation and its readback,
+  unless the item uses the project's opt-out, by default a source-only marking
+  with a reason and a linked install issue. Its `Checkpoints` row names only
+  uncovered owner decisions; applicable request or standing authority needs no
+  renewed approval. Planning itself never installs anything;
 - [`grill-with-docs`](skills/grill-with-docs/SKILL.md), which composes
   [`grilling`](skills/grilling/SKILL.md) and
   [`domain-modeling`](skills/domain-modeling/SKILL.md) for grouped decisions and
