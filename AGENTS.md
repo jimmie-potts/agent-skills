@@ -5,6 +5,22 @@ locally by Codex and Claude Code. Keep project-specific skills in the project
 that owns them. Plugin publishing, remote distribution, automatic updates, and
 organization-wide governance are out of scope.
 
+## Shared delivery ownership
+
+When this repository participates in the installed nightly queue, start a
+manual delivery through `nightly_queue.py claim-run` before its first write and
+keep the claim for the whole delivery. Read the established host's procedure
+at `~/.dotfiles/docs/nightly-queue.md#shared-manual-claims` for the command,
+handoff and recovery rules. This also applies while scheduling is paused or
+disabled. Read-only work needs no claim, and a worker assigned under an existing
+supervisor claim must not acquire another one.
+
+Before activating this repository, finish or explicitly hand off unwrapped
+writers. A client that cannot be wrapped, including Desktop, is not covered by
+this instruction alone. Unknown ownership or a missing installed procedure
+leaves delivery pending; quiet output does not establish a handoff. This local
+repository rule does not change the portable skills or authorize installation.
+
 ## Catalog rules
 
 - Put each production skill at `skills/<skill-name>/SKILL.md`. Direct children
