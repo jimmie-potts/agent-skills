@@ -167,8 +167,9 @@ issue description or authoritative work document, in this order:
 3. A two-host table with columns `Claude Code` and `Codex` and the rows
    `Model`, `Thinking level`, `Session type`, `Subagents`, `Reviewers` and
    `Availability`. Add a `Checkpoints` row only when the session should stop at
-   named decisions, including the stop before an installation or deployment
-   step that the item's acceptance includes. `Subagents` gives each proposed
+   named decisions, including any uncovered authority for an installation or
+   deployment step in acceptance. Applicable standing authority needs no
+   renewed approval checkpoint. `Subagents` gives each proposed
    implementation worker's model and level from the canonical worker policy,
    or `None`. `Reviewers` gives the two fresh read-only final reviewers per
    host from review-work's reviewer policy for the item's impact and review
