@@ -180,6 +180,15 @@ class InstalledSkills(unittest.TestCase):
         self.assertEqual(result['reason'],'trusted-input-changed')
         self.assertEqual(self.command('-C',str(self.checkout),'rev-parse','HEAD').strip(),self.previous)
 
+    def test_writable_toolcache_path_remains_unqualified(self):
+        cache=self.root/'hostedtoolcache/Python/bin';cache.mkdir(parents=True)
+        cache.chmod(0o777)
+        self.config['path']=str(cache)+os.pathsep+self.config['path'];self.save_config()
+        result=self.run_adapter()
+        self.assertEqual(result['reason'],'unsafe-path')
+        self.assertNotEqual(result['status'],'installed')
+        self.assertFalse((self.root/'state').exists())
+
     def test_saved_receipt_does_not_hide_later_loading_corruption(self):
         self.assertEqual(self.run_adapter()['status'],'installed')
         (self.checkout/'skills/valid-skill/SKILL.md').write_text('unverified replacement')
