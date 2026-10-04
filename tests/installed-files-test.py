@@ -187,6 +187,20 @@ class InstalledSkills(unittest.TestCase):
         self.assertNotEqual(result['status'],'installed')
         self.assertEqual(result['reason'],'installed-files-incomplete')
 
+    def test_reconcile_rejects_helper_without_owner_execute_when_git_hides_mode(self):
+        scripts=self.source/'skills/valid-skill/scripts';scripts.mkdir()
+        helper=scripts/'example.sh';helper.write_text('#!/bin/bash\nprintf "fixture\\n"\n');helper.chmod(0o755)
+        skill=self.source/'skills/valid-skill/SKILL.md'
+        skill.write_text(skill.read_text()+'\nUse [the helper](scripts/example.sh) when requested.\n')
+        self.publish();self.config['allowedPaths'].append('skills/valid-skill/scripts/example.sh');self.save_config()
+        self.assertEqual(self.run_adapter()['status'],'installed')
+        self.command('-C',str(self.checkout),'config','core.filemode','false')
+        (self.checkout/'skills/valid-skill/scripts/example.sh').chmod(0o645)
+        self.assertEqual(self.command('-C',str(self.checkout),'status','--porcelain'),'')
+        result=self.run_adapter('reconcile')
+        self.assertNotEqual(result['status'],'installed')
+        self.assertEqual(result['reason'],'installed-files-incomplete')
+
     def test_hidden_dirty_change_after_plan_refuses_before_durable_intent(self):
         real_prepare=adapter.prepare;path=self.checkout/'skills/valid-skill/SKILL.md'
         def changed(*args):

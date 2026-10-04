@@ -188,7 +188,7 @@ def record(root, name):
     path = owned(Path(root, name))
     require(path.stat().st_size <= LIMIT, 'file-too-large')
     data = path.read_bytes()
-    return {'path': name, 'sha256': sha(data), 'size': len(data), 'mode': '100755' if path.stat().st_mode & 0o111 else '100644'}
+    return {'path': name, 'sha256': sha(data), 'size': len(data), 'mode': '100755' if path.stat().st_mode & stat.S_IXUSR else '100644'}
 
 
 def dirty(config, deadline):
