@@ -58,6 +58,16 @@ jobs:
       - name: Test skill management
         run: bash tests/manage-skills-test.sh
 
+      - name: Test guarded existing-skill installation
+        run: |
+          # Hosted toolcache permissions are unsuitable for an installed-tool
+          # fixture. Use private interpreter copies; keep production guards.
+          unset LD_LIBRARY_PATH PYTHONHOME PYTHONPATH
+          adapter_venv="$RUNNER_TEMP/agent-skills-adapter-tests"
+          /usr/bin/python3 -m venv --copies "$adapter_venv"
+          "$adapter_venv/bin/python3" -m pip install -r requirements-dev.txt
+          "$adapter_venv/bin/python3" tests/installed-files-test.py
+
       - name: Check patch whitespace
         env:
           PATCH_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}

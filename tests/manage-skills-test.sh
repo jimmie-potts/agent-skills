@@ -112,6 +112,15 @@ after_stat="$(stat -c '%i:%Y:%Z' -- "$ACTIVE_CODEX/valid-skill")"
   fail_test "idempotent install changed the existing Codex symlink"
 assert_output_contains "already installed"
 
+# Existing-only updates never create a missing link or its destination root.
+expect_success "existing-only verifies both existing links" \
+  run_manager install --agent both --existing-only valid-skill
+ACTIVE_CODEX="$SPACE_ROOT/existing only missing/codex skills"
+expect_failure "existing-only refuses a missing link" \
+  run_manager install --agent both --existing-only valid-skill
+assert_output_contains "existing-only requires correctly installed links"
+[[ ! -e "$ACTIVE_CODEX" ]] || fail_test "existing-only created a destination root"
+
 # 4. Dry-run does not even create destination roots.
 ACTIVE_CODEX="$SPACE_ROOT/case 4/codex skills"
 ACTIVE_CLAUDE="$SPACE_ROOT/case 4/claude skills"

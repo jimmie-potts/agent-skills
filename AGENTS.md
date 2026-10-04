@@ -118,6 +118,7 @@ python3 tests/pstack-analysis-skills-test.py
 python3 tests/pstack-workflow-skills-test.py
 python3 tests/unslop-test.py
 python3 tests/writing-for-agents-test.py
+python3 tests/installed-files-test.py
 bash -n scripts/manage-skills.sh
 bash -n tests/manage-skills-test.sh
 bash tests/manage-skills-test.sh
