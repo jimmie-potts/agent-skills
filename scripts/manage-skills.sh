@@ -9,7 +9,7 @@ SOURCE_DIR_RAW="${AGENT_SKILLS_SOURCE_DIR:-$REPO_ROOT/skills}"
 usage() {
   printf '%s\n' \
     "Usage:" \
-    "  ./scripts/manage-skills.sh install   --agent codex|claude|both [--dry-run] [--all | <skill>...]" \
+    "  ./scripts/manage-skills.sh install   --agent codex|claude|both [--dry-run] [--existing-only] [--all | <skill>...]" \
     "  ./scripts/manage-skills.sh uninstall --agent codex|claude|both [--dry-run] [--all | <skill>...]" \
     "  ./scripts/manage-skills.sh status    --agent codex|claude|both" \
     "  ./scripts/manage-skills.sh validate"
@@ -91,6 +91,7 @@ shift
 AGENT=""
 SELECT_ALL=0
 DRY_RUN=0
+EXISTING_ONLY=0
 declare -a REQUESTED_SKILLS=()
 
 while [[ $# -gt 0 ]]; do
@@ -113,6 +114,10 @@ while [[ $# -gt 0 ]]; do
       DRY_RUN=1
       shift
       ;;
+    --existing-only)
+      EXISTING_ONLY=1
+      shift
+      ;;
     -h|--help)
       usage
       exit 0
@@ -126,6 +131,10 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+if [[ $EXISTING_ONLY -eq 1 && "$ACTION" != "install" ]]; then
+  fail "--existing-only is supported only for install."
+fi
 
 case "$AGENT" in
   codex|claude|both)
@@ -359,6 +368,11 @@ for ((root_index = 0; root_index < ${#DESTINATION_ROOTS[@]}; root_index++)); do
     OPERATION_DESTINATIONS+=("$destination")
     OPERATION_STATES+=("$CLASSIFICATION")
 
+    if [[ $EXISTING_ONLY -eq 1 && "$CLASSIFICATION" != "correct" ]]; then
+      printf "ERROR: existing-only requires correctly installed links: %s '%s'; preserved.\n" "$label" "$skill" >&2
+      conflicts=1
+    fi
+
     case "$ACTION:$CLASSIFICATION" in
       install:correct|install:missing|uninstall:correct|uninstall:missing)
         ;;
@@ -457,7 +471,7 @@ if [[ $conflicts -ne 0 ]]; then
   fail "preflight found conflicts; no destination was changed."
 fi
 
-if [[ $ACTION == "install" && $DRY_RUN -eq 0 ]]; then
+if [[ $ACTION == "install" && $DRY_RUN -eq 0 && $EXISTING_ONLY -eq 0 ]]; then
   for root in "${DESTINATION_ROOTS[@]}"; do
     mkdir -p -- "$root"
   done

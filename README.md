@@ -329,6 +329,7 @@ python3 tests/pstack-analysis-skills-test.py
 python3 tests/pstack-workflow-skills-test.py
 python3 tests/unslop-test.py
 python3 tests/writing-for-agents-test.py
+python3 tests/installed-files-test.py
 bash -n scripts/manage-skills.sh
 bash -n tests/manage-skills-test.sh
 bash tests/manage-skills-test.sh
@@ -361,9 +362,15 @@ either `--all` or one or more skill names; omission never means “all.”
 ./scripts/manage-skills.sh install --agent both --all
 
 ./scripts/manage-skills.sh install --agent both --dry-run <skill-name>
+./scripts/manage-skills.sh install --agent both --existing-only <skill-name>
 ./scripts/manage-skills.sh uninstall --agent both --dry-run <skill-name>
 ./scripts/manage-skills.sh uninstall --agent both <skill-name>
 ```
+
+`install --existing-only` verifies already-correct links without creating links
+or destination roots. It refuses missing or conflicting targets and preserves
+the manager's adjacent ownership checks. The guarded adapter below uses this
+mode after updating existing skill files.
 
 Defaults and discovery:
 
@@ -654,6 +661,85 @@ read this section from the target revision, for example
    required skill. Run a fresh-session behavioral check of the changed skills
    only when the issue asks for one. Link readback alone does not establish
    reviewer quality or optional profile qualification.
+
+#### Guarded updates of existing skills
+
+`python3 scripts/installed_skills.py --config <private-config.json>` implements
+the existing-skill part of this procedure for the shared supervisor. It accepts
+one JSON stdin request:
+
+```json
+{"schemaVersion":1,"operation":"install","repository":"jimmie-potts/agent-skills","issue":140,"merge":"<full SHA>","owner":"<named owner>","deadline":1234567890,"evidenceDirectory":"<private empty directory>"}
+```
+
+The trusted, owner-only configuration has these exact fields:
+
+```json
+{"schemaVersion":1,"repository":"jimmie-potts/agent-skills","owner":"<named owner>","checkout":"<canonical main checkout>","stateDirectory":"<private journal>","evidenceRoot":"<private evidence root>","git":"<resolved Git executable>","path":"<qualified Python bin>:/usr/bin:/bin","allowedPaths":["skills/example/SKILL.md"],"protectedPaths":[],"requiredSkills":["example"],"links":[{"agent":"codex","skill":"example","path":"<existing Codex root>/example"},{"agent":"claude","skill":"example","path":"<existing Claude root>/example"}],"files":{"<trusted tool or manager file>":"<SHA256>"}}
+```
+
+Keep the configuration and both disjoint private roots outside the checkout.
+Each request supplies an empty owner-only directory under `evidenceRoot`.
+Pin the adapter, configuration and interpreter in the supervisor's fixed adapter
+entry. The owning configuration also pins the canonical manager and validator,
+Git and every tool named in the adapter's `TOOLS` inventory. `path` contains only
+qualified existing tool directories; its Python needs the existing PyYAML
+dependency. The adapter supplies its own manager source/target environment and
+does not inherit Python search paths or shell startup settings.
+
+`requiredSkills` and `links` declare the reviewed dependencies and supported
+installed targets. Refresh that declaration when reviewing the selected issue's
+complete update; the adapter cannot infer semantic dependencies from a prompt.
+Unknown dependency coverage stays pending. Each required skill must exist in
+the reviewed catalog and have its declared existing links. An undeclared owned
+link for a required skill on either configured host refuses the update.
+
+The adapter checks canonical main, the owning origin and the complete incoming
+bundle. It fetches main, proves ancestry, and fast-forwards only the exact
+requested merge. `allowedPaths` is an exact file inventory under `skills/`,
+`tests/` or `docs/`, including every tracked file in each affected skill.
+New, renamed or removed skills, removed resources, missing links and unsupported
+paths remain pending. Affected skills must be clean; unrelated dirty bytes and
+index entries must survive unchanged. No stashing, reset, rollback, copying
+installer or automatic discovery follows a refusal.
+
+Root instructions, `scripts/`, the active `deliver-work`, `review-work`,
+`code-review`, `plan-work`, `tdd`, `writing-for-agents` and `unslop` packages,
+pinned dependencies and configured `protectedPaths` require the established
+stopped boundary. Configure any other active policies there too. Git hooks and
+filesystem-monitor hooks are disabled only for the fixed installer Git commands
+to avoid executing local or candidate hook code. Attribute-driven processing is
+unsupported. Codex/Claude agent hooks and permissions are unchanged.
+
+The existing manager validates the catalog, reports status on both configured
+hosts and performs `install --existing-only`, dry-run first. The retained
+`installed-files/1.0` receipt binds repository, issue, owner, exact target, plan
+hash, included commits, complete affected-skill bytes, installed-link identity,
+configuration hash and preserved dirty-state hash. Its `readback` contains
+`kind:"installed-files"`, exact `revision`, `files`, `links`,
+`preservedDirtySha256`, and `managerStatus` for `codex` and `claude`, each with
+`status:"correct"` and the manager-output SHA256. Canonical plan/dirt hashes use
+Python's sorted compact JSON with default ASCII escaping, encoded as UTF-8.
+
+Success returns the supervisor's `readbackKind:"installed-files"` response with
+matching repository/merge/owner, `installedRevision` and `{path,sha256}` receipt.
+It makes no running-process or health claim. The owning closeout adapter must
+validate the semantic receipt before issue completion. A known pre-dispatch
+refusal returns `status:"blocked",effects:"none"`; uncertain effects retain the
+journal and ownership.
+
+`operation:"reconcile"` reads only an existing owned plan and current
+checkout/link/manager status. It can write private proof of an observed result,
+but never fetches, merges, installs or recreates a link. A lost fast-forward
+response therefore cannot trigger a second update. An unobserved or mismatched
+result stays uncertain. New skills and newly required missing links still need
+the fresh-session discovery and owner-coordinated procedure above; this adapter
+does not provide that acceptance.
+
+Run `python3 tests/installed-files-test.py` with the other required checks. Its
+real Git and manager fixtures use disposable repositories and skill targets.
+On WSL, set `TMPDIR` to a repository `.local/scratch/` directory. Source tests do
+not qualify the personal installation or activate scheduling.
 
 `deliver-work` replaces `deliver-jira-work` and `github-delivery` without aliases.
 Update calls in consuming project instructions and inspect manager status for
