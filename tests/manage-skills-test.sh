@@ -80,9 +80,11 @@ assert_symlink_to() {
 }
 
 run_manager() {
+  local grok_root="${ACTIVE_GROK:-$SPACE_ROOT/unused grok skills}"
   AGENT_SKILLS_SOURCE_DIR="$SOURCE_CATALOG" \
     CODEX_SKILLS_DIR="$ACTIVE_CODEX" \
     CLAUDE_SKILLS_DIR="$ACTIVE_CLAUDE" \
+    GROK_SKILLS_DIR="$grok_root" \
     "$MANAGER" "$@"
 }
 
@@ -373,6 +375,117 @@ ACTIVE_CODEX="$SPACE_ROOT/validate command/codex skills"
 ACTIVE_CLAUDE="$SPACE_ROOT/validate command/claude skills"
 expect_success "manager validate delegates to catalog validation" \
   run_manager validate
+
+# 15. Grok is a first-class --agent target; both never folds it in.
+ACTIVE_CODEX="$SPACE_ROOT/grok case 1/codex skills"
+ACTIVE_CLAUDE="$SPACE_ROOT/grok case 1/claude skills"
+ACTIVE_GROK="$SPACE_ROOT/grok case 1/grok skills"
+expect_success "install one valid skill for Grok" \
+  run_manager install --agent grok valid-skill
+assert_symlink_to "$ACTIVE_GROK/valid-skill" "$SOURCE_CATALOG/valid-skill"
+[[ "$(readlink -- "$ACTIVE_GROK/valid-skill")" = /* ]] ||
+  fail_test "Grok installer did not create an absolute symlink"
+[[ ! -e "$ACTIVE_CODEX" && ! -L "$ACTIVE_CODEX" ]] ||
+  fail_test "Grok install created a Codex destination"
+[[ ! -e "$ACTIVE_CLAUDE" && ! -L "$ACTIVE_CLAUDE" ]] ||
+  fail_test "Grok install created a Claude destination"
+
+ACTIVE_CODEX="$SPACE_ROOT/both excludes grok/codex skills"
+ACTIVE_CLAUDE="$SPACE_ROOT/both excludes grok/claude skills"
+ACTIVE_GROK="$SPACE_ROOT/both excludes grok/grok skills"
+expect_success "both still installs only Codex and Claude" \
+  run_manager install --agent both valid-skill
+assert_symlink_to "$ACTIVE_CODEX/valid-skill" "$SOURCE_CATALOG/valid-skill"
+assert_symlink_to "$ACTIVE_CLAUDE/valid-skill" "$SOURCE_CATALOG/valid-skill"
+[[ ! -e "$ACTIVE_GROK" && ! -L "$ACTIVE_GROK" ]] ||
+  fail_test "both created a Grok destination root"
+
+ACTIVE_CODEX="$SPACE_ROOT/grok dry-run/codex skills"
+ACTIVE_CLAUDE="$SPACE_ROOT/grok dry-run/claude skills"
+ACTIVE_GROK="$SPACE_ROOT/grok dry-run/grok skills"
+expect_success "Grok install dry-run performs no mutation" \
+  run_manager install --agent grok --dry-run valid-skill
+[[ ! -e "$ACTIVE_GROK" && ! -L "$ACTIVE_GROK" ]] ||
+  fail_test "Grok dry-run created the destination root"
+assert_output_contains "DRY-RUN"
+
+ACTIVE_CODEX="$SPACE_ROOT/grok existing/codex skills"
+ACTIVE_CLAUDE="$SPACE_ROOT/grok existing/claude skills"
+ACTIVE_GROK="$SPACE_ROOT/grok existing/grok skills"
+expect_success "prepare Grok link for existing-only" \
+  run_manager install --agent grok valid-skill
+expect_success "existing-only verifies a Grok link" \
+  run_manager install --agent grok --existing-only valid-skill
+ACTIVE_GROK="$SPACE_ROOT/grok existing missing/grok skills"
+expect_failure "existing-only refuses a missing Grok link" \
+  run_manager install --agent grok --existing-only valid-skill
+assert_output_contains "existing-only requires correctly installed links"
+[[ ! -e "$ACTIVE_GROK" ]] || fail_test "Grok existing-only created a destination root"
+
+ACTIVE_CODEX="$SPACE_ROOT/grok conflict/codex skills"
+ACTIVE_CLAUDE="$SPACE_ROOT/grok conflict/claude skills"
+ACTIVE_GROK="$SPACE_ROOT/grok conflict/grok skills"
+mkdir -p -- "$ACTIVE_GROK/valid-skill"
+printf 'preserve me\n' >"$ACTIVE_GROK/valid-skill/marker.txt"
+expect_failure "Grok colliding directory fails safely" \
+  run_manager install --agent grok valid-skill
+[[ "$(sed -n '1p' "$ACTIVE_GROK/valid-skill/marker.txt")" == "preserve me" ]] ||
+  fail_test "Grok colliding directory contents changed"
+assert_output_contains "conflicting regular file or directory"
+
+ACTIVE_CODEX="$SPACE_ROOT/grok foreign/codex skills"
+ACTIVE_CLAUDE="$SPACE_ROOT/grok foreign/claude skills"
+ACTIVE_GROK="$SPACE_ROOT/grok foreign/grok skills"
+foreign_target="$SPACE_ROOT/grok foreign/target"
+mkdir -p -- "$ACTIVE_GROK" "$foreign_target"
+ln -s -- "$foreign_target" "$ACTIVE_GROK/valid-skill"
+foreign_link_text="$(readlink -- "$ACTIVE_GROK/valid-skill")"
+expect_failure "Grok foreign symlink fails safely" \
+  run_manager install --agent grok valid-skill
+[[ "$(readlink -- "$ACTIVE_GROK/valid-skill")" == "$foreign_link_text" ]] ||
+  fail_test "Grok foreign symlink was changed"
+assert_output_contains "foreign symlink"
+
+ACTIVE_CODEX="$SPACE_ROOT/grok uninstall/codex skills"
+ACTIVE_CLAUDE="$SPACE_ROOT/grok uninstall/claude skills"
+ACTIVE_GROK="$SPACE_ROOT/grok uninstall/grok skills"
+expect_success "prepare owned Grok link for uninstall" \
+  run_manager install --agent grok valid-skill
+expect_success "uninstall removes only the owned Grok link" \
+  run_manager uninstall --agent grok valid-skill
+[[ ! -e "$ACTIVE_GROK/valid-skill" && ! -L "$ACTIVE_GROK/valid-skill" ]] ||
+  fail_test "owned Grok link remains after uninstall"
+[[ -f "$SOURCE_CATALOG/valid-skill/SKILL.md" ]] ||
+  fail_test "Grok uninstall removed the source skill"
+
+ACTIVE_CODEX="$SPACE_ROOT/grok status/codex skills"
+ACTIVE_CLAUDE="$SPACE_ROOT/grok status/claude skills"
+ACTIVE_GROK="$SPACE_ROOT/grok status/grok skills"
+expect_success "status treats missing Grok skills as healthy" \
+  run_manager status --agent grok
+assert_output_contains "missing"
+[[ ! -e "$ACTIVE_GROK" && ! -L "$ACTIVE_GROK" ]] ||
+  fail_test "Grok status created a destination root"
+expect_success "prepare Grok link for status" \
+  run_manager install --agent grok valid-skill
+expect_success "status reports a correct Grok installation" \
+  run_manager status --agent grok
+assert_output_contains "correctly installed"
+
+# Default Grok root is the Cursor workflows tree when GROK_SKILLS_DIR is unset.
+# Status prints the realpath of that root (agent-data may be a symlink).
+default_grok_root="$(realpath -m -- /home/box/agent-data/workflows)"
+expect_success "status uses default Grok workflows root" \
+  env -u GROK_SKILLS_DIR AGENT_SKILLS_SOURCE_DIR="$SOURCE_CATALOG" \
+    CODEX_SKILLS_DIR="$SPACE_ROOT/default grok unused/codex" \
+    CLAUDE_SKILLS_DIR="$SPACE_ROOT/default grok unused/claude" \
+    "$MANAGER" status --agent grok
+assert_output_contains "$default_grok_root"
+assert_output_contains "missing"
+
+expect_failure "unsupported agent is rejected" \
+  run_manager install --agent cursor valid-skill
+assert_output_contains "unsupported agent"
 
 printf 'PASS: all %d test commands completed without touching personal skill directories.\n' \
   "$PASS_COUNT"

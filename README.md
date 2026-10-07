@@ -1,9 +1,13 @@
 # Agent Skills
 
 `agent-skills` is the canonical authoring repository for reusable Agent Skills
-that should work in Codex, Claude Code, and Pi. A skill is maintained once under
-`skills/` and can be exposed to local agents through one symlink per selected
-skill.
+that should work in Codex, Claude Code, Grok Bot, and Pi. A skill is maintained
+once under `skills/` and can be exposed to local agents through one symlink per
+selected skill. Grok Bot install and pairing adapters are in progress
+([#145](https://github.com/jimmie-potts/agent-skills/issues/145),
+[#146](https://github.com/jimmie-potts/agent-skills/issues/146),
+[#148](https://github.com/jimmie-potts/agent-skills/issues/148)); shared skills
+stay host-portable meanwhile.
 
 This repository provides local authoring, validation, testing, status, install,
 and uninstall workflows for WSL/Linux. It is not a plugin, marketplace, custom
@@ -354,10 +358,12 @@ either `--all` or one or more skill names; omission never means “all.”
 ./scripts/manage-skills.sh validate
 ./scripts/manage-skills.sh status --agent codex
 ./scripts/manage-skills.sh status --agent claude
+./scripts/manage-skills.sh status --agent grok
 ./scripts/manage-skills.sh status --agent both
 
 ./scripts/manage-skills.sh install --agent codex <skill-name>
 ./scripts/manage-skills.sh install --agent claude <skill-name>
+./scripts/manage-skills.sh install --agent grok <skill-name>
 ./scripts/manage-skills.sh install --agent both <skill-name>
 ./scripts/manage-skills.sh install --agent both --all
 
@@ -365,12 +371,16 @@ either `--all` or one or more skill names; omission never means “all.”
 ./scripts/manage-skills.sh install --agent both --existing-only <skill-name>
 ./scripts/manage-skills.sh uninstall --agent both --dry-run <skill-name>
 ./scripts/manage-skills.sh uninstall --agent both <skill-name>
+./scripts/manage-skills.sh uninstall --agent grok <skill-name>
 ```
 
 `install --existing-only` verifies already-correct links without creating links
 or destination roots. It refuses missing or conflicting targets and preserves
 the manager's adjacent ownership checks. The guarded adapter below uses this
 mode after updating existing skill files.
+
+`--agent both` installs Codex and Claude Code only. It does **not** include
+Grok Bot; install or uninstall Grok destinations with `--agent grok`.
 
 Defaults and discovery:
 
@@ -379,13 +389,20 @@ Defaults and discovery:
 | Codex | `~/.agents/skills/<skill-name>` | `$skill-name` |
 | Claude Code | `~/.claude/skills/<skill-name>` | `/skill-name` |
 | Pi | `~/.agents/skills/<skill-name>` | `/skill:<skill-name>` |
+| Grok Bot | `/home/box/agent-data/workflows/<skill-name>` | Host `/` skill menu / UpdateSkill after install |
 
-All three hosts may also select a skill automatically when its description
-matches the request. Pi discovers the same `~/.agents/skills/` destination as
-Codex, so a skill installed with `--agent codex` is available to both hosts.
-The manager has no separate `--agent pi` option because it would address the
-same links. After adding or changing skills, use Pi's `/reload` command or
-restart the relevant local agent.
+Codex, Claude Code, and Pi may also select a skill automatically when its
+description matches the request. Pi discovers the same `~/.agents/skills/`
+destination as Codex, so a skill installed with `--agent codex` is available to
+both of those hosts. The manager has no separate `--agent pi` option because it
+would address the same links. Grok Bot uses the Cursor workflows tree as its
+managed destination (`--agent grok`); after symlink install, the host loads
+those skill directories through its UpdateSkill / workflows readback path—prove
+installation with `./scripts/manage-skills.sh status --agent grok` (owned link
+resolves into this checkout) and, when the host UI is available, confirm the
+skill appears for the Bot after a fresh session or host reload. After adding or
+changing skills, use Pi's `/reload` command or restart the relevant local
+agent.
 
 Pi can also load this catalog for one session without installing links:
 
@@ -421,6 +438,9 @@ boundary. Verify host behavior before claiming it has been enforced. See
 [Codex](https://developers.openai.com/codex/skills),
 [Claude Code](https://code.claude.com/docs/en/skills#control-who-invokes-a-skill),
 and [Pi](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/skills.md).
+Grok Bot skill loading and install roots are documented with
+[#145](https://github.com/jimmie-potts/agent-skills/issues/145); do not treat
+Grok as covered by `--agent both`.
 
 For tests or an intentional advanced setup, override the roots without changing
 `HOME`:
@@ -429,7 +449,15 @@ For tests or an intentional advanced setup, override the roots without changing
 CODEX_SKILLS_DIR=/tmp/codex-skills \
 CLAUDE_SKILLS_DIR=/tmp/claude-skills \
 ./scripts/manage-skills.sh install --agent both --dry-run <skill-name>
+
+GROK_SKILLS_DIR=/tmp/grok-skills \
+./scripts/manage-skills.sh install --agent grok --dry-run <skill-name>
 ```
+
+`GROK_SKILLS_DIR` overrides the default Grok root
+(`/home/box/agent-data/workflows`) the same way `CODEX_SKILLS_DIR` and
+`CLAUDE_SKILLS_DIR` override their hosts. Leave it unset for normal box
+installs.
 
 `AGENT_SKILLS_SOURCE_DIR` can point the manager at an isolated catalog, which
 the test suite uses. Normal use leaves it unset so the source is this
@@ -577,9 +605,11 @@ skills.
 
 ### Update the installed catalog
 
-Installed links on both hosts resolve into one checkout of this repository, so
-updating it changes the skills of every running Codex, Claude Code and Pi
-session at once, even when the update was wanted for unrelated work. Use this
+Installed links on the managed hosts resolve into one checkout of this
+repository, so updating it changes the skills of every running Codex, Claude
+Code, and Pi session at once (and Grok Bot sessions once [#145](https://github.com/jimmie-potts/agent-skills/issues/145)
+adds that destination), even when the update was wanted for unrelated work. Use
+this
 one procedure for every update: installing a merged change that
 [`AGENTS.md`](AGENTS.md) says needs installation, working an install issue that
 batches source-only changes, or picking up `main` for any other reason.
