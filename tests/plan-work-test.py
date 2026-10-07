@@ -83,6 +83,11 @@ class PlanWorkStructureTest(unittest.TestCase):
         reference = (SKILL / 'references/execution-recommendations.md').read_text()
         entry = (SKILL / 'SKILL.md').read_text()
         scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
+        self.assertIn('Codex and Grok Bot', entry)
+        self.assertIn('three-host table', entry)
+        self.assertIn('worker-with-grok', entry)
+        self.assertIn('Grok Bot recommendations', scenarios)
+        self.assertIn('three hosts', scenarios)
         for session_type in ('One-shot', 'Pair', 'Orchestrate',
                              'Investigate first'):
             with self.subTest(session_type=session_type):
@@ -90,9 +95,11 @@ class PlanWorkStructureTest(unittest.TestCase):
                 self.assertIn(f'`{session_type}`', entry)
                 self.assertIn(f'`{session_type}`', scenarios)
         for label in ('**Start with:**', '**Prompt (Claude Code):**',
-                      '**Prompt (Codex):**', '**Cheaper start:**',
+                      '**Prompt (Codex):**', '**Prompt (Grok):**',
+                      '**Cheaper start:**',
                       '**Cheaper prompt (Claude Code):**',
-                      '**Cheaper prompt (Codex):**', '**Why:**',
+                      '**Cheaper prompt (Codex):**',
+                      '**Cheaper prompt (Grok):**', '**Why:**',
                       '**Reassess when:**', '**Assessed:**',
                       '**Status:** insufficient', '**Missing:**'):
             with self.subTest(label=label):
@@ -102,7 +109,11 @@ class PlanWorkStructureTest(unittest.TestCase):
             with self.subTest(row=row):
                 self.assertIn(f'`{row}`', reference)
         self.assertIn('| Work to start | Claude Code model / effort | '
-                      'Codex model / reasoning | Session role |', reference)
+                      'Codex model / reasoning | Grok Bot model / effort | '
+                      'Session role |', reference)
+        self.assertIn('Grok Bot (live slug)', reference)
+        self.assertIn('three-host table', reference)
+        self.assertIn('worker-with-grok', reference)
         table = reference.split('| Work to start |', 1)[1].split('\n\n', 1)[0]
         rows = [line for line in table.splitlines()
                 if line.startswith('| ') and not line.startswith('| ---')]
@@ -121,8 +132,9 @@ class PlanWorkStructureTest(unittest.TestCase):
         self.assertIn('sonnet', cheaper.lower())
         self.assertNotIn('sonnet', (before + after).lower())
         prompts = re.findall(r'```text\n(.+?)\n```', reference, re.DOTALL)
-        self.assertEqual(len(prompts), 1)
+        self.assertEqual(len(prompts), 2)
         prompt = prompts[0]
+        grok_prompt = prompts[1]
         self.assertTrue(prompt.endswith(
             "If deliver-work isn't available here, say so and stop."))
         self.assertIn('my declared launch settings for each role it names', prompt)
@@ -134,10 +146,19 @@ class PlanWorkStructureTest(unittest.TestCase):
         self.assertRegex(prompt, r'two fresh read-only \w+ reviewers')
         self.assertNotIn('without subagents', prompt)
         self.assertNotRegex(prompt.lower(), r'(report|verify|confirm)\w* (your|its) effort')
+        self.assertTrue(grok_prompt.endswith(
+            "If deliver-work isn't available here, say so and stop."))
+        self.assertIn('Grok Bot session', grok_prompt)
+        self.assertIn('<verified-grok-slug>', grok_prompt)
+        self.assertIn('instruction-only read-only executor reviewers', grok_prompt)
+        self.assertIn('n/a', reference.lower())
+        self.assertIn('#148', reference)
 
     def test_rendered_example_declarations_gate_both_named_roles(self):
         reference = (SKILL / 'references/execution-recommendations.md').read_text()
-        prompt, = re.findall(r'```text\n(.+?)\n```', reference, re.DOTALL)
+        prompts = re.findall(r'```text\n(.+?)\n```', reference, re.DOTALL)
+        self.assertGreaterEqual(len(prompts), 1)
+        prompt = prompts[0]
         coordinator = re.search(r'I started this session on (\w+) at (\w+) effort', prompt)
         reviewer = re.search(r'two fresh read-only (\w+) reviewers at (\w+) effort', prompt)
         self.assertIsNotNone(coordinator)

@@ -68,9 +68,9 @@ delivery, and grant no implementation dispatch authority:
 
 Discover the installed canonical review-work package the same way and read its
 `references/review-selection.md` and each host's reviewer adapter,
-`references/claude-code-reviewers.md` and `references/codex-reviewers.md`, to
-propose each item's review needs and reviewer settings. Delivery refreshes them
-at pickup; reading them dispatches no reviewer.
+`references/claude-code-reviewers.md`, `references/codex-reviewers.md` and
+`references/grok-reviewers.md`, to propose each item's review needs and reviewer
+settings. Delivery refreshes them at pickup; reading them dispatches no reviewer.
 
 ## Check alignment before readiness
 
@@ -113,14 +113,16 @@ deployment out of the item.
 Apply the assessment contract, including scope fit while drafting, without
 embedding model names in planning ratings.
 For every item, read [execution recommendations](references/execution-recommendations.md)
-and recommend a starting model and reasoning/effort level for both Claude Code
-and Codex alongside the assessment. Name the session type the user should start
-(`One-shot`, `Pair`, `Orchestrate` or `Investigate first`), explain the choice,
-and distinguish proposed worker settings when delegation would help. Classify
-the item's work surface as `UI`, `Backend` or `Unknown`. Write the reference's
-start line, work surface line, two-host table, paste-ready prompts and cheaper
-start, or its insufficient status. Include both host choices in proposals and
-authorized saved work items, even when planning on only one host.
+and recommend a starting model and reasoning/effort level for Claude Code,
+Codex and Grok Bot alongside the assessment. Name the session type the user
+should start (`One-shot`, `Pair`, `Orchestrate` or `Investigate first`), explain
+the choice, and distinguish proposed worker settings when delegation would help.
+Classify the item's work surface as `UI`, `Backend` or `Unknown`. Write the
+reference's start line, work surface line, three-host table, paste-ready prompts
+and cheaper start, or its insufficient status. Include all three host choices in
+proposals and authorized saved work items, even when planning on only one host.
+Grok model ids stay verified or provisional from host evidence; do not invent
+guaranteed aliases.
 Record the session's reasoning setting in the planning evidence when the host
 exposes it or the user states it; otherwise record it as unknown. Report a
 known mismatch with documented workflow guidance or a composed skill's
@@ -137,7 +139,8 @@ assigned investigation. A bounded
 investigation may compose the host's advisory pairing in planning-only mode,
 selected from verified host tooling: worker-with-astra with Codex
 collaboration tools, worker-with-fable with Claude Code subagent tools,
-neither elsewhere. An explicit request naming the other host's pairing is
+worker-with-grok with Grok Bot Task / MessageSubagent tools, and none
+elsewhere. An explicit request naming another host's pairing is
 reported as a host mismatch, not substituted. The worker reads and proposes
 without writes, and a missing pairing does not block this planner's own
 investigation. Link specifications and decision records without copying their

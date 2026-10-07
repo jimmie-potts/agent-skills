@@ -14,6 +14,7 @@ SKILLS = ROOT / 'skills'
 PAIRINGS = {
     'worker-with-astra': 'references/codex.md',
     'worker-with-fable': 'references/claude-code.md',
+    'worker-with-grok': 'references/grok.md',
 }
 
 
@@ -74,9 +75,12 @@ class PairingSkillsStructureTest(unittest.TestCase):
     def test_each_pairing_names_its_host_counterpart(self):
         astra = (SKILLS / 'worker-with-astra/SKILL.md').read_text()
         fable = (SKILLS / 'worker-with-fable/SKILL.md').read_text()
+        grok = (SKILLS / 'worker-with-grok/SKILL.md').read_text()
         self.assertIn('worker-with-fable', astra)
         self.assertIn('worker-with-astra', fable)
-        for text in (astra, fable):
+        self.assertIn('worker-with-fable', grok)
+        self.assertIn('worker-with-astra', grok)
+        for text in (astra, fable, grok):
             self.assertIn('plan-work', text)
             self.assertIn('deliver-work', text)
 
@@ -85,14 +89,19 @@ class PairingSkillsStructureTest(unittest.TestCase):
         policy = deliver / 'references/model-selection.md'
         self.assertIn('claude-code-model-selection.md', links(policy))
         self.assertIn('codex-model-selection.md', links(policy))
+        self.assertIn('grok-model-selection.md', links(policy))
         for path in (deliver / 'SKILL.md', policy,
                      SKILLS / 'plan-work/SKILL.md'):
             text = path.read_text()
             self.assertIn('worker-with-astra', text, str(path))
             self.assertIn('worker-with-fable', text, str(path))
+            self.assertIn('worker-with-grok', text, str(path))
         adapter = (deliver / 'references/claude-code-model-selection.md').read_text()
         self.assertIn('references/worker-tiers.md', adapter)
         self.assertTrue((SKILLS / 'worker-with-fable/references/worker-tiers.md').is_file())
+        self.assertTrue((SKILLS / 'worker-with-grok/references/worker-tiers.md').is_file())
+        grok_adapter = (deliver / 'references/grok-model-selection.md').read_text()
+        self.assertIn('grok-worker-selection.md', grok_adapter)
 
     def test_retired_entrypoint_and_disposable_install(self):
         self.assertFalse((SKILLS / 'sol-with-astra').exists())

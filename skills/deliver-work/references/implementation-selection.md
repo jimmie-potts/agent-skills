@@ -44,7 +44,8 @@ benefits from coordinator approach/blocker checkpoints: serial work with a few
 hard decision points rather than continuous difficult reasoning. Select the
 pairing skill from verified host tooling, never from a persona or a model list.
 Codex collaboration tools select worker-with-astra. Claude Code subagent tools
-select worker-with-fable. Any other host has no pairing. Discover and read the
+select worker-with-fable. Grok Bot Task / MessageSubagent tools select
+worker-with-grok. Any other host has no pairing. Discover and read the
 selected skill and its host adapter before starting. Its original-coordinator
 identity, worker availability, parent communication or worker resumption, and
 consultation requirements remain mandatory. Record what the worker can decide
