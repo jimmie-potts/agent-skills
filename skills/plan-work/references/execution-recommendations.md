@@ -1,7 +1,7 @@
 # Recommend the session to start
 
 Read for every proposed work item. Give the user a concrete model and thinking
-level to choose when starting work in either Claude Code or Codex. Here,
+level to choose when starting work on Claude Code, Codex, or Grok Bot. Here,
 "intelligence level" means the host's reasoning/effort setting, not another work
 rating or a claim that equal level names provide equal capability across models.
 
@@ -9,9 +9,16 @@ Use the discovered canonical deliver-work package's `references/model-selection.
 and `references/implementation-selection.md` for suitability, risk floors and
 strategy. For proposed workers, read each host's model-selection adapter and
 worker-selection reference from that package; those own worker defaults and
-escalation. Reading both hosts for recommendations does not authorize dispatch.
-Keep the three assessment ratings model-neutral and preserve explicit user or
-project requirements.
+escalation. Claude Code and Codex adapters are
+`references/claude-code-model-selection.md` /
+`references/claude-code-worker-selection.md` and
+`references/codex-model-selection.md` /
+`references/codex-worker-selection.md`. Grok Bot model and worker adapters are
+provisional until [deliver/review Grok adapters (#148)](https://github.com/jimmie-potts/agent-skills/issues/148);
+until they land, recommend Grok with verified-or-provisional labels and do not
+invent adapter paths or guaranteed model aliases. Reading every host for
+recommendations does not authorize dispatch. Keep the three assessment ratings
+model-neutral and preserve explicit user or project requirements.
 
 ## Choose the starting session
 
@@ -19,13 +26,13 @@ Use the following starting-session heuristics, adjusted to the item's evidence
 and available controls. They recommend a future session the user can start;
 they do not change the current coordinator or replace worker-selection policy.
 
-| Work to start | Claude Code model / effort | Codex model / reasoning | Session role |
-| --- | --- | --- | --- |
-| Trivial, mechanical, low complexity/uncertainty/impact, with reliable checks | Opus (`opus`) / `low` | Luna (`gpt-6-luna`) / `low` | Implement directly |
-| Bounded implementation, low/medium complexity and impact, settled requirements and reliable checks | Opus (`opus`) / `medium` | Luna (`gpt-6-luna`) / `medium` | Implement directly |
-| Several interfaces or meaningful design judgment within a bounded outcome | Opus (`opus`) / `medium` | Sol (`gpt-6.1-sol`) / `medium` | Implement; identify design checkpoints |
-| High complexity or impact within a bounded outcome | Opus (`opus`) / `high` | Sol (`gpt-6.1-sol`) / `high` | Implement with the stronger capability floor |
-| Sustained difficult reasoning, architecture tradeoffs, or substantial coordination across dependent work | Fable (`fable`) / `high` | Astra (`gpt-6-astra`) / `high` | Orchestrate bounded workers, or implement directly when reasoning cannot be separated |
+| Work to start | Claude Code model / effort | Codex model / reasoning | Grok Bot model / effort | Session role |
+| --- | --- | --- | --- | --- |
+| Trivial, mechanical, low complexity/uncertainty/impact, with reliable checks | Opus (`opus`) / `low` | Luna (`gpt-6-luna`) / `low` | Grok Bot (live slug) / `low` | Implement directly |
+| Bounded implementation, low/medium complexity and impact, settled requirements and reliable checks | Opus (`opus`) / `medium` | Luna (`gpt-6-luna`) / `medium` | Grok Bot (live slug) / `medium` | Implement directly |
+| Several interfaces or meaningful design judgment within a bounded outcome | Opus (`opus`) / `medium` | Sol (`gpt-6.1-sol`) / `medium` | Grok Bot (live slug) / `medium` | Implement; identify design checkpoints |
+| High complexity or impact within a bounded outcome | Opus (`opus`) / `high` | Sol (`gpt-6.1-sol`) / `high` | Grok Bot (live slug) / `high` | Implement with the stronger capability floor |
+| Sustained difficult reasoning, architecture tradeoffs, or substantial coordination across dependent work | Fable (`fable`) / `high` | Astra (`gpt-6-astra`) / `high` | Grok Bot (live slug) / `xhigh` | Orchestrate bounded workers, or implement directly when reasoning cannot be separated |
 
 These are planning heuristics, not benchmark results or guaranteed savings.
 High impact overrides the cheap start even for a one-line change. High
@@ -77,6 +84,34 @@ the article above and
 These describe general effort curves; this repository has not yet measured
 its own, so the rows are hypotheses to reassess against delivery records.
 
+
+### Grok Bot starting rows (provisional)
+
+Grok Bot is a first-class recommendation host beside Claude Code and Codex. Its
+rows above are planning heuristics, not verified account access. Do not invent a
+guaranteed Grok model alias or claim a public slug is available on the user's
+account. Write the Model cell as the live Grok Bot / Cursor model identifier the
+user must verify in the host picker (shown as `Grok Bot (live slug)` in the
+shared table), and label Availability provisional until that check, or verified
+with the evidence source and date when inspected.
+
+On Grok Bot, prefer the host's effort vocabulary for Thinking level: `low`,
+`medium`, `high`, and `xhigh` when the host exposes them (including when effort
+is encoded in a model slug rather than a separate control). Equal names are not
+equal capability across hosts. When the host only exposes a single bundled
+model with no separate effort control, record the verified model id, write the
+Thinking level the user can actually set or `unknown`, and keep Session type and
+reviewers. Above-`high` effort on Grok needs the same task-specific reason as on
+other hosts, plus verified support for that level.
+
+Pair sessions on Grok name `worker-with-grok` only where host tooling supports
+that advisory pairing. Reviewers on Grok are instruction-only read-only executor
+reviewers for Standards and Specification, provisional until the review-work
+Grok adapter in
+[#148](https://github.com/jimmie-potts/agent-skills/issues/148) lands; axes
+without required evidence are `incomplete` with the gap named. Do not claim a
+Claude Code `review-work-reviewer` tool profile on Grok.
+
 ### Record the cheaper start
 
 Sonnet is not a Claude Code starting recommendation unless the user or the
@@ -93,7 +128,11 @@ row, at the same effort:
 | Fable (`fable`) / `high` | Opus (`opus`) / `high` |
 
 For Codex, record a cheaper start only when the recommended model or budget
-may be unavailable; otherwise write `none` for that host. The cheaper start
+may be unavailable; otherwise write `none` for that host. For Grok Bot, record
+a cheaper start only when host evidence shows a lower verified effort (or a
+cheaper verified slug in the same family) for the same session type; otherwise
+write `none` and say why (for example no verified cheaper slug, or the impact
+floor). Do not invent a Sonnet-equivalent Grok alias. The cheaper start
 keeps the session type, the reviewers and every gate; it trades capability
 for cost on the implementation alone, and a failed check on the cheaper start
 is the signal to rerun at the recommended start.
@@ -110,15 +149,19 @@ definition in the row. Verification is where effort pays, so when the
 project wants reviews at `high` and no definition exists, add a `Checkpoints`
 entry that stops before the final reviews so the user can run `/effort high`,
 which the effort article above says applies mid-session without breaking the
-prompt cache. On Codex, use review-work's Codex reviewer adapter.
+prompt cache. On Codex, use review-work's Codex reviewer adapter. On Grok Bot, use
+review-work's Grok reviewer adapter when
+[#148](https://github.com/jimmie-potts/agent-skills/issues/148) has landed;
+until then name instruction-only read-only executor reviewers as provisional
+and point Availability at that issue.
 
-On both hosts, select reviewers from review-work's review selection for the
+On every host, select reviewers from review-work's review selection for the
 item's impact and review task, not impact alone. Name the reviewers that the
 active host's review-work adapter assigns to that impact and review task. Copy
 no reviewer mapping here, and never derive reviewers from the starting model or
 level. The review task comes from the item's ratings, the interfaces and
 invariants it crosses and the capability its implementation needs. The
-`Reviewers` row and both prompts name the selected reviewers, and `**Why:**`
+`Reviewers` row and each host prompt name the selected reviewers, and `**Why:**`
 states the review task and any weaker-reviewer exception with its evidence and
 coverage limits.
 
@@ -126,12 +169,14 @@ Verify model identifiers or aliases and supported effort levels from available
 host evidence. When that is insufficient, consult current official
 [Codex model guidance](https://developers.openai.com/codex/models) or
 [Claude Code model configuration](https://code.claude.com/docs/en/model-config).
-These sources describe model and effort controls; the table is this workflow's
-recommendation. Claude aliases can resolve differently by provider. Do not
-invent a version or infer account access from public documentation.
+For Grok Bot, use the live host model picker or other host-observed evidence;
+public or third-party slug lists are not proof of account access. These sources
+describe model and effort controls; the table is this workflow's recommendation.
+Claude aliases can resolve differently by provider. Do not invent a version or
+infer account access from public documentation.
 
 Label each host choice verified against available host evidence or provisional
-pending model/effort availability. If the other host cannot be inspected, still
+pending model/effort availability. If another host cannot be inspected, still
 give its conditional recommendation and name what the user must check before
 starting. If a required policy resource is missing, report the recommendation
 gap and continue independent planning without reconstructing that policy.
@@ -164,8 +209,8 @@ issue description or authoritative work document, in this order:
    each host's model and thinking level, then which prompt to paste.
 2. `**Work surface:**` on the next line, with exactly one value from
    [the work surface](#classify-the-work-surface).
-3. A two-host table with columns `Claude Code` and `Codex` and the rows
-   `Model`, `Thinking level`, `Session type`, `Subagents`, `Reviewers` and
+3. A three-host table with columns `Claude Code`, `Codex` and `Grok` and the
+   rows `Model`, `Thinking level`, `Session type`, `Subagents`, `Reviewers` and
    `Availability`. Add a `Checkpoints` row only when the session should stop at
    named decisions, including any uncovered authority for an installation or
    deployment step in acceptance. Applicable standing authority needs no
@@ -173,19 +218,25 @@ issue description or authoritative work document, in this order:
    implementation worker's model and level from the canonical worker policy,
    or `None`. `Reviewers` gives the two fresh read-only final reviewers per
    host from review-work's reviewer policy for the item's impact and review
-   task, or `None` for `Investigate first`.
+   task, or `None` for `Investigate first`. On Grok, until
+   [#148](https://github.com/jimmie-potts/agent-skills/issues/148), name
+   instruction-only read-only executor reviewers as provisional.
    `Availability` gives the evidence
    source and the date the host's options were checked, labels each host
    verified or provisional, and notes any
    conflict with explicit requirements. Keep the planner's own observed
    settings out of the table.
-4. `**Prompt (Claude Code):**` and `**Prompt (Codex):**`, each followed by one
-   fenced `text` block written from the template below.
+4. `**Prompt (Claude Code):**`, `**Prompt (Codex):**` and `**Prompt (Grok):**`,
+   each followed by one fenced `text` block written from the template below.
+   Write `n/a` (with a one-line reason) instead of a Grok paste block when the
+   Start with line excludes Grok—for example Investigate-first already underway
+   on another host, or the user limited hosts.
 5. `**Cheaper start:**` one line naming what it covers, its session type and
    each host's model and level from [the cheaper-start mapping](#record-the-cheaper-start),
-   followed by `**Cheaper prompt (Claude Code):**` and
-   `**Cheaper prompt (Codex):**` blocks for each host that has one. Write
-   `none` for a host without one and say why, such as the high-impact floor.
+   followed by `**Cheaper prompt (Claude Code):**`,
+   `**Cheaper prompt (Codex):**` and `**Cheaper prompt (Grok):**` blocks for
+   each host that has one. Write `none` for a host without one and say why,
+   such as the high-impact floor or no verified cheaper Grok slug.
 6. `**Why:**` the assessment evidence, checks and task boundaries behind the
    choice. `**Reassess when:**` the condition that invalidates it.
    `**Assessed:**` the date, the policy revision (`agent-skills@<sha>` or the
@@ -205,7 +256,7 @@ For example, the section of a bounded instruction change opens:
 ```markdown
 ## Execution recommendation
 
-**Start with:** a one-shot session. Claude Code on Opus (`opus`) at `medium` effort, or Codex on Luna (`gpt-6-luna`) at `medium` reasoning. Paste that host's prompt below.
+**Start with:** a one-shot session. Claude Code on Opus (`opus`) at `medium` effort, Codex on Luna (`gpt-6-luna`) at `medium` reasoning, or Grok Bot on a user-verified live slug at `medium` effort. Paste that host's prompt below.
 **Work surface:** Backend
 ```
 
@@ -232,7 +283,8 @@ Each implementation prompt is one paragraph that:
 
 - asks the agent to use the deliver-work skill on the live work-item URL;
 - states the model and thinking level the user selected, using the host's
-  term (effort for Claude Code, reasoning for Codex);
+  term (effort for Claude Code, reasoning for Codex, effort for Grok Bot,
+  including when Grok encodes effort in the model slug);
 - declares those selected settings for the coordinator and each named worker
   or reviewer role, without implying settings for unnamed roles;
 - keeps requested, declared and independently observed settings separate;
@@ -251,6 +303,13 @@ For example:
 
 ```text
 Use the deliver-work skill to deliver <work-item URL>. I started this session on Opus at medium effort. Treat the selected model and level settings in this prompt as my declared launch settings for each role it names. Record requested, declared and independently observed settings separately; unavailable runtime observation stays unknown. Stop on an observed required-setting mismatch or an unmet explicit verified-identity requirement. Run as a one-shot session: implement it yourself without worker subagents, and use two fresh read-only Opus reviewers at medium effort for deliver-work's required Standards and Specification reviews. The issue's Execution recommendation (assessed <date>) is the basis; if what you find no longer fits it, say so before changing strategy. If deliver-work isn't available here, say so and stop.
+```
+
+Grok Bot paste block (replace `<verified-grok-slug>` with the live model id the
+user verified; do not invent one):
+
+```text
+Use the deliver-work skill to deliver <work-item URL>. I started this Grok Bot session on <verified-grok-slug> at medium effort. Treat the selected model and level settings in this prompt as my declared launch settings for each role it names. Record requested, declared and independently observed settings separately; unavailable runtime observation stays unknown. Stop on an observed required-setting mismatch or an unmet explicit verified-identity requirement. Run as a one-shot session: implement it yourself without worker subagents, and use two fresh instruction-only read-only executor reviewers at medium effort for deliver-work's required Standards and Specification reviews (provisional until review-work's Grok adapter lands). The issue's Execution recommendation (assessed <date>) is the basis; if what you find no longer fits it, say so before changing strategy. If deliver-work isn't available here, say so and stop.
 ```
 
 The declaration covers only the roles and settings explicitly named in the
