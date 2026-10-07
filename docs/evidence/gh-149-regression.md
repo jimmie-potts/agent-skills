@@ -1,122 +1,123 @@
-# #149 Regression evidence — Grok-compat batch (proposed catalog)
+# #149 Regression evidence — Grok-compat batch (smaller Acceptance)
 
-**Recorded:** 2026-10-07 12:03 EDT
+**Recorded:** 2026-10-07 (updated for evidence-only #155 + smaller Acceptance)
 **Host:** Grok Bot box (`box`, Linux); `gh` as `jimmie-potts`
-**Combined catalog revision (merge of sibling heads):** `9406f09940ec78678eaf4ae4777eeb5d78391c53`
-**Evidence branch tip:** `codex/gh-149-regression-evidence` (docs-only commit on top of catalog merge `9406f099`)
+**Evidence PR:** https://github.com/jimmie-potts/agent-skills/pull/155 — **docs/evidence only** (no product files vs `main`)
+**Throwaway combined catalog (local verification only, not shipped in #155):** `9406f09940ec78678eaf4ae4777eeb5d78391c53`
 **Base:** `origin/main` @ `3fef618`
-**Merge order:** main → #150 (#144) → #153 (#145) → #152 (#147) → #154 (#148; includes #146 worker-with-grok)
-**Conflicts:** README.md (#144 provisional vs #145 destination/UpdateSkill — kept #145); AGENTS.md + `plan-work/SKILL.md` (#144/#147 provisional vs #148 landed adapters — kept #148). No leftover conflict markers.
-**NO MERGES** of sibling PRs #150–#154. This branch is throwaway evidence only.
+**Merge order for product:** #150 → #153 → #152 → #154 (#154 includes #146); then #155 docs
+**NO MERGES. NO production `/home/box/agent-data/workflows` install.**
 
-## Sibling heads under test
+Live smoke report: `/workspace/grok-compat-plan/live-smoke-2026-10-07.md` (also summarized below).
+
+## Sibling product heads (ship via #150–#154, not #155)
 
 | Issue | PR | Branch | SHA |
 | --- | --- | --- | --- |
 | #144 | #150 | `codex/gh-144-shared-skill-core` | `9ec43b83` |
 | #145 | #153 | `codex/gh-145-grok-install-path` | `e37c23f9` |
-| #146 | #151 | `codex/gh-146-worker-with-grok` | `d7134e7e` (content via #154) |
+| #146 | #151 | `codex/gh-146-worker-with-grok` | `d7134e7e` (also in #154) |
 | #147 | #152 | `codex/gh-147-plan-work-grok-column` | `22c8b2fe` |
 | #148 | #154 | `codex/gh-148-deliver-review-grok-adapters` | `b8cbc452` |
 
-## Checks (AGENTS.md)
+## 1. Catalog / manager checks (throwaway combined tree `9406f099`)
 
 | Check | Result |
 | --- | --- |
-| `python3 scripts/validate-skills.py` | **PASS** — 37 skill(s) |
+| `python3 scripts/validate-skills.py` | **PASS** — 37 skills |
 | `python3 tests/installed-files-test.py` | **PASS** — 17 tests |
-| `bash tests/manage-skills-test.sh` | **PASS** — 49 commands (incl. Grok install/status/uninstall/`--agent both` excludes grok) |
-| `bash -n scripts/manage-skills.sh` / `tests/manage-skills-test.sh` | **PASS** |
-| `git diff --check` | **PASS** |
+| `bash tests/manage-skills-test.sh` | **PASS** — 49 commands (incl. `--agent grok`; `both` excludes grok) |
+| `bash -n scripts/manage-skills.sh` | **PASS** |
 | `python3 tests/deliver-work-test.py` | **PASS** |
-| `python3 tests/review-work-test.py` | **PASS** — 60 tests |
-| `python3 tests/plan-work-test.py` | **PASS** — 15 tests |
-| `python3 tests/pairing-skills-test.py` | **PASS** — 7 tests |
+| `python3 tests/review-work-test.py` | **PASS** — 60 |
+| `python3 tests/plan-work-test.py` | **PASS** — 15 |
+| `python3 tests/pairing-skills-test.py` | **PASS** — 7 |
 
-## Install / status / uninstall (disposable temp roots)
+Slim evidence-only tip (#155 vs `main`): `validate-skills` **PASS** (36 skills — main catalog); manager tests **PASS** without Grok cases (Grok coverage lives on #153 + combined-tree run above).
 
-Env overrides (real installs **not** touched):
+## 2. Temp-root install / status / uninstall
+
+Disposable roots only (production installs **not** touched):
 
 - `CODEX_SKILLS_DIR=/tmp/gh149-skills-z630GA/codex`
 - `CLAUDE_SKILLS_DIR=/tmp/gh149-skills-z630GA/claude`
 - `GROK_SKILLS_DIR=/tmp/gh149-skills-z630GA/grok`
 
-Skills installed per agent: `worker-with-grok deliver-work review-work plan-work grill-me grilling tdd code-review openspec-explore`
-
 | Step | codex | claude | grok |
 | --- | --- | --- | --- |
-| dry-run install `worker-with-grok` | PASS | PASS | PASS |
-| install batch | PASS (9 links) | PASS (9 links) | PASS (9 links) |
-| status readback (batch skills `correctly installed`) | PASS | PASS | PASS |
+| dry-run install | PASS | PASS | PASS |
+| install batch (9 skills) | PASS | PASS | PASS |
+| status readback | PASS | PASS | PASS |
 | `--existing-only` | PASS | PASS | PASS |
-| link resolve → checkout `skills/` | PASS | PASS | PASS |
 | uninstall batch | PASS | PASS | PASS |
-| status after uninstall (batch missing) | PASS | PASS | PASS |
 
-`--agent both` install of `worker-with-grok` into separate temp roots: codex+claude linked; **grok root empty** (decision 1: do not fold grok into `both`).
+`--agent both`: codex+claude linked; **grok root empty**.
 
-Default Grok destination (no `GROK_SKILLS_DIR`): `/home/box/agent-data/workflows` per `manage-skills.sh`. Live UpdateSkill UI reload **not** invoked; documented expectation from README/#145: after symlink install, prove with `./scripts/manage-skills.sh status --agent grok` (owned link resolves into checkout) and, when host UI available, confirm skill appears after fresh session/host reload.
+**Important:** temp-root FS proofs ≠ “Grok loads skills from the host catalog.” Host `workflows/` was empty (0 entries) and was **not** written.
 
-Real dirs: `~/.agents/skills` and `~/.claude/skills` absent on this box; `/home/box/agent-data/workflows` existed empty (0 entries) and was **not** written by this session.
+## 3. Focused live Grok smoke
 
-## Claude / Codex smoke (invoke/load entry)
+Source: `/workspace/grok-compat-plan/live-smoke-2026-10-07.md`
 
-| Skill | Host | Result |
-| --- | --- | --- |
-| grill-me / grilling | Claude Code | **GAP** — `claude` CLI not on PATH; no authorized Claude Code session on this box |
-| tdd | Claude Code | **GAP** (same) |
-| openspec-explore | Claude Code | **GAP** (same) |
-| code-review | Claude Code | **GAP** (same) |
-| grill-me / grilling | Codex | **GAP** — `codex` CLI not on PATH; no authorized Codex session on this box |
-| tdd | Codex | **GAP** (same) |
-| openspec-explore | Codex | **GAP** (same) |
-| code-review | Codex | **GAP** (same) |
-
-Stand-in only (not claimed as host smoke): SKILL.md frontmatter + entry sections parse cleanly for those skills on the combined tree.
-
-## Grok dry deliver / review smoke
-
-Read-only composition on combined tree (no publish, merge, or irreversible external action):
-
-| Check | Result |
+| Item | Status |
 | --- | --- |
-| `worker-with-grok` frontmatter name + SKILL load | PASS |
-| `deliver-work` + `references/grok-worker-selection.md` + `grok-model-selection.md` present | PASS |
-| `review-work` + `references/grok-reviewers.md` present | PASS |
-| grok-reviewers: instruction-only read-only executors; no Claude `review-work-reviewer` profile claim; axes incomplete without evidence | PASS |
-| deliver-work Grok worker selection references `worker-with-grok` | PASS |
-| plan-work Grok column / execution-recommendations present | PASS |
-| Live MessageSubagent / Task worker spawn inside deliver-work | **GAP** — not exercised (would be a live coordinator session; dry composition only) |
-| Live UpdateSkill host menu appearance | **GAP** — UI not driven; manager status + link resolve used as install readback |
+| Discover host catalog (`managed-skills` / `workflows`) | **PASS** — 49 managed skills; **no** Grok-compat epic skills; `workflows/` empty |
+| Follow on-disk PR refs (#151/#154 worktrees) without install | **PASS** — `worker-with-grok`, deliver/review Grok adapters resolve on disk |
+| One representative workflow path (Task/MessageSubagent continuation) | **PASS** — live executor Task continuation on this host |
+| Instruction-only reviewer adapter text on #154 | **PASS** (repo evidence) — no Claude profile claim |
+| Nested Standards/Spec Task spawn as reviewer | **UNTESTED** |
+| `StopSubagent` cancel path | **UNTESTED** |
+| Host-loaded skill discovery of new catalog | **PENDING** install approval |
+| End-to-end deliver-work loading `worker-with-grok` from installed catalog | **PENDING** merge + install |
 
-## Source-only sibling install batch status
+## 4. Inventory (passed / untested / pending)
 
-Per AGENTS.md Installation: skill-touching siblings marked source-only close install at this batch.
+### Passed
 
-| Sibling | Skill/install touch? | Install+readback on proposed heads |
+- validate-skills + installed-files + manage-skills (incl. grok; both excludes grok) on proposed combined revision
+- Temp-root install/status/uninstall for codex + claude + grok
+- Live host discovery: Grok-compat skills **absent** from managed-skills/workflows (honest pre-install state)
+- On-disk followability of #151/#154 skill trees without host install
+- Live Task/MessageSubagent worker continuation on this box
+- Source-only product siblings PR-ready (#150–#154); Hawk PASS/PASS recorded separately
+
+### Untested
+
+- Nested live reviewer Task spawn / StopSubagent
+- Host model/effort metadata on spawn
+- Whether Grok auto-discovers skills from an arbitrary `/workspace` checkout
+
+### Pending (owner-gated — separate merge & install approval)
+
+- Merge of #150–#154 (+ then #155 docs)
+- Production `manage-skills --agent grok` → `/home/box/agent-data/workflows` (or `GROK_SKILLS_DIR`)
+- Host catalog load / use of new skills after install
+- Claude Code / Codex CLI smoke (grill/tdd/openspec/code-review)
+- Live UpdateSkill UI readback
+
+## 5. Explicitly deferred (not claimed done)
+
+| Item | Disposition |
+| --- | --- |
+| Claude/Codex CLI host smoke | Owner-gated after merge; CLIs absent on this box — **not** an Acceptance blocker for source-only readiness |
+| Live UpdateSkill UI | Owner-gated — **not** claimed |
+| Production workflows install | Owner-gated — **not** run; temp FS ≠ host load |
+
+## 6. Source-only sibling status
+
+| Sibling | PR | Notes |
 | --- | --- | --- |
-| #144 / PR #150 | Docs only (AGENTS/README) | N/A install; three-host wording in combined tree |
-| #145 / PR #153 | manage-skills + installed-files | **Completed via temp-root** (codex/claude/grok); owner merge still required before production install |
-| #146 / PR #151 | `worker-with-grok` skill | **Completed via temp-root** (and present via #154) |
-| #147 / PR #152 | `plan-work` skill | **Completed via temp-root** |
-| #148 / PR #154 | deliver-work + review-work + worker-with-grok | **Completed via temp-root** |
+| #144 | #150 | Docs; N/A skill install |
+| #145 | #153 | Manager + tests; temp-root proved; prod install pending |
+| #146 | #151 | `worker-with-grok`; source-only → this batch; temp-root proved |
+| #147 | #152 | plan-work; temp-root proved |
+| #148 | #154 | deliver/review adapters; temp-root proved |
 
-Post-merge production install into real Codex/Claude/Grok destinations remains **owner-gated** (siblings not merged).
-
-## Acceptance checklist (proposed heads)
-
-- [x] `validate-skills.py` passes on proposed combined catalog
-- [x] `installed-files-test.py` and `manage-skills-test.sh` pass with Grok coverage
-- [x] Status/install readback for Claude, Codex, and Grok against **temp roots** (+ UpdateSkill/workflows expectation documented for grok)
-- [ ] Claude/Codex host smoke for grill/tdd/openspec/code-review — **GAP named** (CLIs unavailable here)
-- [x] Grok dry deliver/review smoke recorded; live spawn/UI gaps named without claiming success
-- [x] Source-only siblings: temp-root install+readback completed; production install pending owner merge of #150–#154
-- [x] Hub AGENTS wording follow-on: not required to close; optional elsewhere
+Production install+readback for skill-touching siblings remains **owner-gated** after merge + install approval.
 
 ## Remaining for Hawk / Jimmie
 
-1. Independent Hawk Standards+Spec on fixed sibling heads (no merge by workers).
-2. Owner merge of #150–#154 (order respecting deps: #145 before relying on grok install in prod; #146 before/#with #148).
-3. Post-merge: production `manage-skills` install+status on authorized Codex/Claude/Grok roots; optional live UpdateSkill UI confirm.
-4. Optional: Claude Code / Codex invoke/load smoke on a machine that has those hosts.
-5. Do **not** treat this evidence branch as a product merge candidate beyond the optional docs artifact.
+1. Owner merge of product #150–#154 (Hawk already PASS/PASS).
+2. Separate approval for production grok install + host readback.
+3. Optional later: Claude/Codex CLI smoke; UpdateSkill UI; nested reviewer live spawn.
+4. Merge #155 only as docs/evidence after (or with) product merges — never as a product stack.
