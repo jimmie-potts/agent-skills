@@ -1,9 +1,13 @@
 # Agent Skills
 
 `agent-skills` is the canonical authoring repository for reusable Agent Skills
-that should work in Codex, Claude Code, and Pi. A skill is maintained once under
-`skills/` and can be exposed to local agents through one symlink per selected
-skill.
+that should work in Codex, Claude Code, Grok Bot, and Pi. A skill is maintained
+once under `skills/` and can be exposed to local agents through one symlink per
+selected skill. Grok Bot install and pairing adapters are in progress
+([#145](https://github.com/jimmie-potts/agent-skills/issues/145),
+[#146](https://github.com/jimmie-potts/agent-skills/issues/146),
+[#148](https://github.com/jimmie-potts/agent-skills/issues/148)); shared skills
+stay host-portable meanwhile.
 
 This repository provides local authoring, validation, testing, status, install,
 and uninstall workflows for WSL/Linux. It is not a plugin, marketplace, custom
@@ -379,13 +383,16 @@ Defaults and discovery:
 | Codex | `~/.agents/skills/<skill-name>` | `$skill-name` |
 | Claude Code | `~/.claude/skills/<skill-name>` | `/skill-name` |
 | Pi | `~/.agents/skills/<skill-name>` | `/skill:<skill-name>` |
+| Grok Bot | Provisional — destination and `--agent grok` land with [#145](https://github.com/jimmie-potts/agent-skills/issues/145); not folded into `--agent both` | Host-native skill selection once installed; see #145 |
 
-All three hosts may also select a skill automatically when its description
-matches the request. Pi discovers the same `~/.agents/skills/` destination as
-Codex, so a skill installed with `--agent codex` is available to both hosts.
-The manager has no separate `--agent pi` option because it would address the
-same links. After adding or changing skills, use Pi's `/reload` command or
-restart the relevant local agent.
+Codex, Claude Code, and Pi may also select a skill automatically when its
+description matches the request. Pi discovers the same `~/.agents/skills/`
+destination as Codex, so a skill installed with `--agent codex` is available to
+both of those hosts. The manager has no separate `--agent pi` option because it
+would address the same links. Grok Bot is a fourth supported target once #145
+ships; until then do not invent manage-skills commands for it. After adding or
+changing skills, use Pi's `/reload` command or restart the relevant local
+agent.
 
 Pi can also load this catalog for one session without installing links:
 
@@ -421,6 +428,9 @@ boundary. Verify host behavior before claiming it has been enforced. See
 [Codex](https://developers.openai.com/codex/skills),
 [Claude Code](https://code.claude.com/docs/en/skills#control-who-invokes-a-skill),
 and [Pi](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/skills.md).
+Grok Bot skill loading and install roots are documented with
+[#145](https://github.com/jimmie-potts/agent-skills/issues/145); do not treat
+Grok as covered by `--agent both`.
 
 For tests or an intentional advanced setup, override the roots without changing
 `HOME`:
@@ -577,9 +587,11 @@ skills.
 
 ### Update the installed catalog
 
-Installed links on both hosts resolve into one checkout of this repository, so
-updating it changes the skills of every running Codex, Claude Code and Pi
-session at once, even when the update was wanted for unrelated work. Use this
+Installed links on the managed hosts resolve into one checkout of this
+repository, so updating it changes the skills of every running Codex, Claude
+Code, and Pi session at once (and Grok Bot sessions once [#145](https://github.com/jimmie-potts/agent-skills/issues/145)
+adds that destination), even when the update was wanted for unrelated work. Use
+this
 one procedure for every update: installing a merged change that
 [`AGENTS.md`](AGENTS.md) says needs installation, working an install issue that
 batches source-only changes, or picking up `main` for any other reason.
