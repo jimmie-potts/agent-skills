@@ -140,11 +140,12 @@ def configuration(path):
     require(isinstance(config['links'], list) and config['links'] and len(config['links']) <= 1000, 'links-invalid')
     keys = []
     for link in config['links']:
-        require(isinstance(link, dict) and set(link) == {'agent', 'skill', 'path'} and link['agent'] in {'codex', 'claude'} and
+        require(isinstance(link, dict) and set(link) == {'agent', 'skill', 'path'} and link['agent'] in {'codex', 'claude', 'grok'} and
                 link['skill'] in config['requiredSkills'], 'link-policy-invalid')
         keys.append((link['agent'], link['skill']))
+    agents = {a for a, _ in keys}
     require(len(keys) == len(set(keys)) and set(config['requiredSkills']) == {s for _, s in keys} and
-            {a for a, _ in keys} == {'codex', 'claude'}, 'required-link-coverage-missing')
+            {'codex', 'claude'} <= agents <= {'codex', 'claude', 'grok'}, 'required-link-coverage-missing')
     return config, sha(Path(path).read_bytes())
 
 
@@ -244,8 +245,10 @@ def manager(config, deadline, action, *, dry_run=False):
     inventory, roots = links(config)
     fingerprints(config)
     env = environment(config) | {'CODEX_SKILLS_DIR': roots['codex'], 'CLAUDE_SKILLS_DIR': roots['claude']}
+    if 'grok' in roots:
+        env['GROK_SKILLS_DIR'] = roots['grok']
     output = {}
-    for agent in ['codex', 'claude']:
+    for agent in [name for name in ['codex', 'claude', 'grok'] if name in roots]:
         arguments = ['status', '--agent', agent] if action == 'status' else ['install', '--agent', agent, '--existing-only', *(['--dry-run'] if dry_run else []), *[v['skill'] for v in inventory if v['agent'] == agent]]
         require(time.time() < deadline, 'deadline-expired')
         result = subprocess.run([shutil.which('bash', path=config['path']), str(Path(config['checkout'], 'scripts/manage-skills.sh')), *arguments],
