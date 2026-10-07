@@ -1,9 +1,9 @@
 # Agent Skills Repository
 
 This repository is the canonical source for reusable, portable Agent Skills used
-locally by Codex and Claude Code. Keep project-specific skills in the project
-that owns them. Plugin publishing, remote distribution, automatic updates, and
-organization-wide governance are out of scope.
+locally by Codex, Claude Code, and Grok Bot. Keep project-specific skills in the
+project that owns them. Plugin publishing, remote distribution, automatic
+updates, and organization-wide governance are out of scope.
 
 ## Shared delivery ownership
 
@@ -35,9 +35,9 @@ repository rule does not change the portable skills or authorize installation.
   oversized `SKILL.md`; keep `SKILL.md` at or below 500 lines.
 - Add only resources the skill uses. Do not add a per-skill `README.md`,
   changelog, duplicated documentation, secrets, caches, or machine-specific data.
-- Keep shared skills portable between Codex and Claude. If host-specific behavior
-  is unavoidable, document a narrow adapter instead of changing the shared
-  implementation silently.
+- Keep shared skills portable across Codex, Claude Code, and Grok Bot. If
+  host-specific behavior is unavoidable, document a narrow adapter instead of
+  changing the shared implementation silently.
 - Treat scripts and requested tool permissions as security-sensitive. Review
   their full behavior and permission scope explicitly before accepting them.
 - Preserve unrelated user changes.
@@ -51,8 +51,11 @@ repository rule does not change the portable skills or authorize installation.
   reason and a link to the install issue that batches it; that issue then
   closes at merge, and the install issue carries the installation.
 - The repository owner grants standing authority for routine installation or
-  update of an authorized delivery's skills on the established Codex/Claude
-  installations. After merge and required post-merge CI, prepare and run the
+  update of an authorized delivery's skills on the established Codex and Claude
+  Code installations. Grok Bot install destinations and `--agent grok` land with
+  [#145](https://github.com/jimmie-potts/agent-skills/issues/145); until then do
+  not treat Grok as an established manage-skills target. After merge and
+  required post-merge CI, prepare and run the
   existing procedure without renewed approval when its complete step is within
   that authority. Preserve narrower read-only, planning-only or source-only
   requests. The authority does not cover uninstall, rename or retirement,
@@ -82,7 +85,13 @@ them that way. A packet-only process reviewer under `review-work`'s
 separate-process adapter meets this requirement once host evidence verifies its
 empty tool set, as that adapter requires. On Codex, restriction stays
 instruction-only, as the Codex adapter records; revisit this declaration when a
-Codex surface can select the `review_work_reviewer` profile. Evidence:
+Codex surface can select the `review_work_reviewer` profile. On Grok Bot,
+reviewer restriction is expected to stay instruction-only for read-only
+executor reviewers (parallel to Codex); axes remain `incomplete` without the
+evidence the Grok adapter will require. Do not claim Claude
+`review-work-reviewer` profiles on Grok. Final Grok review-lockdown wording
+belongs to the deliver-work / review-work Grok adapters in
+[#148](https://github.com/jimmie-potts/agent-skills/issues/148). Evidence:
 [#80](https://github.com/jimmie-potts/agent-skills/issues/80) and
 [#108](https://github.com/jimmie-potts/agent-skills/issues/108).
 
