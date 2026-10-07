@@ -68,13 +68,9 @@ delivery, and grant no implementation dispatch authority:
 
 Discover the installed canonical review-work package the same way and read its
 `references/review-selection.md` and each host's reviewer adapter,
-`references/claude-code-reviewers.md` and `references/codex-reviewers.md`, to
-propose each item's review needs and reviewer settings. A Grok reviewer adapter
-is provisional until
-[deliver/review Grok adapters (#148)](https://github.com/jimmie-potts/agent-skills/issues/148);
-until it lands, recommend instruction-only read-only executor reviewers on Grok
-with provisional Availability. Delivery refreshes them at pickup; reading them
-dispatches no reviewer.
+`references/claude-code-reviewers.md`, `references/codex-reviewers.md` and
+`references/grok-reviewers.md`, to propose each item's review needs and reviewer
+settings. Delivery refreshes them at pickup; reading them dispatches no reviewer.
 
 ## Check alignment before readiness
 
@@ -143,10 +139,9 @@ assigned investigation. A bounded
 investigation may compose the host's advisory pairing in planning-only mode,
 selected from verified host tooling: worker-with-astra with Codex
 collaboration tools, worker-with-fable with Claude Code subagent tools,
-worker-with-grok on Grok Bot when that skill is installed and host tooling
-supports it, and none elsewhere. An explicit request naming another host's
-pairing is reported as a host mismatch, not substituted. The worker reads and
-proposes
+worker-with-grok with Grok Bot Task / MessageSubagent tools, and none
+elsewhere. An explicit request naming another host's pairing is
+reported as a host mismatch, not substituted. The worker reads and proposes
 without writes, and a missing pairing does not block this planner's own
 investigation. Link specifications and decision records without copying their
 content. When repository policy requires specification artifacts, use its

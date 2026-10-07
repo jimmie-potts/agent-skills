@@ -4,8 +4,9 @@ Read before launching, replacing or resuming a reviewer, and when a return is
 partial, cancelled or cannot be attributed. [Review selection](review-selection.md)
 chooses the settings; this reference checks that the active host can apply
 them and records what actually ran. The active host's adapter,
-[Claude Code](claude-code-reviewers.md) or [Codex](codex-reviewers.md), names
-that host's controls, precedence and evidence sources.
+[Claude Code](claude-code-reviewers.md), [Codex](codex-reviewers.md), or
+[Grok Bot](grok-reviewers.md), names that host's controls, precedence and
+evidence sources.
 
 ## Keep the evidence classes apart
 

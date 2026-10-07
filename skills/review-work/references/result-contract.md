@@ -34,7 +34,12 @@ Record these before the first reviewer starts, and again for each round:
   made from them with its rationale: the impact, the review task in a line or
   two, the selected tier and any exception with its evidence and coverage
   limits; and the reviewer execution preflight: each control's evidence class,
-  whether it is mandatory, and any unsupported or unverified control. When
+  whether it is mandatory, and any unsupported or unverified control. Record
+  file-write, publication and descendant restrictions as `enforced` only with
+  host evidence for this reviewer; otherwise record them as `instruction-only`.
+  On Grok Bot, restriction is instruction-only with no Claude
+  `review-work-reviewer` profile claim; an axis missing required evidence for a
+  mandatory control is `incomplete` with the gap named. When
   cross-provider routing applies, include its trigger, selected provider/axis,
   qualification evidence or fallback reason, and actual coverage. Provider
   diversity alone supplies no verdict or extra axis.

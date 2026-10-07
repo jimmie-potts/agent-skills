@@ -899,7 +899,8 @@ class MigrationTest(unittest.TestCase):
                   if '| Impact | Reviewer default |' in path.read_text()]
         self.assertEqual(sorted(tables), [
             'review-work/references/claude-code-reviewers.md',
-            'review-work/references/codex-reviewers.md'])
+            'review-work/references/codex-reviewers.md',
+            'review-work/references/grok-reviewers.md'])
 
     def test_callers_name_existing_resources(self):
         deliver = (SKILLS / 'deliver-work/SKILL.md').read_text()
@@ -908,7 +909,8 @@ class MigrationTest(unittest.TestCase):
         plan = (SKILLS / 'plan-work/SKILL.md').read_text()
         for resource in ('references/review-selection.md',
                          'references/claude-code-reviewers.md',
-                         'references/codex-reviewers.md'):
+                         'references/codex-reviewers.md',
+                         'references/grok-reviewers.md'):
             with self.subTest(resource=resource):
                 self.assertTrue((SKILL / resource).is_file())
                 self.assertIn(resource, plan)
@@ -1001,6 +1003,23 @@ class ReviewerProfileTest(unittest.TestCase):
                     self.assertIn(asset.resolve(), targets)
                 self.assertIn('reviewer-execution.md', links(path))
                 self.assertIn('| Impact | Reviewer default |', path.read_text())
+
+    def test_grok_adapter_is_instruction_only(self):
+        path = SKILL / 'references/grok-reviewers.md'
+        text = path.read_text()
+        self.assertIn('| Impact | Reviewer default |', text)
+        self.assertIn('reviewer-execution.md', links(path))
+        self.assertIn('instruction-only', text)
+        self.assertIn('incomplete', text)
+        self.assertIn('no Claude-style `review-work-reviewer` tool profile', text)
+        self.assertNotIn('../assets/', text)
+        self.assertFalse((self.ASSETS / 'grok').exists())
+        execution = (SKILL / 'references/reviewer-execution.md').read_text()
+        self.assertIn('grok-reviewers.md', execution)
+        agents = (ROOT / 'AGENTS.md').read_text()
+        self.assertIn('On Grok Bot,', agents)
+        self.assertIn('instruction-only for read-only executor reviewers', agents)
+        self.assertIn('review-work-reviewer` or', agents)  # Claude profile still mandatory
 
     def test_execution_cases_match_graders(self):
         cases = (FIXTURES / 'reviewer-execution-cases.md').read_text()

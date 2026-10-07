@@ -207,7 +207,16 @@ class DeliverWorkStructureTest(unittest.TestCase):
         self.assertIn('references/model-selection.md', entry_links)
         policy = SKILL / 'references/model-selection.md'
         adapter_links = re.findall(r'\]\(([^)]+)\)', policy.read_text())
-        self.assertIn('codex-model-selection.md', adapter_links)
+        for adapter in ('codex-model-selection.md',
+                        'claude-code-model-selection.md',
+                        'grok-model-selection.md'):
+            self.assertIn(adapter, adapter_links)
+            self.assertTrue((SKILL / 'references' / adapter).is_file())
+        policy_text = policy.read_text()
+        self.assertIn('worker-with-grok', policy_text)
+        skill = (SKILL / 'SKILL.md').read_text()
+        self.assertIn('worker-with-grok', skill)
+        self.assertTrue((SKILL / 'references/grok-worker-selection.md').is_file())
 
     def test_execution_record_examples_parse_strictly(self):
         reference = (SKILL / 'references/execution-reporting.md').read_text()

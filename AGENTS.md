@@ -86,14 +86,14 @@ separate-process adapter meets this requirement once host evidence verifies its
 empty tool set, as that adapter requires. On Codex, restriction stays
 instruction-only, as the Codex adapter records; revisit this declaration when a
 Codex surface can select the `review_work_reviewer` profile. On Grok Bot,
-reviewer restriction is expected to stay instruction-only for read-only
-executor reviewers (parallel to Codex); axes remain `incomplete` without the
-evidence the Grok adapter will require. Do not claim Claude
-`review-work-reviewer` profiles on Grok. Final Grok review-lockdown wording
-belongs to the deliver-work / review-work Grok adapters in
-[#148](https://github.com/jimmie-potts/agent-skills/issues/148). Evidence:
-[#80](https://github.com/jimmie-potts/agent-skills/issues/80) and
-[#108](https://github.com/jimmie-potts/agent-skills/issues/108).
+restriction stays instruction-only for read-only executor reviewers, as the
+Grok adapter records: there is no Claude-style `review-work-reviewer` tool
+profile to claim, and axes without required evidence for a mandatory control
+are `incomplete` with the gap named. Evidence:
+[#80](https://github.com/jimmie-potts/agent-skills/issues/80),
+[#108](https://github.com/jimmie-potts/agent-skills/issues/108), and
+[#143](https://github.com/jimmie-potts/agent-skills/issues/143#issuecomment-6041531519)
+decision 3.
 
 ## Checks
 
