@@ -9,9 +9,9 @@ SOURCE_DIR_RAW="${AGENT_SKILLS_SOURCE_DIR:-$REPO_ROOT/skills}"
 usage() {
   printf '%s\n' \
     "Usage:" \
-    "  ./scripts/manage-skills.sh install   --agent codex|claude|both [--dry-run] [--existing-only] [--all | <skill>...]" \
-    "  ./scripts/manage-skills.sh uninstall --agent codex|claude|both [--dry-run] [--all | <skill>...]" \
-    "  ./scripts/manage-skills.sh status    --agent codex|claude|both" \
+    "  ./scripts/manage-skills.sh install   --agent codex|claude|grok|both [--dry-run] [--existing-only] [--all | <skill>...]" \
+    "  ./scripts/manage-skills.sh uninstall --agent codex|claude|grok|both [--dry-run] [--all | <skill>...]" \
+    "  ./scripts/manage-skills.sh status    --agent codex|claude|grok|both" \
     "  ./scripts/manage-skills.sh validate"
 }
 
@@ -101,7 +101,7 @@ while [[ $# -gt 0 ]]; do
         fail "--agent may be provided only once."
       fi
       if [[ $# -lt 2 ]]; then
-        fail "--agent requires codex, claude, or both."
+        fail "--agent requires codex, claude, grok, or both."
       fi
       AGENT="$2"
       shift 2
@@ -137,19 +137,19 @@ if [[ $EXISTING_ONLY -eq 1 && "$ACTION" != "install" ]]; then
 fi
 
 case "$AGENT" in
-  codex|claude|both)
+  codex|claude|grok|both)
     ;;
   "")
-    fail "--agent codex|claude|both is required for '$ACTION'."
+    fail "--agent codex|claude|grok|both is required for '$ACTION'."
     ;;
   *)
-    fail "unsupported agent '$AGENT'; expected codex, claude, or both."
+    fail "unsupported agent '$AGENT'; expected codex, claude, grok, or both."
     ;;
 esac
 
 if [[ "$ACTION" == "status" ]]; then
   if [[ $SELECT_ALL -eq 1 || $DRY_RUN -eq 1 || ${#REQUESTED_SKILLS[@]} -gt 0 ]]; then
-    fail "status accepts only --agent codex|claude|both."
+    fail "status accepts only --agent codex|claude|grok|both."
   fi
 else
   if [[ $SELECT_ALL -eq 1 && ${#REQUESTED_SKILLS[@]} -gt 0 ]]; then
@@ -295,6 +295,13 @@ destination_root_for() {
         printf '%s\n' "$HOME/.claude/skills"
       fi
       ;;
+    grok)
+      if [[ -n "${GROK_SKILLS_DIR:-}" ]]; then
+        printf '%s\n' "$GROK_SKILLS_DIR"
+      else
+        printf '%s\n' "/home/box/agent-data/workflows"
+      fi
+      ;;
   esac
 }
 
@@ -339,7 +346,11 @@ case "$AGENT" in
   claude)
     add_destination_root "claude" "$(destination_root_for claude)"
     ;;
+  grok)
+    add_destination_root "grok" "$(destination_root_for grok)"
+    ;;
   both)
+    # Intentionally excludes grok; install Grok with --agent grok.
     add_destination_root "codex" "$(destination_root_for codex)"
     add_destination_root "claude" "$(destination_root_for claude)"
     ;;
