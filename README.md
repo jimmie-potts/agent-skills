@@ -3,11 +3,9 @@
 `agent-skills` is the canonical authoring repository for reusable Agent Skills
 that should work in Codex, Claude Code, Grok Bot, and Pi. A skill is maintained
 once under `skills/` and can be exposed to local agents through one symlink per
-selected skill. Grok Bot install and pairing adapters are in progress
-([#145](https://github.com/jimmie-potts/agent-skills/issues/145),
-[#146](https://github.com/jimmie-potts/agent-skills/issues/146),
-[#148](https://github.com/jimmie-potts/agent-skills/issues/148)); shared skills
-stay host-portable meanwhile.
+selected skill. Grok Bot installs through `--agent grok` into the Cursor
+workflows tree, with advisory pairing via `worker-with-grok` and
+deliver-work / review-work Grok adapters; shared skills stay host-portable.
 
 This repository provides local authoring, validation, testing, status, install,
 and uninstall workflows for WSL/Linux. It is not a plugin, marketplace, custom
@@ -438,9 +436,9 @@ boundary. Verify host behavior before claiming it has been enforced. See
 [Codex](https://developers.openai.com/codex/skills),
 [Claude Code](https://code.claude.com/docs/en/skills#control-who-invokes-a-skill),
 and [Pi](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/skills.md).
-Grok Bot skill loading and install roots are documented with
-[#145](https://github.com/jimmie-potts/agent-skills/issues/145); do not treat
-Grok as covered by `--agent both`.
+Grok Bot skill loading and install roots use `--agent grok` and
+`GROK_SKILLS_DIR` as documented above; do not treat Grok as covered by
+`--agent both`.
 
 For tests or an intentional advanced setup, override the roots without changing
 `HOME`:
@@ -607,8 +605,8 @@ skills.
 
 Installed links on the managed hosts resolve into one checkout of this
 repository, so updating it changes the skills of every running Codex, Claude
-Code, and Pi session at once (and Grok Bot sessions once [#145](https://github.com/jimmie-potts/agent-skills/issues/145)
-adds that destination), even when the update was wanted for unrelated work. Use
+Code, Pi, and Grok Bot session at once (Grok via the workflows
+destination), even when the update was wanted for unrelated work. Use
 this
 one procedure for every update: installing a merged change that
 [`AGENTS.md`](AGENTS.md) says needs installation, working an install issue that
