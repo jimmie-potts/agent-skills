@@ -358,10 +358,12 @@ either `--all` or one or more skill names; omission never means “all.”
 ./scripts/manage-skills.sh validate
 ./scripts/manage-skills.sh status --agent codex
 ./scripts/manage-skills.sh status --agent claude
+./scripts/manage-skills.sh status --agent grok
 ./scripts/manage-skills.sh status --agent both
 
 ./scripts/manage-skills.sh install --agent codex <skill-name>
 ./scripts/manage-skills.sh install --agent claude <skill-name>
+./scripts/manage-skills.sh install --agent grok <skill-name>
 ./scripts/manage-skills.sh install --agent both <skill-name>
 ./scripts/manage-skills.sh install --agent both --all
 
@@ -369,12 +371,16 @@ either `--all` or one or more skill names; omission never means “all.”
 ./scripts/manage-skills.sh install --agent both --existing-only <skill-name>
 ./scripts/manage-skills.sh uninstall --agent both --dry-run <skill-name>
 ./scripts/manage-skills.sh uninstall --agent both <skill-name>
+./scripts/manage-skills.sh uninstall --agent grok <skill-name>
 ```
 
 `install --existing-only` verifies already-correct links without creating links
 or destination roots. It refuses missing or conflicting targets and preserves
 the manager's adjacent ownership checks. The guarded adapter below uses this
 mode after updating existing skill files.
+
+`--agent both` installs Codex and Claude Code only. It does **not** include
+Grok Bot; install or uninstall Grok destinations with `--agent grok`.
 
 Defaults and discovery:
 
@@ -383,14 +389,18 @@ Defaults and discovery:
 | Codex | `~/.agents/skills/<skill-name>` | `$skill-name` |
 | Claude Code | `~/.claude/skills/<skill-name>` | `/skill-name` |
 | Pi | `~/.agents/skills/<skill-name>` | `/skill:<skill-name>` |
-| Grok Bot | Provisional — destination and `--agent grok` land with [#145](https://github.com/jimmie-potts/agent-skills/issues/145); not folded into `--agent both` | Host-native skill selection once installed; see #145 |
+| Grok Bot | `/home/box/agent-data/workflows/<skill-name>` | Host `/` skill menu / UpdateSkill after install |
 
 Codex, Claude Code, and Pi may also select a skill automatically when its
 description matches the request. Pi discovers the same `~/.agents/skills/`
 destination as Codex, so a skill installed with `--agent codex` is available to
 both of those hosts. The manager has no separate `--agent pi` option because it
-would address the same links. Grok Bot is a fourth supported target once #145
-ships; until then do not invent manage-skills commands for it. After adding or
+would address the same links. Grok Bot uses the Cursor workflows tree as its
+managed destination (`--agent grok`); after symlink install, the host loads
+those skill directories through its UpdateSkill / workflows readback path—prove
+installation with `./scripts/manage-skills.sh status --agent grok` (owned link
+resolves into this checkout) and, when the host UI is available, confirm the
+skill appears for the Bot after a fresh session or host reload. After adding or
 changing skills, use Pi's `/reload` command or restart the relevant local
 agent.
 
@@ -439,7 +449,15 @@ For tests or an intentional advanced setup, override the roots without changing
 CODEX_SKILLS_DIR=/tmp/codex-skills \
 CLAUDE_SKILLS_DIR=/tmp/claude-skills \
 ./scripts/manage-skills.sh install --agent both --dry-run <skill-name>
+
+GROK_SKILLS_DIR=/tmp/grok-skills \
+./scripts/manage-skills.sh install --agent grok --dry-run <skill-name>
 ```
+
+`GROK_SKILLS_DIR` overrides the default Grok root
+(`/home/box/agent-data/workflows`) the same way `CODEX_SKILLS_DIR` and
+`CLAUDE_SKILLS_DIR` override their hosts. Leave it unset for normal box
+installs.
 
 `AGENT_SKILLS_SOURCE_DIR` can point the manager at an isolated catalog, which
 the test suite uses. Normal use leaves it unset so the source is this

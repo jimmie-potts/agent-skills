@@ -238,6 +238,17 @@ class InstalledSkills(unittest.TestCase):
         self.assertEqual((result['status'],result['effects']),('blocked','none'))
         self.assertEqual(self.command('-C',str(self.checkout),'rev-parse','HEAD').strip(),self.previous)
 
+    def test_optional_grok_links_use_manager_env_and_readback(self):
+        dest=self.root/'grok';dest.mkdir()
+        link=dest/'valid-skill';link.symlink_to(self.checkout/'skills/valid-skill')
+        self.config['links'].append({'agent':'grok','skill':'valid-skill','path':str(link)})
+        self.save_config()
+        result=self.run_adapter()
+        self.assertEqual(result['status'],'installed',result)
+        proof=json.loads(Path(result['receipt']['path']).read_text())
+        self.assertEqual(set(proof['readback']['managerStatus']),{'codex','claude','grok'})
+        self.assertEqual((Path(link)/'SKILL.md').read_bytes(),(self.source/'skills/valid-skill/SKILL.md').read_bytes())
+
     def test_real_cli_returns_the_installed_files_contract(self):
         tools=self.root/'tools';tools.mkdir()
         tool=tools/'git'
