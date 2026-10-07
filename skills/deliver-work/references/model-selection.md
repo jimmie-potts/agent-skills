@@ -45,16 +45,18 @@ selection. Unavailable optional controls remain unavailable, not simulated.
   [bounded briefs](worker-briefs.md) and supply selected rules, not this routing
   policy. Workers do not repeat coordinator selection.
 - Advisory pairing, only after selecting that strategy: discover and read
-  worker-with-astra for Codex collaboration tools, or worker-with-fable for
-  Claude Code subagent tools. Read its setup adapter and worker protocol. The
+  worker-with-astra for Codex collaboration tools, worker-with-fable for
+  Claude Code subagent tools, or worker-with-grok for Grok Bot Task /
+  MessageSubagent tools. Read its setup adapter and worker protocol. The
   original advisor, consultation gates and ownership remain mandatory. No
   pairing is selected on other hosts.
 
 For Codex collaboration tools, read the
 [Codex adapter](codex-model-selection.md). For Claude Code subagent tools, read
-the [Claude Code adapter](claude-code-model-selection.md). Read only the active
-host and selected role for execution. A planning workflow recommending future
-work on both hosts may read both adapters for the proposed roles without
-dispatching agents. These adapters own concrete settings and controls for
-dispatched agents; do not duplicate their tables or infer unavailable controls
-from another host.
+the [Claude Code adapter](claude-code-model-selection.md). For Grok Bot Task /
+MessageSubagent tools, read the [Grok Bot adapter](grok-model-selection.md).
+Read only the active host and selected role for execution. A planning workflow
+recommending future work on multiple hosts may read each needed adapter for the
+proposed roles without dispatching agents. These adapters own concrete settings
+and controls for dispatched agents; do not duplicate their tables or infer
+unavailable controls from another host.

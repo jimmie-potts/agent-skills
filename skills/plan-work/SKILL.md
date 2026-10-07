@@ -68,9 +68,9 @@ delivery, and grant no implementation dispatch authority:
 
 Discover the installed canonical review-work package the same way and read its
 `references/review-selection.md` and each host's reviewer adapter,
-`references/claude-code-reviewers.md` and `references/codex-reviewers.md`, to
-propose each item's review needs and reviewer settings. Delivery refreshes them
-at pickup; reading them dispatches no reviewer.
+`references/claude-code-reviewers.md`, `references/codex-reviewers.md` and
+`references/grok-reviewers.md`, to propose each item's review needs and reviewer
+settings. Delivery refreshes them at pickup; reading them dispatches no reviewer.
 
 ## Check alignment before readiness
 
@@ -137,7 +137,8 @@ assigned investigation. A bounded
 investigation may compose the host's advisory pairing in planning-only mode,
 selected from verified host tooling: worker-with-astra with Codex
 collaboration tools, worker-with-fable with Claude Code subagent tools,
-neither elsewhere. An explicit request naming the other host's pairing is
+worker-with-grok with Grok Bot Task / MessageSubagent tools, and none
+elsewhere. An explicit request naming another host's pairing is
 reported as a host mismatch, not substituted. The worker reads and proposes
 without writes, and a missing pairing does not block this planner's own
 investigation. Link specifications and decision records without copying their

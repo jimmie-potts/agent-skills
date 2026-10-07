@@ -133,8 +133,9 @@ Read each reference below at its trigger:
   selecting a worker or changing implementation strategy/settings, reading only
   its selected role and host branches. Direct trivial
   work at the coordinator's existing settings needs no worker-selection reads. Compose the host's advisory pairing,
-  worker-with-astra with Codex collaboration tools or worker-with-fable with
-  Claude Code subagent tools, only when that policy and the pairing's
+  worker-with-astra with Codex collaboration tools, worker-with-fable with
+  Claude Code subagent tools, or worker-with-grok with Grok Bot Task /
+  MessageSubagent tools, only when that policy and the pairing's
   prerequisites support it.
 - [Bounded briefs and returns](references/worker-briefs.md): before dispatching
   an implementation or investigation worker.
