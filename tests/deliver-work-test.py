@@ -201,6 +201,26 @@ class DeliverWorkStructureTest(unittest.TestCase):
             self.assertTrue((SKILL / resource).is_file())
             self.assertIn(resource, links)
 
+    def test_scope_fit_precedes_decomposition(self):
+        # Anchors only; held-out scope-assessment cases evaluate the behavior.
+        assessment = ' '.join(
+            (SKILL / 'references/work-assessment.md').read_text().split())
+        for anchor in ('minimum useful outcome and a concrete stopping point',
+                       'name the current need or concrete failure',
+                       'General possibility, thoroughness or future flexibility alone',
+                       'keep it out of required acceptance and children',
+                       'independently useful outcome or one part is a true prerequisite',
+                       'This test governs additions, not finding disposition',
+                       'least expensive evidence that supports the intended claim',
+                       'Preserve every required check'):
+            with self.subTest(anchor=anchor):
+                self.assertIn(anchor, assessment)
+        plan = ' '.join((ROOT / 'skills/plan-work/SKILL.md').read_text().split())
+        self.assertLess(plan.index("apply the assessment contract's scope fit"),
+                        plan.index('decompose a larger outcome'))
+        entry = ' '.join((SKILL / 'SKILL.md').read_text().split())
+        self.assertIn('before decomposing tasks, assess current scope', entry)
+
     def test_selection_resources_are_routed(self):
         entry_links = re.findall(r'\]\(([^)]+)\)',
                                 (SKILL / 'SKILL.md').read_text())

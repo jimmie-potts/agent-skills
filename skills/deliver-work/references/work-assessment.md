@@ -7,11 +7,12 @@ gates remain floors.
 
 ## Fit scope to actual needs
 
-Assess scope when drafting an item, at delivery pickup, and after a material
-scope or assumption change, not on every turn. Refresh the stored assessment
-instead of writing another. This adds no skill invocation; explicit-only skills
-still need their own explicit request or deliberate composition by an
-authorized workflow.
+Assess scope when drafting an item, before creating its tasks, stories or
+children, at delivery pickup, and after a material scope or assumption change,
+including additional work a review or other participant proposes. Do not
+reassess on every turn. Refresh the stored assessment instead of writing
+another. This adds no skill invocation; explicit-only skills still need their
+own explicit request or deliberate composition by an authorized workflow.
 
 Before choosing scope, establish the intended user outcome, supported
 installation or deployment, affected consumers and meaningful failure
@@ -22,9 +23,27 @@ repository. Record missing assumptions as unknown and keep them visible.
 "Personal project" alone never establishes low impact: one owner's device,
 data or credentials can still suffer destructive or hard-to-recover failures.
 
-Start from a direct implementation using existing components and bounded
-manual steps. Add a platform, service, abstraction, automation or hardening
-only for a named current requirement or concrete failure it addresses.
+Then state the minimum useful outcome and a concrete stopping point: the
+observable result after which the item is done, even when further improvement
+remains possible. Start from a direct implementation using existing
+components, checks and bounded manual steps.
+
+Before adding a meaningful capability, stage, story or acceptance requirement,
+name the current need or concrete failure it addresses and why existing checks,
+a conservative fallback or simple recovery, such as a revert, do not cover it.
+General possibility, thoroughness or future flexibility alone is not a
+requirement. Work that fails this test is optional: keep it out of required
+acceptance and children, and classify it as a cut below rather than creating
+another issue for it. Split an item only when each part delivers an
+independently useful outcome or one part is a true prerequisite of another;
+successive stages toward one outcome stay one item.
+
+At pickup and after a material change, apply the same test to the current scope
+and to each proposed addition. Keep the bounded scope and stopping point unless
+new evidence names a need they miss. This test governs additions, not finding
+disposition: correct blocking review findings under the
+[corrections](corrections.md) rules however small the plan, and send a finding
+that depends on an unstated requirement to the scope owner.
 
 The scope owner is the requesting user or the owner that project policy names,
 never the assessing agent, a worker or a reviewer. Classify each meaningful
@@ -42,10 +61,11 @@ alternative, and an existing owning issue or a concrete revisit trigger, such
 as a second consumer or an observed failure. A trigger is a recorded condition,
 not a new ticket; do not create speculative follow-up tickets.
 
-Preserve accepted functionality and applicable protections. When a cut would
-change requested behavior, an accepted criterion or failure consequences,
-record needs clarification for the affected work and escalate the choice to
-the scope owner; continue independent work. Routine implementation choices
+Preserve accepted functionality and applicable protections. When a cut or
+addition would change requested behavior, an accepted criterion, failure
+consequences or accepted risk, or would relax a mandatory rule, record needs
+clarification for the affected work and escalate the choice to the scope owner;
+continue independent work. Routine implementation choices and simplifications
 within existing authority need no renewed approval. Before treating a cut as
 accepted, reconcile affected consumers and acceptance criteria and update the
 stored assessment. Scope assessment waives no repository review, CI, UI,
@@ -123,9 +143,14 @@ those meanings for proposals without dispatching implementation.
 For every retained acceptance criterion identify a planned test or other
 evidence, the behavior it must observe, and any limitation. Cover relevant
 success and failure cases: retries, timeouts, ordering, stop and recovery,
-authorization, consumer compatibility, and critical user journeys. Choose test
-levels proportionate to the claim; do not require every technique for every
-change. Planned commands and proposed paths are not executed checks. Delivery
+authorization, consumer compatibility, and critical user journeys. Use the
+least expensive evidence that supports the intended claim; do not require every
+technique for every change. Add broader validation, such as repeated trials,
+replay campaigns or fixed sample counts, only for a named gap that cheaper
+evidence leaves. Preserve every required check. State an observation's
+conditions and limits instead of turning a modest improvement into a
+statistical or general claim. Planned commands and proposed paths are not
+executed checks. Delivery
 records actual commands, results, and candidate revision against this mapping.
 
 Name additional security, concurrency, migration, performance, accessibility,
@@ -147,6 +172,7 @@ compact assessment section in the issue description or existing authoritative
 work document, with:
 
 - source/revision or observation date, and planning or delivery stage;
+- the minimum useful outcome, necessary work and stopping point;
 - operating assumptions with their sources and unknowns, and each meaningful
   cut with its class, lost behavior or assurance, manual alternative, and
   owning issue or revisit trigger;
