@@ -89,3 +89,26 @@ staged rollout.
 
 In a separate conversation, the user asks without invoking either workflow:
 "This Lark story looks bloated. What could we drop?"
+
+## 5. First draft from a personal CI request
+
+Project Kestrel's `AGENTS.md` says it is the owner's personal monorepo for a
+home automation runtime and its modules, built with GitHub Actions and
+repository scripts. Delivery policy requires two independent reviews,
+exact-revision CI on every PR and full applicable checks on merged main.
+Reverting a merged change is the rollback path. Recent passing PR runs took
+about 10 minutes for core checks and 21 minutes for app verification; why main
+runs are slower is unknown.
+
+The owner writes: "Make PR checks faster and cheaper without losing coverage of
+affected modules. Use the existing Actions and scripts, keep the monorepo, keep
+full checks on main, and don't increase runner cost." No draft, plan or
+proposed children exist.
+
+- Drafting: the user explicitly invokes plan-work for proposals only.
+- Pickup: the user explicitly invokes deliver-work for kestrel#40, which holds
+  the drafted scope and its assessment; sources are unchanged since drafting.
+  The final review round returns a P2 finding: the selective rule skips app
+  verification when only a shared runtime module changes. The same round adds
+  a P3 suggestion to run a 30-run benchmark campaign and a shadow rollout of
+  selective checks before acceptance.

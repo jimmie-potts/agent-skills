@@ -92,8 +92,9 @@ canonical skill. Its questioning phase is read-only. Reuse accepted decisions
 and existing authority; after questioning, return control here for authorized
 planning operations.
 
-Define one item or decompose a larger outcome using the shared task-planning
-meanings. Carry outcomes, exclusions, acceptance/verification coverage and true
+Before defining or decomposing items, apply the assessment contract's scope
+fit, including its minimum useful outcome and stopping point. Then define one
+item or decompose a larger outcome using the shared task-planning meanings. Carry outcomes, exclusions, acceptance/verification coverage and true
 input dependencies into each proposed work item. Where the repository has a
 test, fixture, contract or mockup that states a criterion, link it as the
 acceptance reference rather than restating it in prose. An epic or list of chores
@@ -110,8 +111,8 @@ link to the install issue that batches it. Write no blanket exclusion of that
 step for such a project. Without a declaration, leave installation and
 deployment out of the item.
 
-Apply the assessment contract, including scope fit while drafting, without
-embedding model names in planning ratings.
+Apply the rest of the assessment contract without embedding model names in
+planning ratings.
 For every item, read [execution recommendations](references/execution-recommendations.md)
 and recommend a starting model and reasoning/effort level for Claude Code,
 Codex and Grok Bot alongside the assessment. Name the session type the user

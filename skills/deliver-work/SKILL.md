@@ -93,8 +93,9 @@ These hold at every step. References elaborate them and never relax them.
 ## Plan, implement and validate
 
 Before deciding readiness and checks, read [work assessment](references/work-assessment.md).
-At every issue pickup, assess current scope and alignment, with or without a
-planning record. Include newly relevant direction, architecture, contracts,
+At every issue pickup, before decomposing tasks, assess current scope, its
+stopping point and alignment, with or without a planning record; assess
+additional work proposed later, including by reviews, the same way. Include newly relevant direction, architecture, contracts,
 reuse opportunities and related work under the assessment contract; update the
 existing assessment. Map acceptance criteria to verification and identify
 conditional reviews and operational handoffs. Preserve the project's mandatory
