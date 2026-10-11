@@ -824,6 +824,7 @@ class BoundariesTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    subprocess.run([sys.executable, str(ROOT / 'tests/delivery-closeout-test.py')], check=True)
     subprocess.run([sys.executable, str(ROOT / 'tests/model-gate-test.py')], check=True)
     subprocess.run([sys.executable, str(ROOT / 'tests/merge-guard-test.py')], check=True)
     subprocess.run([sys.executable, str(ROOT / 'tests/github-io-test.py')], check=True)

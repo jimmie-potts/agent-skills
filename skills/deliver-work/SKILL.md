@@ -248,6 +248,12 @@ Before claiming any completion stage, apply the
 check. Lead with the finished outcome, remaining work and owner action; retain
 stage-specific sources, targets, observation times and verification limits.
 
+After verified merge and required post-merge CI, perform the
+[canonical checkout refresh](references/project-discovery.md#canonical-checkout-refresh)
+discovered at preparation. Use the owning update procedure when the checkout
+activates installed sources. Record the verified result or retained/pending
+state separately from source completion.
+
 Evaluate all completion conditions. When the owning project declares
 installation or deployment as a completion condition and defines its
 procedure, prepare the complete step after verified merge and post-merge CI.

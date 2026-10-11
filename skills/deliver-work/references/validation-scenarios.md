@@ -487,7 +487,10 @@ verify instruction decisions; they do not qualify live GitHub enforcement.
 ## Current recovery record and output cadence
 
 Use `tests/fixtures/workflow-evaluation/recovery-record-cases.md` for update
-triggers, ordinary continuation and retained limits. Withhold
+triggers, ordinary continuation, retained limits, separated history and interrupted
+legacy conversion. Exercise the real filesystem/Git demonstrations with
+`python3 tests/delivery-closeout-test.py`; its ownership gates are simulated,
+not host enforcement. Withhold
 `recovery-record-graders.md` from evaluated contexts. Freeze the candidate,
 inputs and rubric before trials; retain concrete returned records, messages
 and decisions outside the candidate commit. Distinguish observed fixture
@@ -503,3 +506,13 @@ unchanged recovery, changed requirements, replacement roles, observed mismatch,
 explicit verified identity and rendered prompts. Retain actual decisions and
 sourced settings; these simulations do not establish runtime identity or host
 enforcement.
+
+## Canonical checkout refresh
+
+Use `tests/fixtures/workflow-evaluation/checkout-refresh-cases.md` for shared
+closeout and ordinary Hub adoption. Withhold `checkout-refresh-graders.md` and
+prior outputs from evaluated contexts. Freeze candidate, inputs and rubric;
+retain actual returned traces outside the candidate. Run the disposable Git
+fixtures in `tests/delivery-closeout-test.py` alongside the canonical checks.
+Separate procedure demonstration, synthetic decisions, actual canonical refresh
+and installed-source readback; none substitutes for another.
