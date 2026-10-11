@@ -139,7 +139,9 @@ a request never establishes the executing model or level.
 Copy the `Recommended` row into the task evidence at pickup. Write the section
 when the durable record is created, refresh it at substantive checkpoints,
 complete it before the guarded merge, and read it back at final handoff. Edit
-the existing section rather than adding another.
+the existing section rather than adding another. Keep cumulative counts and
+unresolved accounting here; link superseded detail in private evidence under
+[resumption](resumption.md), without appending checkpoint history.
 
 ### Rows
 

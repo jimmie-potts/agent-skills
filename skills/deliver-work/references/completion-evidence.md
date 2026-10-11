@@ -28,6 +28,7 @@ stores, contact devices or repair host settings to obtain a nicer closeout.
 | --- | --- | --- |
 | Source merged | Current merged PR/readback, immutable merge revision, actual target inclusion and required post-merge checks | An accepted merge request, queue entry or old branch name |
 | Installed | Owning procedure's current target/link/content readback at an identified revision | Source merge, old installation receipt or file transport acknowledgment |
+| Canonical checkout refreshed | Owning refresh/update procedure branch and exact SHA readback, remote observation and delivered-merge inclusion | A fetch, clean status, accepted merge or source completion alone |
 | Active in client | Required current client discovery/activation readback for that installed target | Link existence, source tests or a simulator frame |
 | Visible/physical acceptance | Required observation on the declared candidate and actual surface/device, including owner acceptance when required | Transport acknowledgment, a different candidate or simulator-only result |
 

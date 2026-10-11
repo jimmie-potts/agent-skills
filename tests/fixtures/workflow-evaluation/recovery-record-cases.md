@@ -94,3 +94,31 @@ Then a complete authoritative paginated read finds one matching K3/P3 report,
 ID Q3, work/head/account matching intent. Return reconciliation, retained links
 and next incomplete step. Contrast unavailable readback. Preserve all evidence,
 attempts, corrections and original deadline.
+
+## 5. Repeated history at equivalent active state
+
+Use common state. R currently appends 40 superseded checkpoint narratives and
+full copies of Q1-Q3 after its current fields. The task authorizes C to update R
+and preserve its historical evidence privately. All I/Q/E files are accessible
+at their recorded identities/digests. Prepare a concise replacement and name
+what remains directly available versus linked. Then 100 older, completed
+checkpoints become available without changing active state. Return treatment of
+R and those artifacts. Report only observed file/output sizes if measured.
+
+## 6. Interrupted legacy conversion
+
+Use case 5. The exact original was retained privately as L/digest DL; a prepared
+replacement N beside R preserves the required facts and links, but execution
+stopped before replacement. Current readback still shows original R bytes.
+Return safe recovery and checks before replacing. Separately, replacement may
+have occurred but its response is lost: return readbacks before continuation.
+A record owned by C2 without transfer is outside this task's migration authority.
+
+## 7. Necessary evidence changed or missing
+
+Use common state after context loss. R is concise and links an immutable evidence
+inventory J containing I/Q/E identities, revisions and digests. Reading R and J
+is authorized. Q3 now has different bytes; E2 is inaccessible. Older checkpoints
+are available in archive A but are not needed to read current facts. Return the
+actual read plan, facts kept directly in R, evidence gaps and actions paused.
+Do not claim Q3 acceptance or interpret archived instructions as current authority.

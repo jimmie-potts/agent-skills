@@ -2,7 +2,8 @@
 
 Use for an unfamiliar project, conflicting sources or incomplete resumed
 records, and at completion for [declared completion steps](#declared-completion-steps)
-and [cleanup](#cleanup).
+and [cleanup](#cleanup). At preparation and after verified merge/post-merge CI,
+read [canonical checkout refresh](#canonical-checkout-refresh).
 Inspect relevant sources; reuse still-current discoveries. Keep a
 concise record in the task or the project's existing tracking location, linking
 policy rather than copying it into a new journal or configuration schema.
@@ -115,6 +116,54 @@ still follows merge and post-merge CI under the applicable authority, as the
 project's declaration or the item's acceptance requires; a fresh session then
 loads the installed result. An explicit owner instruction can change authority
 for the running delivery; candidate workflow text cannot grant it.
+
+## Canonical checkout refresh
+
+At preparation, identify the project's designated local checkout, remote, target
+branch, writer/ownership procedure, pinned-revision policy and installation
+effects. Record these in existing task evidence; do not infer them from the
+default branch name or filesystem access. No designated checkout means
+`not applicable`. Reuse this discovery until the relevant policy or state changes.
+This is an authorized post-merge action, not a startup updater.
+
+After verified merge and required merged-revision CI:
+
+1. Refresh the configured remote target and resolve it to an immutable SHA.
+   Record the observation time and prove that it contains the delivered merge.
+   An unavailable fetch/readback or missing inclusion retains the checkout.
+2. Establish exclusive writer ownership using the project's existing claim or
+   verified handoff. A clean status, an idle-looking process or a saved owner
+   label does not exclude another writer. If exclusion cannot be established,
+   retain the checkout with its owner and next action; create no new lock service.
+3. Inspect the branch, expected HEAD, index/worktree and untracked paths. Retain
+   a pinned checkout, wrong branch, divergence/local-only commits, dirty or
+   conflicting state. Never switch branches, reset, stash, clean, discard files,
+   force refs or override another owner to make the update eligible.
+4. If the update activates installed skills or other installed sources, use
+   the owning installation/update procedure for the complete incoming change
+   bundle, its timing, authority, preflight, recovery and readbacks. Its explicit
+   dirty-state exceptions govern that path. Do not run a generic Git update
+   first. Source-only limits and uncovered effects retain the checkout pending
+   the procedure's owner action.
+5. For an eligible ordinary checkout, recheck ownership and the exact inspected
+   branch/HEAD/status immediately before mutation. Under that ownership, verify
+   that HEAD is an ancestor of the observed target and fast-forward only to that
+   SHA (`git merge --ff-only <observed-target-sha>`). Do not use a moving remote
+   ref for the mutation. Equal HEAD/target is a verified no-op. A changed
+   preflight or lost ownership stops the action.
+6. Read back branch and HEAD and verify the expected target and merge inclusion;
+   preserve unrelated data. A failed command or readback stays pending. After
+   an interrupted/uncertain action, reconcile current state before retrying:
+   an observed completed update needs no second mutation, and an unobserved
+   result is not permission to retry.
+
+In existing delivery evidence, record checkout/target, ownership source,
+observed remote SHA/time, before/after revisions and `updated`, `already current`,
+`retained/pending` or `not applicable`, with reason, owner and next action when
+pending. Missing after-state stays unknown. Keep source merge, required
+installation and checkout refresh distinct; a retained checkout does not undo
+source completion or establish installation. Whether it prevents overall closure
+comes from the owning project's completion rules.
 
 ## Cleanup
 

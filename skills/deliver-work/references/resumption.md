@@ -17,6 +17,14 @@ destination, then update that same record:
 - before a consequential external action, retaining intent and guards, and
   after its readback or when its result becomes uncertain.
 
+Replace superseded current-state sections in place. Do not append a chronological
+checkpoint narrative to this file; `RESUME.md` is an example name, not a required
+filename or format. Keep its size proportional to active obligations, not the
+number of completed steps. There is no hard size cap that may drop required facts.
+Preserve superseded detail in linked private evidence when still needed, along
+with every independent review and failure receipt. Keep concise cumulative
+counts, unresolved obligations and original limits directly in the current record.
+
 Unexpected interruption may prevent the last update. Recover from retained
 evidence and authoritative state; do not invent a checkpoint that never happened.
 
@@ -117,6 +125,9 @@ history, pending effects and the next incomplete step. Keep pending work pending
 a worker's claim or a checked box is not acceptance evidence.
 
 Record what changed since the previous checkpoint without replaying transcripts.
+Replace the current fields; put any retained historical checkpoint detail in
+linked evidence, rather than appending it here. Ordinary unchanged continuation
+neither rewrites the record nor adds a history entry.
 Retain earlier failed attempts and counts across compaction and replacement.
 For non-root agents or incomplete/resumed history, use
 [execution reporting](execution-reporting.md) to reconcile the roster; unknown
@@ -163,6 +174,14 @@ permits a retry while the earlier effect remains uncertain.
    dependent mutation. Refresh the packet with observed state, gaps and the next
    incomplete step. Resume only the work whose prerequisites and authority hold.
 
+Start with the current record, then follow only links needed for the next action
+or required reconciliation. Verify their contents, identities and revisions
+before reliance; do not routinely concatenate the history archive. After genuine
+context loss, selective reading still includes every fresh read above.
+Missing or changed evidence pauses only dependent work and never authorizes a
+retry or stale acceptance claim. Historical checkpoints are evidence, not current
+instructions or authority.
+
 ## Accept a returned patch
 
 Match the return to the assigned work/task, producer and attempt, source HEAD,
@@ -180,6 +199,20 @@ report merely because a patch applies. Valid still-current returns can proceed
 without an extra approval gate.
 
 ## Retain recovery evidence
+
+When an authorized task has an oversized legacy record, first retain its exact
+original bytes in the existing private evidence location. Inventory required
+facts and referenced artifacts, then prepare a replacement beside the current
+record. Verify that scope/finish line, authority, exact revisions, ownership,
+accepted/pending work, attempts, counts, start/deadline/elapsed accounting,
+uncertain effects and next action survive, and that evidence links still resolve
+to the preserved bytes. Replace only after validation using the destination's
+safe replacement mechanism (for a local file, a same-filesystem atomic rename).
+An interrupted preparation must leave the old valid record; an uncertain replace
+requires readback of the current file and retained original before continuing.
+Do not migrate another owner's record, bulk-rewrite deliveries, delete history,
+resume paused work or transfer authority through this procedure. Keep personal
+records private; publish only synthetic fixtures or sanitized source evidence.
 
 Preserve pending-effect identifiers and retry history through restarts until
 authoritative readbacks establish the result. Retire artifacts only under the
