@@ -90,9 +90,9 @@ the symptom to that cause. Return:
 
 Stop after diagnosis unless the user separately authorizes implementation. A
 fix request may use the repository's implementation or TDD workflow, but this
-skill does not grant that authority. Follow the repository's authoritative
-scope, change records, and delivery workflow. Diagnosing bugs returns evidence;
-it does not publish, transition, commit, merge, close, or implement on its own.
+skill does not grant that authority. Diagnosis returns evidence.
+Take edit, Git, tracker, comment or publishing actions only when the request,
+or the coordinating workflow's existing authority, explicitly covers them.
 
 Use `unslop` for substantial style issues in the human-facing diagnosis without changing commands,
 outputs, measurements, redactions, or evidence.

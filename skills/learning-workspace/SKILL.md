@@ -23,10 +23,9 @@ target remains inside that root and does not escape through a symlink or parent
 path. Keep all missions, resources, lessons, references, assets, notes,
 glossaries, and learning records inside the approved teaching workspace.
 
-This skill grants no authority to install dependencies, open a browser, contact
-or delegate to a community, change another repository, use private data, perform
-Git actions, publish, or mutate an external system. Any such action needs
-separate authority from the underlying request.
+It grants no authority to install dependencies, open a browser, contact a
+community, use private data or change anything outside the approved workspace;
+those need separate authority from the request.
 
 ## Establish the mission
 

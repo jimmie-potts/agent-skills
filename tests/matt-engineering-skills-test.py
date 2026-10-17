@@ -515,6 +515,20 @@ class MattEngineeringSkillsTest(unittest.TestCase):
             )
         )
 
+    def test_effectful_skills_keep_an_authority_line(self) -> None:
+        pattern = re.compile(
+            r"grants no authority|explicitly covers them|explicitly authorizes it"
+        )
+        for name in (
+            "code-review", "codebase-design", "domain-modeling", "diagnosing-bugs",
+            "prototype", "learning-workspace", "grilling",
+        ):
+            with self.subTest(skill=name):
+                body = " ".join(
+                    (SKILLS_ROOT / name / "SKILL.md").read_text(encoding="utf-8").split()
+                )
+                self.assertRegex(body, pattern)
+
     def test_prompt_level_selection_matrix_matches_descriptions_and_policies(self) -> None:
         positive_description_evidence = {
             "domain-modeling": "use when the user is defining, reconciling, or proposing changes to domain terms",

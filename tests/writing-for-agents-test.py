@@ -13,7 +13,6 @@ import yaml
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 SKILL_DIRECTORY = REPOSITORY_ROOT / "skills" / "writing-for-agents"
 SKILL_PATH = SKILL_DIRECTORY / "SKILL.md"
-AGENTS_REFERENCE_PATH = SKILL_DIRECTORY / "references" / "agents-md.md"
 SKILL_REFERENCE_PATH = SKILL_DIRECTORY / "references" / "skill-mechanics.md"
 METADATA_PATH = SKILL_DIRECTORY / "agents" / "openai.yaml"
 SOURCE_PATH = SKILL_DIRECTORY / "SOURCE.md"
@@ -51,11 +50,10 @@ class WritingForAgentsSkillTest(unittest.TestCase):
         )
         self.assertEqual(
             sorted(path.name for path in (SKILL_DIRECTORY / "references").iterdir()),
-            ["agents-md.md", "skill-mechanics.md"],
+            ["skill-mechanics.md"],
         )
         for path in (
             SKILL_PATH,
-            AGENTS_REFERENCE_PATH,
             SKILL_REFERENCE_PATH,
             METADATA_PATH,
             SOURCE_PATH,
@@ -88,7 +86,6 @@ class WritingForAgentsSkillTest(unittest.TestCase):
             *EXPECTED_DIGESTS,
             "2026-08-23",
             "skills/productivity/writing-for-agents/",
-            "https://developers.openai.com/codex/guides/agents-md",
         ):
             self.assertIn(required, source)
         for required in (

@@ -99,9 +99,8 @@ production-ready. Choosing a disposable variant does not approve the production
 candidate or its UI; that candidate needs its own review and any required UI
 approval.
 
-Follow the repository's authoritative scope, change records, and delivery
-workflow. Prototype does not publish, transition, commit, merge, close, or
-change external systems on its own.
+This skill grants no authority of its own. Take edit, Git, tracker, comment or publishing actions only when the request,
+or the coordinating workflow's existing authority, explicitly covers them.
 
 Use `unslop` for substantial style issues in human-facing labels and the result summary without changing
 code, commands, measurements, acceptance criteria, or authority boundaries.

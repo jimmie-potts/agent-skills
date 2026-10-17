@@ -11,8 +11,8 @@ Sharpen the language and recorded decisions that describe the domain. Treat
 the repository's established vocabulary as authoritative until evidence or the
 user resolves a conflict.
 
-This skill grants no authority to edit files, update Jira or other trackers,
-change OPSX artifacts, implement code, or perform Git or publication actions.
+This skill grants no authority of its own. Take edit, Git, tracker, comment or publishing actions only when the request,
+or the coordinating workflow's existing authority, explicitly covers them.
 Propose vocabulary and decision-record edits by default. Write them only when
 the underlying request authorizes the exact repository edits.
 
@@ -58,11 +58,7 @@ If exact edit authority exists, show the proposed paths and changes before
 writing, then limit the edit to those accepted destinations. Otherwise, stop
 with the proposal.
 
-Domain modeling prepares vocabulary and decision-record proposals. The
-consuming repository defines the owners of scope, dependencies, planning,
-and delivery. This skill does not publish, transition, commit, merge, close,
-or implement. Return proposals to an authorized coordinating workflow when
-one composed this step.
+Return proposals to the coordinating workflow when one composed this step.
 
 Use `unslop` for substantial style issues in human-facing proposals without changing authoritative terms,
 quotations, citations, or accepted decisions.
