@@ -23,7 +23,7 @@
 - Canonical path: [`skills/domain-modeling/`](skills/domain-modeling/SKILL.md)
 - Original repository: `https://github.com/mattpocock/skills`
 - Original path: `skills/engineering/domain-modeling/`
-- Pinned Git commit: `5b15a47f2d7150f545fbcacbfe381787fc0230dc`
+- Pinned Git commit: `49dd158d1076134a641b33efb035946536778336`
 - License: [MIT](skills/domain-modeling/LICENSE), Copyright (c) 2026 Matt Pocock
 - Detailed source record: [`skills/domain-modeling/SOURCE.md`](skills/domain-modeling/SOURCE.md)
 
@@ -53,15 +53,6 @@ adaptations. Updates are reviewed in this shared catalog.
 - Pinned Git commit: `5b15a47f2d7150f545fbcacbfe381787fc0230dc`
 - License: [MIT](skills/writing-for-agents/LICENSE), Copyright (c) 2026 Matt Pocock
 - Detailed source record: [`skills/writing-for-agents/SOURCE.md`](skills/writing-for-agents/SOURCE.md)
-
-## `grill-me`
-
-- Canonical path: [`skills/grill-me/`](skills/grill-me/SKILL.md)
-- Original repository: `https://github.com/mattpocock/skills`
-- Original path: `skills/productivity/grill-me/`
-- Pinned Git commit: `5b15a47f2d7150f545fbcacbfe381787fc0230dc`
-- License: [MIT](skills/grill-me/LICENSE), Copyright (c) 2026 Matt Pocock
-- Detailed source record: [`skills/grill-me/SOURCE.md`](skills/grill-me/SOURCE.md)
 
 ## `diagnosing-bugs`
 

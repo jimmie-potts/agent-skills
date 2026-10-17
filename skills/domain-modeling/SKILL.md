@@ -21,10 +21,10 @@ the underlying request authorizes the exact repository edits.
 1. Search the repository for its vocabulary sources and decision paths. Inspect
    applicable agent instructions, glossaries, context maps, schemas, contracts,
    decision logs, ADRs, specifications, code, and tests. Do not assume a root
-   `CONTEXT.md` or `docs/adr/` convention.
+   `GLOSSARY.md` or `docs/adr/` convention.
 2. Identify which source owns each meaning. When sources disagree, report the
    conflict instead of silently choosing the most convenient wording.
-3. Read `CONTEXT.md` files as vocabulary only. They define terms and concept
+3. Read `GLOSSARY.md` files, or older `CONTEXT.md` files, as vocabulary only. They define terms and concept
    boundaries, not system behavior, acceptance criteria, or implementation.
 4. Compare claims with code and other authoritative sources. Distinguish the
    implemented behavior from proposed or historical decisions.
