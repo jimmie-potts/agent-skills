@@ -29,6 +29,10 @@ SKILL_NAMES = (
 )
 UPSTREAM_REPOSITORY = "https://github.com/mattpocock/skills"
 EXPECTED_REVISION = "5b15a47f2d7150f545fbcacbfe381787fc0230dc"
+# Skills refreshed from a newer upstream revision: name -> (revision, retrieved).
+REFRESHED_SOURCES = {
+    "domain-modeling": ("49dd158d1076134a641b33efb035946536778336", "2026-10-17"),
+}
 EXPECTED_RETRIEVAL_DATE = "2026-08-23"
 
 EXPECTED_LICENSE_BYTES = b"""MIT License
@@ -113,8 +117,8 @@ EXPECTED_POLICIES = {
 UPSTREAM_DIGESTS = {
     "domain-modeling": {
         "ADR-FORMAT.md": "944c92aa790e8fbdc9199640b170979abb8a34ba8d0fe18c2a01a63bce140ca0",
-        "CONTEXT-FORMAT.md": "17ab16ce783e4d2801ee52fd9acdf550cbf44de65ae76797a93943bbedf22a13",
-        "SKILL.md": "327a2b50620e2fd70abc6893cd6965e76b20f8d0adb0dc2c8d5eb3845efb643e",
+        "GLOSSARY-FORMAT.md": "21dcc40cdec8e151a829b98ab1517c1867bc444e3665134a98c6983411996801",
+        "SKILL.md": "7b925d7b1e341a2eeae33ad68a8a8c0ab889a38ddd22a7598e4c240e5a7556a3",
         "agents/openai.yaml": "f6bf2aa996c6e6f53fdd0708e18a0d16a56aed8322cca59fedbe3c0d2c75f06b",
     },
     "diagnosing-bugs": {
@@ -342,13 +346,16 @@ class MattEngineeringSkillsTest(unittest.TestCase):
             with self.subTest(skill=name):
                 skill_root = SKILLS_ROOT / name
                 source = (skill_root / "SOURCE.md").read_text(encoding="utf-8")
+                revision, retrieved = REFRESHED_SOURCES.get(
+                    name, (EXPECTED_REVISION, EXPECTED_RETRIEVAL_DATE)
+                )
 
                 self.assertIn(f"Upstream repository: `{UPSTREAM_REPOSITORY}`", source)
                 self.assertIn(
                     f"Upstream path: `skills/engineering/{name}/`", source
                 )
-                self.assertIn(f"Pinned source revision: `{EXPECTED_REVISION}`", source)
-                self.assertIn(f"Retrieved: `{EXPECTED_RETRIEVAL_DATE}`", source)
+                self.assertIn(f"Pinned source revision: `{revision}`", source)
+                self.assertIn(f"Retrieved: `{retrieved}`", source)
                 self.assertIn("Updates are manual.", source)
 
                 for relative_path, digest in expected_digests.items():
@@ -373,7 +380,7 @@ class MattEngineeringSkillsTest(unittest.TestCase):
                     f"skills/{name}/LICENSE",
                     f"skills/{name}/SOURCE.md",
                     f"skills/engineering/{name}/",
-                    EXPECTED_REVISION,
+                    revision,
                 ):
                     self.assertIn(required, provenance)
 
@@ -485,8 +492,8 @@ class MattEngineeringSkillsTest(unittest.TestCase):
     def test_domain_modeling_contract(self) -> None:
         body = normalized(SKILLS_ROOT / "domain-modeling" / "SKILL.md")
         for required in (
-            "Do not assume a root `CONTEXT.md` or `docs/adr/` convention",
-            "Read `CONTEXT.md` files as vocabulary only",
+            "Do not assume a root `GLOSSARY.md` or `docs/adr/` convention",
+            "Read `GLOSSARY.md` files, or older `CONTEXT.md` files, as vocabulary only",
             "Compare claims with code and other authoritative sources",
             "Ask what a vague or overloaded word means in the concrete scenario",
             "Propose vocabulary and decision-record edits by default",

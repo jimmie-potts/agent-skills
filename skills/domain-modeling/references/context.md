@@ -7,8 +7,9 @@ context map. Follow the repository's existing format when one exists.
 
 Search before proposing a destination. A repository may use a root glossary,
 bounded-context files, schema documentation, a domain package, generated API
-contracts, or another convention. Treat `CONTEXT.md` and `CONTEXT-MAP.md` as
-possible names, not mandatory locations.
+contracts, or another convention. Treat `GLOSSARY.md` and `GLOSSARY-MAP.md`, or the
+older `CONTEXT.md` and `CONTEXT-MAP.md`, as possible names, not mandatory
+locations.
 
 When several sources define the same term, identify the owning source from
 repository instructions, generators, imports, or usage. If ownership remains

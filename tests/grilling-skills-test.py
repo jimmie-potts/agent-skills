@@ -31,14 +31,6 @@ EXPECTED_SKILLS = {
             "agents/openai.yaml": "1411d7df7d99b7e621a1ff8283c8133cc2464be63d064e52d8ce169c6800ee9b",
         },
     },
-    "grill-me": {
-        "implicit": False,
-        "upstream_path": "skills/productivity/grill-me/",
-        "digests": {
-            "SKILL.md": "caaf8b8de1684f96e26b28f3c29189db5c89cce4b73e1c93d86164f66ef88637",
-            "agents/openai.yaml": "c061e39c3e0f9d865fb1b97556d485704af2a8a58f4b8221a8917a5c2074a32b",
-        },
-    },
     "grill-with-docs": {
         "implicit": False,
         "upstream_path": "skills/engineering/grill-with-docs/",
@@ -58,7 +50,6 @@ EXPECTED_INVENTORY = [
 SKILL_TOKEN_PATTERN = re.compile(r"\$([a-z0-9]+(?:-[a-z0-9]+)*)\b")
 NAMED_SKILL_DEPENDENCIES = {
     "grilling": {"unslop"},
-    "grill-me": {"grilling"},
     "grill-with-docs": {"domain-modeling", "grilling", "unslop"},
 }
 
@@ -200,31 +191,29 @@ class GrillingSkillsTest(unittest.TestCase):
         for name in EXPECTED_SKILLS:
             self.assertEqual(unresolved_dependencies(SKILLS_ROOT, name), [])
 
-        grill_me = operational_text(SKILLS_ROOT / "grill-me")
         grill_with_docs = operational_text(SKILLS_ROOT / "grill-with-docs")
         grilling = operational_text(SKILLS_ROOT / "grilling")
-        self.assertIn("$grilling", grill_me)
         self.assertIn("$grilling", grill_with_docs)
         self.assertIn("$domain-modeling", grill_with_docs)
         self.assertIn("Use `unslop` for substantial style issues", grilling)
         self.assertIn("Use `unslop` for substantial style issues", grill_with_docs)
 
-    def test_grill_me_dependency_check_fails_in_an_incomplete_catalog(self) -> None:
-        with tempfile.TemporaryDirectory(prefix="grill-me-catalog-") as temporary:
+    def test_dependency_check_fails_in_an_incomplete_catalog(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="grill-with-docs-catalog-") as temporary:
             catalog = Path(temporary) / "skills"
             catalog.mkdir()
-            shutil.copytree(SKILLS_ROOT / "grill-me", catalog / "grill-me")
+            shutil.copytree(SKILLS_ROOT / "grill-with-docs", catalog / "grill-with-docs")
 
-            missing = unresolved_dependencies(catalog, "grill-me")
-            self.assertEqual(missing, ["grilling"])
+            missing = unresolved_dependencies(catalog, "grill-with-docs")
+            self.assertEqual(missing, ["domain-modeling", "grilling"])
             with self.assertRaisesRegex(
                 AssertionError,
-                "grill-me has unresolved catalog dependencies: grilling",
+                "grill-with-docs has unresolved catalog dependencies: domain-modeling, grilling",
             ):
                 self.assertEqual(
                     missing,
                     [],
-                    "grill-me has unresolved catalog dependencies: "
+                    "grill-with-docs has unresolved catalog dependencies: "
                     + ", ".join(missing),
                 )
 
@@ -270,21 +259,6 @@ class GrillingSkillsTest(unittest.TestCase):
         ):
             self.assertIn(required, normalized)
 
-    def test_grill_me_is_only_a_small_explicit_alias(self) -> None:
-        skill_text = (SKILLS_ROOT / "grill-me" / "SKILL.md").read_text(
-            encoding="utf-8"
-        )
-        frontmatter, body = split_frontmatter(skill_text)
-        normalized = " ".join(body.split())
-
-        self.assertIn("Use only when the user directly invokes grill-me", frontmatter["description"])
-        self.assertIn("Load and follow the canonical `grilling` skill", normalized)
-        self.assertIn("This alias contains no second interviewing method", normalized)
-        self.assertIn("If `grilling` is unavailable, stop and report", normalized)
-        self.assertLessEqual(len(body.split()), 90)
-        self.assertNotRegex(body, r"(?m)^## ")
-        self.assertNotRegex(body, r"(?m)^\d+\. ")
-
     def test_grill_with_docs_composes_without_immediate_writes(self) -> None:
         skill_text = (SKILLS_ROOT / "grill-with-docs" / "SKILL.md").read_text(
             encoding="utf-8"
@@ -325,7 +299,6 @@ class GrillingSkillsTest(unittest.TestCase):
         for cue in ("grill", "stress-test", "pressure-test", "interrogate", "sharpen"):
             self.assertIn(cue, descriptions["grilling"])
         self.assertIn("do not use for ordinary planning or summarization", descriptions["grilling"])
-        self.assertIn("directly invokes grill-me", descriptions["grill-me"])
         self.assertIn("explicitly requested by the user or composed by an authorized workflow", descriptions["grill-with-docs"])
         code_review_description = str(
             split_frontmatter(
@@ -339,7 +312,6 @@ class GrillingSkillsTest(unittest.TestCase):
             "Grill me on this service design": "grilling",
             "Stress-test this rollout plan": "grilling",
             "Interrogate this PR diff": "interrogate",
-            "Use $grill-me on this service design": "grill-me",
             "Use $grill-with-docs on this design": "grill-with-docs",
             "Implement this approved story": None,
             "Summarize this finished plan": None,
@@ -349,8 +321,6 @@ class GrillingSkillsTest(unittest.TestCase):
             lowered = prompt.lower()
             if "$grill-with-docs" in lowered:
                 selected = "grill-with-docs"
-            elif "$grill-me" in lowered:
-                selected = "grill-me"
             elif any(term in lowered for term in ("pr diff", "code change", "branch diff")):
                 selected = "interrogate" if any(cue in lowered for cue in grilling_cues) else None
             elif any(cue in lowered for cue in grilling_cues) and any(

@@ -28,8 +28,6 @@ The catalog currently contains:
   detailed design and supports offline visual reports;
 - [`diagnosing-bugs`](skills/diagnosing-bugs/SKILL.md), a red-capable,
   evidence-first diagnosis workflow;
-- [`grill-me`](skills/grill-me/SKILL.md), an explicit compatibility alias for
-  `grilling`;
 - [`handoff`](skills/handoff/SKILL.md), an explicit verified continuation
   snapshot;
 - [`learning-workspace`](skills/learning-workspace/SKILL.md), an explicit
@@ -198,7 +196,6 @@ the prompts.
 | `How might we improve this?` | Do not select the explicit-only plan-work workflow. |
 | `Grill me on this service design` | Select `grilling` and ask all currently independent questions as one group. |
 | `Stress-test this rollout plan` | Select `grilling`. |
-| Explicit `$grill-me` | Select `grill-me`, which loads `grilling` and adds no second method. |
 | Explicit `$grill-with-docs` | Compose `grilling` and `domain-modeling`; collect proposals without immediate writes. |
 | `Implement this approved story` | Do not select `grilling`. |
 | `Review the completed sprint, refine the next one, and forecast the following sprint` | Select `plan-jira-sprints`; propose changes before any unauthorized writes. |
