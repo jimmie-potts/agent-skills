@@ -89,10 +89,9 @@ points, routing and record.
 
 ## Settle decisions and define items
 
-For material unresolved decisions, compose grill-with-docs using the available
-canonical skill. Its questioning phase is read-only. Reuse accepted decisions
-and existing authority; after questioning, return control here for authorized
-planning operations.
+For material unresolved decisions, compose `grill-with-docs`. It returns
+accepted decisions and proposed glossary or decision-record edits without
+writing; apply them here only under this skill's planning authority.
 
 Before defining or decomposing items, apply the assessment contract's scope
 fit, including its minimum useful outcome and stopping point. Then define one

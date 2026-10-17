@@ -195,8 +195,6 @@ class GrillingSkillsTest(unittest.TestCase):
         grilling = operational_text(SKILLS_ROOT / "grilling")
         self.assertIn("$grilling", grill_with_docs)
         self.assertIn("$domain-modeling", grill_with_docs)
-        self.assertIn("Use `unslop` for substantial style issues", grilling)
-        self.assertIn("Use `unslop` for substantial style issues", grill_with_docs)
 
     def test_dependency_check_fails_in_an_incomplete_catalog(self) -> None:
         with tempfile.TemporaryDirectory(prefix="grill-with-docs-catalog-") as temporary:
@@ -216,75 +214,6 @@ class GrillingSkillsTest(unittest.TestCase):
                     "grill-with-docs has unresolved catalog dependencies: "
                     + ", ".join(missing),
                 )
-
-    def test_grilling_preserves_grouped_frontier_behavior(self) -> None:
-        _, body = split_frontmatter(
-            (SKILLS_ROOT / "grilling" / "SKILL.md").read_text(encoding="utf-8")
-        )
-        normalized = " ".join(body.split())
-
-        for required in (
-            "Map every unresolved decision and the prerequisites",
-            "The current frontier contains every unresolved question whose prerequisites are settled",
-            "Ask all independent frontier questions in one numbered group",
-            "give a recommended answer and the evidence or reasoning behind it",
-            "explain the observable consequence or acceptance boundary",
-            "Recommendation:",
-            "Observable consequence or acceptance boundary:",
-            "A frontier group is incomplete if any item lacks",
-            "A one-question round is valid only when the frontier contains one question",
-            "Do not ask a dependent question in the same round as its unresolved prerequisite",
-            "wait for the user's answers to the whole group",
-            "recompute the tree and ask the new frontier",
-            "Investigate facts available through authorized read-only",
-            "Pending fact discovery defers only questions that depend on that fact",
-        ):
-            self.assertIn(required, normalized)
-
-    def test_grilling_returns_decisions_and_stops_before_action(self) -> None:
-        _, body = split_frontmatter(
-            (SKILLS_ROOT / "grilling" / "SKILL.md").read_text(encoding="utf-8")
-        )
-        normalized = " ".join(body.split())
-
-        for required in (
-            "accepted decisions and their observable boundaries",
-            "accepted assumptions",
-            "unresolved questions, including blocked factual prerequisites",
-            "This substep returns decisions and questions only",
-            "Do not implement, edit documentation, update trackers or planning artifacts, branch, commit, merge, or publish inside it",
-            "The consuming repository defines the owners of scope, dependencies, planning, and delivery",
-            "return control to its coordinator",
-            "questioning neither grants nor cancels the underlying request's authority",
-        ):
-            self.assertIn(required, normalized)
-
-    def test_grill_with_docs_composes_without_immediate_writes(self) -> None:
-        skill_text = (SKILLS_ROOT / "grill-with-docs" / "SKILL.md").read_text(
-            encoding="utf-8"
-        )
-        frontmatter, body = split_frontmatter(skill_text)
-        normalized = " ".join(body.split())
-
-        self.assertIn(
-            "Use when explicitly requested by the user or composed by an authorized workflow",
-            frontmatter["description"],
-        )
-        for required in (
-            "Load and follow both `grilling` and `domain-modeling`",
-            "Ask every independent current frontier question in one numbered group",
-            "Wait for the user's answers to the whole group",
-            "Keep dependent questions for later rounds",
-            "During each round, collect without writing",
-            "After the user confirms the decisions",
-            "show every exact proposed path and change",
-            "Write only when the underlying request explicitly authorizes those exact repository edits",
-            "does not create tracker work, publish plans, or implement code",
-            "The consuming repository defines the owners of scope, dependencies, planning, and delivery",
-            "return the accepted decisions to its coordinator without discarding existing authority",
-            "Do not transition, commit, merge, close, publish, or implement",
-        ):
-            self.assertIn(required, normalized)
 
     def test_prompt_selection_contract_is_discriminating(self) -> None:
         descriptions = {

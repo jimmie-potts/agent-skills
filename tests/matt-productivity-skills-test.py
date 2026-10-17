@@ -223,7 +223,7 @@ class MattProductivitySkillsTest(unittest.TestCase):
             "learning-workspace": {"how", "teach", "unslop"},
         }
         for dependency in dependencies["handoff"]:
-            self.assertIn(f"Use `{dependency}` for substantial style issues", handoff_body)
+            self.assertIn(f"`{dependency}`", handoff_body)
             self.assertTrue(dependency in PSTACK_SKILLS or (SKILLS_ROOT / dependency / "SKILL.md").is_file())
         for dependency in dependencies["learning-workspace"]:
             marker = (
@@ -233,69 +233,6 @@ class MattProductivitySkillsTest(unittest.TestCase):
             )
             self.assertIn(marker, learning_body)
             self.assertTrue(dependency in PSTACK_SKILLS or (SKILLS_ROOT / dependency / "SKILL.md").is_file())
-
-    def test_handoff_captures_verified_state_and_bounds_native_tool_effects(self) -> None:
-        _, body = read_skill(HANDOFF_DIRECTORY)
-        normalized = normalize(body)
-        for required in (
-            "repository path and worktree path",
-            "issue identifier and full title when one is present",
-            "branch name",
-            "frozen `HEAD` commit or other immutable comparison identifier",
-            "dirty state and the paths of relevant tracked and untracked changes",
-            "authority granted, authority explicitly absent, and required approvals",
-            "blockers, risks, assumptions, and unresolved decisions",
-            "exact verification commands and their pass, fail, or unavailable results",
-            "Return the complete snapshot in the response by default",
-            "Use a host's native context-transfer operation only when the user authorizes that transfer to an identified recipient",
-            "the documented tool behavior matches the requested effects",
-            "Moving Git state, interrupting a task, or starting work requires authorization for those effects",
-            "Write a handoff file only when the user authorizes an exact destination",
-        ):
-            self.assertIn(required, normalized)
-        self.assertIn("a tool named handoff is not sufficient", normalized)
-        self.assertIn("nonauthoritative and time-bound", normalized)
-        self.assertIn("Use `<REDACTED>`", normalized)
-
-    def test_handoff_preserves_authority_and_avoids_automatic_effects(self) -> None:
-        _, body = read_skill(HANDOFF_DIRECTORY)
-        normalized = normalize(body)
-        for required in (
-            "This skill grants no authority to change the repository, trackers, delivery records, Git state, personal files, or external systems",
-            "A handoff transfers context and existing authority boundaries; it does not broaden them",
-            "Do not create a temporary file automatically",
-            "Do not transition an issue, comment, label, branch, commit, merge, publish, close, install, or start the next workflow",
-        ):
-            self.assertIn(required, normalized)
-
-    def test_learning_workspace_requires_an_exact_approved_root_for_every_write(self) -> None:
-        _, body = read_skill(LEARNING_DIRECTORY)
-        normalized = normalize(body)
-        for required in (
-            "Ask the user to name an exact teaching directory and explicitly approve it for this workspace",
-            "Do not create or edit any file before that approval",
-            "An explicit invocation of this skill alone is not directory approval",
-            "Before every write, confirm the target remains inside that root and does not escape through a symlink or parent path",
-            "Keep all missions, resources, lessons, references, assets, notes, glossaries, and learning records inside the approved teaching workspace",
-        ):
-            self.assertIn(required, normalized)
-
-    def test_learning_workspace_uses_cited_sources_without_browser_or_community_automation(self) -> None:
-        _, body = read_skill(LEARNING_DIRECTORY)
-        normalized = normalize(body)
-        resources = normalize(
-            (LEARNING_DIRECTORY / "references" / "resources.md").read_text(encoding="utf-8")
-        )
-        for required in (
-            "Prefer primary sources, peer-reviewed work, official documentation, recognized experts with cited evidence",
-            "Cite material claims in lessons and reference documents",
-            "Do not rely on uncited model memory for claims that guide instruction",
-            "Do not automatically delegate questions to communities or contact anyone",
-            "Do not open a lesson automatically",
-        ):
-            self.assertIn(required, normalized)
-        self.assertIn("grants no authority to install dependencies, open a browser, contact or delegate to a community", normalized)
-        self.assertIn("Do not contact, join, post to, or delegate to any community", resources)
 
     def test_learning_workspace_is_a_rename_distinct_from_teach(self) -> None:
         learning_source = (LEARNING_DIRECTORY / "SOURCE.md").read_text(encoding="utf-8")

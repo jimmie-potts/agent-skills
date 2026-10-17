@@ -12,22 +12,9 @@
 
 ## Local adaptations
 
-The local version keeps the upstream decision tree, dependency-aware frontier,
-grouped rounds, recommendations, fact-finding duty, and wait between rounds. It
-limits automatic selection to explicit grilling, stress-testing,
-pressure-testing, interrogation, or sharpening requests and deliberate
-composition. Ordinary planning and summarization do not select this skill.
-
-Each frontier question now includes an observable consequence or acceptance
-boundary. The completion result separates accepted decisions, assumptions, and
-unresolved questions. Read-only fact gathering remains subject to the
-underlying task's authority, and the workflow stops before implementation,
-documentation, tracker, Git, OPSX, Sprint Work, publication, or other external
-effects.
-
-The shared adaptation uses repository-defined scope and delivery owners.
-Deliberate composition returns to the authorized coordinator without new
-permission or cancellation of existing authority; questioning remains read-only.
+Near-upstream. Keeps the design tree, frontier rounds, recommendations and
+fact-finding duty. Automatic selection is limited to explicit grilling-style
+requests and deliberate composition, and the result is returned read-only.
 
 Updates are manual. Fetch the pinned upstream directory and repository license
 into a temporary location, review every file and the complete diff, recompute

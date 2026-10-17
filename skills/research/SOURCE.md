@@ -12,17 +12,8 @@
 
 ## Local adaptations
 
-The local version keeps the upstream primary-source preference and
-claim-specific citations. Background delegation is optional, and the default
-output is the response rather than a repository file.
-
-The workflow writes only when the user authorizes an exact destination. It does
-not independently acquire web, network, repository, tracker, database, or other
-external-system access, and it returns evidence without implementation or
-publication effects.
-
-The no-mutation boundary covers trackers, repositories, delivery records, and
-other external state without requiring a particular tracker or delivery tool.
+Near-upstream. Background delegation is optional and findings return in the
+response with claim-level citations; a file needs a user-named destination.
 
 Updates are manual. Fetch the pinned upstream directory and repository license
 into a temporary location, review every file and the complete diff, recompute

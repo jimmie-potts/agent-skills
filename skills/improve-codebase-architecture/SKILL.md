@@ -26,7 +26,7 @@ finds and ranks opportunities. `codebase-design` owns detailed interface design.
 
 1. Read applicable repository instructions and discover its authoritative
    vocabulary, decision records, contracts, callers, implementations, and tests.
-   Follow the actual paths and ownership. `CONTEXT.md` and `docs/adr/` are possible
+   Follow the actual paths and ownership. `GLOSSARY.md` (or legacy `CONTEXT.md`) and `docs/adr/` are possible
    conventions, not prerequisites. Keep established terms such as service, API,
    component, and boundary when the repository uses them.
 2. Honor a user-named subsystem or pain point. Otherwise examine a bounded
