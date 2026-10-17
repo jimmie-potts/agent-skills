@@ -13,9 +13,9 @@ repository's vocabulary. Terms such as service, component, API, module,
 boundary, port, and adapter remain valid when authoritative project sources use
 them.
 
-This skill grants no authority to edit code, tests, documentation, trackers, or
-configuration, and no authority to branch, commit, merge, publish, or perform
-external effects. Return an assessment or design proposal.
+This skill grants no authority of its own; edits, Git, tracker and publishing
+effects follow the repository's AGENTS.md and the request.
+Return an assessment or design proposal.
 
 Use `architect` for a full design-first architecture workflow that owns caller
 contracts and broader module ownership. Use `why` to investigate historical
@@ -65,9 +65,7 @@ seam placement, dependency treatment, caller migration implications, test
 strategy, and trade-offs. Mark each recommendation as a heuristic judgment and
 cite repository evidence that makes it fit this codebase.
 
-Do not implement the design. Follow the repository's authoritative scope,
-change records, and delivery workflow. Codebase design returns a proposal; it
-does not publish, transition, commit, merge, close, or implement on its own.
+Return the proposal; do not implement it.
 
 Use `unslop` for substantial style issues in the user-facing assessment without changing repository terms,
 code, contracts, paths, or evidence.

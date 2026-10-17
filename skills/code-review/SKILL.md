@@ -7,73 +7,30 @@ description: Review a branch, pull request, diff, or change against repository s
 
 The companion skills `blast-radius`, `interrogate`, `unslop` named here come from the installed pstack plugin and run with upstream behavior.
 
-Review one recorded change along two separate axes:
+Review one fixed change on two separate axes:
 
-- **Standards:** whether the change follows applicable repository rules and
-  introduces correctness, security, maintainability, or test-quality defects.
+- **Standards:** repository rules, plus correctness, security, maintainability
+  and test-quality defects.
 - **Spec:** whether the change implements the approved behavior and scope.
 
-When the user explicitly invokes `review-work`, use `review-work`, which
-composes this skill for each axis. When the user explicitly asks to interrogate,
-challenge, stress-test, tear apart, or run a multi-reviewer review of code, use
-the `interrogate` skill instead.
-When the user explicitly asks for blast-radius analysis, asks what a change
-could break, or calls a small diff untrusted, use the `blast-radius` skill.
+Route elsewhere when asked: `review-work` for an explicit review-work request,
+`interrogate` for an adversarial or multi-reviewer review, and `blast-radius`
+for what a change could break.
 
-This skill grants no authority to edit code, post review comments, apply labels,
-transition issues, change Jira or GitHub, create branches, fix findings, commit,
-merge, close, or publish. Return findings in the response.
+## Standalone review
 
-## Freeze the comparison
+1. Resolve the base and head to commit IDs (or capture one patch and its
+   digest) and stop on a bad ref or empty diff.
+2. Take standards from the repository's instructions and config; don't restate
+   what tooling already enforces. Take the spec from the linked issue, path or
+   tests; with no spec, say so and skip the Spec axis.
+3. Review each axis separately, in isolated contexts when available. A
+   single-agent two-pass review is fine standalone but never satisfies a
+   review-work axis.
 
-1. Identify the user-supplied comparison point and reviewed head, patch, or
-   worktree state. If the request does not identify a base, discover a
-   repository-defined base when one exists or ask for the missing decision.
-2. Resolve moving Git refs to immutable commit IDs before review. Record the
-   base commit, head commit, merge-base, diff command, commit list, and dirty
-   state. For an uncommitted change, capture one patch and its digest so every
-   review pass sees the same bytes.
-3. Confirm that the base resolves and the recorded diff is nonempty. Stop on a
-   bad ref or empty change instead of reviewing a moving or unknown target.
-
-Use only repository, GitHub, Jira, or other external-system access authorized
-by the underlying request and available host policy. Do not mutate any source
-while locating the comparison.
-
-## Discover review sources
-
-Find standards from applicable agent instructions, contribution guides, coding
-standards, architecture rules, contracts, language configuration, and other
-repository-defined sources. Do not invent a standard that tooling already
-enforces, and let repository rules override generic review heuristics.
-
-Find the specification from a path or issue the user supplied, authoritative
-scope linked by the change, repository specifications, tests that encode an
-accepted contract, or another repository-defined source. Do not assume a
-tracker, issue-key format, branch naming scheme, or documentation layout. If no
-specification is available, say so and skip the Spec axis.
-
-Treat common code smells as heuristics, not standards. Report one only when the
-recorded change provides concrete evidence and the repository does not endorse
-the pattern.
-
-## Run independent axes
-
-When isolated review contexts are available, run Standards and Spec reviews in
-parallel against the same frozen diff. Give each context only its axis-specific
-sources, the recorded comparison, and the required finding format.
-
-When isolation is unavailable, use a safe single-agent fallback: perform two
-separate passes against the same frozen diff, keep separate notes, and finish
-one axis before reading the other axis's conclusions. Do not silently skip
-independence or mix the rubrics. The fallback is a disclosed standalone
-limitation: it never satisfies a mandatory independent delivery review or a
-review-work axis.
-
-Each finding must identify the file and tight line range, the observed defect,
-the violated standard or specification evidence, the concrete failure mode,
-severity, reproducibility, and likely encounter frequency. Do not report a
-speculative concern without an actionable failure condition.
+Each finding gives the file and line range, the defect, the violated standard
+or spec, the failure mode and its severity. Skip concerns with no concrete
+failure condition.
 
 ## Review an assigned axis
 
@@ -91,16 +48,9 @@ axis of a frozen comparison, review only that axis:
 - Return findings in the assigned format, P0 to P2 blockers first and P3
   observations separately, with the coverage and evidence limits of the review.
 
-## Return findings without effects
+## Return findings
 
-Present the Standards and Spec results in separate sections. Keep their
-severity rankings separate and state when an axis has no findings or no source.
-End with the fixed comparison IDs or patch digest and the verification commands
-used.
-
-Do not comment, label, transition, fix, branch, commit, merge, close, publish,
-or update a tracker. The consuming repository defines the owners of scope,
-dependencies, planning, and delivery. Code review returns evidence only.
-
-Use `unslop` for substantial style issues in the narrative findings without changing code quotations,
-paths, line numbers, standards, specification text, or evidence.
+Report Standards and Spec in separate sections with separate severities, then
+the comparison IDs or patch digest and the verification commands used. Review
+returns findings only; external effects follow AGENTS.md. Use `unslop` on the
+narrative without changing quotations, paths or evidence.

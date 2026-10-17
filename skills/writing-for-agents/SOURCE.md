@@ -20,27 +20,14 @@
 
 ## Local adaptations
 
-The local version keeps the upstream context-pointer, information-hierarchy,
-progressive-disclosure, co-location, completion-criterion, single-source, and
-pruning guidance. It changes the opening claim to distinguish shared writing
-principles from host-specific discovery, precedence, invocation, and limits.
+The local version condenses the upstream pointer, hierarchy, completion,
+single-source and pruning guidance into one list, and narrows the trigger to
+skills, persistent agent instructions and their references.
+`references/skill-mechanics.md` replaces Cursor-only invocation fields with
+this repository's Codex adapter. The former `references/agents-md.md` Codex
+reference was removed; check the official Codex documentation listed above
+directly instead of a stale copy.
 
-`references/agents-md.md` adds Codex instruction discovery, directory scope,
-override precedence, the default byte limit, authority boundaries, canonical
-gate guidance, and behavioral verification. `references/skill-mechanics.md`
-replaces Cursor-only invocation fields with portable rules and this repository's
-Codex adapter.
-
-The local trigger is narrower than the upstream body's claim about every
-agent-consumed document. It covers Agent Skills, persistent coding-agent
-instructions, and their conditional references. Ordinary READMEs, tickets,
-specifications, and human prose remain outside this skill.
-
-Leading words are now optional shorthand rather than a primary technique.
-Negation guidance preserves hard safety prohibitions and pairs them with a safe
-path. Exact canonical gates remain in agent instructions when reliable
-completion depends on them, even when a script name is discoverable elsewhere.
-
-Updates are manual. Fetch the pinned upstream directory and official Codex
-Markdown into a temporary location, review the full diffs and license,
-recompute every digest, and rerun all checks before changing this copy.
+Updates are manual. Fetch the pinned upstream directory into a temporary
+location, review the full diff and license, recompute every digest, and rerun
+all checks before changing this copy.

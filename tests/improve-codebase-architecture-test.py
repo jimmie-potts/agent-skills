@@ -83,7 +83,7 @@ class ArchitectureReviewTests(unittest.TestCase):
         self.assertFalse((SKILL / "scripts").exists())
         self.assertEqual({str(p.relative_to(SKILL)) for p in SKILL.rglob("*") if p.is_file()}, {
             "SKILL.md", "SOURCE.md", "LICENSE", "agents/openai.yaml",
-            "references/report.md", "references/validation-scenarios.md", "assets/report.html",
+            "references/report.md", "assets/report.html",
         })
 
     def test_referenced_resources_are_used_and_local(self):
@@ -110,6 +110,10 @@ class ArchitectureReviewTests(unittest.TestCase):
         self.assertIn(digest, source)
         self.assertIn("3cca18b368ae95cdbdebbff572ccafa662551015", source)
         self.assertIn("skills/improve-codebase-architecture/SOURCE.md", (ROOT / "PROVENANCE.md").read_text())
+
+    def test_evaluation_scenarios_live_with_fixtures(self):
+        self.assertTrue((FIXTURES / "validation-scenarios.md").is_file())
+        self.assertIn("tests/fixtures/architecture-review/validation-scenarios.md", (SKILL / "SKILL.md").read_text())
 
     def test_check_wiring(self):
         for relative in ("README.md", "AGENTS.md", ".github/workflows/validate.yml"):
