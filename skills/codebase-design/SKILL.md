@@ -13,8 +13,8 @@ repository's vocabulary. Terms such as service, component, API, module,
 boundary, port, and adapter remain valid when authoritative project sources use
 them.
 
-This skill grants no authority of its own; edits, Git, tracker and publishing
-effects follow the repository's AGENTS.md and the request.
+This skill grants no authority of its own. Take edit, Git, tracker, comment or publishing actions only when the request,
+or the coordinating workflow's existing authority, explicitly covers them.
 Return an assessment or design proposal.
 
 Use `architect` for a full design-first architecture workflow that owns caller

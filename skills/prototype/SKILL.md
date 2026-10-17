@@ -99,8 +99,8 @@ production-ready. Choosing a disposable variant does not approve the production
 candidate or its UI; that candidate needs its own review and any required UI
 approval.
 
-This skill grants no authority of its own; edits, Git, tracker and publishing
-effects follow the repository's AGENTS.md and the request.
+This skill grants no authority of its own. Take edit, Git, tracker, comment or publishing actions only when the request,
+or the coordinating workflow's existing authority, explicitly covers them.
 
 Use `unslop` for substantial style issues in human-facing labels and the result summary without changing
 code, commands, measurements, acceptance criteria, or authority boundaries.

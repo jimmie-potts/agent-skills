@@ -11,8 +11,8 @@ Sharpen the language and recorded decisions that describe the domain. Treat
 the repository's established vocabulary as authoritative until evidence or the
 user resolves a conflict.
 
-This skill grants no authority of its own; edits, Git, tracker and publishing
-effects follow the repository's AGENTS.md and the request.
+This skill grants no authority of its own. Take edit, Git, tracker, comment or publishing actions only when the request,
+or the coordinating workflow's existing authority, explicitly covers them.
 Propose vocabulary and decision-record edits by default. Write them only when
 the underlying request authorizes the exact repository edits.
 

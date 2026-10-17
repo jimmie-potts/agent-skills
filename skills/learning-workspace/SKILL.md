@@ -23,8 +23,9 @@ target remains inside that root and does not escape through a symlink or parent
 path. Keep all missions, resources, lessons, references, assets, notes,
 glossaries, and learning records inside the approved teaching workspace.
 
-This skill grants no authority of its own; edits, Git, tracker and publishing
-effects follow the repository's AGENTS.md and the request.
+It grants no authority to install dependencies, open a browser, contact a
+community, use private data or change anything outside the approved workspace;
+those need separate authority from the request.
 
 ## Establish the mission
 

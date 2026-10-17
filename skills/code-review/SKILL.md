@@ -52,5 +52,6 @@ axis of a frozen comparison, review only that axis:
 
 Report Standards and Spec in separate sections with separate severities, then
 the comparison IDs or patch digest and the verification commands used. Review
-returns findings only; external effects follow AGENTS.md. Use `unslop` on the
+returns findings only; do not edit, comment, label, commit or merge unless the
+request explicitly authorizes it. Use `unslop` on the
 narrative without changing quotations, paths or evidence.
