@@ -5,6 +5,8 @@ description: Coordinate a complete independent review of one change, freezing th
 
 # Review one change independently
 
+The companion skills `blast-radius`, `interrogate`, `unslop` named here come from the installed pstack plugin and run with upstream behavior.
+
 Freeze one comparison, give each required axis a fresh read-only reviewer, carry
 findings across rounds and return a result the caller can act on. The session
 that loads this skill coordinates the review; it is a substep of that session,

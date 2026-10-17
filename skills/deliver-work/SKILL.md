@@ -5,6 +5,8 @@ description: Deliver a named issue or requirement through project-defined implem
 
 # Deliver one work item
 
+The companion skills `architect`, `how`, `tdd`, `unslop`, `why` named here come from the installed pstack plugin and run with upstream behavior.
+
 An explicit invocation with a work reference requests implementation, one ready
 pull request, normal merge, and verified tracking completion, within the user's
 limits and project policy. A local-only, ready-PR-only or explicit watch request

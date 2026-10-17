@@ -5,6 +5,8 @@ description: Diagnose reproducible bugs and performance regressions through a re
 
 # Diagnosing bugs
 
+The companion skill `unslop` named here comes from the installed pstack plugin and runs with upstream behavior.
+
 Diagnose the cause of a reported symptom. A request to diagnose authorizes
 relevant non-mutating checks within the underlying task and host policy. It
 does not authorize production-code changes, tracked instrumentation, a fix,

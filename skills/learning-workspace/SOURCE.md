@@ -19,7 +19,7 @@
 ## Local adaptations
 
 Matt Pocock's upstream `teach` is renamed `learning-workspace` so it can coexist
-with the existing pstack-derived `teach` conversational code and design lesson.
+with the pstack plugin's `teach` conversational code and design lesson.
 The local name is changed in the directory, portable frontmatter, and Codex
 metadata. The existing `teach` workflow remains separate.
 

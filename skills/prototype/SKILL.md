@@ -5,6 +5,8 @@ description: Explicitly build a bounded experiment or functional delivery slice 
 
 # Prototype
 
+The companion skill `unslop` named here comes from the installed pstack plugin and runs with upstream behavior.
+
 Answer one concrete question with a runnable artifact. Do not infer a vague
 question from nearby code. If the question cannot be stated as an observable
 result, resolve it before writing.

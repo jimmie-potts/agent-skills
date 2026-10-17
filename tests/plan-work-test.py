@@ -331,7 +331,6 @@ class PlanWorkStructureTest(unittest.TestCase):
         self.assertIn('`references/uncertainty-routing.md`',
                       (SKILL / 'SKILL.md').read_text())
         for name, explicit in (
-            ('architect', 'Use only when the user explicitly invokes architect'),
             ('prototype', 'Use only when the user directly invokes prototype'),
         ):
             with self.subTest(skill=name):

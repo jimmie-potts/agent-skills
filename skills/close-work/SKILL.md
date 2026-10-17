@@ -5,6 +5,8 @@ description: Run a session closeout that files uncovered follow-ups, comments an
 
 # Close work
 
+The companion skill `unslop` named here comes from the installed pstack plugin and runs with upstream behavior.
+
 Run one final sweep before the owner archives a task, so its follow-ups,
 learnings and handoff reach durable places instead of staying in the chat.
 Only an explicit invocation selects this skill. An ordinary "did we miss

@@ -5,6 +5,8 @@ description: Investigate a question using high-trust sources and claim-level cit
 
 # Research
 
+The companion skill `unslop` named here comes from the installed pstack plugin and runs with upstream behavior.
+
 Answer a concrete question with traceable evidence. Prefer primary sources such
 as official documentation, specifications, standards, first-party APIs, source
 code, filings, and original research. Use a secondary source only when it adds

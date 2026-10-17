@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Structural contracts only; behavioral evaluation uses held-out scenarios."""
+from pstack_skills import PSTACK_SKILLS
 from pathlib import Path
 import importlib.util
 import re
@@ -370,7 +371,7 @@ class DeliverWorkStructureTest(unittest.TestCase):
         readme = (ROOT / 'README.md').read_text()
         command = next(line for line in readme.splitlines()
                        if line.startswith('./scripts/manage-skills.sh install --agent codex deliver-work '))
-        for dependency in ('review-work', 'code-review', 'tdd', 'grilling',
+        for dependency in ('review-work', 'code-review', 'grilling',
                            'grill-with-docs',
                            'domain-modeling', 'openspec-propose',
                            'openspec-apply-change', 'openspec-archive-change'):

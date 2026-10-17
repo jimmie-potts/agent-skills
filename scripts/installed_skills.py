@@ -25,7 +25,7 @@ FIELDS = {'schemaVersion', 'repository', 'owner', 'checkout', 'stateDirectory', 
           'git', 'path', 'allowedPaths', 'protectedPaths', 'requiredSkills', 'links', 'files'}
 REQUEST = {'schemaVersion', 'operation', 'repository', 'issue', 'merge', 'owner', 'deadline', 'evidenceDirectory'}
 ACTIVE = ['skills/'+name for name in ['deliver-work', 'review-work', 'code-review', 'plan-work',
-                                     'tdd', 'writing-for-agents', 'unslop']]
+                                     'writing-for-agents']]
 LIMIT = 8 * 1024 * 1024
 
 

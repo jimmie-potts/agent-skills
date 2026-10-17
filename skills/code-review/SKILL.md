@@ -5,6 +5,8 @@ description: Review a branch, pull request, diff, or change against repository s
 
 # Code review
 
+The companion skills `blast-radius`, `interrogate`, `unslop` named here come from the installed pstack plugin and run with upstream behavior.
+
 Review one recorded change along two separate axes:
 
 - **Standards:** whether the change follows applicable repository rules and

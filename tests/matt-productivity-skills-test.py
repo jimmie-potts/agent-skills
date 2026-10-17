@@ -2,6 +2,7 @@
 """Verify the pinned Matt Pocock productivity skills without executing skill code."""
 
 from __future__ import annotations
+from pstack_skills import PSTACK_SKILLS
 
 import hashlib
 import re
@@ -16,7 +17,6 @@ SKILLS_ROOT = REPOSITORY_ROOT / "skills"
 PROVENANCE_PATH = REPOSITORY_ROOT / "PROVENANCE.md"
 HANDOFF_DIRECTORY = SKILLS_ROOT / "handoff"
 LEARNING_DIRECTORY = SKILLS_ROOT / "learning-workspace"
-TEACH_DIRECTORY = SKILLS_ROOT / "teach"
 EXPECTED_REVISION = "5b15a47f2d7150f545fbcacbfe381787fc0230dc"
 EXPECTED_LICENSE_DIGEST = "0e7ac423bf2c6e223b7c5b156f8cf72da49d748e56a1641402c31f22ad07dbb5"
 EXPECTED_MATT_LICENSE = b"""MIT License
@@ -55,13 +55,6 @@ EXPECTED_UPSTREAM_FILES = {
         "SKILL.md": "a32df9dcdfc0c4fdc1c98e1ed3940c5f56b84c1aa90ff60346f32b8b53915b43",
         "agents/openai.yaml": "5856f3ae8aec742f1499c640aecdd5f1d6af5fa210a7c6ec794de8263a6f733f",
     },
-}
-
-EXPECTED_TEACH_DIGESTS = {
-    "LICENSE": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e",
-    "SKILL.md": "92d3a4dc8a09256c538efdef1b1b2d5d7ebb279562b3ba97439e5d8b27ccd731",
-    "SOURCE.md": "89a1cbcae857b7e74a3d7d24b2c36e970b3214daf28891391dc6afc924ab78f4",
-    "agents/openai.yaml": "cf6a8b25789ca5dc538b30618c587d33377e4bca6fa9d3ce2e709d87f6b31e5f",
 }
 
 
@@ -231,7 +224,7 @@ class MattProductivitySkillsTest(unittest.TestCase):
         }
         for dependency in dependencies["handoff"]:
             self.assertIn(f"Use `{dependency}` for substantial style issues", handoff_body)
-            self.assertTrue((SKILLS_ROOT / dependency / "SKILL.md").is_file())
+            self.assertTrue(dependency in PSTACK_SKILLS or (SKILLS_ROOT / dependency / "SKILL.md").is_file())
         for dependency in dependencies["learning-workspace"]:
             marker = (
                 f"Use `{dependency}` for substantial style issues"
@@ -239,7 +232,7 @@ class MattProductivitySkillsTest(unittest.TestCase):
                 else f"`{dependency}`"
             )
             self.assertIn(marker, learning_body)
-            self.assertTrue((SKILLS_ROOT / dependency / "SKILL.md").is_file())
+            self.assertTrue(dependency in PSTACK_SKILLS or (SKILLS_ROOT / dependency / "SKILL.md").is_file())
 
     def test_handoff_captures_verified_state_and_bounds_native_tool_effects(self) -> None:
         _, body = read_skill(HANDOFF_DIRECTORY)
@@ -307,36 +300,22 @@ class MattProductivitySkillsTest(unittest.TestCase):
     def test_learning_workspace_is_a_rename_distinct_from_teach(self) -> None:
         learning_source = (LEARNING_DIRECTORY / "SOURCE.md").read_text(encoding="utf-8")
         learning_frontmatter, learning_body = read_skill(LEARNING_DIRECTORY)
-        teach_frontmatter, teach_body = read_skill(TEACH_DIRECTORY)
 
         for required in (
             "Upstream path: `skills/productivity/teach/`",
             "Upstream name: `teach`",
             "Local name: `learning-workspace`",
             "renamed `learning-workspace`",
-            "existing pstack-derived `teach`",
+            "pstack plugin's `teach`",
         ):
             self.assertIn(required, learning_source)
         self.assertEqual(learning_frontmatter["name"], "learning-workspace")
-        self.assertEqual(teach_frontmatter["name"], "teach")
         self.assertIn("stateful teaching workspace", learning_body)
-        self.assertIn("Return the explanation itself", teach_body)
-        self.assertNotIn("approved teaching directory", teach_body)
-
-    def test_pstack_teach_inventory_and_adapted_bytes_are_pinned(self) -> None:
-        self.assert_closed_inventory(
-            TEACH_DIRECTORY,
-            files={"LICENSE", "SKILL.md", "SOURCE.md", "agents/openai.yaml"},
-            directories={"agents"},
-        )
-        for relative_path, expected_digest in EXPECTED_TEACH_DIGESTS.items():
-            self.assertEqual(sha256(TEACH_DIRECTORY / relative_path), expected_digest)
 
     def test_prompt_selection_contract_keeps_both_workflows_explicit_only(self) -> None:
         metadata = {
             "handoff": read_metadata(HANDOFF_DIRECTORY),
             "learning-workspace": read_metadata(LEARNING_DIRECTORY),
-            "teach": read_metadata(TEACH_DIRECTORY),
         }
 
         def selected(prompt: str, skill_name: str) -> bool:
@@ -351,7 +330,6 @@ class MattProductivitySkillsTest(unittest.TestCase):
             ("Use $learning-workspace to teach me Rust over several sessions.", {"learning-workspace"}),
             ("Explain how this parser handles errors.", set()),
             ("Teach me how this codebase was shaped.", set()),
-            ("Use $teach to explain how this code works.", {"teach"}),
         )
         for prompt, expected in cases:
             actual = {skill_name for skill_name in metadata if selected(prompt, skill_name)}

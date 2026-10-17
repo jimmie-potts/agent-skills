@@ -5,6 +5,8 @@ description: Explicitly create and maintain a source-backed teaching workspace f
 
 # Learning workspace
 
+The companion skills `how`, `teach`, `unslop` named here come from the installed pstack plugin and run with upstream behavior.
+
 Build a stateful teaching workspace around one user-owned learning mission. This
 skill is distinct from `teach`, which provides a conversational code or design
 lesson without creating a workspace. Use `how` for a standalone code-flow

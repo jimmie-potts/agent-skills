@@ -5,6 +5,8 @@ description: Define one or more implementation-ready work items using the reposi
 
 # Define work before delivery
 
+The companion skills `architect`, `unslop` named here come from the installed pstack plugin and run with upstream behavior.
+
 Turn an outcome into scoped work with acceptance evidence and dependencies.
 
 ## Boundaries

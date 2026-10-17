@@ -5,6 +5,8 @@ description: Explicitly compose grilling with domain-modeling to resolve a plan 
 
 # Grill with docs
 
+The companion skill `unslop` named here comes from the installed pstack plugin and runs with upstream behavior.
+
 Load and follow both `grilling` and `domain-modeling`. Use `grilling` as the
 control flow and `domain-modeling` to analyze vocabulary, concept boundaries,
 authoritative sources, and durable decisions.
