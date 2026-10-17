@@ -5,6 +5,8 @@ description: Resolve a plan or design through dependency-aware grouped questions
 
 # Grilling
 
+The companion skill `unslop` named here comes from the installed pstack plugin and runs with upstream behavior.
+
 Resolve user-owned decisions before action. Model the discussion as a decision
 tree: each unresolved decision may depend on decisions closer to the root.
 

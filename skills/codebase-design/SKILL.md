@@ -5,6 +5,8 @@ description: Analyze or propose module interfaces, seams, locality, and testabil
 
 # Codebase design
 
+The companion skills `architect`, `how`, `unslop`, `why` named here come from the installed pstack plugin and run with upstream behavior.
+
 Assess how a focused part of a codebase concentrates behavior behind an
 interface, where it can vary, and how callers and tests observe it. Use the
 repository's vocabulary. Terms such as service, component, API, module,

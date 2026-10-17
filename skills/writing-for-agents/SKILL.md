@@ -5,6 +5,8 @@ description: Write or revise persistent coding-agent instructions, Agent Skills,
 
 # Writing for agents
 
+The companion skill `unslop` named here comes from the installed pstack plugin and runs with upstream behavior.
+
 Write instructions that make an agent's process predictable without forcing one
 fixed output. Core writing principles transfer across agent-facing documents.
 Discovery, precedence, invocation, and size rules do not. Verify the target

@@ -5,6 +5,8 @@ description: Explicitly prepare a redacted, nonauthoritative snapshot so another
 
 # Handoff
 
+The companion skill `unslop` named here comes from the installed pstack plugin and runs with upstream behavior.
+
 Capture enough verified state for another agent to continue without treating
 the handoff as an authoritative scope or status source. Link authoritative
 artifacts instead of copying their full contents.

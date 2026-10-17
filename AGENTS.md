@@ -109,8 +109,6 @@ Then run:
 
 ```bash
 python3 scripts/validate-skills.py
-python3 tests/architect-test.py
-python3 tests/blast-radius-test.py
 python3 tests/close-work-test.py
 python3 tests/deliver-work-test.py
 python3 tests/plan-work-test.py
@@ -119,13 +117,9 @@ python3 tests/improve-codebase-architecture-test.py
 python3 tests/pairing-skills-test.py
 python3 tests/workflow-evaluation-test.py
 python3 tests/grilling-skills-test.py
-python3 tests/interrogate-test.py
 python3 tests/matt-engineering-skills-test.py
 python3 tests/matt-productivity-skills-test.py
 python3 tests/pi-skills-test.py
-python3 tests/pstack-analysis-skills-test.py
-python3 tests/pstack-workflow-skills-test.py
-python3 tests/unslop-test.py
 python3 tests/writing-for-agents-test.py
 python3 tests/installed-files-test.py
 bash -n scripts/manage-skills.sh

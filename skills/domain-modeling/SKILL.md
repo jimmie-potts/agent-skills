@@ -5,6 +5,8 @@ description: Discover and sharpen a repository's active domain vocabulary and de
 
 # Domain modeling
 
+The companion skill `unslop` named here comes from the installed pstack plugin and runs with upstream behavior.
+
 Sharpen the language and recorded decisions that describe the domain. Treat
 the repository's established vocabulary as authoritative until evidence or the
 user resolves a conflict.

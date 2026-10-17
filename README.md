@@ -13,14 +13,14 @@ registry, cloud-sync service, automatic updater, or organization-wide
 distribution system. Project-specific skills should remain in the project that
 uses them.
 
+Workflows in this catalog also compose `architect`, `arena`, `blast-radius`,
+`how`, `interrogate`, `teach`, `tdd`, `technical-writing`, `unslop` and `why`.
+Those names now refer to the skills in the installed
+[pstack plugin](https://github.com/cursor/plugins/tree/main/pstack), which runs
+them with upstream behavior. This repository no longer vendors copies of them.
+
 The catalog currently contains:
 
-- [`architect`](skills/architect/SKILL.md), an explicit or deliberately
-  composed design-first code architecture workflow;
-- [`arena`](skills/arena/SKILL.md), an explicit parallel-candidate synthesis
-  workflow;
-- [`blast-radius`](skills/blast-radius/SKILL.md), an explicit change-risk
-  analysis workflow;
 - [`codebase-design`](skills/codebase-design/SKILL.md), focused interface, seam,
   locality, and testability design guidance;
 - [`improve-codebase-architecture`](skills/improve-codebase-architecture/SKILL.md),
@@ -32,9 +32,6 @@ The catalog currently contains:
   `grilling`;
 - [`handoff`](skills/handoff/SKILL.md), an explicit verified continuation
   snapshot;
-- [`how`](skills/how/SKILL.md), a code-flow and architecture explainer;
-- [`interrogate`](skills/interrogate/SKILL.md), an explicit independent
-  adversarial-review workflow;
 - [`learning-workspace`](skills/learning-workspace/SKILL.md), an explicit
   source-backed workspace for sustained learning;
 - [`plan-jira-sprints`](skills/plan-jira-sprints/SKILL.md), agent-driven sprint
@@ -46,13 +43,6 @@ The catalog currently contains:
 - [`worker-with-astra`](skills/worker-with-astra/SKILL.md), a Luna or Sol worker with the
   original Astra agent providing approach feedback, blocker advice, and final
   review through a verified host adapter;
-- [`teach`](skills/teach/SKILL.md), a layered code and design lesson workflow;
-- [`tdd`](skills/tdd/SKILL.md), explicit or deliberately composed incremental
-  TDD for bugs and features;
-- [`technical-writing`](skills/technical-writing/SKILL.md), an explicit technical
-  prose drafting and review standard;
-- [`unslop`](skills/unslop/SKILL.md), an optional editorial pass for prose that needs it;
-- [`why`](skills/why/SKILL.md), an evidence-based design-rationale investigator;
 - [`worker-with-fable`](skills/worker-with-fable/SKILL.md), a Haiku, Sonnet, or
   Opus worker with the original Fable agent providing approach feedback,
   blocker advice, and final review through Claude Code subagent tools; the
@@ -313,8 +303,6 @@ credential, generated cache, or machine-specific configuration.
 
 ```bash
 python3 scripts/validate-skills.py
-python3 tests/architect-test.py
-python3 tests/blast-radius-test.py
 python3 tests/close-work-test.py
 python3 tests/deliver-work-test.py
 python3 tests/plan-work-test.py
@@ -323,13 +311,9 @@ python3 tests/improve-codebase-architecture-test.py
 python3 tests/pairing-skills-test.py
 python3 tests/workflow-evaluation-test.py
 python3 tests/grilling-skills-test.py
-python3 tests/interrogate-test.py
 python3 tests/matt-engineering-skills-test.py
 python3 tests/matt-productivity-skills-test.py
 python3 tests/pi-skills-test.py
-python3 tests/pstack-analysis-skills-test.py
-python3 tests/pstack-workflow-skills-test.py
-python3 tests/unslop-test.py
 python3 tests/writing-for-agents-test.py
 python3 tests/installed-files-test.py
 bash -n scripts/manage-skills.sh
@@ -413,7 +397,7 @@ For persistent direct loading, add the catalog path to the `skills` array in
 [skill documentation](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/skills.md)
 for its discovery, trust, and collision rules.
 
-`arena` and `interrogate` need genuine independent candidate or reviewer
+The pstack `arena` and `interrogate` skills need genuine independent candidate or reviewer
 sessions. Pi must have a separate orchestration extension or package that
 provides that capability. Without one, those skills report the limitation
 instead of presenting repeated work from one reasoning pass as independent.
@@ -576,7 +560,7 @@ For local Codex and Pi use, select the required skills from this catalog with
 the manager. For example, from this repository:
 
 ```bash
-./scripts/manage-skills.sh install --agent codex deliver-work review-work tdd grill-with-docs grilling domain-modeling code-review openspec-propose openspec-explore openspec-apply-change openspec-update-change openspec-sync-specs openspec-archive-change
+./scripts/manage-skills.sh install --agent codex deliver-work review-work grill-with-docs grilling domain-modeling code-review openspec-propose openspec-explore openspec-apply-change openspec-update-change openspec-sync-specs openspec-archive-change
 ```
 
 The resulting personal symlinks point to this canonical checkout. Do not
@@ -732,7 +716,7 @@ index entries must survive unchanged. No stashing, reset, rollback, copying
 installer or automatic discovery follows a refusal.
 
 Root instructions, `scripts/`, the active `deliver-work`, `review-work`,
-`code-review`, `plan-work`, `tdd`, `writing-for-agents` and `unslop` packages,
+`code-review`, `plan-work` and `writing-for-agents` packages,
 pinned dependencies and configured `protectedPaths` require the established
 stopped boundary. Configure any other active policies there too. Git hooks and
 filesystem-monitor hooks are disabled only for the fixed installer Git commands

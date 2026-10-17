@@ -2,6 +2,7 @@
 """Verify the pinned grilling skill family without executing skill code."""
 
 from __future__ import annotations
+from pstack_skills import PSTACK_SKILLS
 
 import hashlib
 import re
@@ -100,7 +101,7 @@ def unresolved_dependencies(catalog: Path, name: str) -> list[str]:
     return sorted(
         token
         for token in tokens
-        if not (catalog / token / "SKILL.md").is_file()
+        if token not in PSTACK_SKILLS and not (catalog / token / "SKILL.md").is_file()
     )
 
 
@@ -331,14 +332,8 @@ class GrillingSkillsTest(unittest.TestCase):
                 (SKILLS_ROOT / "code-review" / "SKILL.md").read_text(encoding="utf-8")
             )[0]["description"]
         ).lower()
-        interrogate_description = str(
-            split_frontmatter(
-                (SKILLS_ROOT / "interrogate" / "SKILL.md").read_text(encoding="utf-8")
-            )[0]["description"]
-        ).lower()
         self.assertIn("explicit interrogate", code_review_description)
         self.assertIn("multi-review", code_review_description)
-        self.assertIn("explicitly asks to interrogate", interrogate_description)
 
         selection_cases = {
             "Grill me on this service design": "grilling",

@@ -2,6 +2,7 @@
 """Verify the adapted Matt Pocock engineering skills without running skill code."""
 
 from __future__ import annotations
+from pstack_skills import PSTACK_SKILLS
 
 from collections import Counter
 from dataclasses import dataclass
@@ -406,7 +407,7 @@ class MattEngineeringSkillsTest(unittest.TestCase):
 
                 body = skill_text.lower()
                 dollar_dependencies = set(re.findall(r"\$([a-z][a-z0-9-]+)", body))
-                for dependency in dollar_dependencies | NAMED_SKILL_DEPENDENCIES[name]:
+                for dependency in (dollar_dependencies | NAMED_SKILL_DEPENDENCIES[name]) - PSTACK_SKILLS:
                     self.assertTrue(
                         (SKILLS_ROOT / dependency / "SKILL.md").is_file(),
                         f"{name} depends on missing catalog skill {dependency}",

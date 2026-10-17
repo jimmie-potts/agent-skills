@@ -1,7 +1,0 @@
-interface:
-  display_name: "Unslop"
-  short_description: "Edit prose with recurring filler, jargon, or dense wording"
-  default_prompt: "$unslop"
-
-policy:
-  allow_implicit_invocation: true

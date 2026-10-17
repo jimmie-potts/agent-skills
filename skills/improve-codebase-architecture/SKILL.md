@@ -5,6 +5,8 @@ description: Find and rank evidence-backed module improvements before detailed d
 
 # Find worthwhile architecture improvements
 
+The companion skills `architect`, `how`, `unslop`, `why` named here come from the installed pstack plugin and run with upstream behavior.
+
 Review a bounded part of a codebase and identify changes that reduce what
 callers and maintainers must know. Return an assessment, including a supported
 no-change result when the existing structure earns its keep.
