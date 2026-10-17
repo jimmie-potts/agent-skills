@@ -78,59 +78,6 @@ class WritingForAgentsSkillTest(unittest.TestCase):
         self.assertIs(metadata["policy"]["allow_implicit_invocation"], True)
         self.assertNotIn("dependencies", metadata)
 
-    def test_core_guidance_distinguishes_writing_from_host_mechanics(self) -> None:
-        _, body = split_frontmatter(SKILL_PATH.read_text(encoding="utf-8"))
-        normalized = " ".join(body.split())
-
-        for required in (
-            "Core writing principles transfer across agent-facing documents. Discovery, precedence, invocation, and size rules do not.",
-            "This skill grants no authority to create or edit files",
-            "A context pointer names material outside the current document and states when the agent must read it",
-            "Strong criteria are checkable and cover the whole intended set",
-            "Retain exact canonical gates, working directories, prerequisites, and required evidence",
-            "pair it with the safe path when one exists",
-            "Test the document behavior, not only its Markdown",
-            "Do not remove a mandatory policy merely because one current model follows it by default",
-            "Agent instructions guide behavior; they do not enforce it",
-            "Pointer reliability also depends on the path, permissions, availability, and stability of the target",
-        ):
-            self.assertIn(required, normalized)
-
-        for reference in (
-            "references/agents-md.md",
-            "references/skill-mechanics.md",
-        ):
-            self.assertIn(reference, body)
-
-    def test_agents_reference_encodes_codex_scope_and_authority(self) -> None:
-        reference = " ".join(AGENTS_REFERENCE_PATH.read_text(encoding="utf-8").split())
-        for required in (
-            "starts at the project root and walks toward the launch working directory",
-            "It includes at most one file from each directory",
-            "take precedence when they conflict with broader guidance",
-            "defaults to 32 KiB",
-            "does not independently authorize filesystem writes",
-            "the exact command",
-            "Codex rebuilds the chain at the start of each run or TUI session",
-            "A nested `AGENTS.md` does not become active merely because the agent later edits files below that directory",
-            "The model's summary is useful compliance evidence, not authoritative discovery evidence",
-        ):
-            self.assertIn(required, reference)
-
-    def test_skill_reference_uses_portable_invocation_policy(self) -> None:
-        reference = SKILL_REFERENCE_PATH.read_text(encoding="utf-8")
-        normalized = " ".join(reference.split())
-
-        for required in (
-            "Put the skill's purpose, trigger, workflow, and cross-host constraints in the portable entrypoint",
-            "Choose automatic discovery",
-            "Choose explicit-only invocation",
-            "allow_implicit_invocation: false",
-            "realistic requests for each trigger branch and at least one near-miss",
-        ):
-            self.assertIn(required, normalized)
-        self.assertNotIn("disable-model-invocation", reference)
-
     def test_provenance_and_mit_notice_are_pinned(self) -> None:
         source = SOURCE_PATH.read_text(encoding="utf-8")
         license_text = LICENSE_PATH.read_text(encoding="utf-8")

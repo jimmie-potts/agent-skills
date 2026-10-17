@@ -12,20 +12,10 @@
 
 ## Local adaptations
 
-The local version keeps a compact, redacted continuation snapshot and pointers
-to authoritative artifacts. It adds repository path, worktree, issue identity
-when present, branch, frozen commit, dirty state, authority, blockers, and exact
-verification evidence.
-
-The snapshot is explicitly nonauthoritative and time-bound. Repository sources
-own scope, dependencies, and change records. The response is the default output.
-A native context-transfer tool requires an authorized recipient and documented
-behavior that matches the requested effects. Moving Git state, interrupting a
-task, or starting work requires authority for those effects even when a host
-calls the tool a handoff. Automatic temporary-file creation was removed, and a
-file requires an exact user-authorized destination. The workflow itself grants
-no tracker, repository, Git, publication, installation, or implementation
-authority.
+Adds a verified state checklist (paths, branch, frozen commit, dirty state,
+authority, blockers, verification results) that close-work relies on. Output
+returns in the response instead of an automatic temporary file; a file or native
+transfer needs a user-named destination or recipient.
 
 Updates are manual. Fetch the pinned upstream directory and repository license
 into a temporary location, review every file and the complete diff, recompute
