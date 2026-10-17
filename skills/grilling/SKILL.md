@@ -24,6 +24,6 @@ Only questions downstream of a pending lookup wait for it. Decisions belong to
 the user; evidence can inform a trade-off but not choose it.
 
 Finish when the frontier is empty. Return accepted decisions, accepted
-assumptions and open questions, then stop. Grilling is read-only: act on the
-result only through the workflow or request that already owns that authority
-(see AGENTS.md). Use `unslop` on the questions and summary when needed.
+assumptions and open questions, then stop. Grilling is read-only: take edit, Git,
+tracker, comment or publishing actions only when the request, or the
+coordinating workflow's existing authority, explicitly covers them. Use `unslop` on the questions and summary when needed.
