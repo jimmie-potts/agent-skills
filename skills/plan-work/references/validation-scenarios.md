@@ -80,7 +80,8 @@ inputs and keep evaluator expectations hidden from the evaluated context.
 ## Recommendations for starting work
 
 Exercise these cases in proposal-only mode and, with separate authorization,
-in tracker publication. Every proposed item needs Claude Code, Codex, and Grok Bot recommendations;
+in tracker publication. Where the owning repository asks for Execution
+recommendations, every proposed item needs Claude Code, Codex, and Grok Bot recommendations;
 publication readback must preserve them beside the assessment. Grok rows may be provisional with a named verify step. These cases
 check planning decisions, not measured model performance or runtime identity.
 
