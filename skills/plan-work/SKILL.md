@@ -104,8 +104,8 @@ readiness and conditional specialist/human review or operational handoffs.
 When the owning project declares installation or deployment as a completion
 condition for the item's kind of change, the item's acceptance includes that
 step and its readback by default. Record applicable request or standing
-authority; the recommendation's `Checkpoints` row names only uncovered owner
-decisions, not a renewed approval for an already authorized step. The item may
+authority; where an Execution recommendation is written, the
+recommendation's `Checkpoints` row names only uncovered owner decisions, not a renewed approval for an already authorized step. The item may
 instead use the project's declared opt-out or, by default, be marked
 source-only, but only with a reason and a
 link to the install issue that batches it. Write no blanket exclusion of that
@@ -114,15 +114,20 @@ deployment out of the item.
 
 Apply the rest of the assessment contract without embedding model names in
 planning ratings.
-For every item, read [execution recommendations](references/execution-recommendations.md)
+Write an Execution recommendation only when the owning repository's agent
+instructions or issue conventions ask for one. When they decline it or say
+nothing, give one planned-start sentence in the item's prose and no model
+table, prompt or fingerprint; deliver-work records `none` for such an item.
+When one is asked for, read [execution recommendations](references/execution-recommendations.md)
 and recommend a starting model and reasoning/effort level for Claude Code,
 Codex and Grok Bot alongside the assessment. Name the session type the user
 should start (`One-shot`, `Pair`, `Orchestrate` or `Investigate first`), explain
 the choice, and distinguish proposed worker settings when delegation would help.
 Classify the item's work surface as `UI`, `Backend` or `Unknown`. Write the
 reference's start line, work surface line, three-host table, paste-ready prompts
-and cheaper start, or its insufficient status. Include all three host choices in
-proposals and authorized saved work items, even when planning on only one host.
+and cheaper start, or its insufficient status. Such a recommendation includes all
+three host choices in proposals and authorized saved work items, even when
+planning on only one host.
 Grok model ids stay verified or provisional from host evidence; do not invent
 guaranteed aliases.
 Record the session's reasoning setting in the planning evidence when the host
@@ -152,7 +157,8 @@ canonical method within existing edit authority.
 ## Publish within authority and verify
 
 Present the concrete proposed items, exact authorized changes, dependencies,
-assessments, execution recommendations, and unresolved questions. When publication
+assessments, execution recommendations where the repository asks for them, and
+unresolved questions. When publication
 is already authorized and material decisions are settled, proceed without another
 approval round. Otherwise return the proposals at the user's requested boundary.
 
@@ -162,7 +168,7 @@ instead of duplicating it. Apply only authorized fields and links, preserving
 unrelated status, assignments, labels, estimates, and sprint membership.
 
 Read back each effect and compare the saved scope, criteria, assessment,
-execution recommendations, and dependency endpoints with the proposal.
+any execution recommendation, and dependency endpoints with the proposal.
 An API acknowledgment alone is not
 publication verification. After a timeout or partial response, suspend dependent
 writes and reconcile authoritative issue/history records before retrying. A stale

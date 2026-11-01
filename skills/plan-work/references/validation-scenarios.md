@@ -80,7 +80,8 @@ inputs and keep evaluator expectations hidden from the evaluated context.
 ## Recommendations for starting work
 
 Exercise these cases in proposal-only mode and, with separate authorization,
-in tracker publication. Every proposed item needs Claude Code, Codex, and Grok Bot recommendations;
+in tracker publication. Where the owning repository asks for Execution
+recommendations, every proposed item needs Claude Code, Codex, and Grok Bot recommendations;
 publication readback must preserve them beside the assessment. Grok rows may be provisional with a named verify step. These cases
 check planning decisions, not measured model performance or runtime identity.
 
@@ -102,7 +103,8 @@ For reviewers chosen by impact and review task, use RS02, RS03 and RS07 in
 | Planner runs on Codex; Claude availability and inherited effort are unexposed | Still recommend a Claude model and effort, mark availability provisional, and leave actual effort unknown; do not invent a per-call control. The same applies when Grok cannot be inspected: give the conditional Grok row, label provisional, and name what the user must verify. |
 | User requires a model or effort unavailable in the named host | Preserve the requirement, report the selection gap and any conditional alternative explicitly; no silent substitution or settings changes. |
 | GitHub/Jira tracker-only request with no matching model fields | Save all three host choices in one description section and verify readback; create no custom fields and start no delivery. |
-| Simple bounded item, three hosts | Section opens with `**Start with:**` naming `One-shot` first; three-host table has Model, Thinking level, Session type, Subagents, Reviewers and Availability for Claude Code, Codex and Grok; three prompt blocks follow (or Grok `n/a` with reason when excluded), each implementing without workers and authorizing two Opus, Luna/high or instruction-only Grok reviewers. |
+| Owning repository's conventions say stories carry no Execution recommendation, or say nothing about one | No `## Execution recommendation` section, table, prompt or fingerprint; the item's prose carries one planned-start sentence; deliver-work's `Recommended` row reads `none`. |
+| Simple bounded item, three hosts, repository asks for recommendations | Section opens with `**Start with:**` naming `One-shot` first; three-host table has Model, Thinking level, Session type, Subagents, Reviewers and Availability for Claude Code, Codex and Grok; three prompt blocks follow (or Grok `n/a` with reason when excluded), each implementing without workers and authorizing two Opus, Luna/high or instruction-only Grok reviewers. |
 | High-impact one-line fix | `One-shot` at the stronger floor with a Checkpoints row when decisions need a stop; prompts state Opus/high and Sol/high as the user's selection; Reviewers row keeps the high-impact reviewer floor. |
 | Parent needing coordination across dependent children | `Orchestrate` first in the start line; Subagents row gives each host's worker model and level; prompts state the subagent settings. |
 | Any implementing prompt | Authorizes the required reviewers by count and model; never says "without subagents" unqualified. |

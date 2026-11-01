@@ -154,6 +154,18 @@ class PlanWorkStructureTest(unittest.TestCase):
         self.assertIn('n/a', reference.lower())
         self.assertIn('#148', reference)
 
+    def test_execution_recommendation_is_repository_opt_in(self):
+        entry = (SKILL / 'SKILL.md').read_text()
+        reference = (SKILL / 'references/execution-recommendations.md').read_text()
+        scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
+        self.assertIn('only when the owning repository', entry)
+        self.assertIn('one planned-start sentence', entry)
+        self.assertNotIn('For every item, read', entry)
+        self.assertIn('whose owning repository asks for', reference)
+        self.assertNotIn('Read for every proposed work item', reference)
+        self.assertIn('carry no Execution recommendation', scenarios)
+        self.assertIn('`Recommended` row reads `none`', scenarios)
+
     def test_rendered_example_declarations_gate_both_named_roles(self):
         reference = (SKILL / 'references/execution-recommendations.md').read_text()
         prompts = re.findall(r'```text\n(.+?)\n```', reference, re.DOTALL)
