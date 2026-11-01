@@ -383,6 +383,38 @@ class ReviewWorkStructureTest(unittest.TestCase):
                           str(path))
 
 
+class ReviewerSelectionPolicyTest(unittest.TestCase):
+    def test_selection_prescribes_no_model_or_tier(self):
+        selection = ' '.join((
+            SKILL / 'references/review-selection.md').read_text().split())
+        self.assertIn('Risk determines what must be inspected and '
+                      'demonstrated; it does not prescribe a model or '
+                      'thinking level', selection)
+        self.assertIn('Missing optional settings or runtime telemetry do not '
+                      'block review', selection)
+        self.assertIn('An unavailable explicit requirement leaves its axis '
+                      '`incomplete`', selection)
+        for stale in ('impact floor', 'review-task tier', 'Luna', 'Sol'):
+            with self.subTest(stale=stale):
+                self.assertNotIn(stale, selection)
+        routing = ' '.join((
+            SKILL / 'references/cross-provider.md').read_text().split())
+        self.assertIn('high impact alone does not require another provider',
+                      routing)
+        entry = ' '.join((SKILL / 'SKILL.md').read_text().split())
+        self.assertIn('unknown ratings do not select a model or thinking '
+                      'level', entry)
+        for profile in ('review-work-reviewer.md',
+                        'review-work-reviewer-high.md'):
+            text = ' '.join(
+                (SKILL / 'assets/claude-code' / profile).read_text().split())
+            with self.subTest(profile=profile):
+                self.assertIn('Otherwise perform the review without a '
+                              'model-setting preflight', text)
+                self.assertIn('When the brief includes an explicit model or '
+                              'thinking requirement', text)
+
+
 class ResultContractTest(unittest.TestCase):
     def test_examples_parse_and_gate(self):
         complete, standalone = map(parse_review_result, examples())

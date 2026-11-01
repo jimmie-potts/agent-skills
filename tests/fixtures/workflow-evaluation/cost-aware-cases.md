@@ -1,5 +1,9 @@
 # Cost-aware workflow inputs
 
+Historical: these cases evaluated the former model/effort ladder. They are not
+acceptance criteria for the current execution-choice policy; use
+`execution-choice-cases.md` for that. Keep them unchanged as a record.
+
 Synthetic cases only. Read the plan-work/deliver-work entrypoints and selected
 operating references at the candidate revision. Do not read rubrics, recorded
 results, tests, or validation-scenarios. Perform no writes, actual delegation,

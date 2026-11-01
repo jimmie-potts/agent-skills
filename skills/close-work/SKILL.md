@@ -79,7 +79,7 @@ step's rules. Follow its steps in order:
 5. [Post the closing comment](references/sections.md#post-the-closing-comment)
    in the shape of [the closeout record](references/closeout-record.md).
 6. [Report](references/sections.md#report) in its eight sections, ending with
-   the verdict.
+   the verdict and then the one-line sign-off that section 8 describes.
 
 Planning sessions and reruns follow the same steps with the procedure's
 [planning](references/sections.md#planning-sessions) and

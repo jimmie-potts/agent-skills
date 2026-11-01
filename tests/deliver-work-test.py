@@ -239,6 +239,60 @@ class DeliverWorkStructureTest(unittest.TestCase):
         self.assertIn('worker-with-grok', skill)
         self.assertTrue((SKILL / 'references/grok-worker-selection.md').is_file())
 
+    def test_execution_choices_stay_opt_in(self):
+        # The model gate, execution record and selection policy are read only
+        # on an explicit requirement; routine delivery has no model preflight.
+        entry = flat((SKILL / 'SKILL.md').read_text())
+        self.assertIn('Choose an approach suited to the work and available '
+                      'tools', entry)
+        self.assertIn('When a model or reasoning setting is explicitly '
+                      'required, read', entry)
+        self.assertIn('only when the user or project requires the structured '
+                      'Execution record', entry)
+        self.assertIn('Do not manufacture model telemetry', entry)
+        for stale in ("read the item's Execution recommendation and copy it",
+                      'apply the [model-setting decision]',
+                      'publish the complete checkpoint fields'):
+            with self.subTest(stale=stale):
+                self.assertNotIn(stale.lower(), entry.lower())
+        gate = flat((SKILL / 'references/model-gate.md').read_text())
+        self.assertTrue(gate.startswith(
+            '# Honor explicitly required settings Read only when the user or '
+            'project explicitly requires'))
+        self.assertIn('Never ask an agent to verify its own thinking level',
+                      gate)
+        selection = flat((SKILL / 'references/model-selection.md').read_text())
+        self.assertIn('Direct work needs no model-selection preflight',
+                      selection)
+        self.assertIn('This skill prescribes no model, thinking level, '
+                      'provider, worker count or escalation ladder', selection)
+        reporting = flat(
+            (SKILL / 'references/execution-reporting.md').read_text())
+        self.assertTrue(reporting.startswith(
+            '# Optional execution accounting Read only when the user or '
+            'project requires'))
+        for row in RECORD_ROWS:
+            self.assertIn(f'| `{row}` |', reporting)
+        continuation = flat(
+            (SKILL / 'references/worker-continuation.md').read_text())
+        self.assertIn('there is no prescribed number of corrections or '
+                      'escalation sequence', continuation)
+        merge = flat((SKILL / 'references/guarded-merge.md').read_text())
+        self.assertIn("stays in force until Hub's own change to that list has "
+                      'merged and been verified', merge)
+        self.assertIn('a proposed replacement in an open issue or PR '
+                      'activates nothing', merge)
+        scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
+        self.assertIn('## Historical selection evaluations', scenarios)
+        for fixture in ('cost-aware-cases.md', 'cost-aware-rubric.md',
+                        'reviewer-selection-cases.md',
+                        'reviewer-selection-graders.md'):
+            text = (ROOT / 'tests/fixtures/workflow-evaluation' / fixture
+                    ).read_text()
+            with self.subTest(fixture=fixture):
+                self.assertTrue(text.split('\n\n', 1)[1].startswith(
+                    'Historical:'), fixture)
+
     def test_execution_record_examples_parse_strictly(self):
         reference = (SKILL / 'references/execution-reporting.md').read_text()
         documented = re.findall(r'^\| `([A-Z][a-z]+(?: [a-z]+)?)` \|',

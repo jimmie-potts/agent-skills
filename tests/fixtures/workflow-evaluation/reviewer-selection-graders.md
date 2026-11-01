@@ -1,5 +1,9 @@
 # Reviewer selection evaluator rubric
 
+Historical: this rubric scored the former impact-and-tier reviewer mapping and
+is not an acceptance rubric for the current policy; see
+`execution-choice-graders.md`.
+
 Withhold this file and all observations and returns from evaluated contexts.
 Freeze the cases and this rubric before trials. Give fresh independent
 read-only contexts the cases and the candidate operating entrypoints and

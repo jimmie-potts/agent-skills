@@ -100,7 +100,8 @@ Reusable SDLC workflows also include:
   owning repository's issue form, posts a parseable `## Closeout record` with a
   resume prompt on the owning issue, saves verified memory notes, deletes only
   guarded completed local branches, and reports in eight sections ending
-  `Safe to archive` or `Needs attention`. It never changes product code,
+  `Safe to archive` or `Needs attention`, followed by one light sign-off
+  line in the chat report only. It never changes product code,
   installs, merges, closes issues, deletes remote branches, removes worktrees
   or changes another session's work;
 - the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
@@ -398,6 +399,15 @@ not block work. Report known mismatches with required settings and keep requeste
 settings distinct from observed execution.
 
 Host adapters describe launch and continuation mechanics, not model rankings.
+The controls themselves live in the host. In Claude Code, `claude --effort
+<level>` sets the level for one launch, `/effort <level>` saves it for the
+active model, `effortLevel` and per-model `modelSettings` in `settings.json`
+persist it, and `CLAUDE_CODE_EFFORT_LEVEL` takes precedence for a process;
+`/effort` or the session header shows the effective level. A subagent inherits
+the session level unless its definition sets `effort`, and the `Agent` tool
+has no per-call effort parameter. Codex selects model and reasoning on each
+`collaboration.spawn_agent` call. Verify controls against the live host; the
+catalog neither sets nor reads them.
 Choose an advisory pairing deliberately; its own protocol still applies.
 Independent reviewers retain their fresh contexts, read-only restrictions and
 required coverage. Project-required reviewer profiles remain mandatory where
