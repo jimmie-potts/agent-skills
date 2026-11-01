@@ -7,8 +7,12 @@ thinking level. Use host defaults or supported explicit settings.
 Supply a self-contained brief; do not assume the worker inherits the conversation
 or project instructions. Verify continuation support only if the assignment
 needs it. Use the available `SendMessage` operation to continue a retained worker;
-a new `Agent` call is a new context. The tool may expose no per-call effort
-control; do not invent one or change personal settings to obtain it.
+a new `Agent` call is a new context. The tool has no per-call effort
+control; a subagent inherits the session level unless its resolved definition
+sets `effort`. The session level comes from the host's own controls (the
+`--effort` launch flag, `/effort`, `settings.json` or
+`CLAUDE_CODE_EFFORT_LEVEL`); do not invent a control or change personal
+settings to obtain it.
 
 Record requested and exposed settings separately when they matter. A successful
 request is not runtime identity. Never ask an agent to verify its own effort.

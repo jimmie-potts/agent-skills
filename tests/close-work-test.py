@@ -172,7 +172,11 @@ SECTION_ANCHORS = {
     '### 8. TL;DR': (
         'end with `safe to archive.`',
         'otherwise end with `needs attention: <main archival blocker>.`',
-        'follows the memory fallback in `skill.md`'),
+        'follows the memory fallback in `skill.md`',
+        'after the verdict, close the chat report with one sign-off line',
+        'never replaces or softens the verdict',
+        'it is chat-only; the posted closeout record and other tracker text '
+        'carry no sign-off'),
     '## Planning sessions': (
         'use the same report order for planning sessions',
         'mark installation and cleanup briefly as not applicable',

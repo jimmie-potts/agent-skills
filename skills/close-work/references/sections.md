@@ -250,6 +250,15 @@ remaining follow-ups are durably tracked, not that every follow-up is
 finished. Whether a failed memory save blocks archival follows the memory
 fallback in `SKILL.md`.
 
+After the verdict, close the chat report with one sign-off line: a light,
+good-humored send-off that nods to something from this task, such as a pun on
+the feature, a wry one-liner about what the session wrestled with, or a short
+mock award for the day's most stubborn flake. Keep it to one line and keep it
+kind: no claims, evidence, links or follow-ups belong in it, and it never
+replaces or softens the verdict. It is chat-only; the posted closeout record
+and other tracker text carry no sign-off. Skip it when the user asks for no
+formatting or for a terse report.
+
 ## Planning sessions
 
 Use the same report order for planning sessions. Mark Installation and
