@@ -104,8 +104,8 @@ readiness and conditional specialist/human review or operational handoffs.
 When the owning project declares installation or deployment as a completion
 condition for the item's kind of change, the item's acceptance includes that
 step and its readback by default. Record applicable request or standing
-authority; an Execution recommendation's `Checkpoints` row, where one is
-written, names only uncovered owner decisions, not a renewed approval for an already authorized step. The item may
+authority; where an Execution recommendation is written, the
+recommendation's `Checkpoints` row names only uncovered owner decisions, not a renewed approval for an already authorized step. The item may
 instead use the project's declared opt-out or, by default, be marked
 source-only, but only with a reason and a
 link to the install issue that batches it. Write no blanket exclusion of that
