@@ -3,80 +3,37 @@
 Read before selecting task, fix-verification or final reviewers. Then read only
 the active host's adapter: [Claude Code](claude-code-reviewers.md) when the host
 exposes an `Agent` tool with a per-call `model` parameter, or
-[Codex](codex-reviewers.md) when collaboration tools expose model and reasoning
-overrides. The settings an implementer actually ran with and worker retry
-thresholds do not select reviewers; impact and the review task below do.
+[Codex](codex-reviewers.md) for collaboration tools, or
+[Grok Bot](grok-reviewers.md) for Task executors. Select for the review needs,
+not the implementer's settings or attempt history.
 
-## Establish the available choices
+## Choose reviewers for the work
 
-Honor explicit user and project reviewer requirements first, including models,
-reasoning levels, specialist axes and limits. Discover current model
-availability, supported reasoning levels and delegation controls from the host;
-do not infer capability from names or assume every model supports every level.
-Never silently substitute an explicitly required reviewer: when it is
-unavailable, the affected axis is `incomplete`. Missing optional controls
-preserve host defaults with the gap disclosed.
+Honor explicit user and project requirements, including independent axes,
+specialist coverage, tool restrictions and limits. Select reviewers able to
+assess the changed behavior, interfaces, uncertainty and consequences of failure.
+Risk determines what must be inspected and demonstrated; it does not prescribe
+a model or thinking level. Host defaults are acceptable when suitable.
 
-Native reviewer profiles are optional adapters. Before any reviewer starts,
-run the [reviewer execution](reviewer-execution.md) preflight, which resolves
-the model, effort, context, tools and profile and keeps requested, supported
-and observed settings apart. A profile cannot override these floors or explicit
-requirements. Do not create or install profiles or change personal settings to
-obtain a selection.
+Use current host capabilities and relevant outcome evidence. Neither the
+implementer's model nor an assessment rating automatically selects reviewers.
+Explain a consequential selection or fallback briefly in the input's Settings
+field. Do not infer equal capability from equal effort names across providers.
 
-## Select for impact and the review task
+Before launch, apply [reviewer execution](reviewer-execution.md) for fresh
+contexts, read-only conduct, no descendants and any mandatory host restrictions.
+Read only the active host adapter. Missing optional settings or runtime telemetry
+do not block review. An unavailable explicit requirement leaves its axis
+`incomplete`; do not silently substitute or install profiles to satisfy it.
 
-Select each reviewer for the judgment its review must exercise. Impact sets the
-minimum; the review task can only raise it.
+Apply this to task, fix-verification and final reviewers. Selection changes no
+reviewer count, frozen comparison, scope, or specialist or human gate. Both
+required axes may use the same model in separate fresh contexts.
 
-- Impact floor: the host adapter's routine reviewers for low and medium impact,
-  and the strongest evidenced relevant reviewers at high reasoning for high
-  impact, even with a tiny diff. Unknown impact takes the high-impact floor.
-- Review task: from the work assessment and the comparison, name the
-  complexity, the uncertainty, the interfaces, state and invariants the change
-  crosses, and the capability that implementing or integrating it needs. A
-  reviewer must be able to exercise the judgment the change needed. When the
-  host adapter places that work above its routine tier, select that tier or
-  stronger, even at low or medium impact. Keep the routine tier for bounded
-  work whose review coverage the task and reliable checks justify. Unknown
-  complexity, or work the evidence cannot place, takes the stronger tier.
-
-Place the work by what it needs, not by what ran: a stronger implementer than
-the work needed raises nothing, and a weaker one lowers nothing. Reasoning-level
-names are not comparable across models; a smaller model at a higher level is
-not an automatic equivalent of a larger one.
-
-Apply the same selection to task, fix-verification and final reviewers,
-assessing the comparison under review and the interfaces its fixes touch. A
-small fix establishes neither low impact nor a bounded review task. Selection
-changes no reviewer count, frozen comparison, scope, or specialist or human
-gate.
-
-A reviewer below the selected review-task tier needs an explicit user or project
-requirement, which prevails, or comparable evidence: recorded review outcomes on
-similar work that show the weaker setting finds what the selected one finds.
-Name that evidence and the coverage it cannot vouch for. Evidence never goes
-below the impact floor; only an explicit requirement does, with the difference
-recorded. Record this rationale in the input's Settings field, as the
-[result contract](result-contract.md) describes.
-
-Inspect interactions, concurrency, invariants and recovery for interacting-state
-work; examine assumptions, omissions and conflicting evidence when uncertainty
-is high. Specification review covers each criterion, exclusions and negative
-cases, including high-impact acceptance. Default, moderate and high are
-relative recommendations, not portable API enum names; map them to supported
-controls and record the mapping. Maximum reasoning is not automatic. Both axes
-may use the same model in separate fresh contexts.
-
-## Select the provider without duplicating coverage
-
-After selecting the required capability tier and impact floor, apply
-[selective cross-provider routing](cross-provider.md) for high-impact work or a
-substantive unresolved correctness, requirements or evidence dispute. Routine
-work and cosmetic disagreement need no extra provider. Provider preference
-never lowers the chosen tier, independent axes, required controls or stop rules.
-Use an eligible other-provider reviewer for an existing required axis when it
-can cover that axis. Record a qualified fallback when the provider is unavailable.
+Use [cross-provider routing](cross-provider.md) only when deliberately choosing
+another provider or when explicitly required. Consider it for an unresolved
+coverage gap or substantive disagreement; it is not a routine extra team or a
+requirement inferred from high impact. Resolve findings on evidence, not votes.
 
 ## Brief each reviewer
 

@@ -1,131 +1,24 @@
-# Report strategy, models, and agents
+# Optional execution accounting
 
-Read at pickup, before creating a non-root delivery agent, when reconciling
-incomplete/resumed participation, and before any substantive checkpoint or final
-handoff. Direct work with a verified single coordinator can use the entrypoint
-fields for the summary: coordinator active and used 1, future agents planned
-separately, consultations not applicable. Every delivery also keeps the
-[Execution record](#write-the-execution-record). Use the entrypoint's
-Strategy, Models, Agents, and Consultations fields for this summary. The task
-conversation is the default output, so the user can see it while work proceeds
-and find it in the final response. These instructions require agent-authored
-reporting; they do not install automatic host telemetry or a dashboard.
+Read only when the user or project requires the structured Execution record or
+detailed model/agent accounting. Ordinary updates report outcomes, verification,
+remaining work, owners and consequential choices without this table.
 
-At pickup, resume and setting changes, retain the [model-setting decision](model-gate.md) and its evidence with this record. A declaration-only continuation does not verify runtime identity. Keep the existing rows and provenance terms.
+Preserve the established format below for consumers that parse it. Record only
+exposed or user-stated facts, with their source; unknown is not zero. Keep raw
+runtime identifiers private. Do not seek extra telemetry, inspect unrelated
+sessions or create publication effects to populate a record.
 
-## Publish at the decision and keep it current
+Count distinct agent contexts, not roles or resumed messages. Include failed and
+replaced attempts. A rejected creation known to have made no context is not an
+agent; an ambiguous creation remains unresolved. Count completed consultation
+exchanges only for a selected pairing. Keep explicit budget and review-round
+accounting regardless of whether this optional format is used.
 
-1. Before implementation or the first delegation, publish the selected strategy
-   and a short rationale tied to the work assessment. Name the decision owner
-   and agents whose returned input informed the choice. Say `none` if nobody was
-   consulted. Include a brief account of their contribution, not internal
-   deliberation or a transcript. Merely being assigned work or listed as a
-   reviewer does not make an agent a decision contributor.
-2. List the coordinator, implementation workers, advisors, investigation agents,
-   and independent reviewers by stable task-local labels such as coordinator,
-   worker-1, and standards-reviewer. Record each role's selected model/reasoning,
-   actual request when different, reported settings, evidence source, and state.
-   Group identical settings only when the distinct labels and counts remain
-   clear. A planned role has no observed runtime settings yet.
-3. Report the counts below before spawning, after confirmed team changes, and
-   when a strategy, setting, or fallback changes. Explain what changed and why.
-   Routine updates state changes, blockers and next actions; omit unchanged
-   rosters and settings. Immediately expose consequential strategy, setting,
-   team or authority changes, failed attempts and capability gaps, with reasons
-   and affected counts/history. Keep the complete summary in existing evidence
-   and publish it at substantive checkpoints and genuine final handoff, including
-   blocked or limited delivery. An ordinary continued turn or unchanged blocked
-   check needs only the meaningful delta and any host-required message or audit,
-   not another complete summary. Retaining details in evidence never delays a material
-   change notice. Do not turn missing history or telemetry into zero by omission.
-
-Use settings from the current host records or runtime reports and label their
-source. Distinguish a user-stated setting from a host observation and a worker's
-self-report from independently exposed metadata. A successful spawn proves a
-request succeeded, not the executing model's identity. Use `unknown` for
-unexposed values. Never infer a coordinator's identity from a model menu, agent
-nickname, pairing skill name, or the model requested for a worker. Report known
-mismatches and apply the selection policy's mandatory-setting gates.
-
-## Count agents, not roles or messages
-
-- Active now: agents currently working on this delivery or waiting for a
-  delivery decision, including the reporting coordinator. Exclude agents whose
-  assignment has finished, even if their session remains available. State
-  `unknown` when current activity cannot be established.
-- Distinct used to date: unique agent contexts actually established for this
-  delivery, including the coordinator and completed, failed, or replaced workers
-  and reviewers. Include authorized descendants. Count the same coordinator
-  once when it also advises or implements. Two independent reviewers on the
-  same model are two agents; one model can run several agents.
-- Planned additional: agents selected for future work but not yet established.
-  Name their roles and keep them out of actual counts until creation is
-  confirmed. If the remaining team is undecided, say `unknown` instead of zero.
-  Zero requires an established plan with no further agents; silence is unknown.
-
-Count the reporting coordinator as one confirmed participant even when the
-available records mention only a worker. Unknown model identity does not remove
-an established agent from the count. Report a known minimum when other activity
-or historical participation is uncertain.
-
-Retain a task-local roster mapping stable labels to verified host identities
-and states using already authorized host records and worker evidence. Keep raw
-identifiers private. Resume and consultation messages to the same agent do not
-increase the distinct count. A replacement or fresh review context does. A
-rejected spawn confirmed to have created no agent does not count as used;
-an ambiguous spawn outcome remains unresolved until reconciled.
-
-Keep correction counts, attempt history, effort increases, and model promotions
-in Models, following [model selection](model-selection.md) and its host adapter.
-A same-worker correction adds no agent or advisor consultation by itself; a
-promotion that creates a fresh worker adds one distinct agent. Call a replacement
-a promotion only when the recorded settings establish an increase. State known
-correction and effort-increase counts explicitly; keep missing history unknown.
-Preserve failure history and the task's effort-increase history across handoffs.
-Keep review-work's round and finding history in Evidence, with the scope,
-consumption and accounting gaps of any [explicit limit](corrections.md). Two
-perspectives on one candidate do not double the round count; corrections are
-counted separately.
-For a new advisory attempt, report required consultations as still outstanding
-until evidenced, and pause the work they govern under the pairing protocol.
-Include exposed attributable usage in Evidence, retaining failed attempts and keeping subscription
-usage separate from API cost. Missing usage remains unknown.
-
-On resumption, reconcile the roster against available history and current host
-state before publishing totals. Do not reset earlier use to zero. If earlier
-agents, descendants, or creation outcomes cannot be verified, report a known
-minimum and the coverage gap, for example `distinct used: at least 3; earlier
-review contexts unknown`. An incomplete roster cannot support an exact total.
-Counts describe participation; they do not prove review independence or that
-any delivery gate passed.
-
-For an advisory pairing, count completed consultation exchanges, per worker and
-in total. Retain failed or replaced attempts. Pending unanswered requests are
-separate; a required approach or final-review consultation is not evidence it
-happened. Use `unknown` for missing records and `not applicable` when no advisor
-loop was used. Independent delivery reviews are not advisor consultations.
-
-## Retain the summary without new publication effects
-
-Keep the current roster and summary in the task's existing evidence or handoff.
-At checkpoints and on resumption, use [the task packet](resumption.md) to retain
-completed tasks, accepted revisions, findings, pending effects and the next
-incomplete step alongside this execution summary. Link the same record instead
-of creating a separate roster ledger.
-
-Update that current record at the [resumption triggers](resumption.md#update-the-current-record-when-state-changes),
-rather than producing a new narrative on a fixed interval or every continued
-turn. Link distinct review rounds and failure/action receipts; retain their full
-evidence under the owning contracts. Keep elapsed-time/deadline and consumed
-limit accounting alongside the execution history. A resume or new commit never
-resets them. Preserve host progress, interruption and blocked-turn requirements.
-If project policy or the user already authorizes a durable delivery record,
-update that record and link it from the task. For an authorized public PR or
-tracker update, include only the strategy and the Execution record below,
-omitting private runtime identifiers, paths, and raw metadata. Reporting does not
-authorize a new file, tracker comment, PR, service, installation, or paid run.
-If a requested destination is unavailable, output the summary in the task and
-report the destination limit.
+A session-type label describes the work actually done; it does not require a
+particular orchestration pattern. Detailed settings are reported, not selected
+by this reference. Check [required settings](model-gate.md) only when explicitly
+required. Preserve historical records without treating them as current telemetry.
 
 ## Write the Execution record
 
@@ -136,7 +29,8 @@ delivery's actual model, level and review effort with the item's Execution
 recommendation. It records where each value came from, not identity: a spawn or
 a request never establishes the executing model or level.
 
-Copy the `Recommended` row into the task evidence at pickup. Write the section
+When this format is required, copy the item's recommendation into the
+Execution record's `Recommended` row at pickup, or use `none` when absent. Write the section
 when the durable record is created, refresh it at substantive checkpoints,
 complete it before the guarded merge, and read it back at final handoff. Edit
 the existing section rather than adding another. Keep cumulative counts and
@@ -155,7 +49,7 @@ with bare field names as in the examples. Add `Session label` directly after
 | `Recommended` | `<session type>, <model>, <level>` copied from the item's `## Execution recommendation` for the executing host: its `Session type`, the backticked identifier in `Model`, and `Thinking level`. `insufficient` when it records `**Status:** insufficient`; `none` when the item has no such section. Never retype a recommendation from other prose |
 | `Coordinator model` | Sourced values for the coordinator that completes the section, as defined under the cell grammar |
 | `Coordinator level` | Sourced values for the same coordinator |
-| `Session type` | The session type delivery ended with: `One-shot`, `Pair`, `Orchestrate` or `Investigate first`. Strategy explains any change |
+| `Session type` | The session type delivery ended with: `One-shot`, `Pair`, `Orchestrate` or `Investigate first`. Explain a consequential change briefly outside the table |
 | `Session label` | Optional. The neutral label, in lowercase letters, digits and hyphens, that the coordinator set on its session in a project-defined session index. Never a raw session ID, path or account name |
 | `Workers` | `none`, or one agent entry per implementation or investigation worker context, including failed and replaced attempts, in creation order |
 | `Reviewers` | `none`, or one agent entry per independent task, fix or final reviewer context |
@@ -164,7 +58,7 @@ with bare field names as in the examples. Add `Session label` directly after
 | `Review rounds` | `final <count>; task <count>`, counted as review-work counts rounds |
 | `Findings` | `P0 <count>; P1 <count>; P2 <count>; P3 <count>`: distinct findings from independent task, fix and final reviews, by stable identity. A regression reopens its finding and does not count again |
 | `Finding causes` | `edge-case <count>; untested-bug <count>; wrong-approach <count>; other <count>`: the same distinct P0 to P2 findings classified by cause, so the counts sum to the P0 to P2 total. `edge-case` is behavior the candidate missed on an input or state it did not consider; `untested-bug` is a defect its own checks would have caught had they been run or written; `wrong-approach` is a design or interpretation that no amount of verification would have fixed; `other` is a finding outside the candidate's control, such as a wrong specification, environment or permission. Classify from the reviewer's stated failure condition; P3 findings are not classified |
-| `Corrections` | A count of correction passes: each new candidate made to resolve review findings or failed acceptance, by a worker's guided correction or by the coordinator. Fixes batched before the next review count once. Models keeps the separate per-worker correction count, so the two can differ |
+| `Corrections` | A count of correction passes: each new candidate made to resolve review findings or failed acceptance, by a worker's guided correction or by the coordinator. Fixes batched before the next review count once. A per-worker correction count, when required, can differ from this total |
 
 After the table, add these lines, each as its own paragraph:
 
@@ -175,9 +69,8 @@ After the table, add these lines, each as its own paragraph:
   latest update. The revision is the deliver-work package whose convention
   the section follows, as `agent-skills@<sha>`, or `unknown`.
 
-Keep narrative in the Strategy, Models and Evidence fields, outside the section.
-When the coordinator changed on resumption, report earlier coordinators in
-Models; `Agents` counts them.
+Keep explanatory prose outside the table. When the coordinator changed on
+resumption, retain earlier coordinators in the history; `Agents` counts them.
 
 ### Cell grammar
 

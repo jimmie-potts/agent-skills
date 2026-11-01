@@ -2,22 +2,11 @@
 
 Use when the host exposes an `Agent` tool with a per-call `model` parameter.
 Inspect the actual tool schema and host model descriptions before calling.
-Worker attempt thresholds are separate from review-round accounting; worker
-replacement resets none of the [review-cycle history](review-cycles.md).
+Worker replacement resets none of the [review-cycle history](review-cycles.md).
 
-Use this mapping for both Standards and Specification. The routine reviewer
-here is already `opus`, so
-[review selection](review-selection.md#select-for-impact-and-the-review-task)'s
-review task changes no default on this host; still record it in the selection
-rationale. High complexity or uncertainty may warrant stronger settings.
-
-| Impact | Reviewer default | Rationale and limits |
-| --- | --- | --- |
-| Low or medium impact | `opus` for each axis | Opus is the routine reviewer: review is verification work, where capability pays, so a cheaper reviewer is a measured decision rather than the default. Do not select `sonnet` for a reviewer unless the user or project requires it |
-| High impact, even with a tiny diff | Strongest evidenced relevant choice of `opus` or the coordinator's model, in separate fresh reviewer contexts | High reasoning recommended; report an inherited level below it as a known mismatch rather than claiming to change it |
-
-Before launching, run the [reviewer execution preflight](reviewer-execution.md)
-with the controls below.
+Choose settings under [review selection](review-selection.md); this adapter
+prescribes no model or thinking level. Before spawning, apply the
+[reviewer execution preflight](reviewer-execution.md) with the controls below.
 
 ## Know the controls
 
@@ -86,8 +75,8 @@ resume one.
 
 ## Launch and resume
 
-Call `Agent` once per reviewer with the selected type, the exact model alias
-passed explicitly and a self-contained brief. Run it in the foreground when the
+Call `Agent` once per reviewer with the selected type, supported settings or host defaults,
+and a self-contained brief. Run it in the foreground when the
 next step depends on the result and the schema allows it; otherwise wait for the
 completion notification. Never pass the `fork` type or `isolation`.
 `SendMessage` resumes the same reviewer for a later round or reassessment when
@@ -112,10 +101,7 @@ review level rather than claiming to change it. Never ask a reviewer for its
 own effort. Record the requested model and the model a reviewer reports from
 its own runtime instructions separately.
 
-These are capability hypotheses, not measured review-quality results. Explicit
-user or project requirements override the defaults; comparable evidence
-supports only the exceptions review selection allows, never below the impact
-floor. Do not create, edit or install `.claude/agents` definitions, change
+Do not create, edit or install `.claude/agents` definitions, change
 settings, launch replacement coordinator or writer sessions, or simulate a
 reviewer by writing both sides of a conversation. For an explicitly selected
 cross-provider reviewer or a required native-control gap, use only the bounded

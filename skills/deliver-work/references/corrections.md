@@ -5,7 +5,7 @@ acceptance, diagnosing a surviving blocker, or working under an explicit round,
 time or spending limit. The composed `review-work` skill owns review rounds,
 finding identity, fix verification and the per-axis result.
 [Model selection](model-selection.md) and its host adapters own worker settings
-and correction thresholds. [PR supervision](pr-supervision.md) owns provider
+when execution choices need reassessment. [PR supervision](pr-supervision.md) owns provider
 feedback and check reruns.
 
 Keep this evidence in the existing [task packet](resumption.md) or authorized
@@ -54,9 +54,9 @@ When a blocker survives correction, diagnose it before another attempt:
 | Unavailable authority or capability | Identify the owner and needed permission/control, or an authorized alternative; pause the dependent action. |
 
 Record the cause, changed approach and expected evidence. Recurrence alone does
-not mandate a stronger model. Read the [Codex](codex-model-selection.md) or
-[Claude Code](claude-code-model-selection.md) adapter for its distinct worker
-threshold. Review counts do not replace, reset or copy those thresholds.
+not mandate a stronger model. Reassess the approach using
+[execution choices](model-selection.md); there is no fixed worker escalation
+ladder. Preserve explicit limits and failure history.
 
 Continue productive, severity-driven corrections without a universal numerical
 cap. Progress needs evidence that behavior, acceptance coverage or

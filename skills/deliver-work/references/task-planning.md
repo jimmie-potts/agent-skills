@@ -91,6 +91,12 @@ or an earlier place in a list cannot establish this. A verified contract may
 unblock consumer proposals while other producer work continues only when those
 proposals do not need the unfinished implementation or evidence.
 
+Name the stage each prerequisite governs: implementation, activation or
+completion. A missing release or installed result blocks that stage, not
+independent source work. For a shared deployment, link the designated batch
+and its acceptance owner instead of creating reciprocal source/deployment
+blockers. Source inclusion, qualification and installation need distinct evidence.
+
 Detect cycles in required inputs. Pause the cycle and consumers of its unresolved
 outputs; identify the decision, accepted interface or task regrouping needed to
 break it. Do not discard a true edge just to start work. Continue independent

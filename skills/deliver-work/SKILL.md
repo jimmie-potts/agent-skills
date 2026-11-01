@@ -103,21 +103,15 @@ existing assessment. Map acceptance criteria to verification and identify
 conditional reviews and operational handoffs. Preserve the project's mandatory
 gates.
 
-At pickup, read the item's Execution recommendation and copy it into the
-Execution record's `Recommended` row. Before implementation or delegation,
-on resume and after observed setting changes, read and apply the
-[model-setting decision](references/model-gate.md). Distinguish required
-settings from advice, and requested, declared and independently observed
-values. Stop dependent work on a known required mismatch; ask for missing
-required evidence. A matching owner declaration or named launch selection can
-permit continuation with runtime verification unknown, unless the owner
-explicitly requires verified identity. Never infer model equivalence or effort,
-ask an agent to verify its own effort, or claim to switch the running model.
-Record the session's reasoning setting as exposed or user-stated, otherwise
-unknown. Report advisory differences before changing strategy. The session type
-governs implementation; the prompt's reviewer clause authorizes the required
-independent reviewers. When the user forbids all subagents, say at pickup that
-delivery stops at a ready PR with review pending.
+Choose an approach suited to the work and available tools. Direct work,
+delegation and parallel work are options, not prescribed session types.
+Follow explicit user and project constraints. Use a planning recommendation as
+advice and reassess it against current evidence. Explain consequential changes
+briefly. Missing optional model or reasoning metadata does not block work.
+When a model or reasoning setting is explicitly required, read
+[required settings](references/model-gate.md); otherwise skip that check.
+When the user forbids all subagents, say at pickup that delivery stops at a
+ready PR with independent review pending.
 
 Read each reference below at its trigger:
 
@@ -132,10 +126,9 @@ Read each reference below at its trigger:
   needs a negative control; when such a check or a required verification fails
   unexpectedly or cannot run, not a deliberate TDD red run; and before adding
   a check for a repeated or observed failure.
-- [Model and strategy selection](references/model-selection.md): before
-  selecting a worker or changing implementation strategy/settings, reading only
-  its selected role and host branches. Direct trivial
-  work at the coordinator's existing settings needs no worker-selection reads. Compose the host's advisory pairing,
+- [Execution choices](references/model-selection.md): when selecting workers
+  or when execution advice is requested. Read only the chosen host adapter.
+  Direct work needs no selection preflight. Compose the host's advisory pairing,
   worker-with-astra with Codex collaboration tools, worker-with-fable with
   Claude Code subagent tools, or worker-with-grok with Grok Bot Task /
   MessageSubagent tools, only when that policy and the pairing's
@@ -144,17 +137,14 @@ Read each reference below at its trigger:
   an implementation or investigation worker.
 - [Task packets and resumption](references/resumption.md): before dispatch,
   substantial artifact exchange, checkpoint or resumption.
-- [Execution reporting](references/execution-reporting.md): at pickup, before
-  the first non-root agent, when reconciling incomplete/resumed participation,
-  and at substantive checkpoints and final handoff, which carry its Execution
-  record.
+- [Execution reporting](references/execution-reporting.md): only when the user
+  or project requires the structured Execution record or detailed accounting.
+  Otherwise report outcomes, evidence, pending work and consequential decisions.
 
-Before implementation or delegation, publish the complete checkpoint fields
-below. Publish that initial checkpoint once. An ordinary continued turn is not
-a new delivery, context-loss recovery or full preflight. Keep the current
-recovery record and send meaningful deltas under [resumption](references/resumption.md).
-Changed volatile prerequisites still require the relevant fresh reads before
-dependent work.
+Before implementation, state the scope, intended finish line, approach and any
+blocker. Keep a recovery record for work that needs a handoff, following
+[resumption](references/resumption.md). Update changed facts instead of replaying
+preflight on every turn. Refresh volatile prerequisites before dependent work.
 
 Use the project's planning method and acceptance criteria; add no specification
 framework or delivery runtime to fit this skill. Load shared skills only for
@@ -221,7 +211,10 @@ its coordinator-owned loop through the requested finish line.
    rules, including matrix expansions. Require successful applicable results for
    this PR's current head. Missing, pending, failed, skipped or cancelled required
    jobs block merge; an empty protection list proves nothing. Retain the run/PR
-   association. Honor additional project and provider gates.
+   association. Honor additional project and provider gates. Distinguish merge
+   admission from release qualification according to effective project policy;
+   do not wait for qualification when it is not an integration gate. Proposed
+   policy changes do not activate themselves.
 5. Changed code, scope, policy, base or head invalidates affected tests and
    reviews. Reassess the changed comparison, rerun affected local checks and
    obtain a fresh review-work result and CI evidence. Reuse unrelated
@@ -259,7 +252,10 @@ state separately from source completion.
 Evaluate all completion conditions. When the owning project declares
 installation or deployment as a completion condition and defines its
 procedure, prepare the complete step after verified merge and post-merge CI.
-Run it without renewed approval when the current request or an applicable
+When a separate task owns the installation, link that task and reuse its verified
+result under [declared completion steps](references/project-discovery.md#declared-completion-steps).
+Only the designated owner executes the shared operation. Run it without renewed
+approval when this task owns it and the current request or an applicable
 owner instruction grants authority covering that step, including scoped
 standing installation authority. A completion condition alone grants no
 permission; preserve narrower requests and ask only for effects outside
@@ -295,49 +291,18 @@ or no-progress audits. These instructions never override higher-priority runtime
 requirements. An unchanged check needs no full packet or completion summary;
 do not end a turn solely to manufacture another resumption summary.
 
-At substantive checkpoints, genuine handoff and delivery completion, open with what needs
-the user: decisions, approvals or blocked steps only they can move, or `none`.
-Then give one or two plain sentences on what is delivered, what is blocked and
-what happens next.
-Then use these complete fields, including the execution summary even when no
-workers were used. Write `unknown`, `none`, or `not applicable` where
-appropriate:
+At checkpoints and final handoff, lead with the outcome, remaining work and
+any owner action. Link the work item, PR and verified revision when available.
+Distinguish source integration, release qualification, installation and any
+remaining acceptance. State checks actually run and their limits. Include the
+owner and next action for pending work and the cleanup outcome for resources
+this delivery created. Preserve explicit time, spend and review-round limits
+across continuation and handoff.
 
-- Source: authoritative work reference.
-- Stage: current delivery stage.
-- Strategy: chosen approach, brief reason, decision owner, and contributing
-  agents with their input, or `none`; distinguish changes from the original plan.
-- Models: each agent's role and selected/requested versus reported model and
-  reasoning, with the evidence source or `unknown`; label unstarted roles planned.
-  Retain correction/attempt history and reasons for effort increases or promotion.
-- Agents: active now, distinct used to date, and planned additional agents,
-  including the coordinator, workers, advisors, and independent reviewers.
-  Use the counting rules in execution reporting; roles are not extra agents.
-- Consultations: completed advisor consultations per worker and total, or
-  `not applicable`; pending requests and unknown counts stay separate.
-- Plan/spec: identity or canonical reference, when applicable.
-- Branch: current branch.
-- PR: reference or `none`.
-- Last verified revision: immutable revision and what was verified there.
-- Evidence: separate local checks, hosted CI, independent review, merge,
-  tracking completion, required installation/deployment or human acceptance,
-  and the cleanup result.
-  Associate each result with its revision; link existing details.
-  Include attributable usage when exposed, preserving unknowns and the selection
-  policy's distinction between subscription usage and API cost.
-  Include guide-source synchronization, public artifact publication, and live
-  verification separately when applicable, with pending work and its owner or
-  next action. Reuse these fields rather than adding another status ledger.
-- Next checkpoint: next action and its completion evidence.
-- Blocker: concrete blocker and owner, or `none`.
-
-Keep the `## Execution record` section from execution reporting current in the
-authorized delivery record, or in the final response without one.
-
-Keep each field short; omit transcript replay and restated instructions.
-Preserve required evidence even when it needs more than one line.
-Use `unslop` for substantial style issues in user-facing prose while preserving
-artifacts, authoritative text, and evidence.
+Use the structured `## Execution record` section only when the user or project
+requires it, following [execution reporting](references/execution-reporting.md).
+Do not manufacture model telemetry or agent accounting to fill a routine update.
+Use `unslop` for substantial style issues while preserving sources and evidence.
 
 When evaluating or revising this skill, read the synthetic
 [validation scenarios](references/validation-scenarios.md). Distinguish static

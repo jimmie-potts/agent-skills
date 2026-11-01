@@ -159,7 +159,7 @@ Before accepting that envelope:
    stays incomplete, even if its private packet has not changed on disk.
 2. Verify actual host controls, account mode, substitutions and output completion
    using host evidence; unknown mandatory host-control evidence blocks acceptance.
-   Evaluate model/level settings through the canonical model gate in
+   For explicit model/level requirements, apply the setting check in
    [reviewer execution](reviewer-execution.md), after checking declaration scope.
    An applicable owner declaration can satisfy an ordinary required setting
    while runtime observation stays unknown. An observed required mismatch or

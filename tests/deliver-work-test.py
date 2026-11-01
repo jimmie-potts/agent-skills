@@ -295,19 +295,6 @@ class DeliverWorkStructureTest(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     parse_execution_record(example.replace(old, new, 1))
 
-    def test_execution_record_is_wired_into_delivery(self):
-        entry = ' '.join((SKILL / 'SKILL.md').read_text().split())
-        self.assertIn("Execution record's `Recommended` row", entry)
-        self.assertIn('`## Execution record` section', entry)
-        self.assertIn('in the final response without one', entry)
-        links = re.findall(r'\]\(([^)]+)\)', entry)
-        self.assertIn('references/execution-reporting.md', links)
-        scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
-        self.assertIn('`**Fixes delivery:**`', scenarios)
-        readme = (ROOT / 'README.md').read_text()
-        self.assertIn('`## Execution record`', readme)
-        for term in PROVENANCE:
-            self.assertIn(f'`{term}`', readme)
 
     def test_review_section_cannot_look_approved_when_incomplete(self):
         reference = (SKILL / 'references/review-reports.md').read_text()
@@ -480,7 +467,7 @@ class DeliverWorkStructureTest(unittest.TestCase):
                      'without a policy, retain them'):
             with self.subTest(rule=rule):
                 self.assertIn(rule, completion)
-        self.assertIn('and the cleanup result', flat(entry))
+        self.assertIn('cleanup outcome', flat(entry))
         discovery = (SKILL / 'references/project-discovery.md').read_text()
         row = next(line for line in discovery.splitlines()
                    if line.startswith('| Completion |'))
@@ -800,10 +787,6 @@ ENTRYPOINT_BOUNDARIES = {
                            'review-work'),
     'Evidence': ('unverified gate', 'never zero'),
 }
-REPORT_FIELDS = ('Source', 'Stage', 'Strategy', 'Models', 'Agents',
-                 'Consultations', 'Plan/spec', 'Branch', 'PR',
-                 'Last verified revision', 'Evidence', 'Next checkpoint',
-                 'Blocker')
 
 
 class BoundariesTest(unittest.TestCase):
@@ -818,10 +801,6 @@ class BoundariesTest(unittest.TestCase):
         BULLETS.assert_guarded(self, review.read_text(), '## Boundaries',
                                {'Independence': ()})
 
-    def test_checkpoint_fields_stay_labelled(self):
-        BULLETS.assert_guarded(self, (SKILL / 'SKILL.md').read_text(),
-                               '## Recover and report',
-                               dict.fromkeys(REPORT_FIELDS, ()))
 
 
 if __name__ == '__main__':
