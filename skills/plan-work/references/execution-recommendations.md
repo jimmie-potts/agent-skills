@@ -1,7 +1,11 @@
 # Recommend the session to start
 
-Read for every proposed work item. Give the user a concrete model and thinking
-level to choose when starting work on Claude Code, Codex, or Grok Bot. Here,
+Read for each proposed work item whose owning repository asks for an
+Execution recommendation in its agent instructions or issue conventions; a
+repository that declines one or says nothing gets a planned-start sentence
+in prose instead, and none of this section. Give the user a concrete model
+and thinking level to choose when starting work on Claude Code, Codex, or
+Grok Bot. Here,
 "intelligence level" means the host's reasoning/effort setting, not another work
 rating or a claim that equal level names provide equal capability across models.
 

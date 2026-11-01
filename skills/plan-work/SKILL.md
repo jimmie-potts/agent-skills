@@ -114,7 +114,11 @@ deployment out of the item.
 
 Apply the rest of the assessment contract without embedding model names in
 planning ratings.
-For every item, read [execution recommendations](references/execution-recommendations.md)
+Write an Execution recommendation only when the owning repository's agent
+instructions or issue conventions ask for one. When they decline it or say
+nothing, give one planned-start sentence in the item's prose and no model
+table, prompt or fingerprint; deliver-work records `none` for such an item.
+When one is asked for, read [execution recommendations](references/execution-recommendations.md)
 and recommend a starting model and reasoning/effort level for Claude Code,
 Codex and Grok Bot alongside the assessment. Name the session type the user
 should start (`One-shot`, `Pair`, `Orchestrate` or `Investigate first`), explain
