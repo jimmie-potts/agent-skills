@@ -1,62 +1,31 @@
-# Route selection by role and host
+# Choose how to execute the work
 
-Read after [work assessment](work-assessment.md) when selecting a worker or
-changing implementation strategy/settings. Independent reviewers are selected
-by the composed `review-work` skill, not by this policy.
-Direct trivial work at the coordinator's existing settings needs only the
-entrypoint and assessment; it does not select a worker. Ratings describe work;
-this policy owns selection. Keep the original coordinator's settings and durable
-write ownership. Never claim to switch its running model.
+Read when selecting workers or giving requested execution advice. Direct work
+needs no model-selection preflight. Independent reviewer coverage belongs to
+`review-work`.
 
-Before selecting or dispatching a role, apply the [model-setting decision](model-gate.md). Preserve required/advisory distinctions and unknown runtime evidence.
+Follow explicit user and project requirements, available tools and permissions.
+Otherwise use judgment about the task, uncertainty, risk, context and cost of
+coordination. Host defaults are acceptable. This skill prescribes no model,
+thinking level, provider, worker count or escalation ladder. Do not infer
+capability or runtime identity from a model name.
 
-## Establish available choices
+Delegate when a bounded assignment offers a concrete benefit. Before doing so,
+read [implementation choices](implementation-selection.md),
+[task planning](task-planning.md) and [bounded briefs](worker-briefs.md).
+Read only the active host adapter for the controls needed:
+[Codex](codex-model-selection.md),
+[Claude Code](claude-code-model-selection.md), or
+[Grok Bot](grok-model-selection.md).
 
+A pairing is optional. If deliberately selected, load the available canonical
+`worker-with-astra`, `worker-with-fable` or `worker-with-grok` skill for the
+matching host and follow its protocol. Do not select it merely because a named
+model is available. A specifically requested pairing keeps its prerequisites;
+report an unavailable requirement instead of silently substituting a workflow.
 
-Honor explicit user/project models, reasoning requirements, limits, and review
-gates first. Discover current model availability, supported reasoning levels,
-delegation/context controls, and relevant capability descriptions from the host.
-Do not infer capability from names or assume every model supports every effort
-value. Use comparable evaluation evidence when available; descriptions are
-initial heuristics, not measured task success.
-
-Select the least costly suitable supported model and reasoning setting per
-role, using task boundaries and reliable checks to justify a cheaper start.
-Apply the host adapter's bounded escalation when acceptance exposes a capability
-gap. Favor accepted work over low token use; retain stronger risk and review
-floors. Record a short rationale for the selection. Do not require
-a repository configuration file or build a model registry to use this policy.
-When capability distinctions cannot be established, preserve host defaults and
-disclose the gap. Missing optional controls do not block otherwise authorized
-work; an unmet explicit mandatory model or independent-review requirement blocks
-its affected step. Never silently substitute an explicitly requested model.
-
-Optional native profiles are adapters only: verify the resolved model, effort,
-context, permissions and available tools against this policy before use. A
-profile cannot silently override defaults, risk floors or explicit requirements.
-Do not create or install profiles or change personal settings to obtain a
-selection. Unavailable optional controls remain unavailable, not simulated.
-
-## Load only the selected branch
-
-- Investigation or implementation worker, strategy change or failed attempt:
-  read [implementation selection](implementation-selection.md), then the worker
-  branch of the selected host adapter below. For a dispatched worker, read
-  [bounded briefs](worker-briefs.md) and supply selected rules, not this routing
-  policy. Workers do not repeat coordinator selection.
-- Advisory pairing, only after selecting that strategy: discover and read
-  worker-with-astra for Codex collaboration tools, worker-with-fable for
-  Claude Code subagent tools, or worker-with-grok for Grok Bot Task /
-  MessageSubagent tools. Read its setup adapter and worker protocol. The
-  original advisor, consultation gates and ownership remain mandatory. No
-  pairing is selected on other hosts.
-
-For Codex collaboration tools, read the
-[Codex adapter](codex-model-selection.md). For Claude Code subagent tools, read
-the [Claude Code adapter](claude-code-model-selection.md). For Grok Bot Task /
-MessageSubagent tools, read the [Grok Bot adapter](grok-model-selection.md).
-Read only the active host and selected role for execution. A planning workflow
-recommending future work on multiple hosts may read each needed adapter for the
-proposed roles without dispatching agents. These adapters own concrete settings
-and controls for dispatched agents; do not duplicate their tables or infer
-unavailable controls from another host.
+For explicit model or thinking requirements, read
+[required settings](model-gate.md). Optional controls and unavailable telemetry
+create no gate. Do not change personal configuration or install tooling merely
+to obtain a preferred setting. State consequential choices or fallbacks briefly;
+retain detailed accounting only when requested or required by the project.

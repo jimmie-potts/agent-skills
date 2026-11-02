@@ -1,5 +1,6 @@
 # #149 Regression evidence — Grok-compat batch (smaller Acceptance)
 
+Historical results: the installed-files adapter and its test were retired with the shared delivery supervisor. The manual catalog update procedure remains in README.md.
 **Recorded:** 2026-10-07 (updated for evidence-only #155 + smaller Acceptance)
 **Host:** Grok Bot box (`box`, Linux); `gh` as `jimmie-potts`
 **Evidence PR:** https://github.com/jimmie-potts/agent-skills/pull/155 — **docs/evidence only** (no product files vs `main`)

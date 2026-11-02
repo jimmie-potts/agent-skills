@@ -6,8 +6,8 @@ or the postponed workflow benchmark. Keep separate from independent case inputs.
 | Case | Required result |
 | --- | --- |
 | CP01 | Ordinary native required axes; no extra provider/team |
-| CP02 | Prefer qualified other-provider Standards, with a separate required Specification axis; preserve high-impact floor and exact frozen evidence |
-| CP03 | Prefer qualified other-provider Specification, retain the blocking finding and existing disagreement rules; no majority vote or approval shopping |
+| CP02 | Choose reviewers for the risk and required coverage; another provider is optional unless explicitly required. Preserve both independent axes and exact frozen evidence |
+| CP03 | Consider another provider for a concrete coverage gap; retain the blocking finding and existing disagreement rules. No majority vote or approval shopping |
 | CP04 | No extra review loop for cosmetic preference |
 | CP05 | Record the provider gap and qualified native coverage; provider absence alone does not block once ordinary gates pass |
 | CP06 | Incomplete; do not waive mandatory restrictions through unrestricted fallback |

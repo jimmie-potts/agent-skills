@@ -68,11 +68,9 @@ delivery, and grant no implementation dispatch authority:
   the selected host's worker adapter before selecting workers for bounded
   investigation, then `references/worker-briefs.md` before dispatch.
 
-Discover the installed canonical review-work package the same way and read its
-`references/review-selection.md` and each host's reviewer adapter,
-`references/claude-code-reviewers.md`, `references/codex-reviewers.md` and
-`references/grok-reviewers.md`, to propose each item's review needs and reviewer
-settings. Delivery refreshes them at pickup; reading them dispatches no reviewer.
+Identify required independent review, specialist coverage and human acceptance
+from the work and project policy. Select reviewer settings during delivery;
+planning need not load every host's reviewer adapter.
 
 ## Check alignment before readiness
 
@@ -101,6 +99,10 @@ test, fixture, contract or mockup that states a criterion, link it as the
 acceptance reference rather than restating it in prose. An epic or list of chores
 alone is not implementation-ready. Include the assessment, evidence, unknowns,
 readiness and conditional specialist/human review or operational handoffs.
+Name the intended finish line and the owner of any later qualification or
+installation. Distinguish prerequisites for implementation, activation and
+completion; a pending deployment need not block independent source work.
+Use a designated batch's checks and evidence where project policy provides one.
 When the owning project declares installation or deployment as a completion
 condition for the item's kind of change, the item's acceptance includes that
 step and its readback by default. Record applicable request or standing
@@ -113,28 +115,13 @@ step for such a project. Without a declaration, leave installation and
 deployment out of the item.
 
 Apply the rest of the assessment contract without embedding model names in
-planning ratings.
-Write an Execution recommendation only when the owning repository's agent
-instructions or issue conventions ask for one. When they decline it or say
-nothing, give one planned-start sentence in the item's prose and no model
-table, prompt or fingerprint; deliver-work records `none` for such an item.
-When one is asked for, read [execution recommendations](references/execution-recommendations.md)
-and recommend a starting model and reasoning/effort level for Claude Code,
-Codex and Grok Bot alongside the assessment. Name the session type the user
-should start (`One-shot`, `Pair`, `Orchestrate` or `Investigate first`), explain
-the choice, and distinguish proposed worker settings when delegation would help.
-Classify the item's work surface as `UI`, `Backend` or `Unknown`. Write the
-reference's start line, work surface line, three-host table, paste-ready prompts
-and cheaper start, or its insufficient status. Such a recommendation includes all
-three host choices in proposals and authorized saved work items, even when
-planning on only one host.
-Grok model ids stay verified or provisional from host evidence; do not invent
-guaranteed aliases.
-Record the session's reasoning setting in the planning evidence when the host
-exposes it or the user states it; otherwise record it as unknown. Report a
-known mismatch with documented workflow guidance or a composed skill's
-reasoning requirement, such as a pairing worker that would inherit a reduced
-level, and never claim to change it.
+planning ratings. Give one planned-start sentence naming the next useful action.
+Recommend models, thinking levels or an orchestration pattern only when the user
+or owning repository asks for that advice; read
+[execution recommendations](references/execution-recommendations.md) then.
+Keep recommendations advisory unless the user or project explicitly requires
+the settings. Do not make readiness depend on optional execution choices or
+unavailable model telemetry.
 
 Use a bounded investigation when it can resolve technical uncertainty; a
 missing product decision remains a question. Planning installs nothing and
@@ -157,7 +144,7 @@ canonical method within existing edit authority.
 ## Publish within authority and verify
 
 Present the concrete proposed items, exact authorized changes, dependencies,
-assessments, execution recommendations where the repository asks for them, and
+assessments, any requested execution recommendations, and
 unresolved questions. When publication
 is already authorized and material decisions are settled, proceed without another
 approval round. Otherwise return the proposals at the user's requested boundary.

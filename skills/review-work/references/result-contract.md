@@ -32,7 +32,7 @@ Record these before the first reviewer starts, and again for each round:
   and any specialist or qualified human review the assessment requires.
 - Settings: explicit user or project reviewer requirements; the selection
   made from them with its rationale: the impact, the review task in a line or
-  two, the selected tier and any exception with its evidence and coverage
+  two, any consequential settings choice and its evidence or coverage
   limits; and the reviewer execution preflight: each control's evidence class,
   whether it is mandatory, and any unsupported or unverified control. Record
   file-write, publication and descendant restrictions as `enforced` only with
@@ -103,8 +103,8 @@ requested value is what the coordinator passed or a selected profile sets,
 `unknown (unknown)` or one or more `<value> (<source>)` joined by ` + `, where
 the source is `host-observed`, `user-stated` or `self-reported`. A spawn or
 request never establishes the executing value. Without the axis, an entry
-matches deliver-work's Execution record grammar, so a composing delivery copies
-it into its `Reviewers` row.
+matches deliver-work's optional Execution record grammar. A composing delivery
+using that format copies it into its `Reviewers` row.
 
 After the table, write `**Findings:**` followed by one line per finding, or
 `none`:

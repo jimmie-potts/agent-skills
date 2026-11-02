@@ -1,33 +1,17 @@
-# Codex selection adapter
+# Codex worker adapter
 
-Use only when current collaboration tools expose model and reasoning overrides.
-Inspect their actual schema and host model descriptions before calling. Policy
-does not add capabilities or override host permissions.
+Read only when dispatching a worker on a host with Codex collaboration tools.
+Inspect the exposed schema. This adapter selects no model or reasoning level.
 
-For a supported override, use collaboration.spawn_agent with the exact selected
-model and supported reasoning_effort, fork_turns="none", and a self-contained
-brief. Full-history forks in this host inherit parent settings and cannot accept
-those overrides. If inheritance is intended, omit overrides and report inherited
-settings only to the extent observable. Do not guess a reasoning enum.
+Use the host's defaults or supported explicit settings. When overriding settings,
+`collaboration.spawn_agent` requires `fork_turns="none"` and a self-contained
+brief on hosts with this schema. Full-history forks inherit the parent's settings
+and cannot accept those overrides. Follow the live schema if it differs.
+Requested parameters do not establish runtime identity. Check
+[required settings](model-gate.md) only for explicit requirements.
 
-Record requested parameters and actual returned runtime metadata separately.
-A successful spawn establishes the request succeeded, not independent proof of
-the executing model's identity. Apply [the model-setting decision](model-gate.md)
-with applicable declarations and current observations. Unknown runtime identity
-does not invalidate an applicable declaration; required observed mismatches and
-explicit verified-identity requirements still stop dependent work. Model options
-alone never prove that the current coordinator is Astra.
-
-Read [worker settings and continuation](codex-worker-selection.md) only for an
-investigation/implementation worker, correction or replacement. Independent
-reviewer settings belong to the composed `review-work` skill. For
-worker-with-astra, discover its installed package and
-follow references/codex.md and its worker protocol; do not copy its consultation
-protocol here. Durable writes stay with the delivery coordinator.
-
-Call collaboration tools through the interface actually exposed by the host.
-Do not launch replacement coordinator or writer sessions, change personal
-settings, install adapters, or simulate multiple models by writing both sides
-of a conversation. The optional separate-process reviewer path belongs to
-review-work and is limited to its supervised adapter; it preserves the original
-coordinator, writer, restrictions, authority and cumulative budgets.
+Read [worker continuation](codex-worker-selection.md) when correcting or replacing
+a worker. For deliberately selected worker-with-astra pairing, discover its
+installed package and follow references/codex.md and its worker protocol.
+Durable delivery effects remain with the coordinator. Do not change personal
+configuration or install adapters to obtain an optional selection.

@@ -74,15 +74,15 @@ Use the caller's work assessment for impact, complexity and uncertainty.
 Without one, discover the installed canonical `deliver-work` package and read
 its `references/work-assessment.md` section on rating the three dimensions;
 this reads a shared contract and does not invoke delivery. If it is
-unavailable, report the gap, record the ratings unknown and apply the
-high-impact reviewer floor.
+unavailable, report the gap and inspect the concrete risks and acceptance
+coverage; unknown ratings do not select a model or thinking level.
 
 ## Select, brief and run reviewers
 
 Read [review selection](references/review-selection.md), including
-[selective cross-provider routing](references/cross-provider.md) when impact is
-high, a substantive correctness/requirements/evidence dispute remains, or the
-owner selects it. Then read only the selected execution host's reviewer adapter.
+[selective cross-provider routing](references/cross-provider.md) only when
+deliberately choosing another provider or satisfying an explicit requirement.
+Then read only the selected execution host's reviewer adapter.
 When native controls cannot meet a requirement, routing selects an eligible
 other-provider reviewer, or the owner explicitly selects that review, read the optional
 [separate-process adapter](references/process-reviewers.md). Reviewers need the

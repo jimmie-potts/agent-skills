@@ -37,13 +37,13 @@ request was accepted, not the executing settings.
 A control is mandatory when the user, the project or review-work's boundaries
 require it. The boundaries require a fresh context, read-only conduct and no
 descendant agents. A model, level, profile or enforced restriction is mandatory
-only when an explicit requirement names it. For required model and level,
+only when an explicit requirement names it. For explicitly required model and level,
 apply the discovered canonical deliver-work package's `references/model-gate.md`
 before dispatch and on pickup/resume. An applicable sourced declaration can
 satisfy an ordinary required setting with runtime observation unknown; an
 observed required mismatch or unmet explicit verified-identity requirement
-stops dependent review. A missing canonical decision resource blocks that
-required-setting check; do not recreate its rules here.
+stops dependent review. Load that resource only for such a requirement; ordinary review needs no
+model-setting gate or evidence-only bootstrap.
 
 Declarations establish no host enforcement, tool restriction, freshness or
 independence. When any other mandatory control is unsupported, unverifiable or
@@ -51,14 +51,11 @@ contradicted, do not launch or simulate that reviewer: the affected axis is `inc
 optional control keeps the host's default, is disclosed as a limit and creates
 no new gate.
 
-[Review selection](review-selection.md)'s impact floors, review-task tiers
-and explicit requirements govern every choice below. Never choose a profile,
-definition or launch path whose resolved model or level falls below the
-selected reviewer setting; choose another path that meets it. When no
-available path meets an explicit requirement, the axis is `incomplete`. When the host itself lowers a
-setting the coordinator cannot control, such as an inherited level or a
-substitution, record a known mismatch; it leaves the axis `incomplete` only
-under an explicit requirement for that setting.
+Choose a launch path that meets the explicit requirements and mandatory
+restrictions. Optional model or level preferences may use a disclosed supported
+fallback. A host substitution or inherited level leaves the axis `incomplete`
+only when it violates an explicit requirement. Preserve fresh-context and
+read-only controls regardless of model selection.
 
 Retain declaration scope and provenance in the existing review input and
 recovery record. Recheck applicability for each role, replacement and changed
@@ -70,9 +67,12 @@ check the returned decision. Do not add tools to perform that check.
 
 ## Preflight before launch
 
-Run the preflight before the first reviewer of each round, and again after any
-host, session, profile or settings change. Answer from the active host's
-schema, listings and adapter, never from another host or surface:
+Check the applicable controls before launching a reviewer. Reuse unchanged host
+capability evidence; refresh it after relevant host, profile or setting changes.
+Verify each reviewer's mandatory restrictions and frozen source. Model-resolution
+detail is needed only for a selected override or explicit requirement; do not
+collect optional metadata just to fill a checklist. Use the active host's schema,
+listings and adapter:
 
 1. Capability: the launch tool exists and exposes each selected control.
 2. Model resolution: the host's order for per-call values, profile fields,
@@ -191,7 +191,7 @@ live run qualifies the installed workflow.
 
 Apply [selective routing](cross-provider.md) before launching an alternate
 provider. Provider availability means a permitted, qualified execution path
-meeting the selected tier and all mandatory host restrictions, not just an
+meeting the review needs and all mandatory host restrictions, not just an
 installed executable or accepted spawn. Preserve the active host's adapter and
 any stronger repository rule; do not lower tool restrictions to obtain diversity.
 When qualification fails, report the exact missing capability and use eligible

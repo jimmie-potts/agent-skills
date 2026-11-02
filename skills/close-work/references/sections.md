@@ -155,7 +155,10 @@ the owner deferred or has not yet approved, is available but outside
 authorized scope or blocked on the owner's decision, and it is a required
 Tracked Follow-up. It becomes a Loose End only when it was required and
 previously authorized and then omitted. Separate future work goes in Tracked
-Follow-ups.
+Follow-ups. A required installation assigned to a verified designated batch owner
+is a tracked handoff, not an omitted installation by this feature task. Reuse the
+batch's verified result and scoped writer release; retain uncovered acceptance.
+Archiving a source session does not establish installed completion.
 
 ### 4. Cleanup
 

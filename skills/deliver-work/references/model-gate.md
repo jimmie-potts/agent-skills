@@ -1,31 +1,41 @@
-# Decide whether selected settings permit work
+# Honor explicitly required settings
 
-Read at pickup, before implementation or delegation, on resume and when setting
-evidence changes. Apply the same decision separately to coordinator, worker and
-reviewer roles. Observations are context-specific; a declaration applies only
-to the roles, contexts and settings its source explicitly covers.
+Read only when the user or project explicitly requires a model, reasoning level
+or verified runtime identity. Ordinary delivery and advisory recommendations
+need no model gate, evidence-only bootstrap or owner declaration.
 
-Use [the decision helper](../scripts/model_gate.py) with Python 3 and an explicit
-JSON evidence file: `python3 <skill-directory>/scripts/model_gate.py <input>`.
-It reads only that file (or stdin with `-`), emits JSON and exits 0 for
-`continue`, 2 for `ask`, 1 for `stop`, or 3 for `bootstrap-only`. Run it as a separate step and inspect
-both status and output before the dependent action. Missing Python, unreadable
-input, a failed command or an unresolved result leaves that action blocked.
-Do not continue after a failed check through a semicolon-separated command.
+Check that the requirement applies to this role and context. Use supported
+launch controls; report an unavailable required control before dependent work.
+A matching owner declaration or host-exposed selection permits continuation
+unless independent verification was explicitly required. Unknown runtime
+metadata remains unknown. A known contrary runtime observation takes precedence
+and stops the affected work. Do not infer aliases, cross-provider equivalence,
+a child's settings from its parent, or verification from a successful request.
 
-The helper is a deterministic decision rule, not telemetry, a security sandbox
-or a host tool interceptor. Its `run_if_allowed(document, action)` integration
-calls an action once only on continuation; callers remain responsible for
-supplying current evidence and respecting the result. Tests use action spies,
-not real model launches. No model switching or host configuration is performed.
+Recheck when the requirement, role or observed setting changes. Reuse applicable
+unchanged evidence across continuation; do not ask again merely because a turn
+ended. Ask only for missing evidence needed by an explicit requirement and
+continue independent work. Keep declaration scope and known conflicts in the
+existing task evidence. Never ask an agent to verify its own thinking level.
 
-## Supply current evidence
+## Optional mechanical check
 
-Use this shape; empty lists mean unavailable evidence. Include every selected
-model or reasoning setting, its required/advisory status and known evidence.
-Retain other roles and historical decisions in existing task evidence, outside
-this per-role input. On resume, rebuild observations for the current context;
-do not carry a previous agent's observations forward as current evidence.
+If the project requires a machine-readable decision, use
+[the decision helper](../scripts/model_gate.py):
+`python3 <skill-directory>/scripts/model_gate.py <input>`.
+It reads a JSON file or stdin with `-` and changes no host settings. Inspect its
+output and exit status: `continue` (0), `ask` (2), `stop` (1), or
+`bootstrap-only` (3). Failed, malformed or unresolved checks cannot satisfy a
+project requirement to use the helper. `run_if_allowed` invokes its action only
+on `continue`; `bootstrap-only` permits launch, not assignment execution.
+A project requiring the helper must obtain a current-role `continue` result
+before dependent assignment work. Do not add tools to a restricted reviewer;
+provide the decision rules and evidence in its packet where that adapter allows
+instruction-only evaluation.
+
+The helper validates supplied claims, not their truth. Its tests use action
+spies, not real model launches. Retain input and output only in existing
+permitted evidence. This optional interface preserves existing integrations:
 
 ```json
 {
@@ -69,89 +79,3 @@ Documented aliases use entries with `name`, `alias`, `canonical`, and `source`.
 Supply a qualified mapping's evidence pointer; an alias without proof stays a
 literal mismatch. Mappings are setting-specific, one step only. Never translate
 one provider's effort names to another provider's levels without evidence.
-
-## Retain and recheck declaration scope
-
-In the existing task packet, retain the declaration's exact source or pointer,
-its authority, work/task, covered roles and contexts, selected values, and
-whether it covers one context or explicitly named future roles/replacements.
-A source string identifies this record; it does not authenticate it.
-
-Before preparing a role's input, check that scope against the current assignment.
-Supply only applicable declarations to the helper. Preserve excluded or
-superseded declarations in history with the reason; do not silently discard
-conflicts that still apply. Scope validation is the caller's instruction-level
-responsibility, not a capability of the helper or a new evidence schema.
-
-Reuse a sourced declaration across continuation, compaction or recovery when
-its authority, task, covered role/context and required values still apply.
-Rebuild current observations and rerun the applicable gate; unknown observation
-alone neither invalidates the declaration nor requires another owner question.
-
-Recheck applicability after changed requirements, replacement, authority changes
-or contrary evidence. A declaration for one context cannot satisfy a different
-worker or reviewer. An explicit standing declaration may cover the future roles
-or replacements it names at their selected settings; recheck each against that
-scope. A changed request is not a declaration, and neither model-family labels
-nor a parent's settings establish another role's values. Current observed
-mismatches and explicit verified-identity requirements still stop dependent work.
-
-## Check an unstarted role without inventing runtime evidence
-
-Before delegation, first check the active coordinator's evidence. For an
-unstarted worker or reviewer, verify that the host exposes the selected launch
-controls and no known override contradicts a required setting. Run the helper
-with `phase: pre-launch` and the exact planned parameters in `requested`.
-A required mismatch stops; missing required launch parameters asks for input.
-A matching request returns `bootstrap-only`, never `continue`, and runtime
-verification stays unknown. `run_if_allowed` does not execute assignment work
-for this result. Exit 3 is a distinct launch checkpoint, not a successful
-active-role check; never append assignment execution after it.
-
-Choose the handoff supported by the selected role adapter. Apply its existing
-read-only/no-descendant controls; this gate does not add a resumability requirement.
-
-- **Resumable context:** launch an evidence-only bootstrap with the selected
-  parameters. It returns available setting evidence and performs no assignment
-  work, publication or delegation. Refresh its `pickup` input and dispatch the
-  assignment to that context only after `continue`.
-- **One-assignment context:** include the evidence check as the first step in
-  its sole assignment. Supply the selected requirements and available evidence;
-  the child must evaluate `pickup` before any implementation or review. It may
-  perform the conditional assignment in that same turn only on `continue`.
-  Otherwise its sole return reports the blocked gate and does no assignment
-  work; a review axis remains incomplete. When the adapter restricts tools,
-  provide this reference's decision rules as packet instructions and
-  require its decision/evidence in the return; do not add tools, persistence or
-  a second conversation to obtain a mechanical check. The coordinator checks
-  the returned decision before accepting any artifact. This packet path is
-  instruction-only, not execution of the helper or host enforcement.
-
-After launch, use only actual exposed evidence for `pickup`. A successful spawn
-remains a successful request: use launch selection as a declaration only if the
-host separately exposes that selection or the owner explicitly declares it.
-Otherwise ask for missing required input; do not turn launch parameters into
-observed identity. Explicit verified identity still requires a qualified
-observation. Advisory-only unknown settings can continue, with their limits
-reported. Retain blocked contexts/results as pending or stop owned contexts
-through supported controls; do not silently retry an ephemeral assignment.
-
-## Act on the result
-
-Current observations take precedence over declarations. Any conflicting
-observation of a required setting stops dependent work, even if another
-observation or declaration matches. With no observation, a matching declaration
-permits continuation unless verified identity is explicitly required. Conflicting
-declarations stop. With neither observation nor declaration for a required
-setting, ask the owner for the missing input and continue independent work.
-Advisory differences are reported and permit continuation; unavailable advisory
-effort stays unknown. Malformed input always stops.
-
-Retain the input and output in the existing private task packet. Copy evidence
-into the existing Execution record's sourced values without changing its rows
-or provenance vocabulary: requests remain in requested fields; declarations
-use their actual `user-stated` or `host-observed` provenance, runtime-instruction
-reports use `self-reported`, and absent runtime values remain `unknown`.
-Explain declaration-only continuation and conflicting sources in Models/Evidence;
-never relabel launch metadata as verified runtime identity. Re-evaluate before
-resuming the blocked action when the owner or qualified source supplies evidence.

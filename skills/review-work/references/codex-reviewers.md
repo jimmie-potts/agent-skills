@@ -3,19 +3,9 @@
 Use when current collaboration tools expose model and reasoning overrides.
 Inspect their actual schema and host model descriptions before calling.
 
-Use this mapping for both Standards and Specification. Place the work by
-[review selection](review-selection.md#select-for-impact-and-the-review-task)'s
-impact and review task, from what the work needs rather than the settings its
-implementer ran with.
-
-| Impact | Reviewer default | Rationale and limits |
-| --- | --- | --- |
-| Low or medium impact, bounded review task: work a Luna-level implementation suits, with settled requirements and reliable checks that cover the criteria | Luna (`gpt-6-luna`) at `high` for each axis | Capable lower-cost verification where the task and checks justify its coverage |
-| Low or medium impact, review task needing Sol-level judgment: several interacting interfaces, state transitions or invariants, or meaningful design judgment, as in work that planning or worker selection would start on Sol | Sol (`gpt-6.1-sol`) at `high` or stronger for each axis | The reviewer needs the cross-interface judgment the change needed. Luna at `high` or above is not a Sol equivalent; a Luna exception needs comparable evidence and stated coverage limits |
-| High impact, even with a tiny diff | Strongest evidenced relevant choice of Sol (`gpt-6.1-sol`) at `high` or Astra (`gpt-6-astra`) at `high` | Use separate fresh reviewer contexts; inspect high-impact negative cases |
-
-Before spawning, run the [reviewer execution preflight](reviewer-execution.md)
-with the controls below.
+Choose settings under [review selection](review-selection.md); this adapter
+prescribes no model or thinking level. Before spawning, apply the
+[reviewer execution preflight](reviewer-execution.md) with the controls below.
 
 ## Know the controls
 
@@ -31,36 +21,13 @@ with the controls below.
 | Delivery, cancellation and identity | Documented: the parent waits for the requested results and consolidates them; with `agents.interrupt_message` on, the default, an interrupted turn leaves a model-visible message. Recorded 2026-09-26 and unverified now: `wait_agent` returns a notification, and a timeout is not a result; `list_agents` shows lifecycle state; `interrupt_agent` stops a run; `followup_task` resumes an idle agent. No partial-output marker is documented | The delivered message and the retained agent ID or task name |
 | Surface | ChatGPT Work runs hosted subagents without local sandbox or approval controls, and the web sidebar shows activity without controls. CLI, IDE and app controls differ | The surface in use |
 
-The Sol default above is Sol 6.1 (`gpt-6.1-sol`), documented in the
-[Codex changelog](https://learn.chatgpt.com/docs/changelog) and
-[model page](https://developers.openai.com/api/docs/models/gpt-6.1-sol), read
-2026-09-30. The model page lists API reasoning levels `low`, `medium`, `high`,
-`xhigh` and `max`; check the active Codex schema for its supported levels and
-model availability before selecting it. The historical catalog below does
-not establish Sol 6.1 support, including `ultra`, on the current host.
-
-Sources and historical host observations:
-[Codex subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents),
-read 2026-09-27. The model catalog that Codex CLI 0.156.0 cached on 2026-09-27
-lists `gpt-6-luna` ("Fast and affordable model for easier tasks"), `gpt-6-sol`
-("Workhorse model for coding and everyday work") and `gpt-6-astra` ("Frontier
-intelligence for the most demanding work"), each defaulting to `medium` and
-supporting `low` to `max`, with `ultra` also listed for Sol and Astra. A catalog
-is not the spawn schema, and whether a spawn on the active surface accepts each
-model and level is unverified. The `collaboration.spawn_agent` parameters
-`model`, `reasoning_effort` and `fork_turns` were last recorded from a Codex
-schema on 2026-09-26. On 2026-09-29, a `codex exec` parent in Codex CLI 0.156.0
-reported an `agent_type` parameter listing `review_work_reviewer`
-(self-reported), and its rollout records a spawn selecting it that the host
-rejected: "agent type is currently not available". Treat profile selection on
-that surface as unsupported until such a spawn succeeds. Inspect the
-active surface's schema before relying on any of them, and never apply one
-surface's controls to another.
+Verify host controls against the live schema and resolved profile; historical
+catalogs or documentation alone do not establish runtime enforcement.
 
 ## Select and spawn
 
-Spawn each reviewer with `collaboration.spawn_agent`, the exact selected model,
-a supported `reasoning_effort`, `fork_turns="none"` and a self-contained brief.
+Spawn each reviewer with `collaboration.spawn_agent`, `fork_turns="none"`
+and a self-contained brief. Use supported explicit settings or host defaults.
 Do not guess a reasoning enum. Where the schema exposes an agent-type parameter
 and `review_work_reviewer` resolves, select it after comparing its governing
 fields with the [template](../assets/codex/review-work-reviewer.toml). The
@@ -97,17 +64,11 @@ change `config.toml`. The owning environment provisions profiles, as
 [reviewer execution](reviewer-execution.md#discover-provisioned-profiles)
 describes.
 
-Astra in this table is an independent reviewer, not an implementation worker or
-a replacement coordinator. Reviewer suitability, including the Sol row for
-low- and medium-impact work, remains a hypothesis until evaluated on comparable
-work; a model listing is not live review verification. Explicit user or project
-requirements override these defaults; comparable evidence supports only the
-exceptions review selection allows. Different models for the two axes remain
-optional. A fallback for a rejected default stays within the GPT-6 models named
-here, never a GPT-5.x model.
+Different models for the two axes are optional. A requested or listed model
+is not evidence of review quality or successful execution.
 
-Apply [reviewer execution](reviewer-execution.md)'s canonical model-setting
-decision separately for every reviewer. Selected call parameters remain requests
+For explicitly required settings, apply
+[reviewer execution](reviewer-execution.md)'s setting check for that reviewer. Selected call parameters remain requests
 unless the owner declares them or the host separately exposes a launch selection.
 Retain applicable declaration scope through recovery and recheck replacements;
 unknown observations are not mismatches. Declarations do not prove host controls.

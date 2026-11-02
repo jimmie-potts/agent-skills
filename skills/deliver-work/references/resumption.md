@@ -39,7 +39,7 @@ Continuation still requires fresh reads when a prerequisite is volatile,
 changed, uncertain or required by the impending action's guard. Recheck the
 relevant authority, ownership, revision, provider state or pending effect before
 dependent work. After actual context loss, interruption or replacement, perform
-the reconciliation below and the applicable model-setting decision. A new turn
+the reconciliation below and any explicitly required setting check. A new turn
 alone is not evidence that context was lost.
 
 ## Keep one task packet
@@ -48,8 +48,8 @@ Use the fields below within the existing delivery record, not a second ledger
 or required storage format. Link established records instead of copying them.
 Use `unknown`, `none`, or `not applicable` explicitly. An unknown required
 task/artifact identity or revision prevents acceptance of the dependent
-artifact, not useful independent work. Apply [model-setting evidence](model-gate.md)
-separately: ordinary required settings may be satisfied by an applicable sourced
+artifact, not useful independent work. For explicit setting requirements, apply
+[model-setting evidence](model-gate.md) separately: ordinary required settings may be satisfied by an applicable sourced
 declaration while runtime observation stays unknown.
 Silence about pending effects or earlier activity means `unknown`, not `none`
 or zero. Keep that gap visible until authoritative readbacks establish absence;
@@ -62,15 +62,14 @@ pause only the mutations that depend on resolving it.
 | Ownership | Coordinating writer, current assignment/attempt and worker identity when known, permitted paths/effects, and any pending ownership transfer. Keep private host IDs in private task evidence. |
 | Artifacts | Each brief, proposed patch, accepted artifact and report's location or inline content; producer/task/attempt, source revision, version or digest, and proposed versus applied/accepted state. Record the resulting candidate revision separately after application. |
 | Progress and evidence | Completed and remaining tasks, acceptance evidence and accepted artifact revisions; exact checks/results and reviewed comparison, unresolved findings with owners/dispositions, and evidence that still needs renewal. |
-| Execution history | Existing model/agent/consultation summary, requested versus reported settings, declaration sources and covered task/roles/contexts/values, corrections, effort increases, promotions/replacements and failed attempts. Preserve missing history as unknown. |
+| Execution history | Consequential choices, assignments, failed attempts, pending work and consumed explicit limits. Include detailed model/agent accounting only when required. Preserve missing history as unknown. |
 | Pending effects | Intent, affected object, expected prior state, guard, known IDs, attempt history and applied/not-applied/partial/unknown result for each uncertain external effect. |
 | Continuation | Last verified checkpoint, next incomplete step, dependencies paused by missing evidence or decisions, and who owns each next action. |
 
-These fields supplement the [worker return](worker-briefs.md) and entrypoint
-checkpoint formats. Put artifact identity in Artifact, checked revision in Validation, and
-the record link in Plan/spec or Evidence. Keep execution counts in the existing
-Strategy, Models, Agents and Consultations fields. Do not demand a second copy
-of every field in each response.
+Use these fields in the existing record and [worker returns](worker-briefs.md).
+Keep artifact identity and checked revision with their evidence. Link the record
+instead of repeating it in each response. Add detailed execution accounting only
+when required by the user or project.
 
 For a review/correction cycle or explicit delivery budget, retain review-work's
 input and result records and the [correction and limit](corrections.md)
@@ -129,17 +128,13 @@ Replace the current fields; put any retained historical checkpoint detail in
 linked evidence, rather than appending it here. Ordinary unchanged continuation
 neither rewrites the record nor adds a history entry.
 Retain earlier failed attempts and counts across compaction and replacement.
-For non-root agents or incomplete/resumed history, use
-[execution reporting](execution-reporting.md) to reconcile the roster; unknown
-earlier participation cannot become an exact count or zero retries. A verified
-direct-only run uses the entrypoint fields.
+Retain enough assignment and failure history to resume safely. Use
+[execution reporting](execution-reporting.md) only when detailed accounting is
+required. Missing history stays unknown and never resets explicit limits.
 
-Before resumed implementation or delegation, refresh each active role through
-the [model-setting decision](model-gate.md). Recheck retained declaration scope
-and rebuild current observations; reuse an unchanged applicable declaration
-without asking again. A saved launch request is not a declaration or a current
-observation. Replacement or changed requirements require a fresh applicability
-check, not automatic inheritance of the previous agent's evidence.
+Recheck [required settings](model-gate.md) only when an explicit requirement
+applies and its role, scope or observed values changed. Reuse unchanged applicable
+evidence without another owner question.
 
 ## Reconcile before continuing
 

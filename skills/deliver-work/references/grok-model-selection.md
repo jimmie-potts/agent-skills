@@ -1,33 +1,17 @@
-# Grok Bot selection adapter
+# Grok Bot worker adapter
 
-Use only when the host exposes a `Task` tool that can spawn an `executor` (or
-verified equivalent) subagent, plus `MessageSubagent` and `StopSubagent` for
-messaging and stopping that worker. Inspect the actual tool schemas and host
-model descriptions before calling. Policy does not add capabilities or override
-host permissions. Do not claim Codex `apply_patch`, Codex `collaboration.*`
-tools, or Claude Code `Agent` / `SendMessage` profiles on this host.
+Read only when dispatching a worker through Grok Bot's `Task` tool. Inspect the
+actual schema and supported executor type. Use host defaults or supported
+explicit settings; this adapter selects no model or thinking level. Do not
+invent Codex or Claude aliases or controls on this host.
 
-For a supported override, call `Task` with the executor (or verified equivalent)
-type, a distinctive description, a self-contained brief, and any per-call model
-or reasoning parameter the host exposes for the selected tier. Omit an available
-model parameter only when inheritance is intended, and report that inheritance.
-A successful spawn establishes that the request succeeded, not independent proof
-of the executing model's identity. Apply [the model-setting decision](model-gate.md)
-with applicable declarations and current observations. Unknown runtime identity
-does not invalidate an applicable declaration; required observed mismatches and
-explicit verified-identity requirements still stop dependent work. Spawn options
-alone never prove that the current coordinator is Grok Bot.
+Give each worker a self-contained brief. Retain its task identifier and verify
+`MessageSubagent` or `StopSubagent` support when continuation or cancellation
+needs it. Requested settings do not establish runtime identity. Check
+[required settings](model-gate.md) only for explicit requirements.
 
-Read [worker settings and continuation](grok-worker-selection.md) only for an
-investigation/implementation worker, correction or replacement. Independent
-reviewer settings belong to the composed `review-work` skill. For
-worker-with-grok, discover its installed package and follow
-references/grok.md and its worker protocol; do not copy its consultation
-protocol here. Durable writes stay with the delivery coordinator.
-
-Call collaboration tools through the interface actually exposed by the host.
-Do not launch replacement coordinator or writer sessions, change personal
-settings, install adapters, or simulate multiple models by writing both sides
-of a conversation. The optional separate-process reviewer path belongs to
-review-work and is limited to its supervised adapter; it preserves the original
-coordinator, writer, restrictions, authority and cumulative budgets.
+Read [worker continuation](grok-worker-selection.md) when correcting or replacing
+a worker. For deliberately selected worker-with-grok pairing, discover its
+installed package and follow references/grok.md and its worker protocol.
+Durable delivery effects remain with the coordinator. Do not change personal
+configuration or install adapters to obtain an optional selection.

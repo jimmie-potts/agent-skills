@@ -96,7 +96,7 @@ class PairingSkillsStructureTest(unittest.TestCase):
             self.assertIn('worker-with-astra', text, str(path))
             self.assertIn('worker-with-fable', text, str(path))
             self.assertIn('worker-with-grok', text, str(path))
-        adapter = (deliver / 'references/claude-code-model-selection.md').read_text()
+        adapter = (deliver / 'references/claude-code-worker-selection.md').read_text()
         self.assertIn('references/worker-tiers.md', adapter)
         self.assertTrue((SKILLS / 'worker-with-fable/references/worker-tiers.md').is_file())
         self.assertTrue((SKILLS / 'worker-with-grok/references/worker-tiers.md').is_file())

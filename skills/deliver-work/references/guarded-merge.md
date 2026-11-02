@@ -64,10 +64,10 @@ not authenticate evidence or decide whether an exception is allowed: the trusted
 repository preflight owns those decisions. Missing/malformed results, nonzero
 exit, unresolved gates and unavailable reads produce zero merge calls.
 
-The existing Hub `delivery-preflight` schema 1 already supplies this shape.
-Its source-only gate set includes identity, ci-pr, ci-main, review, feedback,
-ui-approval, proof, counterparts and live-acceptance. Keep that list in Hub's
-adapter invocation; it is not portable policy. Use Hub's declared prerequisites
+The Hub `delivery-preflight` schema 1 fixture supplies this shape.
+Discover the effective gate list from Hub's current policy and adapter; its
+historical `ci-main` and other gates are not portable requirements or evidence
+that a proposed replacement is active. Use Hub's declared prerequisites
 and JSON mode with its expected PR/head/base, preserving all optional evidence
 arguments. This source change does not mutate Hub or make its status command
 mutating. The representative fixture is based on Hub source

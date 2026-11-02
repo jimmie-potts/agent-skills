@@ -3,23 +3,12 @@
 Use when the host exposes a `Task` tool that can spawn an `executor` (or
 verified equivalent) subagent in a fresh context, with messaging/stop controls
 available when a later round must resume the same reviewer. Inspect the actual
-tool schemas and host model descriptions before calling. Worker attempt
-thresholds are separate from review-round accounting; worker replacement resets
-none of the [review-cycle history](review-cycles.md).
+tool schemas and host model descriptions before calling. Worker replacement resets none of the
+[review-cycle history](review-cycles.md).
 
-Use this mapping for both Standards and Specification. Place the work by
-[review selection](review-selection.md#select-for-impact-and-the-review-task)'s
-impact and review task, from what the work needs rather than the settings its
-implementer ran with.
-
-| Impact | Reviewer default | Rationale and limits |
-| --- | --- | --- |
-| Low or medium impact, bounded review task: settled requirements and reliable checks that cover the criteria | One fresh `Task` executor per axis at host-default or composing-workflow model with effort `high` when the host exposes effort | Capable verification where the task and checks justify its coverage; label Availability provisional until the live slug and effort controls are verified |
-| Low or medium impact, review task needing stronger judgment: several interacting interfaces, state transitions or invariants, or meaningful design judgment | One fresh executor per axis with any stronger host-supported reasoning the review task warrants (at least `high` when exposed) | The reviewer needs the cross-interface judgment the change needed. A weaker default is not an equivalent; an exception needs comparable evidence and stated coverage limits |
-| High impact, even with a tiny diff | Strongest evidenced relevant host-supported model/effort (at least `high`, or above-high only with a task-specific reason and verified support) in separate fresh reviewer contexts | Inspect high-impact negative cases; do not inherit the implementer's settings by omission |
-
-Before spawning, run the [reviewer execution preflight](reviewer-execution.md)
-with the controls below.
+Choose settings under [review selection](review-selection.md); this adapter
+prescribes no model or thinking level. Before spawning, apply the
+[reviewer execution preflight](reviewer-execution.md) with the controls below.
 
 ## Know the controls
 
@@ -73,16 +62,11 @@ hosts that use them, as
 [reviewer execution](reviewer-execution.md#discover-provisioned-profiles)
 describes; this adapter ships none.
 
-Grok Bot in this table is an independent reviewer, not an implementation worker
-or a replacement coordinator. Reviewer suitability remains a hypothesis until
-evaluated on comparable work; a model listing is not live review verification.
-Explicit user or project requirements override these defaults; comparable
-evidence supports only the exceptions review selection allows. Different models
-for the two axes remain optional. A fallback for a rejected default stays within
-models the live host exposes, never a silent substitute from another host.
+Different models for the two axes are optional. Use only available host
+controls; do not invent cross-host aliases or claim unsupported restrictions.
 
-Apply [reviewer execution](reviewer-execution.md)'s canonical model-setting
-decision separately for every reviewer. Selected call parameters remain requests
+For explicitly required settings, apply
+[reviewer execution](reviewer-execution.md)'s setting check for that reviewer. Selected call parameters remain requests
 unless the owner declares them or the host separately exposes a launch selection.
 Retain applicable declaration scope through recovery and recheck replacements;
 unknown observations are not mismatches. Declarations do not prove host controls.

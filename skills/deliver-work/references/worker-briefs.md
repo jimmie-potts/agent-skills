@@ -7,7 +7,7 @@ one selected role and does not rerun the routing policy.
 Supply a self-contained brief with:
 
 - Role and outcome: assigned investigation or implementation, selected strategy
-  and requested model/effort; no advisor loop unless explicitly selected.
+  and any explicit execution constraints; no advisor loop unless selected.
 - Scope and acceptance: authoritative source, relevant criteria mapped to checks,
   assessment and unresolved facts; separate supplied facts from executed checks.
 - Current state: workspace, task/attempt, source revision and relevant dirty
@@ -40,11 +40,13 @@ Include these labels in the brief; require them for completed or blocked results
 - Changed files: paths, distinguishing proposed from applied changes, or `none`.
 - Validation: commands actually run with trimmed outcomes and the revision or
   state checked; identify required checks not run.
-- Consultations: count for an advisor loop, otherwise `not applicable`.
-- Settings: requested and reported model/reasoning, with `unknown` for
-  unexposed values; retain any host-required identity evidence.
 - Limitations: unresolved gaps or blockers, or `none`.
 - Pending decisions: decision and owner, or `none`.
+
+For a selected pairing, retain the consultations its protocol requires. Include
+settings and detailed accounting only when the user, project or host requires
+it. Requested settings are not runtime observations; unavailable values remain
+unknown. Ordinary workers need no model-evidence packet.
 
 Exclude surrounding narrative, transcript replay, and restated instructions.
 Keep the requested artifact and required evidence intact. Consultation requests

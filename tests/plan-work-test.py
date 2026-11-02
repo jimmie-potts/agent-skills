@@ -79,181 +79,6 @@ class PlanWorkStructureTest(unittest.TestCase):
             if path.is_file():
                 self.assertIn(path.suffix, {'.md', '.yaml'})
 
-    def test_execution_recommendation_shape(self):
-        reference = (SKILL / 'references/execution-recommendations.md').read_text()
-        entry = (SKILL / 'SKILL.md').read_text()
-        scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
-        self.assertIn('Codex and Grok Bot', entry)
-        self.assertIn('three-host table', entry)
-        self.assertIn('worker-with-grok', entry)
-        self.assertIn('Grok Bot recommendations', scenarios)
-        self.assertIn('three hosts', scenarios)
-        for session_type in ('One-shot', 'Pair', 'Orchestrate',
-                             'Investigate first'):
-            with self.subTest(session_type=session_type):
-                self.assertIn(f'| `{session_type}` |', reference)
-                self.assertIn(f'`{session_type}`', entry)
-                self.assertIn(f'`{session_type}`', scenarios)
-        for label in ('**Start with:**', '**Prompt (Claude Code):**',
-                      '**Prompt (Codex):**', '**Prompt (Grok):**',
-                      '**Cheaper start:**',
-                      '**Cheaper prompt (Claude Code):**',
-                      '**Cheaper prompt (Codex):**',
-                      '**Cheaper prompt (Grok):**', '**Why:**',
-                      '**Reassess when:**', '**Assessed:**',
-                      '**Status:** insufficient', '**Missing:**'):
-            with self.subTest(label=label):
-                self.assertIn(label, reference)
-        for row in ('Model', 'Thinking level', 'Session type', 'Subagents',
-                    'Reviewers', 'Availability', 'Checkpoints'):
-            with self.subTest(row=row):
-                self.assertIn(f'`{row}`', reference)
-        self.assertIn('| Work to start | Claude Code model / effort | '
-                      'Codex model / reasoning | Grok Bot model / effort | '
-                      'Session role |', reference)
-        self.assertIn('Grok Bot (live slug)', reference)
-        self.assertIn('three-host table', reference)
-        self.assertIn('worker-with-grok', reference)
-        table = reference.split('| Work to start |', 1)[1].split('\n\n', 1)[0]
-        rows = [line for line in table.splitlines()
-                if line.startswith('| ') and not line.startswith('| ---')]
-        self.assertGreaterEqual(len(rows), 4)
-        for row in rows:
-            claude = row.split('|')[2]
-            with self.subTest(row=row[:40]):
-                self.assertNotIn('sonnet', claude.lower())
-                self.assertRegex(claude, r'`(opus|fable)`')
-        self.assertIn('| Recommended Claude Code start | '
-                      'Cheaper Claude Code start |', reference)
-        self.assertIn('| Opus (`opus`) / `medium` | Sonnet (`sonnet`) / `medium` |',
-                      reference)
-        before, cheaper = reference.split('### Record the cheaper start', 1)
-        cheaper, after = cheaper.split('\n### ', 1)
-        self.assertIn('sonnet', cheaper.lower())
-        self.assertNotIn('sonnet', (before + after).lower())
-        prompts = re.findall(r'```text\n(.+?)\n```', reference, re.DOTALL)
-        self.assertEqual(len(prompts), 2)
-        prompt = prompts[0]
-        grok_prompt = prompts[1]
-        self.assertTrue(prompt.endswith(
-            "If deliver-work isn't available here, say so and stop."))
-        self.assertIn('my declared launch settings for each role it names', prompt)
-        self.assertIn('unavailable runtime observation stays unknown', prompt)
-        self.assertIn('observed required-setting mismatch', prompt)
-        self.assertNotIn('State the model you are running', prompt)
-        self.assertIn('Execution recommendation (assessed', prompt)
-        self.assertIn('without worker subagents', prompt)
-        self.assertRegex(prompt, r'two fresh read-only \w+ reviewers')
-        self.assertNotIn('without subagents', prompt)
-        self.assertNotRegex(prompt.lower(), r'(report|verify|confirm)\w* (your|its) effort')
-        self.assertTrue(grok_prompt.endswith(
-            "If deliver-work isn't available here, say so and stop."))
-        self.assertIn('Grok Bot session', grok_prompt)
-        self.assertIn('<verified-grok-slug>', grok_prompt)
-        self.assertIn('instruction-only read-only executor reviewers', grok_prompt)
-        self.assertIn('n/a', reference.lower())
-        self.assertIn('#148', reference)
-
-    def test_execution_recommendation_is_repository_opt_in(self):
-        entry = (SKILL / 'SKILL.md').read_text()
-        reference = (SKILL / 'references/execution-recommendations.md').read_text()
-        scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
-        self.assertIn('only when the owning repository', entry)
-        self.assertIn('one planned-start sentence', entry)
-        self.assertNotIn('For every item, read', entry)
-        self.assertIn('whose owning repository asks for', reference)
-        self.assertNotIn('Read for every proposed work item', reference)
-        self.assertIn('carry no Execution recommendation', scenarios)
-        self.assertIn('`Recommended` row reads `none`', scenarios)
-
-    def test_rendered_example_declarations_gate_both_named_roles(self):
-        reference = (SKILL / 'references/execution-recommendations.md').read_text()
-        prompts = re.findall(r'```text\n(.+?)\n```', reference, re.DOTALL)
-        self.assertGreaterEqual(len(prompts), 1)
-        prompt = prompts[0]
-        coordinator = re.search(r'I started this session on (\w+) at (\w+) effort', prompt)
-        reviewer = re.search(r'two fresh read-only (\w+) reviewers at (\w+) effort', prompt)
-        self.assertIsNotNone(coordinator)
-        self.assertIsNotNone(reviewer)
-        spec = importlib.util.spec_from_file_location(
-            'prompt_model_gate', ROOT / 'skills/deliver-work/scripts/model_gate.py')
-        gate = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(gate)
-        # The adopted example declares these named roles. Scope validation is
-        # the caller's responsibility; this tests the resulting gate inputs.
-        for role, match in [('coordinator', coordinator), ('reviewer', reviewer)]:
-            values = dict(zip(('model', 'reasoning'), match.groups()))
-            document = dict(role=role, phase='pickup', aliases=[], settings=[
-                dict(name=name, value=value, required=True, verified=False,
-                     requested=[dict(value=value, source='example selection')],
-                     declared=[dict(value=value, source='owner-adopted example, named role')],
-                     observed=[]) for name, value in values.items()])
-            calls = []
-            result = gate.run_if_allowed(document, lambda: calls.append(role))
-            self.assertEqual(result['decision'], 'continue')
-            self.assertEqual(calls, [role])
-            self.assertTrue(all(x['runtime_verification'] == 'unknown'
-                                for x in result['settings']))
-            document['settings'][0]['observed'] = [
-                dict(value='different-model', source='qualified current observation')]
-            calls.clear()
-            self.assertEqual(gate.run_if_allowed(document, lambda: calls.append(role))
-                             ['decision'], 'stop')
-            self.assertEqual(calls, [])
-
-    def test_reviewers_follow_the_canonical_review_policy(self):
-        # Issue #71: reviewer settings come from review-work's review selection
-        # by impact and review task; plan-work keeps no mapping of its own.
-        reference = (SKILL / 'references/execution-recommendations.md').read_text()
-        section = reference.split('### Recommend the reviewers', 1)[1]
-        section = section.split('\n## ', 1)[0]
-        prose = ' '.join(section.split())
-        for rule in ("review-work's review selection for the item's impact and "
-                     'review task, not impact alone',
-                     'Copy no reviewer mapping here, and never derive '
-                     'reviewers from the starting model or level',
-                     "reviewers that the active host's review-work adapter "
-                     'assigns to that impact and review task',
-                     '`**Why:**` states the review task and any '
-                     'weaker-reviewer exception with its evidence and coverage '
-                     'limits'):
-            with self.subTest(rule=rule):
-                self.assertIn(rule, prose)
-        self.assertNotRegex(section, r'(?m)^\|')
-        self.assertNotIn('gpt-6-', section)
-        for path in SKILL.rglob('*.md'):
-            with self.subTest(path=path.name):
-                self.assertNotIn('| Impact | Reviewer default |', path.read_text())
-        scenarios = ' '.join(
-            (SKILL / 'references/validation-scenarios.md').read_text().split())
-        self.assertIn('Codex starts Sol/medium with two Sol/high or stronger '
-                      'reviewers, not Luna', scenarios)
-        self.assertIn('RS02, RS03 and RS07', scenarios)
-        self.assertNotIn('normally gets reviewers', prose)
-
-    def test_work_surface_line(self):
-        reference = (SKILL / 'references/execution-recommendations.md').read_text()
-        entry = (SKILL / 'SKILL.md').read_text()
-        scenarios = (SKILL / 'references/validation-scenarios.md').read_text()
-        values = ('UI', 'Backend', 'Unknown')
-        for value in values:
-            with self.subTest(value=value):
-                self.assertIn(f'| `{value}` |', reference)
-                self.assertIn(f'`{value}`', entry)
-                self.assertIn(f'**Work surface:** {value}', scenarios)
-        examples = re.findall(r'```markdown\n(.+?)\n```', reference, re.DOTALL)
-        self.assertEqual(len(examples), 1)
-        lines = examples[0].splitlines()
-        starts = [index for index, line in enumerate(lines)
-                  if line.startswith('**Start with:** ')]
-        self.assertEqual(len(starts), 1)
-        following = lines[starts[0] + 1:starts[0] + 2] or ['']
-        self.assertRegex(following[0], r'^\*\*Work surface:\*\* \S')
-        self.assertIn('at most one `**Missing:**` line', reference)
-        for text in (reference, scenarios):
-            for value in re.findall(r'\*\*Work surface:\*\* (\w+)', text):
-                with self.subTest(found=value):
-                    self.assertIn(value, values)
 
     def test_declared_installation_is_planned(self):
         entry = ' '.join((SKILL / 'SKILL.md').read_text().split())
@@ -355,6 +180,19 @@ class PlanWorkStructureTest(unittest.TestCase):
                 self.assertIn('composition adds no authority', ' '.join(text.split()))
                 adapter = yaml.safe_load((root / 'agents/openai.yaml').read_text())
                 self.assertIs(adapter['policy']['allow_implicit_invocation'], False)
+
+    def test_execution_choice_cases_have_separate_graders(self):
+        fixtures = ROOT / 'tests/fixtures/workflow-evaluation'
+        cases = (fixtures / 'execution-choice-cases.md').read_text()
+        graders = (fixtures / 'execution-choice-graders.md').read_text()
+        ids = re.findall(r'^## (EC\d+):', cases, re.MULTILINE)
+        self.assertEqual(ids, [f'EC{n:02d}' for n in range(1, 11)])
+        self.assertEqual(ids, re.findall(r'^\| (EC\d+) \|', graders, re.MULTILINE))
+        self.assertNotIn('| Required behavior |', cases)
+        for name in ('plan-work', 'deliver-work', 'review-work'):
+            scenario = (ROOT / 'skills' / name / 'references/validation-scenarios.md').read_text()
+            self.assertIn('execution-choice-cases.md', scenario)
+            self.assertIn('execution-choice-graders.md', scenario)
 
     def test_check_wiring(self):
         for path in (ROOT / 'README.md', ROOT / 'AGENTS.md',

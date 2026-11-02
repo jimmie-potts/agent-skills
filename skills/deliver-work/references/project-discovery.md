@@ -28,8 +28,8 @@ For routine choices with no policy, use judgment within the requested scope.
 Use [work assessment](work-assessment.md) for readiness and verification,
 including existing issues without a planning assessment. Preserve unknowns and
 refresh stale evidence; ratings do not replace mandatory project requirements.
-Use [model selection](model-selection.md) after assessment. Explicit user/project
-requirements prevail; missing optional host controls retain defaults with a
+Use [execution choices](model-selection.md) when selecting workers or giving
+requested execution advice. Explicit user/project requirements prevail; missing optional host controls retain defaults with a
 disclosed limitation. Report actual runtime settings only when observable.
 Do not invent an approval gate from a missing optional control.
 An absent optional planning framework does not require setup;
@@ -65,7 +65,15 @@ condition describes the required outcome; it does not independently authorize
 the effect. At completion, read the procedure from the merged target revision,
 because it may have changed, including by this change.
 
-After verified merge and post-merge CI:
+When project policy assigns qualification or installation to a separate task,
+verify that owner and link its batch record. Feature delivery supplies source
+and acceptance evidence; only the designated deployment owner executes the
+shared installation. Standing authority alone does not transfer ownership.
+Reuse a verified result and scoped writer release without another conversational
+acknowledgment. Keep unfinished acceptance with its owner; apply the project's
+source-completion rule without claiming installed completion.
+
+After verified merge and applicable post-merge CI:
 
 - **Declared:** prepare the procedure's complete step, including its
   preflight, stop conditions, recovery and readbacks, and everything the step

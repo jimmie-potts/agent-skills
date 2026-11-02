@@ -1,9 +1,9 @@
 # Prefer complementary review where it can help
 
-Use for high-impact work, a substantive unresolved dispute about correctness,
-requirements or evidence, or an explicit owner selection. This is a routing
-preference, not evidence that one provider or a diverse pair is more accurate.
-Routine work and cosmetic wording disagreement do not trigger another provider.
+Read only when deliberately selecting another provider or satisfying an explicit
+provider requirement. An unresolved coverage gap or substantive disagreement may
+justify that choice; high impact alone does not require another provider.
+Provider diversity is not evidence of better review.
 
 ## Select coverage before a launch
 
@@ -12,8 +12,8 @@ Routine work and cosmetic wording disagreement do not trigger another provider.
    reviewers. Keep the first round's gates when reviewing changes to this policy.
 2. Select required axes, specialist coverage, model capability and effort under
    [review selection](review-selection.md). Provider preference cannot lower
-   impact floors, owner-selected settings, independence or stronger host rules.
-3. For a trigger above, prefer one qualified independent reviewer from the other
+   explicit settings, independence or stronger host rules.
+3. For the selected coverage, use one qualified independent reviewer from the other
    provider for the required axis that covers the consequential/disputed question.
    Use that result for that axis only if it satisfies the full existing contract.
    The other required axis still needs its own fresh independent reviewer. Do not
