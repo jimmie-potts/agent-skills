@@ -22,7 +22,7 @@ communication boundary and recovery of uncertain publication, use
 `review-evidence-graders.md` in the same way. Simulated provider stubs do not
 establish live GitHub behavior or retention after archival.
 
-For declared installation or deployment at completion, use cases IC01 to IC10
+For declared installation or deployment at completion, use cases IC01 to IC10 and IC14
 in `tests/fixtures/workflow-evaluation/installation-cases.md`, with this
 catalog's `AGENTS.md` and README as the declaring project's policy. Withhold
 `installation-graders.md` and recorded responses from evaluated contexts.

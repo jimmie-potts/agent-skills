@@ -29,14 +29,15 @@ stores, contact devices or repair host settings to obtain a nicer closeout.
 | --- | --- | --- |
 | Source merged | Current merged PR/readback, immutable merge revision, actual target inclusion and required post-merge checks | An accepted merge request, queue entry or old branch name |
 | Qualified release | Successful applicable qualification bound to the pinned integrated revision, evaluation inputs and immutable artifact | A green feature PR, omitted revision or result for a different artifact |
-| Installed | Owning procedure's current target/link/content readback at an identified revision | Source merge, old installation receipt or file transport acknowledgment |
+| Installed | Owning procedure's readback of running identity or installed content on the identified target, plus required health checks | Source merge, old installation receipt or file transport acknowledgment |
 | Canonical checkout refreshed | Owning refresh/update procedure branch and exact SHA readback, remote observation and delivered-merge inclusion | A fetch, clean status, accepted merge or source completion alone |
 | Active in client | Required current client discovery/activation readback for that installed target | Link existence, source tests or a simulator frame |
 | Visible/physical acceptance | Required observation on the declared candidate and actual surface/device, including owner acceptance when required | Transport acknowledgment, a different candidate or simulator-only result |
 
 For a batch result, verify that its qualified revision includes the delivered
 change and that its installed checks cover this item's acceptance. Reuse that
-evidence instead of repeating the operation. A recorded writer release proves
+evidence instead of repeating the operation. Attribute qualification to the
+revision actually evaluated, even when it covers earlier feature revisions. A recorded writer release proves
 only its stated scope; unresolved client or physical acceptance remains pending.
 
 Name missing stages separately. Preserve the project's current required gates,

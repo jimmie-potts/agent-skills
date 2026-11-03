@@ -138,6 +138,11 @@ evidence without another owner question.
 
 ## Reconcile before continuing
 
+Recover the requested endpoint, stage owners, observed results, evidence links,
+revisions and artifact identities from the existing task record. Refresh
+volatile facts and reconcile partial effects before resuming at the first
+unmet applicable gate. Carry remaining acceptance and its next owner forward.
+
 Use this full sequence after actual interruption, context loss or replacement.
 During ordinary continuation, refresh the prerequisites affected by current
 changes or the next action, preserving every applicable gate. Neither route

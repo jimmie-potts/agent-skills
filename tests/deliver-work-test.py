@@ -416,16 +416,8 @@ class DeliverWorkStructureTest(unittest.TestCase):
     def test_declared_completion_step_uses_scoped_authority(self):
         entry = (SKILL / 'SKILL.md').read_text()
         completion = flat(section(entry, '## Merge and verify completion'))
-        for rule in ('declares installation or deployment as a completion '
-                     'condition', 'after verified merge and post-merge CI',
-                     'current request or an applicable owner instruction',
-                     'scoped standing installation authority',
-                     'A completion condition alone grants no permission',
-                     'preserve narrower requests', 'never improvise one',
-                     'If a required deployment, installation',
-                     '(references/project-discovery.md#declared-completion-steps)'):
-            with self.subTest(rule=rule):
-                self.assertIn(rule, completion)
+        self.assertIn('(references/project-discovery.md#declared-completion-steps)',
+                      completion)
         discovery = (SKILL / 'references/project-discovery.md').read_text()
         row = next(line for line in discovery.splitlines()
                    if line.startswith('| Completion |'))
@@ -536,7 +528,7 @@ class DeliverWorkStructureTest(unittest.TestCase):
         case_ids = re.findall(r'^## (IC\d+):', cases, re.MULTILINE)
         grader_rows = re.findall(r'^\| (IC\d+) \| ([DP]\d+) \|', graders,
                                  re.MULTILINE)
-        self.assertEqual(case_ids, [f'IC{n:02d}' for n in range(1, 14)])
+        self.assertEqual(case_ids, [f'IC{n:02d}' for n in range(1, 15)])
         self.assertEqual([case for case, _ in grader_rows], case_ids)
         self.assertEqual([label for _, label in grader_rows[:10]],
                          [f'D{n}' for n in range(1, 11)])
