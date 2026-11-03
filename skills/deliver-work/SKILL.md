@@ -1,6 +1,6 @@
 ---
 name: deliver-work
-description: Deliver a named issue or requirement through project-defined implementation, review, merge, and completion checks. Use only when the user explicitly invokes deliver-work.
+description: Deliver a named issue or requirement to the requested endpoint, with project-defined stage owners and completion evidence. Use only when the user explicitly invokes deliver-work.
 ---
 
 # Deliver one work item
@@ -58,7 +58,7 @@ These hold at every step. References elaborate them and never relax them.
    context. Verify a GitHub reference names an issue rather than a PR. Never
    choose work from recency or branch names. Read scope, acceptance criteria,
    current state and dependencies; distinguish incoming blockers from outgoing
-   dependents. Resolve blockers before dependent implementation.
+   dependents. Apply each blocker only to work that depends on it.
 2. For Jira, read [Jira tracking](references/jira.md). For GitHub issues or
    GitHub-hosted code, read [GitHub operations](references/github.md), using only
    the applicable sections. For a document or another system, read the named
@@ -91,6 +91,24 @@ These hold at every step. References elaborate them and never relax them.
    target. Preserve existing authorized changes on resumption. Record the base
    revision, worktree state, source reference and requested finish line, and
    each temporary resource this delivery creates.
+
+Before implementation, resolve the assignment's endpoint from the request,
+the work item's acceptance and current project policy. A mention in a question
+or plan is not an invocation. Honor planning-only, local-only and ready-PR
+limits. For delivery beyond the PR, identify whether the assignment ends at
+integrated source, a qualified release, installed acceptance or the project's
+full completion point.
+
+In the existing task record, identify the owner and required evidence for each
+applicable stage, including acceptance beyond this assignment. Omit stages the
+project does not require. Use the [claim criteria](references/completion-evidence.md)
+to select evidence. If installation applies, verify its designated writer,
+procedure, authority and any batch handoff under
+[declared completion steps](references/project-discovery.md#declared-completion-steps).
+Coordinate shared resources and interface dependencies. Continue independent
+implementation, review and integration while qualification or installation is
+pending or failed unless project policy makes that result an admission gate.
+Ask only about material decisions still unresolved after discovery.
 
 ## Plan, implement and validate
 
@@ -249,23 +267,14 @@ discovered at preparation. Use the owning update procedure when the checkout
 activates installed sources. Record the verified result or retained/pending
 state separately from source completion.
 
-Evaluate all completion conditions. When the owning project declares
-installation or deployment as a completion condition and defines its
-procedure, prepare the complete step after verified merge and post-merge CI.
-When a separate task owns the installation, link that task and reuse its verified
-result under [declared completion steps](references/project-discovery.md#declared-completion-steps).
-Only the designated owner executes the shared operation. Run it without renewed
-approval when this task owns it and the current request or an applicable
-owner instruction grants authority covering that step, including scoped
-standing installation authority. A completion condition alone grants no
-permission; preserve narrower requests and ask only for effects outside
-existing authority. Without a declared procedure, never improvise one;
-report the step to its owner, pending while the item or
-project policy still requires it. Before preparing, skipping or recording such
-a step, read [declared completion steps](references/project-discovery.md#declared-completion-steps).
-If a required deployment, installation, physical check or human acceptance
-remains, retain the established waiting/current tracking state and report its
-owner and next action. Settle the temporary resources this delivery created
+Stop at the requested endpoint. For an applicable installation or deployment,
+use [declared completion steps](references/project-discovery.md#declared-completion-steps)
+to execute the owned, authorized procedure or verify the designated owner's
+result. Close an item only under its own completion rules, including any
+accepted source-only exception with its reason and linked installation owner.
+Keep outstanding required acceptance pending with its next owner and action.
+Completing a source assignment does not close its parent epic.
+Settle the temporary resources this delivery created
 under the project's cleanup policy, reading [cleanup](references/project-discovery.md#cleanup),
 and record each as removed, retained or not applicable; without a policy,
 retain them and say why. Once all required conditions pass, apply the

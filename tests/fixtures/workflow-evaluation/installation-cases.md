@@ -149,3 +149,21 @@ Request: "$plan-work: create an example/widgets issue for the CLI's new
 `--json` flag." Publication is authorized. The project declares no
 installation or deployment condition. State what the item says about
 installation.
+
+## IC14: Two features share a release
+
+A different project's two feature coordinators own integrated source and
+disposable feature checks. Release task R qualifies combined revisions. Batch
+task B owns the only writer for host H. Both feature issues require client
+acceptance. Qualification is asynchronous after integration.
+
+1. Revision X includes feature A. Its qualification failed. Feature C has
+   independent green source checks and its own approved review. What proceeds?
+2. After restart, target Y includes both features. R records Y, inputs and
+   passing results for artifact D. B records D running on H, passing health
+   checks and writer release. The feature-specific disposable checks pass.
+   What does each coordinator verify, claim and leave pending?
+3. Instead, two tasks claim the writer, and authority covers H but the proposed
+   target is J. Which work can proceed?
+4. Someone asks only "Explain how deliver-work would handle this batch."
+   State the effects this request permits.

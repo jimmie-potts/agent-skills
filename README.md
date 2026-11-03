@@ -80,8 +80,8 @@ Reusable SDLC workflows also include:
   Execution choices use available tools and task evidence, with no prescribed
   model, thinking level or orchestration pattern. Delegated work needs clear
   ownership and acceptance; selected advisory pairings keep their own protocols.
-  It distinguishes source integration, qualification, installation and acceptance,
-  and follows the designated deployment owner's procedure for batch handoffs.
+  At pickup it identifies who owns source integration, qualification, installation
+  and remaining acceptance, and what evidence each applicable stage needs.
   Routine reporting covers outcomes, verification, remaining work and owner actions.
   The optional [execution record](skills/deliver-work/references/execution-reporting.md)
   preserves `## Execution record` fields for projects that require them, with
