@@ -104,6 +104,7 @@ python3 tests/grilling-skills-test.py
 python3 tests/matt-engineering-skills-test.py
 python3 tests/matt-productivity-skills-test.py
 python3 tests/pi-skills-test.py
+python3 tests/private-insights-test.py
 python3 tests/writing-for-agents-test.py
 bash -n scripts/manage-skills.sh
 bash -n tests/manage-skills-test.sh

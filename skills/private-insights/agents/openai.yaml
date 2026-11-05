@@ -1,0 +1,6 @@
+interface:
+  display_name: "Private Insights"
+  short_description: "Write one private report of delivery evidence from read-only GitHub data"
+  default_prompt: "Use $private-insights to write a private report for the preceding seven days to my private reports directory."
+policy:
+  allow_implicit_invocation: false
