@@ -54,30 +54,28 @@ updates, and organization-wide governance are out of scope.
 
 ## Review requirements
 
-This project requires host-enforced reviewer tool restriction on Claude Code, a
-mandatory control in `review-work`'s reviewer execution preflight. A Standards,
-Specification or specialist reviewer that a Claude Code coordinator launches
-with its `Agent` tool must use the `review-work-reviewer` or
-`review-work-reviewer-high` profile, and host evidence for that reviewer must
-show that its tools exclude `Agent`, editing tools, `Skill` and MCP tools, as
-`review-work`'s Claude Code adapter describes. Without that evidence, the axis
-is `incomplete`. For this check, a coordinator may read the metadata of its own
-reviewers' subagent transcripts, such as the tool list each reviewer received,
-but not other sessions' transcripts. The profile keeps `Bash`, so file writes,
-publication and agents launched through the shell stay instruction-only; record
-them that way. A packet-only process reviewer under `review-work`'s
-separate-process adapter meets this requirement once host evidence verifies its
-empty tool set, as that adapter requires. On Codex, restriction stays
-instruction-only, as the Codex adapter records; revisit this declaration when a
-Codex surface can select the `review_work_reviewer` profile. On Grok Bot,
-restriction stays instruction-only for read-only executor reviewers, as the
-Grok adapter records: there is no Claude-style `review-work-reviewer` tool
-profile to claim, and axes without required evidence for a mandatory control
-are `incomplete` with the gap named. Evidence:
+This project requires no host-enforced reviewer tool restriction on any host.
+`review-work`'s boundaries still apply to every reviewer: a fresh context,
+read-only conduct and no descendant agents. Record each part of the restriction,
+file writes, publication and descendants, as enforced only where host evidence
+shows it for that reviewer, and as instruction-only otherwise, as each adapter
+describes.
+
+On Claude Code, prefer the `review-work-reviewer` or
+`review-work-reviewer-high` profile when the `Agent` tool lists it, and record
+the tools that reviewer received. A coordinator may read the metadata of its own
+reviewers' subagent transcripts for that, but not other sessions' transcripts.
+Without a profile, use the adapter's fallback type and record read-only conduct
+and the no-descendant rule as instruction-only. A missing profile does not make
+an axis `incomplete`. On Codex, restriction stays instruction-only, as the Codex
+adapter records. On Grok Bot, restriction stays
+instruction-only for read-only executor reviewers, as the Grok adapter records.
+Evidence:
 [#80](https://github.com/jimmie-potts/agent-skills/issues/80),
-[#108](https://github.com/jimmie-potts/agent-skills/issues/108), and
+[#108](https://github.com/jimmie-potts/agent-skills/issues/108),
 [#143](https://github.com/jimmie-potts/agent-skills/issues/143#issuecomment-6041531519)
-decision 3.
+decision 3, and the owner's 2026-11-05 decision in
+[#179](https://github.com/jimmie-potts/agent-skills/issues/179).
 
 ## Checks
 
