@@ -259,6 +259,13 @@ FOREIGN_CI_TERMS = (
     "hub-install",
 )
 
+# Command-shaped text belongs to the consuming project, not the shared method.
+COMMAND_SHAPED_TEXT = re.compile(
+    r"(?<![\w-])(?:npm|npx|pnpm|yarn|node|gh|make|docker|bash|sh|python3?)"
+    r" +(?:run|rerun|exec|test|api|workflow|install|compose|-[a-z])\b"
+    r"|--allow-empty|--failed\b"
+)
+
 MARKDOWN_LINK = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
 
 
@@ -589,6 +596,7 @@ class MattEngineeringSkillsTest(unittest.TestCase):
                 text = path.read_text(encoding="utf-8").lower()
                 for term in FOREIGN_CI_TERMS:
                     self.assertNotIn(term, text)
+                self.assertIsNone(COMMAND_SHAPED_TEXT.search(text))
 
         case_numbers = re.findall(
             r"^## (\d+)\. ", cases.read_text(encoding="utf-8"), re.MULTILINE

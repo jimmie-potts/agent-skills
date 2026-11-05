@@ -33,12 +33,12 @@ claim about why it happened still needs the loop and falsifying probe from
 
 | Class | Recorded evidence | What to establish next |
 | --- | --- | --- |
-| Test assertion | A named assertion reports its expected and actual values | Product defect or observation timing; continue at step 4 |
+| Test assertion | A named assertion reports its expected and actual values | Product defect, observation timing or state left by another test; continue at step 4 |
 | Setup failure | A step before the tests failed: install, pull, provisioning, service start | Nothing about tests that never ran; what the step depended on |
 | Aggregate timeout | A job or step stopped at its time budget with no failed assertion | What consumed the budget, from step and test durations against passing attempts. The last test running is not thereby the cause |
 | Cancellation or lost runner | A newer push, a person, a fail-fast rule or runner loss stopped the run | Which one, and that no test verdict exists |
 | Selection omission | A required check was skipped or never selected | The selection rule against the changed files. Skipped is not passed |
-| Artifact binding | Every job reads green but the overall result fails or is incomplete, or a release step lacks an artifact from the current attempt | The binding rule, and whether this attempt produced its own artifact. A partial rerun can copy earlier job results without one. This is neither a flake nor a test failure; keep the rule intact |
+| Artifact binding | Every job reads green but the overall result fails or is incomplete, or a release step lacks an artifact from the current attempt, and a repository rule you have read binds the result to that attempt's artifact | Whether this attempt produced its own artifact. A partial rerun can copy earlier job results without one. Under that rule this is neither a flake nor a test failure; keep the rule intact. Without a rule you can read, it is an evidence gap |
 | Evidence gap | Missing logs or metadata leave no class supported | `unknown`, and what record would settle it |
 
 ## 3. State counts with their limits
@@ -52,17 +52,19 @@ workflow failure percentage is not a test-flake rate: it counts every cause in
 every job. A test-flake rate counts one test's failures over that test's
 recorded executions, and it stays unknown when those records do not exist.
 
-## 4. Separate timing causes with a discriminating probe
+## 4. Separate timing and ordering causes with a discriminating probe
 
 For each deadline and worker on the failing path, name the clock that drives
-it: wall time, a harness or test-controlled clock, or another scheduler. Then
-compare predictions:
+it: wall time, a harness or test-controlled clock, or another scheduler. When
+the failure depends on test order or seed, name the shared state and the test
+that leaves it. Then compare predictions:
 
 | Hypothesis | Prediction |
 | --- | --- |
 | Async-observation race | The effect completes correctly but the assertion reads first. Delaying the effect reproduces the failure; waiting on explicit completion evidence removes it with no product change |
 | Mixed clocks | A deadline on one clock expires while a worker on another is still within its normal duration. Delaying only the worker reproduces the failure, and the deadline's real duration differs from its nominal one |
 | Product failure | The wrong result persists after the effect completes under controlled timing, and the assertion states required behavior |
+| Test pollution | Another test leaves fixture or harness state behind. The failing order or seed reproduces the failure, running the test alone passes, and resetting that state removes it. State that real requests share is product state, not pollution |
 | Missing headroom | A real-time bound sits within measured normal duration, and no ordering defect appears under controlled delay |
 
 Prefer bounded delay injection, explicit completion evidence and controlled
@@ -79,8 +81,9 @@ describes. Without it, propose the probe and report it as not run.
 
 - Keep each assertion's meaning and every finite bound. A wider bound needs the
   measurement that justifies it.
-- Name a negative control that injects the protected defect, and say whether it
-  has been shown to fail.
+- Name a negative control that injects the protected defect. When the task's
+  authority allows running it, show it failing before relying on the repair;
+  otherwise report it as unproven.
 - Propose a shared helper only when the same proven mechanism occurs at multiple
   callers. A site found by reading alone is a candidate, not a confirmed defect.
 - Word a rerun as a recommendation for whoever holds that authority, and say

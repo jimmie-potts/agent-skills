@@ -39,7 +39,7 @@ decode limit is 2000 ms on the harness clock. A measurement shows that limit
 firing after 330 ms of wall time. The decoder is a real worker on wall time. A
 timed-out decode triggers a second fetch. Probes: under CPU stress the test
 passed 8 of 8. With the worker delayed 400 ms it failed 10 of 10 with the same
-message. Two other tests look similar on reading; nobody has traced their
+message; without the delay it passed 20 of 20. Two other tests look similar on reading; nobody has traced their
 workers or clocks.
 
 ## 3. Refund total
