@@ -260,11 +260,20 @@ FOREIGN_CI_TERMS = (
 )
 
 # Command-shaped text belongs to the consuming project, not the shared method.
-COMMAND_SHAPED_TEXT = re.compile(
-    r"(?<![\w-])(?:npm|npx|pnpm|yarn|node|gh|make|docker|bash|sh|python3?)"
-    r" +(?:run|rerun|exec|test|api|workflow|install|compose|-[a-z])\b"
-    r"|--allow-empty|--failed\b"
+# Only code spans and fences are checked, so prose naming a tool still passes.
+CODE_SEGMENT = re.compile(r"```[^\n]*\n(.*?)```|`([^`\n]+)`", re.DOTALL)
+COMMAND_START = re.compile(
+    r"^\s*(?:\$\s+)?(?:npm|npx|pnpm|yarn|node|deno|bun|gh|git|make|docker|bash|sh"
+    r"|python3?|pip|uv|pytest|go|cargo|mvn|gradle)\s+\S",
+    re.MULTILINE,
 )
+
+
+def command_shaped_code(markdown: str) -> list[str]:
+    segments = (
+        match.group(1) or match.group(2) for match in CODE_SEGMENT.finditer(markdown)
+    )
+    return [segment for segment in segments if COMMAND_START.search(segment)]
 
 MARKDOWN_LINK = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
 
@@ -596,7 +605,9 @@ class MattEngineeringSkillsTest(unittest.TestCase):
                 text = path.read_text(encoding="utf-8").lower()
                 for term in FOREIGN_CI_TERMS:
                     self.assertNotIn(term, text)
-                self.assertIsNone(COMMAND_SHAPED_TEXT.search(text))
+                self.assertEqual(
+                    command_shaped_code(path.read_text(encoding="utf-8")), []
+                )
 
         case_numbers = re.findall(
             r"^## (\d+)\. ", cases.read_text(encoding="utf-8"), re.MULTILINE
@@ -607,6 +618,28 @@ class MattEngineeringSkillsTest(unittest.TestCase):
         )
         self.assertEqual(graded, case_numbers)
         self.assertNotIn("Expected decisions", cases.read_text(encoding="utf-8"))
+
+    def test_command_guard_checks_code_only(self) -> None:
+        for markdown in (
+            "Then run `npm run test:runtime`.",
+            "Use `gh run rerun --failed`.",
+            "Try `pytest -k flaky`.",
+            "Run `go test -race ./...`.",
+            "Run `cargo test`.",
+            "Then `git push origin HEAD`.",
+            "Retry:\n\n```bash\n$ docker compose up\n```\n",
+        ):
+            with self.subTest(markdown=markdown):
+                self.assertNotEqual(command_shaped_code(markdown), [])
+        for markdown in (
+            "The Python test suite runs slower under load.",
+            "A Node test runner may reorder files.",
+            "The yarn install step failed.",
+            "Step `install dependencies` failed in job `api`.",
+            "Run `api tests` with `git` available.",
+        ):
+            with self.subTest(markdown=markdown):
+                self.assertEqual(command_shaped_code(markdown), [])
 
     def test_prompt_level_selection_matrix_matches_descriptions_and_policies(self) -> None:
         positive_description_evidence = {

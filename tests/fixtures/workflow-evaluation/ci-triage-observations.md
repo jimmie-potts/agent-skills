@@ -70,9 +70,12 @@ authority.
   negative control to be shown failing when authority allows. C3 reran every
   case on R3, with cases 10 and 11 isolated.
 - **After C3:** in case 2 the participant reported `unresolved` because v1 of the
-  cases supplied no control for the worker-delay probe. That follows R3's
-  discrimination rule, so the case input was at fault. Cases v2 adds the
-  undelayed 20 of 20 control, and C4 reran case 2 alone.
+  cases supplied no control for the worker-delay probe. The discrimination rule,
+  a controlled delay and its control, has not changed since R2. C1 and C2 scored
+  case 2 `proven` leniently against v1 input that lacked the control their rules
+  already required, and C3 was the first round to apply the rule as written. The
+  case input was at fault, so cases v2 adds the undelayed 20 of 20 control, and
+  C4 reran case 2 alone.
 
 ## Limits
 
