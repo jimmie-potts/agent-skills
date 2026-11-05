@@ -29,7 +29,7 @@ in your reply.
 
 | Input | Rule |
 | --- | --- |
-| Private output directory | Required. An existing owner-only directory (mode 700) outside any Git checkout. Do not create or guess one unless the user named it. |
+| Private output directory | Required. An existing directory with mode exactly 700, owned by the user, outside any Git checkout even through a symlinked parent. Do not create or guess one unless the user named it. |
 | Repositories | `jimmie-potts/` `agent-device-hub`, `codex-nanoleaf`, `divoom-app-upgrade`, `agent-skills` and `dotfiles`, or a subset the user named, passed as full `owner/name` values. The report names a subset and what it omits. The script refuses anything else. |
 | Window | Exact bounds with offsets; the start is included and the end excluded, so a day the user names inclusively ends at the next midnight. Without bounds, the seven days before the moment of the run. The report records exact UTC bounds. |
 | Display timezone | The IANA zone the user names, otherwise UTC. |
@@ -63,9 +63,12 @@ reduces coverage in the report.
 3. Read the report. Check each proposed action against the evidence rows it cites.
    Where you disagree, say so in your reply rather than changing a number or
    inventing consensus. Keep the report's at most five actions advisory.
-4. If you add prose to the report, run
+4. To add prose, replace only the text under the report's final
+   `## Interpretation` heading. It may name no number, in digits or words, and
+   make no comparison, cause, saving, price or rate claim; figures stay in the
+   generated sections, which the counts-only summary fingerprints. Then run
    `python3 scripts/insights.py check <report> [--secret-markers-file <file>]`.
-   It must exit 0. Add interpretation only; never alter a measure.
+   It must exit 0. Any other edit fails the check.
 5. Reply with the report path, repositories and window, its coverage and stated
    limits. Keep report content out of commits, PR text, issues and any public
    surface.

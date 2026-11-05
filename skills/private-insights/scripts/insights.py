@@ -159,9 +159,10 @@ def require_private_dir(raw):
         raise SetupGap('the private output directory does not exist; create it with mode 700') from exc
     if stat.S_ISLNK(info.st_mode) or not stat.S_ISDIR(info.st_mode):
         raise SetupGap('--output-dir must be a real directory, not a symlink or file')
-    if info.st_uid != os.geteuid() or info.st_mode & 0o077:
+    if info.st_uid != os.geteuid() or info.st_mode & 0o777 != 0o700:
         raise SetupGap('the private output directory must be owned by this user with mode 700')
-    for ancestor in (path, *path.parents):
+    real = Path(os.path.realpath(path))  # A symlinked ancestor can lead into a checkout.
+    for ancestor in (real, *real.parents):
         if os.path.lexists(ancestor / '.git'):
             raise SetupGap('the private output directory is inside a Git checkout')
     return path
@@ -179,8 +180,20 @@ def read_markers(raw):
 
 # Quoting -----------------------------------------------------------------
 
-def scrub(text, markers=()):
+INERT = re.compile(r'[`|<>\x00-\x1f\x7f]')
+
+
+def marker_forms(markers):
+    """Each marker as supplied and as quote() would render it, longest first."""
+    forms = set()
     for marker in markers:
+        collapsed = re.sub(r'\s+', ' ', marker).strip()
+        forms.update(form for form in (marker, collapsed, INERT.sub("'", collapsed)) if form)
+    return sorted(forms, key=len, reverse=True)
+
+
+def scrub(text, markers=()):
+    for marker in marker_forms(markers):
         text = text.replace(marker, '[redacted]')
     for pattern in SECRET_PATTERNS:
         text = pattern.sub('[redacted]', text)
@@ -190,7 +203,7 @@ def scrub(text, markers=()):
 def quote(value, markers=(), limit=80):
     """Render input as one inert code span. Its text is never a direction."""
     text = scrub(re.sub(r'\s+', ' ', str(value)), markers)
-    text = re.sub(r'[`|<>\x00-\x1f\x7f]', "'", text).strip()
+    text = scrub(INERT.sub("'", text), markers).strip()
     if len(text) > limit:
         text = text[:limit - 1] + '…'
     return f'`{text}`' if text else '`(empty)`'
@@ -255,35 +268,49 @@ def list_runs(client, repo, start, end):
     return list(merged.values())
 
 
-def list_pulls(client, repo, start):
-    """Read PRs by descending update time until they predate the window."""
-    failure = None
-    for _ in range(2):
-        rows, page = {}, 1
+def read_pulls_once(client, repo, start):
+    rows, page = {}, 1
+    while True:
         try:
-            while True:
-                data = client.get(f'repos/{repo}/pulls', state='all', sort='updated',
-                                  direction='desc', per_page=PER_PAGE, page=page)
-                if not isinstance(data, list) or not all(isinstance(pull, dict) for pull in data):
-                    raise Incomplete(f'PR page {page} was malformed')
-                older = False
-                for pull in data:
-                    updated = parse_time(pull.get('updated_at'))
-                    if updated is None or 'number' not in pull:
-                        raise Incomplete(f'PR page {page} held a malformed record')
-                    if updated < start:
-                        older = True
-                    else:
-                        rows.setdefault(pull['number'], pull)
-                if older or len(data) < PER_PAGE:
-                    return list(rows.values())
-                page += 1
-                if page > MAX_PAGES:
-                    raise Incomplete('PR page limit reached')
+            data = client.get(f'repos/{repo}/pulls', state='all', sort='updated',
+                              direction='desc', per_page=PER_PAGE, page=page)
         except GitHubError as exc:
-            failure = Incomplete(f'PR page {page} failed ({exc})')
+            raise Incomplete(f'PR page {page} failed ({exc})') from exc
+        if not isinstance(data, list) or not all(isinstance(pull, dict) for pull in data):
+            raise Incomplete(f'PR page {page} was malformed')
+        older = False
+        for pull in data:
+            updated = parse_time(pull.get('updated_at'))
+            if updated is None or type(pull.get('number')) is not int:
+                raise Incomplete(f'PR page {page} held a malformed record')
+            if updated < start:
+                older = True
+            else:
+                rows.setdefault(pull['number'], pull)
+        if older or len(data) < PER_PAGE:
+            return rows
+        page += 1
+        if page > MAX_PAGES:
+            raise Incomplete('PR page limit reached')
+
+
+def list_pulls(client, repo, start):
+    """Read PRs by update time until two whole passes agree on numbers and update times.
+
+    The list has no total, and a PR updated between pages moves ahead of the cursor,
+    so one pass cannot prove it saw every PR.
+    """
+    previous, failure = None, None
+    for _ in range(3):
+        try:
+            current = read_pulls_once(client, repo, start)
         except Incomplete as exc:
-            failure = exc
+            previous, failure = None, exc
+            continue
+        stamps = {number: pull['updated_at'] for number, pull in current.items()}
+        if previous == stamps:
+            return list(current.values())
+        previous, failure = stamps, Incomplete('the PR list changed between reads')
     raise failure
 
 
@@ -381,10 +408,13 @@ def collect_repository(client, repo, window):
                         client, f"repos/{repo}/actions/runs/{run['id']}/attempts/{number}/jobs", 'jobs')
                 except Incomplete:
                     unread_jobs += 1
+    earlier = sum(run.get('run_attempt', 1) - 1 for run in item['runs'])
+    selected = sum(1 for run in item['runs'] if wants_jobs(run) for attempt in item['attempts'][run['id']].values()
+                   if attempt is not None)
     if unread:
-        item['gaps']['attempts'] = f'{unread} earlier attempt records could not be read'
+        item['gaps']['attempts'] = f'{unread} of {earlier} earlier attempt records could not be read'
     if unread_jobs:
-        item['gaps']['jobs'] = f'job records for {unread_jobs} attempts could not be read'
+        item['gaps']['jobs'] = f'job records for {unread_jobs} of {selected} selected attempts could not be read'
     missing_checks = 0
     for pull in item['pulls']:
         head = (pull.get('head') or {}).get('sha')
@@ -397,7 +427,8 @@ def collect_repository(client, repo, window):
         except Incomplete:
             missing_checks += 1
     if missing_checks:
-        item['gaps']['checks'] = f'check records for {missing_checks} merged heads could not be read'
+        item['gaps']['checks'] = (f"check records for {missing_checks} of {item['heads_selected']} merged heads "
+                                  'could not be read')
     return item
 
 
@@ -559,7 +590,7 @@ def attribute_snapshot(snapshot, known):
     result = dict(label=snapshot['label'], error=snapshot['error'], total=len(snapshot['records']),
                   attributed=[], unattributed={}, observed_from=snapshot.get('observed_from'),
                   observed_to=snapshot.get('observed_to'))
-    for record in snapshot['records']:
+    for position, record in enumerate(snapshot['records'], 1):
         repo, pull, head = record.get('repository'), record.get('pr'), record.get('head_sha')
         if not isinstance(head, str) or not SHA.fullmatch(head) or type(pull) is not int:
             reason = 'no exact PR and full revision'
@@ -570,7 +601,7 @@ def attribute_snapshot(snapshot, known):
         else:
             result['attributed'].append(record)
             continue
-        result['unattributed'][reason] = result['unattributed'].get(reason, 0) + 1
+        result['unattributed'].setdefault(reason, []).append(position)
     return result
 
 
@@ -680,18 +711,26 @@ def analyze_jobs(item, run, attempts, result):
                 if started:
                     executed.add(key)
         result['jobs_copied_qualification' if qualification else 'jobs_copied_other'] += len(copied)
-        result['jobs_executed'] += len(fresh)
-        partial = False
+        withheld = False
         if qualification and number > 1:
             result['qualification_reruns'] += 1
-            partial = any('image' in str(job.get('name')).lower() for job in copied)
-            if partial:
+            images = [job for job in copied + fresh if 'image' in str(job.get('name')).lower()]
+            if copied and not images:
+                result['qualification_undetermined'].append(attempt_url(repo, run['id'], number))
+                withheld = True
+            elif any(job in copied for job in images):
                 result['partial_no_image'].append(attempt_url(repo, run['id'], number))
-        if not partial:  # A partial rerun's result job reports the missing image, not the product.
-            for job in fresh:
-                if job.get('conclusion') in FAILED:
-                    name = str(job.get('name'))
-                    result['failed_jobs'].setdefault(name, []).append(attempt_url(repo, run['id'], number))
+                withheld = True
+        if withheld:
+            # Without its own image the attempt cannot qualify, so its job outcomes say nothing
+            # about the product. They leave both the failures and their denominator.
+            result['jobs_withheld'] += len(fresh)
+            continue
+        result['jobs_executed'] += len(fresh)
+        for job in fresh:
+            if job.get('conclusion') in FAILED:
+                name = str(job.get('name'))
+                result['failed_jobs'].setdefault(name, []).append(attempt_url(repo, run['id'], number))
 
 
 def analyze_checks(item, result):
@@ -719,6 +758,7 @@ def analyze_repository(item, window):
     pulls = {pull['number']: pull for pull in item['pulls']}
     result = dict(workflows={}, runs=len(item['runs']), attempts=0, after_window=0, multi_attempt=0,
                   failed_then_green=[], same_tree_recovered=[], partial_no_image=[], qualification_reruns=0,
+                  qualification_undetermined=[], jobs_withheld=0,
                   jobs_read=0, jobs_duplicate=0, jobs_executed=0, jobs_skipped=0, jobs_copied_qualification=0,
                   jobs_copied_other=0, failed_jobs={}, heads_read=0, heads_failed=[], checks_distinct=0,
                   checks_other_app=0)
@@ -765,7 +805,7 @@ def analyze_repository(item, window):
         body = '\n'.join(strip_fences(pull.get('body') or ''))
         references.update(re.findall(r'(?i)\b(?:refs|closes|fixes|resolves)\s+#(\d+)', body))
     result.update(merged=merged, closed=closed, opened=opened, open_hours=open_times, references=len(references),
-                  records=[dict(parse_execution_record(p.get('body')), pr=p['number']) for p in merged])
+                  records=[dict(parse_execution_record(p.get('body')), pr=p['number'], repository=repo) for p in merged])
     return result
 
 
@@ -818,7 +858,7 @@ def attempts_rows(item, analysis, markers=()):
             failed = bucket.get(key + '_failed', 0)
             return f'{text} ({failed} failed)' if with_failed and failed else text
         median = median_text(bucket['minutes'], 'min')
-        cover = f"incomplete: {bucket['unread']} earlier attempts unread" if gap else 'complete: runs, attempts'
+        cover = f"incomplete: {bucket['unread']} of {bucket['total']} attempts unread" if gap else 'complete: runs, attempts'
         rows.append([short(item['repository']), quote(name, markers), cell('original'), cell('prior_unobserved'),
                      cell('rerun'), cell('new_commit'), cell('same_tree'), cell('same_sha'), cell('ambiguous'),
                      cell('cancelled'), cell('skipped'), cell('unfinished'), str(bucket['unread']), median,
@@ -846,9 +886,12 @@ def friction_rows(item, analysis):
     same_tree = sum(b['same_tree'] for b in analysis['workflows'].values())
     add('Same-tree new-SHA retries that went green after a failure', floor(len(analysis['same_tree_recovered']), 'attempts'),
         f'{same_tree} same-tree new-SHA retries', run_cover, runs_gap, same_tree > 0)
+    undetermined = len(analysis['qualification_undetermined'])
+    partial_cover = job_cover if not undetermined else \
+        f"incomplete: {undetermined} of {analysis['qualification_reruns']} qualification reruns copied jobs but have no recognisable image job"
     add('Partial qualification reruns without their own image (cannot qualify; not a new product failure)',
-        floor(len(analysis['partial_no_image']), 'jobs', 'attempts'),
-        f"{analysis['qualification_reruns']} qualification reruns with job records", job_cover, runs_gap,
+        'unknown' if undetermined else floor(len(analysis['partial_no_image']), 'jobs', 'attempts'),
+        f"{analysis['qualification_reruns']} qualification reruns with job records", partial_cover, runs_gap,
         analysis['qualification_reruns'] > 0)
     copied = analysis['jobs_copied_qualification'] + analysis['jobs_copied_other']
     jobs = analysis['jobs_read']
@@ -856,8 +899,11 @@ def friction_rows(item, analysis):
         f"{floor(analysis['jobs_copied_qualification'], 'jobs', 'attempts')} / {floor(analysis['jobs_copied_other'], 'jobs', 'attempts')}",
         f'{jobs} job records from {item["jobs_selected"]} rerun, failed or qualification runs', job_cover, runs_gap, copied > 0)
     failed_jobs = sum(len(v) for v in analysis['failed_jobs'].values())
+    withheld = analysis['jobs_withheld']
     add('Failed job executions, copies and partial reruns excluded', floor(failed_jobs, 'jobs', 'attempts'),
-        f"{analysis['jobs_executed']} executed jobs in those runs", job_cover, runs_gap, analysis['jobs_executed'] > 0)
+        f"{analysis['jobs_executed']} executed jobs in those runs"
+        + (f"; {withheld} jobs from partial or undetermined qualification reruns are in neither count" if withheld else ''),
+        job_cover, runs_gap, analysis['jobs_executed'] > 0 or withheld > 0)
     add('Merged PR heads with a failed check execution', floor(len(analysis['heads_failed']), 'checks'),
         f"{analysis['heads_read']} merged heads read of {item['heads_selected']}", check_cover,
         'pulls' in item['gaps'], item['heads_selected'] > 0)
@@ -865,6 +911,20 @@ def friction_rows(item, analysis):
         f"{analysis['checks_distinct']} distinct checks at merged heads", check_cover,
         'pulls' in item['gaps'], item['heads_selected'] > 0)
     return rows
+
+
+def settings_citations(records):
+    parsed = [r for r in records if 'model' in r]
+    lines = []
+    for label, pick in (('Coordinator model', lambda r: [r['model']]), ('Coordinator level', lambda r: [r['level']]),
+                        ('Worker and reviewer model contexts', lambda r: r['agents'])):
+        parts = []
+        for kind in ('requested', 'declared', 'observed'):
+            parts.append(f"{kind} {cite([r for r in parsed if any(e[kind] for e in pick(r))])}")
+        unknown = [r for r in parsed if any(e['unknown'] and not e['observed'] and not e['declared'] for e in pick(r))]
+        parts.append(f'unknown {cite(unknown)}')
+        lines.append(f'- {label}: ' + '; '.join(parts) + '.')
+    return lines
 
 
 def settings_rows(records, merged_total, pull_gap):
@@ -894,26 +954,24 @@ def provider_lines(records, markers):
                 'this report, so common findings, provider-specific gaps and cross-provider handoffs cannot be '
                 'separated. Branch names are not treated as provider identity.']
     families = {}
-    handoffs = 0
+    handoffs = []
     for record in parsed:
         seen = set()
-        for token in record['model']['declared'] + record['model']['observed'] + record['model']['requested']:
+        for token in evidenced(record['model']):
             name = family(token)
             if name:
                 seen.add(name)
-                entry = families.setdefault(name, dict(records=0, observed=0, values=set()))
+                entry = families.setdefault(name, dict(records=[], observed=0, values=set()))
                 entry['values'].add(token)
         for name in seen:
-            families[name]['records'] += 1
+            families[name]['records'].append(record)
             families[name]['observed'] += 1 if record['model']['observed'] else 0
         for agent in record['agents']:
-            for token in agent['declared'] + agent['observed'] + agent['requested']:
-                name = family(token)
-                if name:
-                    seen.add(name)
-        handoffs += 1 if len(seen) > 1 else 0
+            seen.update(filter(None, (family(token) for token in evidenced(agent))))
+        if len(seen) > 1:
+            handoffs.append(record)
     lines = []
-    gaps = {name: e for name, e in families.items() if e['observed'] < e['records']}
+    gaps = {name: e for name, e in families.items() if e['observed'] < len(e['records'])}
     if len(families) >= 2 and len(gaps) == len(families):
         lines.append('- Common to the named providers: coordinator models lack host-observed evidence on some records for each.')
     else:
@@ -921,13 +979,29 @@ def provider_lines(records, markers):
     for name in sorted(families):
         entry = families[name]
         values = ', '.join(quote(v, markers) for v in sorted(entry['values'])[:6])
-        lines.append(f"- {name} records: {entry['observed']} of {entry['records']} have a host-observed coordinator "
-                     f"model; written values, aliases unresolved: {values}.")
-    unattributed = sum(1 for r in parsed if not any(
-        family(t) for t in r['model']['declared'] + r['model']['observed'] + r['model']['requested']))
-    lines.append(f'- Records with no attributable provider: {unattributed} of {len(parsed)}.')
-    lines.append(f'- Records naming more than one provider, a possible cross-provider handoff: {handoffs} of {len(parsed)}.')
+        lines.append(f"- {name} records: {entry['observed']} of {len(entry['records'])} have a host-observed coordinator "
+                     f"model; written values, aliases unresolved: {values}. Records: {cite(entry['records'])}.")
+    unattributed = [r for r in parsed if not any(family(t) for t in evidenced(r['model']))]
+    lines.append(f'- Records with no declared or observed provider: {len(unattributed)} of {len(parsed)}. '
+                 f'Records: {cite(unattributed)}.')
+    lines.append(f'- Records whose declared or observed values name more than one provider, a possible cross-provider '
+                 f'handoff: {len(handoffs)} of {len(parsed)}. Records: {cite(handoffs)}.')
     return lines
+
+
+def evidenced(setting):
+    """Provider attribution uses what was declared or observed, never what was requested."""
+    return setting['declared'] + setting['observed']
+
+
+def cite(records, limit=3):
+    """Link the first few PRs behind a number, naming how many more there are."""
+    if not records:
+        return 'none'
+    links = [f"[{short(r['repository'])}#{r['pr']}](https://github.com/{r['repository']}/pull/{r['pr']})"
+             for r in records[:limit]]
+    more = len(records) - limit
+    return ', '.join(links) + (f' and {more} more' if more > 0 else '')
 
 
 def snapshot_lines(snapshots, window, markers):
@@ -942,9 +1016,12 @@ def snapshot_lines(snapshots, window, markers):
         span = 'unknown' if not (snap['observed_from'] and snap['observed_to']) else \
             f"{iso(snap['observed_from'])} to {iso(snap['observed_to'])}"
         lines.append(f"- {snap['label']}: {len(snap['attributed'])} of {snap['total']} records attributed by exact PR and "
-                     f"revision. Observation span {span}{' differs from the report window; do not read it as the same cohort' if differs else ''}.")
-        for reason, count in sorted(snap['unattributed'].items()):
-            lines.append(f'  - Unattributed, left out of every count: {count} of {snap["total"]} ({reason}).')
+                     f"revision: {cite(snap['attributed'])}. Observation span {span}"
+                     f"{' differs from the report window; do not read it as the same cohort' if differs else ''}.")
+        for reason, positions in sorted(snap['unattributed'].items()):
+            listed = ', '.join(str(n) for n in positions[:5]) + (f' and {len(positions) - 5} more' if len(positions) > 5 else '')
+            lines.append(f'  - Unattributed, left out of every count: {len(positions)} of {snap["total"]} ({reason}); '
+                         f'record positions {listed}.')
         lines.append(f"  - Provider and model as supplied are not verified by this report: {snapshot_settings(snap, markers)}.")
     return lines
 
@@ -1059,17 +1136,23 @@ def compare_previous(previous, summary, window):
 def propose_actions(analyses, evidence):
     """Propose only what known evidence supports, linked to an existing owner."""
     actions = []
-    recurrence = sum(len(a['failed_then_green']) + len(a['same_tree_recovered']) for a in analyses)
+    green = sum(len(a['failed_then_green']) for a in analyses)
+    multi = sum(a['multi_attempt'] for a in analyses)
+    recovered = sum(len(a['same_tree_recovered']) for a in analyses)
+    same_tree = sum(b['same_tree'] for a in analyses for b in a['workflows'].values())
     partial = sum(len(a['partial_no_image']) for a in analyses)
+    reruns = sum(a['qualification_reruns'] for a in analyses)
     merged = sum(len(a['merged']) for a in analyses)
     settled = sum(1 for a in analyses for r in a['records'] if 'model' in r)
     incomplete = [item['repository'] for item in evidence if item['gaps']]
-    if recurrence:
-        actions.append(f'Use the planned CI triage on the {recurrence} failed-then-green or same-tree recoveries above before '
-                       'calling any of them a flake. Owner: [agent-skills#173](https://github.com/jimmie-potts/agent-skills/issues/173).')
+    if green or recovered:
+        actions.append(f'Use the planned CI triage on the failed-then-green runs ({green} of {multi} multi-attempt runs) and '
+                       f'same-tree recoveries ({recovered} of {same_tree} same-tree new-SHA retries) before calling any of '
+                       'them a flake. Owner: [agent-skills#173](https://github.com/jimmie-potts/agent-skills/issues/173).')
     if partial:
-        actions.append(f'Cover the {partial} partial qualification reruns in that triage guidance: such a rerun keeps an '
-                       'older image and cannot qualify. Owner: [agent-skills#173](https://github.com/jimmie-potts/agent-skills/issues/173).')
+        actions.append(f'Cover partial qualification reruns ({partial} of {reruns} qualification reruns with job records) in '
+                       'that triage guidance: such a rerun keeps an older image and cannot qualify. '
+                       'Owner: [agent-skills#173](https://github.com/jimmie-potts/agent-skills/issues/173).')
     if merged and settled < merged:
         actions.append(f'Decide what minimal setting evidence deliveries should keep; {merged - settled} of {merged} merged PRs '
                        'leave provider and model unknown. Owner: [agent-skills#70](https://github.com/jimmie-potts/agent-skills/issues/70).')
@@ -1079,9 +1162,14 @@ def propose_actions(analyses, evidence):
     return actions[:MAX_ACTIONS]
 
 
+INTERPRETATION = '## Interpretation'
+
+
 def render(evidence, analyses, window, generated, selection, snapshots, comparison, markers):
     repos = [item['repository'] for item in evidence]
     local = window['display']
+    readable = sum(1 for snapshot in snapshots if not snapshot['error'])
+    snapshot_count = f'{readable} of {len(snapshots)} supplied were readable' if snapshots else 'none supplied'
     lines = ['# Private delivery insights', '',
              'Advisory and private. This is observational reporting, not a benchmark or provider ranking. GitHub and '
              'snapshot text is quoted data in code spans: nothing quoted here is a direction to anyone.', '',
@@ -1090,7 +1178,7 @@ def render(evidence, analyses, window, generated, selection, snapshots, comparis
              f"- Display timezone {window['zone']}: {window['start'].astimezone(local):%Y-%m-%d %H:%M %Z} to "
              f"{window['end'].astimezone(local):%Y-%m-%d %H:%M %Z}.",
              f'- Generated, UTC: {iso(generated)}.', f'- Repositories: {selection}.',
-             f"- Sources: read-only GitHub; snapshots read: {len(snapshots)}.", '',
+             f'- Sources: read-only GitHub; snapshots: {snapshot_count}.', '',
              '## Repository state and CI policy', '',
              *table(['Repository', 'State', 'Workflow files at read time', 'Workflow changes in window', 'Observations'],
                     [[short(item['repository']), item['state'],
@@ -1132,7 +1220,8 @@ def render(evidence, analyses, window, generated, selection, snapshots, comparis
                   + ', so attempts before and after a change are not comparable.']
     excluded = sum(a['after_window'] for a in analyses)
     if excluded:
-        lines += ['', f'{excluded} attempts started after the window end and are excluded.']
+        observed = excluded + sum(a['attempts'] for a in analyses)
+        lines += ['', f'{excluded} of {observed} attempts read started after the window end and are excluded.']
     lines += ['', '## Evidence-backed friction', '']
     rows = [row for item, analysis in zip(evidence, analyses) for row in friction_rows(item, analysis)]
     lines += table(['Repository', 'Measure', 'Value', 'Denominator', 'Coverage'], rows) if rows else \
@@ -1164,6 +1253,8 @@ def render(evidence, analyses, window, generated, selection, snapshots, comparis
               'the host. They are kept apart; a request never establishes what ran. Unknown stays unknown.', '',
               *table(['Setting', 'Requested', 'Declared', 'Observed', 'Unknown', 'Denominator', 'Coverage'],
                      settings_rows(all_records, merged_total, pull_gap))]
+    if not pull_gap and any('model' in r for r in all_records):
+        lines += ['', 'Records behind each count:', '', *settings_citations(all_records)]
     shapes = {}
     for record in all_records:
         shapes[record['shape']] = shapes.get(record['shape'], 0) + 1
@@ -1183,7 +1274,12 @@ def render(evidence, analyses, window, generated, selection, snapshots, comparis
             rows.append(['Accepted with no correction pass', 'unknown', '0 records with a known correction count',
                          f'0 of {merged_total} merged PRs'])
         if rows:
-            lines += ['', *table(['Measure', 'Value', 'Denominator', 'Coverage'], rows)]
+            lines += ['', *table(['Measure', 'Value', 'Denominator', 'Coverage'], rows), '', 'Records behind each count:', '']
+            lines += [f"- Execution record shape {name}: {cite([r for r in all_records if r['shape'] == name])}."
+                      for name in sorted(shapes)]
+            if known:
+                lines += [f"- Accepted with no correction pass: {cite([r for r in known if r['corrections'] == 0])}.",
+                          f"- Accepted after correction: {cite([r for r in known if r['corrections'] > 0])}."]
     lines += ['', '## Providers', '', *provider_lines(all_records, markers),
               '', '## Usage and interruptions', '',
               *table(['Measure', 'Value', 'Denominator', 'Coverage'], usage_rows(snapshots, merged_total)),
@@ -1200,6 +1296,8 @@ def render(evidence, analyses, window, generated, selection, snapshots, comparis
               'Advisory. Nothing here was applied, filed or scheduled.', '']
     actions = propose_actions(analyses, evidence)
     lines += [f'{index}. {action}' for index, action in enumerate(actions, 1)] or ['No action is supported by this evidence.']
+    lines += ['', INTERPRETATION, '', 'None added. A reader may replace this line with interpretation that names no number; '
+              'every figure belongs in the generated sections above.']
     return '\n'.join(lines) + '\n'
 
 
@@ -1213,16 +1311,42 @@ RANKING = re.compile(
     rf'\b{PROVIDER}\b[^|\n.]{{0,30}}\b(?:better|faster|superior|outperform\w*|beats?|wins?|more reliable)\b'
     rf'|\b(?:better|faster|superior|more reliable)\b[^|\n.]{{0,30}}\bthan\b[^|\n.]{{0,10}}\b{PROVIDER}\b'
     rf'|\b(?:because of|caused by|due to|thanks to)\s+{PROVIDER}\b|\bprovider ranking\s*:|\bwinner\b', re.I)
+# Added interpretation may name no number and no comparison, cause, saving or price at all.
+NUMBER_WORDS = re.compile(r'\d|\b(?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|twenty|thirty|'
+                          r'forty|fifty|hundred|thousand|dozen|half|twice|double|triple|percent|majority|minority)\b', re.I)
+INTERPRETIVE_CLAIM = re.compile(r'\b(?:better|worse|best|worst|faster|slower|superior|inferior|outperform\w*|beats?|'
+                                r'wins?|winner|reliab\w*|rank\w*|saved|saves?|saving|cheaper|costl?\w*|price\w*|'
+                                r'caused?|causes|because|due to|thanks to|flak\w*|rate)\b|[$€£%|`]', re.I)
 UNKNOWN_COVER = re.compile(r'^(?:incomplete|unknown|unavailable|no source|0 of )', re.I)
 NUMERIC = re.compile(r'^(?:at least )?\d')
+
+
+def split_interpretation(text):
+    """Return the generated body and the interpretation section, which must come last."""
+    parts = re.split(r'^## Interpretation[ \t]*$', text, flags=re.M)
+    if len(parts) != 2 or re.search(r'^#{1,6} ', parts[1], flags=re.M):
+        return None, None
+    return parts[0], parts[1]
+
+
+def body_digest(text):
+    body, _ = split_interpretation(text)
+    return hashlib.sha256((body or text).encode('utf-8')).hexdigest()
 
 
 def check_report(text, markers=()):
     """Return every way a report breaks the trust rules. Empty means it may be kept."""
     problems = []
-    for marker in markers:
-        if marker in text:
-            problems.append('a supplied secret marker appears in the report')
+    if any(form in text for form in marker_forms(markers)):
+        problems.append('a supplied secret marker appears in the report')
+    body, interpretation = split_interpretation(text)
+    if body is None:
+        problems.append('the interpretation section is missing, repeated or not last')
+    else:
+        if NUMBER_WORDS.search(interpretation):
+            problems.append('the interpretation names a number; figures belong in the generated sections')
+        if INTERPRETIVE_CLAIM.search(interpretation):
+            problems.append('the interpretation makes a comparison, cause, saving, price or rate claim')
     if any(pattern.search(text) for pattern in SECRET_PATTERNS):
         problems.append('a credential-shaped value appears in the report')
     if PRIVATE_PATH.search(text):
@@ -1257,7 +1381,7 @@ def check_report(text, markers=()):
             values = [c for h, c in zip(headers, row) if h not in ('Denominator', 'Coverage', 'Repository', 'Measure', 'Setting')]
             if UNKNOWN_COVER.match(cover) and any(re.match(r'^0(?:\s|$)', cell) for cell in values):
                 problems.append(f'unknown coverage shown as zero: {row[0]}')
-    section = re.split(r'^## Proposed actions\s*$', text, flags=re.M)
+    section = re.split(r'^## Proposed actions\s*$', body or text, flags=re.M)
     if len(section) != 2:
         problems.append('the proposed-actions section is missing')
     else:
@@ -1270,6 +1394,22 @@ def check_report(text, markers=()):
         problems.append('the window or display timezone is missing')
     if '## Missing evidence and limits' not in text:
         problems.append('the limits section is missing')
+    return problems
+
+
+def check_file(path, markers=()):
+    """Check a saved report, and that only its interpretation changed since it was generated."""
+    text = path.read_text(encoding='utf-8')
+    problems = check_report(text, markers)
+    try:
+        summary = json.loads(path.with_suffix('.json').read_text(encoding='utf-8'))
+        recorded = summary.get('report_digest') if isinstance(summary, dict) else None
+    except (OSError, UnicodeError, ValueError):
+        recorded = None
+    if recorded is None:
+        problems.append('the counts-only summary beside the report is missing or unreadable')
+    elif recorded != body_digest(text):
+        problems.append('the generated sections changed after generation; only the interpretation may be edited')
     return problems
 
 
@@ -1318,6 +1458,7 @@ def generate(args, client, now):
         return EXIT_CHECK, None
     stem = f"insights-{window['start']:%Y%m%dT%H%M%SZ}-{window['end']:%Y%m%dT%H%M%SZ}-{now:%Y%m%dT%H%M%SZ}"
     report = directory / f'{stem}.md'
+    summary['report_digest'] = body_digest(text)
     write_private(report, text)
     write_private(directory / f'{stem}.json', json.dumps(summary, indent=2, sort_keys=True) + '\n')
     print(json.dumps(dict(status='written', report=str(report), complete=summary['complete'],
@@ -1347,7 +1488,7 @@ def main(argv=None, client=None, now=None):
     args = build_parser().parse_args(argv)
     try:
         if args.command == 'check':
-            problems = check_report(Path(args.report).read_text(encoding='utf-8'), read_markers(args.secret_markers_file))
+            problems = check_file(Path(args.report), read_markers(args.secret_markers_file))
             for problem in sorted(set(problems)):
                 print(problem, file=sys.stderr)
             return EXIT_CHECK if problems else 0

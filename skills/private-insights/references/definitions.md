@@ -11,7 +11,7 @@ They settle only the fields this report needs; they do not complete #70's study.
 | Measure | Cohort | Denominator |
 | --- | --- | --- |
 | Selected attempts | Workflow runs created in the window, each with every attempt started before its end | Attempts in that workflow row |
-| Deliveries | PRs merged in the window | PRs updated in the window |
+| Deliveries | PRs merged in the window. The PR list has no total, so it counts as complete only when two whole reads agree on every PR number and update time | PRs updated in the window |
 | Incomplete outcome | PRs closed unmerged in the window; PRs opened in it and still open have no outcome yet | PRs updated in the window |
 | Review and correction | Execution-record `Corrections`, only where it is an exact count | Records with a known count |
 | Documented interruptions, usage | Attributed snapshot records. GitHub records neither, so without a snapshot both are `unknown` | Attributed records with that field |
@@ -51,7 +51,10 @@ and times. Copies never count as executions.
 
 A qualification run is one whose workflow name or path says `qualification`. A
 rerun in which an `image` job was copied is a partial rerun without its own image:
-it cannot qualify, and its result job is left out of failed-job counts.
+it cannot qualify. A rerun that copied jobs but has no job named `image` is
+undetermined, and the partial-rerun count becomes `unknown`. The jobs either kind
+of rerun ran are left out of both the failed-job count and its executed-job
+denominator, and the report states how many.
 
 Check records are read at merged PR heads with `filter=all`, deduplicated by id and
 then by app, name, times and conclusion.
@@ -69,8 +72,9 @@ touching `.github/workflows` in the window. A change blocks window comparison.
 | Observed | Provenance `host-observed` |
 | Unknown | `unknown (unknown)`, a free-text cell or a missing record |
 
-Aliases stay as written, such as `opus`. Provider family comes only from a written
-model value, never from a branch name. Execution records appear in these shapes:
+Aliases stay as written, such as `opus`. Provider family comes only from a declared
+or observed model value, never from a requested one or a branch name. Each settings,
+provider, correction and snapshot row cites its first PRs or record positions. Execution records appear in these shapes:
 `current table`, `table without finding causes` (older), `free-text table`,
 `unstructured`, `ambiguous` (more than one section) and `none`. Fenced examples are
 ignored. First-submission acceptance and acceptance after correction follow

@@ -71,6 +71,7 @@ class FakeGitHub:
         self.calls = []
         self.failures = {}
         self.totals = {}
+        self.on_pull_page = None
 
     def repo(self, name):
         return self.repos.setdefault(name, dict(meta=dict(archived=False, default_branch='main'), runs=[], pulls=[],
@@ -98,6 +99,8 @@ class FakeGitHub:
             return self.page(route, query, 'workflow_runs', self.select_runs(repo, query))
         if rest == 'pulls':
             size, page = query['per_page'], query['page']
+            if self.on_pull_page:
+                self.on_pull_page(repo, page)
             ordered = sorted(repo['pulls'], key=lambda p: p['updated_at'], reverse=True)
             return ordered[(page - 1) * size:page * size]
         found = re.match(r'actions/runs/(\d+)/attempts/(\d+)(/jobs)?$', rest)
@@ -420,7 +423,7 @@ class AttemptTest(Harness):
         self.assertEqual(row['Comparable originals'], 'at least 0')
         self.assertTrue(row['Reruns'].startswith('at least 2'))
         self.assertTrue(row['Coverage'].startswith('incomplete'))
-        self.assertIn('1 earlier attempt records could not be read', text)
+        self.assertIn('1 of 2 earlier attempt records could not be read', text)
 
     def test_attempt_after_window_end_is_excluded_and_stated(self):
         self.repo['runs'] = [run(1, attempt=2, event='push', branch='main', started='2026-11-05T12:30:00Z')]
@@ -428,7 +431,7 @@ class AttemptTest(Harness):
                                              run_started_at='2026-11-01T10:00:00Z', updated_at='2026-11-01T10:30:00Z')
         text = self.report(self.fake)
         self.assertEqual(self.row(text)['Denominator'], '1 attempts in 1 runs')
-        self.assertIn('1 attempts started after the window end', text)
+        self.assertIn('1 of 2 attempts read started after the window end', text)
 
     def qualification(self, image_rerun):
         rerun_started = '2026-11-01T12:00:00Z'
@@ -474,7 +477,7 @@ class AttemptTest(Harness):
         self.repo['runs'] = [run(1, event='push', branch='main', conclusion='failure')]
         self.fake.failures[r'attempts/1/jobs'] = dict(remaining=9, message='HTTP 500')
         text = self.report(self.fake)
-        self.assertIn('job records for 1 attempts could not be read', text)
+        self.assertIn('job records for 1 of 1 selected attempts could not be read', text)
 
     def test_copied_check_rows_are_deduplicated(self):
         self.repo['pulls'] = [pull(7, head=sha('a'))]
@@ -571,7 +574,7 @@ class ExecutionRecordTest(Harness):
         self.assertEqual(model['Denominator'], '3 records')
         self.assertIn('3 of 5 merged PRs', model['Coverage'])
         self.assertIn('Claude records: 1 of 1 have a host-observed', text)
-        self.assertIn('Codex records: 0 of 2 have a host-observed', text)
+        self.assertIn('Codex records: 0 of 1 have a host-observed', text)  # Only the declared gpt-6-sol record.
         self.assertIn('aliases unresolved', text)
         self.assertIn('possible cross-provider handoff: 1 of 3', text)
         self.assertIn('agent-skills#70', text)
@@ -787,6 +790,11 @@ GOOD = """# Private delivery insights
 
 1. Do a thing. Owner: [agent-skills#70](https://github.com/jimmie-potts/agent-skills/issues/70).
 """
+INTERPRETATION = '\n## Interpretation\n\nNone added.\n'
+
+
+def doc(extra='', interpretation='None added.'):
+    return GOOD + extra + '\n## Interpretation\n\n' + interpretation + '\n'
 
 
 class ReportCheckTest(unittest.TestCase):
@@ -795,53 +803,73 @@ class ReportCheckTest(unittest.TestCase):
         self.assertTrue(any(reason in problem for problem in problems), problems)
 
     def test_good_report_passes(self):
-        self.assertEqual(insights.check_report(GOOD), [])
+        self.assertEqual(insights.check_report(doc()), [])
 
     def test_rejects_zero_filled_unknown(self):
-        self.assert_rejected(GOOD.replace('| unknown | 0 of 3', '| 0 | 0 of 3'), 'unknown coverage shown as zero')
-        self.assert_rejected(GOOD.replace('| unknown | 0 of 3 records | no source |', '| 0 | 3 runs | incomplete: page 2 |'),
+        self.assert_rejected(doc().replace('| unknown | 0 of 3', '| 0 | 0 of 3'), 'unknown coverage shown as zero')
+        self.assert_rejected(doc().replace('| unknown | 0 of 3 records | no source |', '| 0 | 3 runs | incomplete: page 2 |'),
                              'unknown coverage shown as zero')
 
     def test_allows_an_observed_zero(self):
-        text = GOOD.replace('| unknown | 0 of 3 records | no source |', '| 0 | 3 runs | complete: runs |')
+        text = doc().replace('| unknown | 0 of 3 records | no source |', '| 0 | 3 runs | complete: runs |')
         self.assertEqual(insights.check_report(text), [])
 
     def test_rejects_number_without_denominator_or_coverage(self):
-        self.assert_rejected(GOOD.replace('| unknown | 0 of 3 records |', '| 12 |  |'), 'empty denominator')
-        bare = GOOD + '\n| Measure | Value |\n| --- | --- |\n| Reruns | 4 |\n'
-        self.assert_rejected(bare, 'lacks a denominator')
+        self.assert_rejected(doc().replace('| unknown | 0 of 3 records |', '| 12 |  |'), 'empty denominator')
+        self.assert_rejected(doc('\n| Measure | Value |\n| --- | --- |\n| Reruns | 4 |\n'), 'lacks a denominator')
 
     def test_rejects_money(self):
         for claim in ('Spend was $120.', 'That is 40 USD.', 'Estimated cost: 12', 'Total €9'):
-            self.assert_rejected(GOOD + claim, 'monetary')
+            self.assert_rejected(doc(claim), 'monetary')
 
     def test_rejects_savings_and_flake_rate(self):
-        self.assert_rejected(GOOD + 'This saved 4 hours.', 'time-saving')
-        self.assert_rejected(GOOD + 'That is 3 hours saved.', 'time-saving')
-        self.assert_rejected(GOOD + 'Flake rate is 12%.', 'flake rate')
-        self.assert_rejected(GOOD + '12% of runs flaked.', 'flake rate')
+        self.assert_rejected(doc('This saved 4 hours.'), 'time-saving')
+        self.assert_rejected(doc('That is 3 hours saved.'), 'time-saving')
+        self.assert_rejected(doc('Flake rate is 12%.'), 'flake rate')
+        self.assert_rejected(doc('12% of runs flaked.'), 'flake rate')
 
     def test_rejects_causal_and_ranking_claims(self):
         for claim in ('Codex is better here.', 'Claude was faster.', 'Sonnet is more reliable.', 'better than Claude',
                       'Failures fell because of Claude.', 'Provider ranking: first'):
-            self.assert_rejected(GOOD + claim, 'ranking')
+            self.assert_rejected(doc(claim), 'ranking')
 
     def test_quoted_input_cannot_fail_the_claim_rules(self):
-        self.assertEqual(insights.check_report(GOOD + '`Claude is better than $5`\n'), [])
+        self.assertEqual(insights.check_report(doc('`Claude is better than $5`\n')), [])
 
     def test_rejects_secret_and_private_path_even_when_quoted(self):
-        self.assert_rejected(GOOD + '`ghp_syntheticsyntheticsynthetic1`', 'credential-shaped')
-        self.assert_rejected(GOOD + '`/Users/someone/x`', 'private path')
-        self.assertTrue(insights.check_report(GOOD + 'MARK', ('MARK',)))
+        self.assert_rejected(doc('`ghp_syntheticsyntheticsynthetic1`'), 'credential-shaped')
+        self.assert_rejected(doc('`/Users/someone/x`'), 'private path')
+        self.assertTrue(insights.check_report(doc('MARK'), ('MARK',)))
+
+    def test_marker_checked_in_its_quoted_form(self):
+        self.assertTrue(insights.check_report(doc("`SYNTH MARK'X`"), ('SYNTH   MARK|X',)))
 
     def test_rejects_too_many_or_unowned_actions(self):
-        many = GOOD + ''.join(f'{i}. X. Owner: #1\n' for i in range(2, 7))
-        self.assert_rejected(many, 'more than 5')
-        self.assert_rejected(GOOD + '2. Unowned advice.\n', 'no linked owner')
+        self.assert_rejected(doc(''.join(f'{i}. X. Owner: #1\n' for i in range(2, 7))), 'more than 5')
+        self.assert_rejected(doc('2. Unowned advice.\n'), 'no linked owner')
 
     def test_rejects_missing_window_or_limits(self):
-        self.assert_rejected(GOOD.replace('Display timezone', 'Zone'), 'window or display timezone')
-        self.assert_rejected(GOOD.replace('## Missing evidence and limits', '## Other'), 'limits section')
+        self.assert_rejected(doc().replace('Display timezone', 'Zone'), 'window or display timezone')
+        self.assert_rejected(doc().replace('## Missing evidence and limits', '## Other'), 'limits section')
+
+    def test_interpretation_is_required_last_and_once(self):
+        self.assert_rejected(GOOD, 'interpretation section is missing')
+        self.assert_rejected(doc() + '\n## Interpretation\n\nAgain.\n', 'interpretation section is missing')
+        self.assert_rejected(doc(interpretation='Text.\n\n## Extra\n\nMore.'), 'interpretation section is missing')
+
+    def test_interpretation_names_no_number(self):
+        for text in ('Most reruns were on Checks, 3 of them.', 'Two reruns stood out.', 'About half the reruns.',
+                     'A dozen jobs.', 'Reruns at \u0663 places.'):
+            self.assert_rejected(doc(interpretation=text), 'names a number')
+
+    def test_interpretation_makes_no_comparison_cause_or_rate_claim(self):
+        for text in ('Codex looked stronger and better.', 'Reruns happened because of Claude.', 'The rerun rate looks high.',
+                     'This saved effort.', 'Claude outperformed.', 'It is the most reliable provider.', 'Costly week.'):
+            self.assert_rejected(doc(interpretation=text), 'comparison, cause, saving, price or rate')
+
+    def test_interpretation_without_figures_passes(self):
+        text = 'Reruns cluster on the selected checks gate; triage should start there before any retry.'
+        self.assertEqual(insights.check_report(doc(interpretation=text)), [])
 
 
 class ComparisonTest(Harness):
@@ -930,13 +958,30 @@ class FullReportTest(Harness):
             insights.check_report = original
         self.assertEqual(list(self.out.iterdir()), [])
 
-    def test_check_command_reads_a_named_report(self):
-        path = self.base / 'report.md'
-        path.write_text(GOOD)
-        self.assertEqual(insights.main(['check', str(path)]), 0)
-        path.write_text(GOOD + 'Spend was $5.')
-        with redirect_stderr(stdio.StringIO()):
-            self.assertEqual(insights.main(['check', str(path)]), insights.EXIT_CHECK)
+    def test_check_command_allows_only_interpretation_edits(self):
+        fake = FakeGitHub()
+        fake.repo(HUB)['runs'] = [run(1, event='push', branch='main')]
+        self.report(fake)
+        path = next(self.out.glob('*.md'))
+        original = path.read_text()
+        def check(text):
+            path.write_text(text)
+            with redirect_stderr(stdio.StringIO()) as stderr:
+                code = insights.main(['check', str(path)])
+            return code, stderr.getvalue()
+        self.assertEqual(check(original)[0], 0)
+        body, _ = original.split('## Interpretation')
+        self.assertEqual(check(body + '## Interpretation\n\nThe run list was quiet.\n')[0], 0)
+        code, reason = check(body + '## Interpretation\n\nOne run in total.\n')
+        self.assertEqual(code, insights.EXIT_CHECK)
+        self.assertIn('names a number', reason)
+        code, reason = check(original.replace('Advisory and private.', 'Advisory and private. Codex looks fine.'))
+        self.assertEqual(code, insights.EXIT_CHECK)
+        self.assertIn('generated sections changed', reason)
+        path.with_suffix('.json').unlink()
+        code, reason = check(original)
+        self.assertEqual(code, insights.EXIT_CHECK)
+        self.assertIn('summary beside the report is missing', reason)
 
     def test_summary_sidecar_holds_counts_and_no_quoted_text(self):
         fake = FakeGitHub()
@@ -947,6 +992,194 @@ class FullReportTest(Harness):
         summary = next(self.out.glob('*.json')).read_text()
         self.assertNotIn('distinctive', summary)
         self.assertEqual(json.loads(summary)['totals'][HUB]['comparable_originals'], 1)
+
+
+class ReviewFindingsTest(Harness):
+    """Each case failed on the first reviewed revision (PR #178 at 67a8eb65)."""
+
+    def test_symlinked_ancestor_into_a_checkout_is_refused(self):
+        reports = self.base / 'checkout/notes/reports'
+        (self.base / 'checkout/.git').mkdir(parents=True)
+        reports.mkdir(parents=True)
+        os.chmod(reports, 0o700)
+        (self.base / 'alias').symlink_to(self.base / 'checkout/notes')
+        fake = FakeGitHub()
+        code = self.generate(fake, '--output-dir', str(self.base / 'alias/reports'), output=False)
+        self.assertEqual(code, insights.EXIT_SETUP_GAP)
+        self.assertIn('inside a Git checkout', self.stderr)
+        self.assertEqual(fake.calls, [])
+        self.assertEqual(list(reports.iterdir()), [])
+
+    def test_owner_without_full_access_is_refused_before_reads(self):
+        locked = self.base / 'locked'
+        locked.mkdir(mode=0o700)
+        os.chmod(locked, 0o500)
+        self.addCleanup(os.chmod, locked, 0o700)
+        fake = FakeGitHub()
+        self.assertEqual(self.generate(fake, '--output-dir', str(locked), output=False), insights.EXIT_SETUP_GAP)
+        self.assertEqual(fake.calls, [])
+
+    def many_pulls(self, fake):
+        repo = fake.repo(HUB)
+        repo['pulls'] = [pull(n, merged=None, closed=None, state='open', created='2026-10-01T00:00:00Z',
+                              updated=f'2026-11-02T{n // 60:02d}:{n % 60:02d}:00Z') for n in range(1, 151)]
+        return repo
+
+    def test_pr_updated_between_pages_is_not_missed(self):
+        fake = FakeGitHub()
+        repo = self.many_pulls(fake)
+        state = dict(done=False)
+        def bump(repo_data, page):
+            if page == 2 and not state['done']:  # The oldest PR moves ahead of the cursor.
+                state['done'] = True
+                oldest = min(repo_data['pulls'], key=lambda p: p['updated_at'])
+                oldest['updated_at'] = '2026-11-04T00:00:00Z'
+        fake.on_pull_page = bump
+        row = self.cells(self.report(fake), 'agent-device-hub', '0')
+        self.assertEqual((row['Denominator'], row['Coverage']), ('150 PRs updated in window', 'complete: pulls'))
+
+    def test_pr_list_that_never_settles_is_incomplete(self):
+        fake = FakeGitHub()
+        repo = self.many_pulls(fake)
+        clock = dict(minute=0)
+        def bump(repo_data, page):
+            if page == 2:
+                clock['minute'] += 1
+                oldest = min(repo_data['pulls'], key=lambda p: p['updated_at'])
+                oldest['updated_at'] = f"2026-11-04T00:{clock['minute']:02d}:00Z"
+        fake.on_pull_page = bump
+        row = self.cells(self.report(fake), 'agent-device-hub', 'unknown')
+        self.assertIn('the PR list changed between reads', row['Coverage'])
+
+    def test_malformed_pr_record_makes_the_list_incomplete(self):
+        fake = FakeGitHub()
+        broken = pull(8)
+        del broken['number']
+        fake.repo(HUB)['pulls'] = [pull(7), broken]
+        row = self.cells(self.report(fake), 'agent-device-hub', 'unknown')
+        self.assertIn('malformed record', row['Coverage'])
+
+    def qualification_rerun(self, jobs_one, jobs_two):
+        fake = FakeGitHub()
+        repo = fake.repo(HUB)
+        repo['runs'] = [run(1, name='Release qualification', attempt=2, event='push', branch='main', conclusion='failure',
+                            started='2026-11-01T12:00:00Z')]
+        repo['attempts'][(1, 1)] = dict(run_attempt=1, status='completed', conclusion='failure',
+                                        run_started_at='2026-11-01T10:00:00Z', updated_at='2026-11-01T11:00:00Z')
+        repo['jobs'][(1, 1)] = jobs_one
+        repo['jobs'][(1, 2)] = jobs_two
+        return self.report(fake)
+
+    def test_partial_rerun_jobs_leave_failures_and_denominator_together(self):
+        fresh = dict(started='2026-11-01T12:01:00Z', completed='2026-11-01T12:30:00Z')
+        text = self.qualification_rerun(
+            [job(10, 'Packaged image'), job(11, 'Build', conclusion='failure'), job(12, 'Result', conclusion='failure')],
+            [job(20, 'Packaged image', attempt=2), job(21, 'Build', attempt=2, conclusion='failure', **fresh),
+             job(22, 'Result', attempt=2, conclusion='failure', **fresh)])
+        failed = self.cells(text, 'agent-device-hub', 'Failed job executions, copies and partial reruns excluded')
+        self.assertEqual(failed['Value'], '2')
+        self.assertEqual(failed['Denominator'], '3 executed jobs in those runs; 2 jobs from partial or undetermined '
+                                                'qualification reruns are in neither count')
+
+    def test_qualification_rerun_without_a_recognisable_image_job_is_unknown(self):
+        fresh = dict(started='2026-11-01T12:01:00Z', completed='2026-11-01T12:30:00Z')
+        text = self.qualification_rerun([job(10, 'Bundle'), job(11, 'Result', conclusion='failure')],
+                                        [job(20, 'Bundle', attempt=2), job(21, 'Result', attempt=2, **fresh)])
+        row = self.cells(text, 'agent-device-hub', 'Partial qualification reruns without their own image (cannot qualify; not a new product failure)')
+        self.assertEqual(row['Value'], 'unknown')
+        self.assertIn('incomplete: 1 of 1 qualification reruns copied jobs but have no recognisable image job', row['Coverage'])
+
+    def test_copy_detected_by_start_time_when_earlier_jobs_are_unread(self):
+        fake = FakeGitHub()
+        repo = fake.repo(HUB)
+        repo['runs'] = [run(1, attempt=2, event='push', branch='main', started='2026-11-01T12:00:00Z')]
+        repo['attempts'][(1, 1)] = dict(run_attempt=1, status='completed', conclusion='failure',
+                                        run_started_at='2026-11-01T10:00:00Z', updated_at='2026-11-01T10:30:00Z')
+        repo['jobs'][(1, 2)] = [job(2, 'Lint', attempt=2), job(3, 'Test', attempt=2, started='2026-11-01T12:05:00Z')]
+        fake.failures[r'attempts/1/jobs'] = dict(remaining=9, message='HTTP 500')
+        text = self.report(fake)
+        copied = self.cells(text, 'agent-device-hub', 'Jobs copied from an earlier attempt, excluded from executed jobs (qualification / other)')
+        self.assertEqual(copied['Value'], 'at least 0 / at least 1')
+
+    def test_requested_values_never_attribute_a_provider(self):
+        requested_only = OLDER.replace('| Coordinator model | gpt-6-sol (self-reported) |',
+                                       '| Coordinator model | requested gpt-6-sol, model unknown (unknown) |')
+        delegated = CURRENT.replace('model gpt-6-luna (self-reported)', 'model unknown (unknown)')
+        fake = FakeGitHub()
+        fake.repo(HUB)['pulls'] = [pull(1, body=requested_only), pull(2, body=delegated)]
+        text = self.report(fake)
+        self.assertNotIn('Codex records', text)
+        self.assertIn('no declared or observed provider: 1 of 2', text)
+        self.assertIn('possible cross-provider handoff: 0 of 2', text)
+
+    def test_settings_provider_and_correction_rows_cite_their_prs(self):
+        fake = FakeGitHub()
+        fake.repo(HUB)['pulls'] = [pull(n, body=CURRENT) for n in range(1, 6)] + [pull(9, body=OLDER)]
+        text = self.report(fake)
+        link = 'https://github.com/jimmie-potts/agent-device-hub/pull/'
+        self.assertIn(f'- Coordinator model: requested none; declared [agent-device-hub#1]({link}1)', text)
+        self.assertIn('and 2 more', text)
+        self.assertIn(f'observed [agent-device-hub#1]({link}1)', text)
+        self.assertIn(f'- Accepted after correction: [agent-device-hub#9]({link}9).', text)
+        self.assertIn(f'Records: [agent-device-hub#9]({link}9).', text)
+        self.assertIn(f'- Execution record shape current table: [agent-device-hub#1]({link}1)', text)
+
+    def test_snapshot_attribution_cites_records(self):
+        fake = FakeGitHub()
+        fake.repo(HUB)['pulls'] = [pull(7, head=sha('a'))]
+        path = self.base / 'snap.json'
+        path.write_text(json.dumps(dict(schema='private-insights-snapshot/1', records=[
+            dict(repository=HUB, pr=7, head_sha=sha('a')), dict(repository=HUB, pr=7, head_sha=sha('b'))])))
+        text = self.report(fake, '--snapshot', str(path))
+        self.assertIn('1 of 2 records attributed by exact PR and revision: [agent-device-hub#7]', text)
+        self.assertIn('(revision not observed on that PR); record positions 2.', text)
+
+    def test_symlinked_snapshot_is_refused(self):
+        fake = FakeGitHub()
+        fake.repo(HUB)['pulls'] = [pull(7, head=sha('a'))]
+        real = self.base / 'real.json'
+        real.write_text(json.dumps(dict(schema='private-insights-snapshot/1', records=[
+            dict(repository=HUB, pr=7, head_sha=sha('a'))])))
+        (self.base / 'link.json').symlink_to(real)
+        text = self.report(fake, '--snapshot', str(self.base / 'link.json'))
+        self.assertIn('not used, not a regular file', text)
+        self.assertNotIn('records attributed', text)
+
+    def test_summary_withholds_totals_when_a_source_has_a_gap(self):
+        for failure in (r'actions/runs#1', r'attempts/1$'):
+            fake = FakeGitHub()
+            repo = fake.repo(HUB)
+            repo['runs'] = [run(1, attempt=2, event='push', branch='main', started='2026-11-01T12:00:00Z')]
+            fake.failures[failure] = dict(remaining=9, message='HTTP 502')
+            self.report(fake, now=NOW + timedelta(seconds=len(failure)))
+            summary = json.loads(sorted(self.out.glob('*.json'))[-1].read_text())
+            self.assertIsNone(summary['totals'][HUB], failure)
+            self.assertFalse(summary['complete'])
+
+    def test_marker_in_collapsed_or_quoted_form_is_not_published(self):
+        markers = self.base / 'markers.txt'
+        markers.write_text('SYNTH   MARKER|ZQ\n')
+        fake = FakeGitHub()
+        fake.repo(HUB)['pulls'] = [pull(7, merged=None, closed='2026-11-01T11:00:00Z', title='see SYNTH MARKER|ZQ here')]
+        self.assertEqual(self.generate(fake, '--secret-markers-file', str(markers)), 0, self.stderr)
+        report = next(self.out.glob('*.md')).read_text()
+        self.assertNotIn('SYNTH MARKER', report)
+        self.assertIn('[redacted]', report)
+
+    def test_generated_prose_numbers_name_denominators(self):
+        fake = FakeGitHub()
+        repo = fake.repo(HUB)
+        repo['runs'] = [run(1, attempt=2, event='push', branch='main', started='2026-11-01T12:00:00Z'),
+                        run(2, name='Release qualification', attempt=2, event='push', branch='main',
+                            started='2026-11-01T12:00:00Z', created='2026-11-01T10:05:00Z')]
+        for run_id in (1, 2):
+            repo['attempts'][(run_id, 1)] = dict(run_attempt=1, status='completed', conclusion='failure',
+                                                 run_started_at='2026-11-01T10:00:00Z', updated_at='2026-11-01T11:00:00Z')
+        repo['jobs'][(2, 2)] = [job(1, 'Packaged image', attempt=2)]
+        text = self.report(fake)
+        self.assertIn('failed-then-green runs (2 of 2 multi-attempt runs)', text)
+        self.assertIn('partial qualification reruns (1 of 1 qualification reruns with job records)', text)
+        self.assertIn('snapshots: none supplied', text)
 
 
 class SkillPackageTest(unittest.TestCase):
