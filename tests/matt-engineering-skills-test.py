@@ -73,6 +73,7 @@ EXPECTED_INVENTORIES = {
         "SKILL.md",
         "SOURCE.md",
         "agents/openai.yaml",
+        "references/ci-failures.md",
         "scripts/hitl-loop.template.sh",
     },
     "code-review": {
@@ -153,7 +154,10 @@ EXPECTED_LINKS = {
         "references/context.md",
         "references/decision-record-format.md",
     },
-    "diagnosing-bugs": {"scripts/hitl-loop.template.sh"},
+    "diagnosing-bugs": {
+        "references/ci-failures.md",
+        "scripts/hitl-loop.template.sh",
+    },
     "code-review": set(),
     "codebase-design": {
         "references/alternative-designs.md",
@@ -239,6 +243,20 @@ SELECTION_MATRIX = (
         expected_near_miss=None,
         exclusion_evidence="use only when the user directly invokes prototype",
     ),
+)
+
+# The issue's motivating project stays evidence, never portable skill text.
+FOREIGN_CI_TERMS = (
+    "agent-device-hub",
+    "b.u.n.n.y",
+    "bunny",
+    "microduck",
+    "nanoleaf",
+    "pixoo",
+    "tidbyt",
+    "release qualification",
+    "app verification",
+    "hub-install",
 )
 
 MARKDOWN_LINK = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
@@ -528,6 +546,59 @@ class MattEngineeringSkillsTest(unittest.TestCase):
                     (SKILLS_ROOT / name / "SKILL.md").read_text(encoding="utf-8").split()
                 )
                 self.assertRegex(body, pattern)
+
+    def test_ci_triage_route_stays_conditional_and_diagnosis_only(self) -> None:
+        # Anchors only; the held-out ci-triage cases evaluate the behavior.
+        root = SKILLS_ROOT / "diagnosing-bugs"
+        skill = (root / "SKILL.md").read_text(encoding="utf-8")
+        description = str(split_frontmatter(skill)[0]["description"]).lower()
+        self.assertIn("intermittent ci failures", description)
+
+        step_one = skill.split("## 1. Define the exact symptom", 1)[1].split("## 2.", 1)[0]
+        self.assertIn("](references/ci-failures.md) before step 2", step_one)
+        route = " ".join(step_one.split())
+        self.assertIn(
+            "A rerun, cancellation, dispatch, empty commit, timeout change or new issue",
+            route,
+        )
+        self.assertIn("recommend it unless the underlying task separately authorizes it", route)
+
+        reference = normalized(root / "references" / "ci-failures.md")
+        for anchor in (
+            "A later green attempt does not establish a cause",
+            "A workflow failure percentage is not a test-flake rate",
+            "a passing load loop is inconclusive",
+            "`proven` or `unresolved`",
+        ):
+            self.assertIn(anchor, reference)
+
+    def test_ci_triage_text_and_fixtures_stay_portable_and_synthetic(self) -> None:
+        fixtures = REPOSITORY_ROOT / "tests" / "fixtures" / "workflow-evaluation"
+        cases = fixtures / "ci-triage-cases.md"
+        graders = fixtures / "ci-triage-graders.md"
+        observations = fixtures / "ci-triage-observations.md"
+        root = SKILLS_ROOT / "diagnosing-bugs"
+        for path in (
+            root / "SKILL.md",
+            root / "references" / "ci-failures.md",
+            cases,
+            graders,
+            observations,
+        ):
+            with self.subTest(path=path.name):
+                text = path.read_text(encoding="utf-8").lower()
+                for term in FOREIGN_CI_TERMS:
+                    self.assertNotIn(term, text)
+
+        case_numbers = re.findall(
+            r"^## (\d+)\. ", cases.read_text(encoding="utf-8"), re.MULTILINE
+        )
+        self.assertEqual(case_numbers, [str(n) for n in range(1, 12)])
+        graded = re.findall(
+            r"^\| (\d+) \| ", graders.read_text(encoding="utf-8"), re.MULTILINE
+        )
+        self.assertEqual(graded, case_numbers)
+        self.assertNotIn("Expected decisions", cases.read_text(encoding="utf-8"))
 
     def test_prompt_level_selection_matrix_matches_descriptions_and_policies(self) -> None:
         positive_description_evidence = {

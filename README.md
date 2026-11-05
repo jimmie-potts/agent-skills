@@ -152,6 +152,7 @@ the prompts.
 | `Explain or critique this subsystem` | Select `how`; do not select the explicit architecture improvement workflow. |
 | `Design a testable seam for this module` | Select `codebase-design`; a runtime explanation selects `how`. |
 | `Diagnose why this request is slow` | Select `diagnosing-bugs`; implementing a confirmed fix does not. |
+| `Diagnose why this CI job fails intermittently` | Select `diagnosing-bugs` and its CI failure triage; a plain `Rerun the failed jobs` does not. |
 | `Review this pull request against its specification` | Select `code-review`; a plain change summary does not. |
 | Explicit `$review-work` for a branch, PR or local change | Select `review-work`; freeze the comparison, run two fresh independent axes and return the per-axis result without implementing, publishing or merging. |
 | Explicit `$deliver-work` for an issue | Select `deliver-work`, which composes `review-work` for its required reviews; the review is a substep, not a second coordinator. |
