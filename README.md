@@ -100,9 +100,10 @@ Reusable SDLC workflows also include:
   owning repository's issue form, posts a parseable `## Closeout record` with a
   resume prompt on the owning issue, saves verified memory notes, deletes only
   guarded completed local branches, and reports in eight sections ending
-  `Safe to archive` or `Needs attention`. It never changes product code,
-  installs, merges, closes issues, deletes remote branches, removes worktrees
-  or changes another session's work;
+  `Safe to archive` or `Needs attention`. A project's documented read-only
+  resource audit informs its cleanup report without adding deletion authority.
+  It never changes product code, installs, merges, closes issues, deletes
+  remote branches, removes worktrees or changes another session's work;
 - the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
   `openspec-apply-change`, `openspec-update-change`, `openspec-sync-specs`, and
   `openspec-archive-change`. They use the consuming repository's pinned CLI.
