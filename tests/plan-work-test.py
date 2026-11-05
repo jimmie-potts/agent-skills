@@ -142,6 +142,8 @@ class PlanWorkStructureTest(unittest.TestCase):
         entry = ' '.join((SKILL / 'SKILL.md').read_text().split())
         self.assertIn('[issue refresh](references/issue-refresh.md)', entry)
         self.assertIn('read-only unless the user names the tracker effect', entry)
+        self.assertIn('asks to refresh, reassess or prune existing work, '
+                      'whatever its scope', entry)
         self.assertIn('Use only when the user explicitly invokes plan-work', entry)
         reference = ' '.join(
             (SKILL / 'references/issue-refresh.md').read_text().split())
@@ -159,7 +161,9 @@ class PlanWorkStructureTest(unittest.TestCase):
             'A refresh request is read-only',
             'each needing its own name',
             'write nothing and report no change',
+            'Keep the body and update time you assessed',
             'Reread just before writing',
+            'Preserve unrelated content',
             'never overwrite it',
             "owner-set planning fields such as a Project's Phase or Commitment",
             'Read back the saved issue',

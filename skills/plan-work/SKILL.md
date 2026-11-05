@@ -87,10 +87,10 @@ points, routing and record.
 
 ## Refresh an existing issue
 
-When the request names an existing issue or bounded epic to refresh against the
-current project, read [issue refresh](references/issue-refresh.md) after the
-two steps above and follow it instead of defining new items. It stays read-only
-unless the user names the tracker effect.
+When the request asks to refresh, reassess or prune existing work, whatever its
+scope, read [issue refresh](references/issue-refresh.md) after the two steps
+above and follow it instead of defining new items. It stays read-only unless
+the user names the tracker effect.
 
 ## Settle decisions and define items
 

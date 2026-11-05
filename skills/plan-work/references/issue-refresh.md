@@ -1,7 +1,8 @@
 # Refresh an existing issue
 
-Read when an explicit plan-work request names an existing issue or bounded epic
-to refresh against the project's current state. It applies the
+Read when an explicit plan-work request asks to refresh, reassess or prune
+existing work. It refreshes one named issue or bounded epic against the
+project's current state, and applies the
 [alignment](alignment.md) comparison and the assessment contract to work that
 already exists, and adds no schema, service, tracker field or backlog sweep.
 
