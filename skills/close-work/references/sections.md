@@ -110,15 +110,18 @@ stays retained, however the audit marks it:
 - Another task's or an unknown owner's resource: name the owner or `unknown`,
   and leave it to that owner or the project's maintenance procedure.
 - This task's resource of a kind `SKILL.md` does not grant, such as a worktree
-  or container: route it to the delivery owner, or without one to the project's
-  maintenance issue, and record the routing in the closeout record's Handoff.
+  or container: route it to its delivery owner when that is another session or
+  person. When this closing session is the delivery owner, add it as evidence
+  to the project's maintenance issue under Capture's Covered rule; without a
+  maintenance issue, name the human owner as the next actor. Record the routing
+  in the closeout record's Handoff.
 - An installed or protected artifact the project names: retain it.
 - A historical candidate list or aged evidence: it stays pending its owning
   approval procedure.
 
-Summarize results outside this task's inventory by owner or `unknown`, count and
-owning procedure instead of listing them. Capture's rules apply to any follow-up this yields; an
-unrelated candidate is not this task's follow-up.
+Summarize results outside this task's inventory by owner or `unknown`, count
+and owning procedure instead of listing them. Capture's rules apply to any
+follow-up this yields; an unrelated candidate is not this task's follow-up.
 
 For each local branch this task created, apply every guard in `SKILL.md`. On a
 GitHub-hosted Git repository, the checks can read:

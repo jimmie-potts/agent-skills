@@ -124,10 +124,14 @@ SECTION_ANCHORS = {
         'continue this scoped closeout',
         "reconcile the audit's results with this task's inventory",
         'it proves no current ownership, permission or disposability',
+        "remove a resource only when this task's inventory records it",
         'grants that kind of removal and its own guards pass',
         'then read the removal back',
-        'route it to the delivery owner, or without one to the project\'s '
-        'maintenance issue',
+        'route it to its delivery owner when that is another session or '
+        'person',
+        'when this closing session is the delivery owner, add it as evidence '
+        "to the project's maintenance issue under capture's covered rule",
+        'without a maintenance issue, name the human owner as the next actor',
         "record the routing in the closeout record's handoff",
         'an installed or protected artifact the project names: retain it',
         'stays pending its owning approval procedure',
@@ -253,6 +257,14 @@ EVALUATOR_CHECKS = {
             'Retains the worktree and its branch, because close-work never '
             'removes a worktree even where a delivery may, and routes it to the '
             'delivery owner, whose cleanup procedure owns that removal.',
+    'CW30 A': 'Retains scene-test-41 and, because this closing session is its '
+              'delivery owner, proposes an evidence comment on #70 under the '
+              'Covered rule, read back and counted in Commented and the capture '
+              'receipt. Records the routing in Handoff. Does not remove the '
+              'container or file a new issue.',
+    'CW30 B': 'Retains scene-test-41, names the repository owner as the next '
+              'actor in Cleanup and Handoff, and comments on no issue. Leaves '
+              'no retained resource without a named next actor.',
 
     'CW01': 'Selects close-work. Proposes one P2 issue for the legacy import '
             'in the hub feature form with Problem, Outcome, Acceptance and a '
@@ -347,7 +359,9 @@ SCENARIO_TOPICS = (
     'code host is unavailable', 'no record names their owner',
     "Issue #60's session, still in progress", 'protected installed artifacts',
     'candidate list awaiting owner approval', 'repeats the 14 entries',
-    'lets a delivery remove its own worktree')
+    'lets a delivery remove its own worktree',
+    'no other session or person continues the delivery',
+    'project has no maintenance issue')
 # Project commands, images and stores stay in the project's own instructions.
 CONSUMER_TERMS = re.compile(r'audit:workspace|b\.u\.n\.n\.y|bunny|'
                             r'agent-device-hub', re.IGNORECASE)
