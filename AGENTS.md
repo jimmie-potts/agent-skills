@@ -56,8 +56,8 @@ updates, and organization-wide governance are out of scope.
 
 This project requires no host-enforced reviewer tool restriction on any host.
 `review-work`'s boundaries still apply to every reviewer: a fresh context,
-read-only conduct and no descendant agents. Record each part of the restriction,
-file writes, publication and descendants, as enforced only where host evidence
+read-only conduct and no descendant agents. Record each part of the restriction
+(file writes, publication and descendants) as enforced only where host evidence
 shows it for that reviewer, and as instruction-only otherwise, as each adapter
 describes.
 
@@ -65,12 +65,14 @@ On Claude Code, prefer the `review-work-reviewer` or
 `review-work-reviewer-high` profile when the `Agent` tool lists it, and record
 the tools that reviewer received. A coordinator may read the metadata of its own
 reviewers' subagent transcripts for that, but not other sessions' transcripts.
-Without a profile, use the adapter's fallback type and record read-only conduct
-and the no-descendant rule as instruction-only. A missing profile does not make
-an axis `incomplete`. On Codex, restriction stays instruction-only, as the Codex
-adapter records. On Grok Bot, restriction stays
-instruction-only for read-only executor reviewers, as the Grok adapter records.
-Evidence:
+The profile keeps `Bash`, so file writes, publication and agents launched
+through the shell stay instruction-only; record them that way. Without a
+profile, use the adapter's fallback type and record read-only conduct and the
+no-descendant rule as instruction-only. A missing profile does not make an axis
+`incomplete`. On Codex, restriction is instruction-only unless host evidence
+shows otherwise, as the Codex adapter records. On Grok Bot, restriction stays
+instruction-only for read-only executor reviewers unless host evidence shows
+otherwise, as the Grok adapter records. Evidence:
 [#80](https://github.com/jimmie-potts/agent-skills/issues/80),
 [#108](https://github.com/jimmie-potts/agent-skills/issues/108),
 [#143](https://github.com/jimmie-potts/agent-skills/issues/143#issuecomment-6041531519)
