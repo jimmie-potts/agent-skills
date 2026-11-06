@@ -1011,7 +1011,12 @@ class ReviewerProfileTest(unittest.TestCase):
         agents = (ROOT / 'AGENTS.md').read_text()
         self.assertIn('On Grok Bot,', agents)
         self.assertIn('instruction-only for read-only executor reviewers', agents)
-        self.assertIn('review-work-reviewer` or', agents)  # Claude profile still mandatory
+        # Claude Code matches Codex and Grok: the profile is preferred, never required (#179).
+        flat_agents = ' '.join(agents.split())
+        self.assertIn('requires no host-enforced reviewer tool restriction on any host',
+                      flat_agents)
+        self.assertIn('A missing profile does not make an axis `incomplete`', flat_agents)
+        self.assertNotIn('must use the `review-work-reviewer`', flat_agents)
 
     def test_execution_cases_match_graders(self):
         cases = (FIXTURES / 'reviewer-execution-cases.md').read_text()

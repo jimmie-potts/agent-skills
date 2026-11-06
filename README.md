@@ -55,7 +55,8 @@ Reusable SDLC workflows also include:
 
 - [`plan-work`](skills/plan-work/SKILL.md), explicit requirements definition and
   authorized GitHub/Jira publication with scope, acceptance evidence and real
-  dependencies. It checks alignment with existing work and accepted decisions.
+  dependencies. It checks alignment with existing work and accepted decisions,
+  and can refresh a named issue or bounded epic against the current project.
   Ordinary items need one planned-start sentence. Model, thinking and delegation
   advice is supplied only when requested; existing project-required formats stay
   supported. It reads the canonical delivery assessment and task contracts and
@@ -103,9 +104,10 @@ Reusable SDLC workflows also include:
   owning repository's issue form, posts a parseable `## Closeout record` with a
   resume prompt on the owning issue, saves verified memory notes, deletes only
   guarded completed local branches, and reports in eight sections ending
-  `Safe to archive` or `Needs attention`. It never changes product code,
-  installs, merges, closes issues, deletes remote branches, removes worktrees
-  or changes another session's work;
+  `Safe to archive` or `Needs attention`. A project's documented read-only
+  resource audit informs its cleanup report without adding deletion authority.
+  It never changes product code, installs, merges, closes issues, deletes
+  remote branches, removes worktrees or changes another session's work;
 - the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
   `openspec-apply-change`, `openspec-update-change`, `openspec-sync-specs`, and
   `openspec-archive-change`. They use the consuming repository's pinned CLI.
@@ -132,6 +134,7 @@ the prompts.
 | --- | --- |
 | Explicit `$plan-work`, proposal only | Define assessed work and planned acceptance evidence without writes. |
 | Explicit `$plan-work`, define and publish these outcomes | Settle requirements, publish authorized GitHub/Jira work, verify readbacks, and stop before implementation. |
+| Explicit `$plan-work`, refresh a named issue or bounded epic | Compare it with the current project and return its disposition without writes; write only a tracker effect the user names, with reread and readback. |
 | `How might we improve this?` | Do not select the explicit-only plan-work workflow. |
 | `Grill me on this service design` | Select `grilling` and ask all currently independent questions as one group. |
 | `Stress-test this rollout plan` | Select `grilling`. |

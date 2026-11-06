@@ -39,6 +39,13 @@ changed sources. Withhold `alignment-graders.md`; read
 `alignment-observations.md` only after scoring. An alignment result is a
 planning judgment, not a new gate on delivery.
 
+For the existing-issue refresh route, use
+`tests/fixtures/workflow-evaluation/issue-refresh-cases.md`: a no-op, stale
+guidance with a required outcome, supersession, overlap, an unmet installation
+gate, an owner-decided cut, read-only and authorized writes, content reuse, a
+near miss and a sweep request. Withhold `issue-refresh-graders.md` and recorded
+responses. A proposed disposition is not a tracker effect.
+
 For uncertainty routing, experiment briefs and deliberate composition of
 `architect` and `prototype`, use
 `tests/fixtures/workflow-evaluation/uncertainty-routing-cases.md`. Withhold
