@@ -275,6 +275,18 @@ def command_shaped_code(markdown: str) -> list[str]:
     )
     return [segment for segment in segments if COMMAND_START.search(segment)]
 
+
+# Synthetic fixtures carry no machine-specific or personal data: no home
+# directories and no email addresses.
+PERSONAL_DATA = re.compile(
+    r"(?:/users/|/home/|~/)[a-z0-9._-]+|[a-z0-9._%+-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)+",
+    re.IGNORECASE,
+)
+
+
+def personal_data(text: str) -> list[str]:
+    return PERSONAL_DATA.findall(text)
+
 MARKDOWN_LINK = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
 
 
@@ -585,6 +597,9 @@ class MattEngineeringSkillsTest(unittest.TestCase):
             "A workflow failure percentage is not a test-flake rate",
             "a passing load loop is inconclusive",
             "`proven` or `unresolved`",
+            "Cancelled and incomplete attempts stay, with no test verdict",
+            "Name a negative control that injects the protected defect",
+            "Word a rerun as a recommendation for whoever holds that authority",
         ):
             self.assertIn(anchor, reference)
 
@@ -608,6 +623,7 @@ class MattEngineeringSkillsTest(unittest.TestCase):
                 self.assertEqual(
                     command_shaped_code(path.read_text(encoding="utf-8")), []
                 )
+                self.assertEqual(personal_data(text), [])
 
         case_numbers = re.findall(
             r"^## (\d+)\. ", cases.read_text(encoding="utf-8"), re.MULTILINE
@@ -640,6 +656,21 @@ class MattEngineeringSkillsTest(unittest.TestCase):
         ):
             with self.subTest(markdown=markdown):
                 self.assertEqual(command_shaped_code(markdown), [])
+
+    def test_personal_data_guard(self) -> None:
+        for text in (
+            "Logs were in /Users/alice/ci/run.log.",
+            "See /home/runner2/work.",
+            "Ask alice@example.com.",
+        ):
+            with self.subTest(text=text):
+                self.assertNotEqual(personal_data(text), [])
+        for text in (
+            "The runner's home directory is unknown.",
+            "An at sign @ alone is not an address.",
+        ):
+            with self.subTest(text=text):
+                self.assertEqual(personal_data(text), [])
 
     def test_prompt_level_selection_matrix_matches_descriptions_and_policies(self) -> None:
         positive_description_evidence = {
