@@ -73,6 +73,7 @@ EXPECTED_INVENTORIES = {
         "SKILL.md",
         "SOURCE.md",
         "agents/openai.yaml",
+        "references/ci-failures.md",
         "scripts/hitl-loop.template.sh",
     },
     "code-review": {
@@ -153,7 +154,10 @@ EXPECTED_LINKS = {
         "references/context.md",
         "references/decision-record-format.md",
     },
-    "diagnosing-bugs": {"scripts/hitl-loop.template.sh"},
+    "diagnosing-bugs": {
+        "references/ci-failures.md",
+        "scripts/hitl-loop.template.sh",
+    },
     "code-review": set(),
     "codebase-design": {
         "references/alternative-designs.md",
@@ -240,6 +244,48 @@ SELECTION_MATRIX = (
         exclusion_evidence="use only when the user directly invokes prototype",
     ),
 )
+
+# The issue's motivating project stays evidence, never portable skill text.
+FOREIGN_CI_TERMS = (
+    "agent-device-hub",
+    "b.u.n.n.y",
+    "bunny",
+    "microduck",
+    "nanoleaf",
+    "pixoo",
+    "tidbyt",
+    "release qualification",
+    "app verification",
+    "hub-install",
+)
+
+# Command-shaped text belongs to the consuming project, not the shared method.
+# Only code spans and fences are checked, so prose naming a tool still passes.
+CODE_SEGMENT = re.compile(r"```[^\n]*\n(.*?)```|`([^`\n]+)`", re.DOTALL)
+COMMAND_START = re.compile(
+    r"^\s*(?:\$\s+)?(?:npm|npx|pnpm|yarn|node|deno|bun|gh|git|make|docker|bash|sh"
+    r"|python3?|pip|uv|pytest|go|cargo|mvn|gradle)\s+\S",
+    re.MULTILINE,
+)
+
+
+def command_shaped_code(markdown: str) -> list[str]:
+    segments = (
+        match.group(1) or match.group(2) for match in CODE_SEGMENT.finditer(markdown)
+    )
+    return [segment for segment in segments if COMMAND_START.search(segment)]
+
+
+# Synthetic fixtures carry no machine-specific or personal data: no home
+# directories and no email addresses.
+PERSONAL_DATA = re.compile(
+    r"(?:/users/|/home/|~/)[a-z0-9._-]+|[a-z0-9._%+-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)+",
+    re.IGNORECASE,
+)
+
+
+def personal_data(text: str) -> list[str]:
+    return PERSONAL_DATA.findall(text)
 
 MARKDOWN_LINK = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
 
@@ -528,6 +574,103 @@ class MattEngineeringSkillsTest(unittest.TestCase):
                     (SKILLS_ROOT / name / "SKILL.md").read_text(encoding="utf-8").split()
                 )
                 self.assertRegex(body, pattern)
+
+    def test_ci_triage_route_stays_conditional_and_diagnosis_only(self) -> None:
+        # Anchors only; the held-out ci-triage cases evaluate the behavior.
+        root = SKILLS_ROOT / "diagnosing-bugs"
+        skill = (root / "SKILL.md").read_text(encoding="utf-8")
+        description = str(split_frontmatter(skill)[0]["description"]).lower()
+        self.assertIn("intermittent ci failures", description)
+
+        step_one = skill.split("## 1. Define the exact symptom", 1)[1].split("## 2.", 1)[0]
+        self.assertIn("](references/ci-failures.md) before step 2", step_one)
+        route = " ".join(step_one.split())
+        self.assertIn(
+            "A rerun, cancellation, dispatch, empty commit, timeout change or new issue",
+            route,
+        )
+        self.assertIn("recommend it unless the underlying task separately authorizes it", route)
+
+        reference = normalized(root / "references" / "ci-failures.md")
+        for anchor in (
+            "A later green attempt does not establish a cause",
+            "A workflow failure percentage is not a test-flake rate",
+            "a passing load loop is inconclusive",
+            "`proven` or `unresolved`",
+            "Cancelled and incomplete attempts stay, with no test verdict",
+            "Name a negative control that injects the protected defect",
+            "Word a rerun as a recommendation for whoever holds that authority",
+        ):
+            self.assertIn(anchor, reference)
+
+    def test_ci_triage_text_and_fixtures_stay_portable_and_synthetic(self) -> None:
+        fixtures = REPOSITORY_ROOT / "tests" / "fixtures" / "workflow-evaluation"
+        cases = fixtures / "ci-triage-cases.md"
+        graders = fixtures / "ci-triage-graders.md"
+        observations = fixtures / "ci-triage-observations.md"
+        root = SKILLS_ROOT / "diagnosing-bugs"
+        for path in (
+            root / "SKILL.md",
+            root / "references" / "ci-failures.md",
+            cases,
+            graders,
+            observations,
+        ):
+            with self.subTest(path=path.name):
+                text = path.read_text(encoding="utf-8").lower()
+                for term in FOREIGN_CI_TERMS:
+                    self.assertNotIn(term, text)
+                self.assertEqual(
+                    command_shaped_code(path.read_text(encoding="utf-8")), []
+                )
+                self.assertEqual(personal_data(text), [])
+
+        case_numbers = re.findall(
+            r"^## (\d+)\. ", cases.read_text(encoding="utf-8"), re.MULTILINE
+        )
+        self.assertEqual(case_numbers, [str(n) for n in range(1, 12)])
+        graded = re.findall(
+            r"^\| (\d+) \| ", graders.read_text(encoding="utf-8"), re.MULTILINE
+        )
+        self.assertEqual(graded, case_numbers)
+        self.assertNotIn("Expected decisions", cases.read_text(encoding="utf-8"))
+
+    def test_command_guard_checks_code_only(self) -> None:
+        for markdown in (
+            "Then run `npm run test:runtime`.",
+            "Use `gh run rerun --failed`.",
+            "Try `pytest -k flaky`.",
+            "Run `go test -race ./...`.",
+            "Run `cargo test`.",
+            "Then `git push origin HEAD`.",
+            "Retry:\n\n```bash\n$ docker compose up\n```\n",
+        ):
+            with self.subTest(markdown=markdown):
+                self.assertNotEqual(command_shaped_code(markdown), [])
+        for markdown in (
+            "The Python test suite runs slower under load.",
+            "A Node test runner may reorder files.",
+            "The yarn install step failed.",
+            "Step `install dependencies` failed in job `api`.",
+            "Run `api tests` with `git` available.",
+        ):
+            with self.subTest(markdown=markdown):
+                self.assertEqual(command_shaped_code(markdown), [])
+
+    def test_personal_data_guard(self) -> None:
+        for text in (
+            "Logs were in /Users/alice/ci/run.log.",
+            "See /home/runner2/work.",
+            "Ask alice@example.com.",
+        ):
+            with self.subTest(text=text):
+                self.assertNotEqual(personal_data(text), [])
+        for text in (
+            "The runner's home directory is unknown.",
+            "An at sign @ alone is not an address.",
+        ):
+            with self.subTest(text=text):
+                self.assertEqual(personal_data(text), [])
 
     def test_prompt_level_selection_matrix_matches_descriptions_and_policies(self) -> None:
         positive_description_evidence = {

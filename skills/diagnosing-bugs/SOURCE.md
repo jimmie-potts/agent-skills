@@ -32,6 +32,10 @@ Upstream fix, regression-test write, artifact deletion, and commit-message steps
 were removed from the diagnosis workflow because they require separate
 implementation, filesystem, or Git authority.
 
+`references/ci-failures.md` is local, not upstream. It adds conditional triage
+for hosted CI failures without changing the reproduction requirement or the
+diagnosis-only boundary.
+
 Scope, change records, and delivery authority come from the target repository.
 The shared workflow does not require Jira, OPSX, or a named delivery skill.
 

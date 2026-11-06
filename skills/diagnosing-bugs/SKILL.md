@@ -1,6 +1,6 @@
 ---
 name: diagnosing-bugs
-description: Diagnose reproducible bugs and performance regressions through a red-capable feedback loop and falsifiable evidence. Use when the user asks to diagnose or debug broken, failing, throwing, flaky, or slow behavior; diagnosis does not authorize a fix.
+description: Diagnose reproducible bugs and performance regressions through a red-capable feedback loop and falsifiable evidence. Use when the user asks to diagnose or debug broken, failing, throwing, flaky, or slow behavior, including intermittent CI failures; diagnosis does not authorize a fix.
 ---
 
 # Diagnosing bugs
@@ -27,6 +27,12 @@ from nearby failures.
 Read applicable repository instructions, vocabulary, contracts, code, tests,
 and decision records with authorized read-only tools. Treat vocabulary files as
 terminology, not behavior specifications.
+
+If the symptom is a failed, flaky or intermittent CI job, workflow or check,
+read [CI failure triage](references/ci-failures.md) before step 2. Reading runs
+and logs is a non-mutating check. A rerun, cancellation, dispatch, empty commit,
+timeout change or new issue is not: recommend it unless the underlying task
+separately authorizes it.
 
 ## 2. Build and demonstrate a red-capable loop
 
