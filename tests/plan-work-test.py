@@ -135,6 +135,51 @@ class PlanWorkStructureTest(unittest.TestCase):
     def test_alignment_rubric_covers_every_case(self):
         self.assert_rubric_covers_every_case('alignment')
 
+    def test_issue_refresh_rubric_covers_every_case(self):
+        self.assert_rubric_covers_every_case('issue-refresh')
+
+    def test_issue_refresh_route_keeps_its_limits(self):
+        entry = ' '.join((SKILL / 'SKILL.md').read_text().split())
+        self.assertIn('[issue refresh](references/issue-refresh.md)', entry)
+        self.assertIn('read-only unless the user names the tracker effect', entry)
+        self.assertIn('asks to refresh, reassess or prune existing work, '
+                      'whatever its scope', entry)
+        self.assertIn('Use only when the user explicitly invokes plan-work', entry)
+        reference = ' '.join(
+            (SKILL / 'references/issue-refresh.md').read_text().split())
+        self.assertIn('](alignment.md)', reference)
+        for rule in (
+            'adds no schema, service, tracker field or backlog sweep',
+            'this route needs a selection and write nothing',
+            'Stale guidance never makes the requirement obsolete',
+            'inspect the source and content paths that could already supply it',
+            'Never remove a useful visible feature merely to simplify',
+            'cannot establish that an issue is obsolete',
+            '| Unknown | Evidence the comparison needs is missing',
+            'evidence for one establishes no other',
+            'generate no replacement',
+            'A refresh request is read-only',
+            'each needing its own name',
+            'write nothing and report no change',
+            'Keep the body and update time you assessed',
+            'Reread just before writing',
+            'Preserve unrelated content',
+            'never overwrite it',
+            "owner-set planning fields such as a Project's Phase or Commitment",
+            'Read back the saved issue',
+            'accepted change affects its outcome',
+        ):
+            with self.subTest(rule=rule):
+                self.assertIn(rule, reference)
+        fixtures = ROOT / 'tests/fixtures/workflow-evaluation'
+        self.assertIn('synthetic and contain no personal transcript',
+                      ' '.join((fixtures / 'issue-refresh-cases.md')
+                               .read_text().split()))
+        self.assertNotIn('| Criteria |',
+                         (fixtures / 'issue-refresh-cases.md').read_text())
+        for text in (reference, (fixtures / 'issue-refresh-cases.md').read_text()):
+            self.assertNotRegex(text.lower(), r'b\.u\.n\.n\.y|bunny|device-hub')
+
     def test_uncertainty_routing_rubric_covers_every_case(self):
         self.assert_rubric_covers_every_case('uncertainty-routing')
 

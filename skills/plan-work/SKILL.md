@@ -1,6 +1,6 @@
 ---
 name: plan-work
-description: Define one or more implementation-ready work items using the repository's requirements and tracker conventions. Use only when the user explicitly invokes plan-work; ordinary planning questions do not select it.
+description: Define one or more implementation-ready work items using the repository's requirements and tracker conventions, or refresh a named existing issue against the current project. Use only when the user explicitly invokes plan-work; ordinary planning questions do not select it.
 ---
 
 # Define work before delivery
@@ -84,6 +84,13 @@ assessment. A small local item with no architecture, pattern or backlog
 interaction records only what was inspected and why that suffices. For any
 other item, read [alignment](references/alignment.md) for the comparison
 points, routing and record.
+
+## Refresh an existing issue
+
+When the request asks to refresh, reassess or prune existing work, whatever its
+scope, read [issue refresh](references/issue-refresh.md) after the two steps
+above and follow it instead of defining new items. It stays read-only unless
+the user names the tracker effect.
 
 ## Settle decisions and define items
 

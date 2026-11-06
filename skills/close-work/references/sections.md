@@ -93,6 +93,36 @@ Preserve needed evidence outside disposable worktrees before removing
 anything. Remove only temporary files this task created and nothing else uses.
 Leave uncertain, shared or actively used resources untouched.
 
+Look in the instructions read under Resolve the task for a resource audit the
+project documents as read-only, and run it as documented. Install no tool for
+it and build no inventory of your own. When there is none, or it or a service it
+reads is unavailable, report which part is unknown, retain what depends on that
+part and continue this scoped closeout. A project that requires the audit at
+closeout gets the missing result as a Loose End.
+
+Reconcile the audit's results with this task's inventory, one resource at a
+time. An audit verdict such as removable or eligible describes the resource's
+state; it proves no current ownership, permission or disposability. Remove a
+resource only when this task's inventory records it, `SKILL.md` grants that kind
+of removal and its own guards pass, then read the removal back. Everything else
+stays retained, however the audit marks it:
+
+- Another task's or an unknown owner's resource: name the owner or `unknown`,
+  and leave it to that owner or the project's maintenance procedure.
+- This task's resource of a kind `SKILL.md` does not grant, such as a worktree
+  or container: route it to its delivery owner when that is another session or
+  person. When this closing session is the delivery owner, add it as evidence
+  to the project's maintenance issue under Capture's Covered rule; without a
+  maintenance issue, name the human owner as the next actor. Record the routing
+  in the closeout record's Handoff.
+- An installed or protected artifact the project names: retain it.
+- A historical candidate list or aged evidence: it stays pending its owning
+  approval procedure.
+
+Summarize results outside this task's inventory by owner or `unknown`, count
+and owning procedure instead of listing them. Capture's rules apply to any
+follow-up this yields; an unrelated candidate is not this task's follow-up.
+
 For each local branch this task created, apply every guard in `SKILL.md`. On a
 GitHub-hosted Git repository, the checks can read:
 
@@ -167,8 +197,12 @@ retained, temporary resources removed, evidence preserved, and any remaining
 uncommitted, unpushed or unmerged work. Report remote-branch cleanup needs
 without acting on them.
 
-A resource retained because it is uncertain, shared, actively used or another
-owner's is intentionally retained: report it here, not as a Loose End, unless
+Give each resource in this task's inventory one outcome: removed with its
+readback, retained with its reason, owner and next action, or not applicable.
+Report the audit used or the gap left by its absence.
+
+A resource retained because it is uncertain, shared, actively used, another
+owner's or of a kind this skill cannot remove is intentionally retained: report it here, not as a Loose End, unless
 it holds this task's own unpreserved work or evidence. Incomplete required
 cleanup and unpreserved work are Loose Ends.
 
@@ -225,7 +259,9 @@ resources the session did create, and still consider Ideas.
 ## Reruns
 
 Re-read the earlier record and live state, then add only new information.
-Leave the earlier record as it is.
+Leave the earlier record as it is. A resource already removed needs only a
+readback of its absence. A repeated audit result already routed or covered is
+not new information: it deletes nothing and files nothing.
 
 - Unchanged: when the sweep finds no new information, post nothing. Report
   the same eight sections briefly, say that no new information was found,

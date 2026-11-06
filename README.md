@@ -36,6 +36,9 @@ The catalog currently contains:
   planning and approved Jira issue updates with human-owned sprint setup;
 - [`prototype`](skills/prototype/SKILL.md), an explicit or deliberately
   composed bounded experiment or functional delivery-slice workflow;
+- [`private-insights`](skills/private-insights/SKILL.md), an explicit advisory
+  report of delivery evidence from read-only GitHub data, written only to a named
+  private directory;
 - [`research`](skills/research/SKILL.md), source-backed investigation with
   claim-level citations;
 - [`worker-with-astra`](skills/worker-with-astra/SKILL.md), a Luna or Sol worker with the
@@ -52,7 +55,8 @@ Reusable SDLC workflows also include:
 
 - [`plan-work`](skills/plan-work/SKILL.md), explicit requirements definition and
   authorized GitHub/Jira publication with scope, acceptance evidence and real
-  dependencies. It checks alignment with existing work and accepted decisions.
+  dependencies. It checks alignment with existing work and accepted decisions,
+  and can refresh a named issue or bounded epic against the current project.
   Ordinary items need one planned-start sentence. Model, thinking and delegation
   advice is supplied only when requested; existing project-required formats stay
   supported. It reads the canonical delivery assessment and task contracts and
@@ -100,9 +104,10 @@ Reusable SDLC workflows also include:
   owning repository's issue form, posts a parseable `## Closeout record` with a
   resume prompt on the owning issue, saves verified memory notes, deletes only
   guarded completed local branches, and reports in eight sections ending
-  `Safe to archive` or `Needs attention`. It never changes product code,
-  installs, merges, closes issues, deletes remote branches, removes worktrees
-  or changes another session's work;
+  `Safe to archive` or `Needs attention`. A project's documented read-only
+  resource audit informs its cleanup report without adding deletion authority.
+  It never changes product code, installs, merges, closes issues, deletes
+  remote branches, removes worktrees or changes another session's work;
 - the six OpenSpec 1.12.0 core workflows: `openspec-propose`, `openspec-explore`,
   `openspec-apply-change`, `openspec-update-change`, `openspec-sync-specs`, and
   `openspec-archive-change`. They use the consuming repository's pinned CLI.
@@ -129,6 +134,7 @@ the prompts.
 | --- | --- |
 | Explicit `$plan-work`, proposal only | Define assessed work and planned acceptance evidence without writes. |
 | Explicit `$plan-work`, define and publish these outcomes | Settle requirements, publish authorized GitHub/Jira work, verify readbacks, and stop before implementation. |
+| Explicit `$plan-work`, refresh a named issue or bounded epic | Compare it with the current project and return its disposition without writes; write only a tracker effect the user names, with reread and readback. |
 | `How might we improve this?` | Do not select the explicit-only plan-work workflow. |
 | `Grill me on this service design` | Select `grilling` and ask all currently independent questions as one group. |
 | `Stress-test this rollout plan` | Select `grilling`. |
@@ -162,6 +168,8 @@ the prompts.
 | `Critique this module boundary` | Select `how` Critique, not `codebase-design`. |
 | `Research the current API limits using official sources` | Select `research`; implementation from supplied sources does not. |
 | Explicit `$close-work` at the end of a session | Select only `close-work` and run its closeout sweep within its authority boundary; an ordinary `Did we miss anything?` question does not select it or authorize its writes. |
+| Explicit `$private-insights` with a private directory | Read GitHub read-only and write one private report; without a directory, stop with the setup gap. |
+| `Why did CI fail on this PR?` | Do not select `private-insights`. |
 | Explicit `$prototype`, `$handoff`, or `$learning-workspace` | Select only the named explicit workflow; nearby ordinary requests do not. |
 | `Explain how this parser handles errors` | Do not select `learning-workspace`. |
 
@@ -248,6 +256,7 @@ python3 tests/grilling-skills-test.py
 python3 tests/matt-engineering-skills-test.py
 python3 tests/matt-productivity-skills-test.py
 python3 tests/pi-skills-test.py
+python3 tests/private-insights-test.py
 python3 tests/writing-for-agents-test.py
 bash -n scripts/manage-skills.sh
 bash -n tests/manage-skills-test.sh
