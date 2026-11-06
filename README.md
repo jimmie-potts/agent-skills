@@ -36,6 +36,9 @@ The catalog currently contains:
   planning and approved Jira issue updates with human-owned sprint setup;
 - [`prototype`](skills/prototype/SKILL.md), an explicit or deliberately
   composed bounded experiment or functional delivery-slice workflow;
+- [`private-insights`](skills/private-insights/SKILL.md), an explicit advisory
+  report of delivery evidence from read-only GitHub data, written only to a named
+  private directory;
 - [`research`](skills/research/SKILL.md), source-backed investigation with
   claim-level citations;
 - [`worker-with-astra`](skills/worker-with-astra/SKILL.md), a Luna or Sol worker with the
@@ -164,6 +167,8 @@ the prompts.
 | `Critique this module boundary` | Select `how` Critique, not `codebase-design`. |
 | `Research the current API limits using official sources` | Select `research`; implementation from supplied sources does not. |
 | Explicit `$close-work` at the end of a session | Select only `close-work` and run its closeout sweep within its authority boundary; an ordinary `Did we miss anything?` question does not select it or authorize its writes. |
+| Explicit `$private-insights` with a private directory | Read GitHub read-only and write one private report; without a directory, stop with the setup gap. |
+| `Why did CI fail on this PR?` | Do not select `private-insights`. |
 | Explicit `$prototype`, `$handoff`, or `$learning-workspace` | Select only the named explicit workflow; nearby ordinary requests do not. |
 | `Explain how this parser handles errors` | Do not select `learning-workspace`. |
 
@@ -250,6 +255,7 @@ python3 tests/grilling-skills-test.py
 python3 tests/matt-engineering-skills-test.py
 python3 tests/matt-productivity-skills-test.py
 python3 tests/pi-skills-test.py
+python3 tests/private-insights-test.py
 python3 tests/writing-for-agents-test.py
 bash -n scripts/manage-skills.sh
 bash -n tests/manage-skills-test.sh

@@ -42,6 +42,7 @@ jobs:
           python3 tests/matt-engineering-skills-test.py
           python3 tests/matt-productivity-skills-test.py
           python3 tests/pi-skills-test.py
+          python3 tests/private-insights-test.py
           python3 tests/writing-for-agents-test.py
 
       - name: Check repository shell syntax
