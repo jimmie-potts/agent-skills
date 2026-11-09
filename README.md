@@ -300,8 +300,7 @@ either `--all` or one or more skill names; omission never means “all.”
 
 `install --existing-only` verifies already-correct links without creating links
 or destination roots. It refuses missing or conflicting targets and preserves
-the manager's adjacent ownership checks. The guarded adapter below uses this
-mode after updating existing skill files.
+the manager's adjacent ownership checks.
 
 `--agent both` installs Codex and Claude Code only. It does **not** include
 Grok Bot; install or uninstall Grok destinations with `--agent grok`.
