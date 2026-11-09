@@ -321,6 +321,7 @@ Retained rules that the former selection table also exercised:
 | A worker supplies a patch and changed paths but omits validation outcomes | Return the specific omissions to the same worker and withhold completion; do not infer passing checks. |
 | User forbids all subagents; repository requires independent final reviews | Say at pickup that delivery stops at a ready PR with review pending; never self-review or merge. |
 | Grok Bot final review; no host evidence of enforced read-only tools | Launch instruction-only read-only executor reviewers per grok-reviewers and record the restriction as instruction-only; a missing profile does not make an axis incomplete; claim no `review-work-reviewer` profile. |
+
 Keep the original authority, acceptance and merge gates when evaluating changes
 to this workflow. These cases do not establish live execution or model quality.
 

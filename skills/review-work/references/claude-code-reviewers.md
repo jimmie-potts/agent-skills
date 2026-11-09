@@ -110,7 +110,7 @@ cross-provider reviewer or a required native-control gap, use only the bounded
 describes.
 
 For explicitly required settings only, use [reviewer execution](reviewer-execution.md)'s
-required-setting check and scope check. A user-stated parent level
+setting check and scope check. A user-stated parent level
 does not automatically declare a reviewer's level. Preserve an explicit
 reviewer declaration separately from requested profile values and qualified
 runtime observations; unknown runtime telemetry creates no extra identity gate.

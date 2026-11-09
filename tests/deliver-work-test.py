@@ -260,6 +260,12 @@ class DeliverWorkStructureTest(unittest.TestCase):
                       '- Models:', '- Consultations:'):
             with self.subTest(shape=shape):
                 self.assertNotIn(shape, raw)
+        # No table of any heading and no model alias in the entrypoint: a
+        # differently headed ledger fails here, not only the old shapes.
+        self.assertIsNone(re.search(r'^\|.*\|\s*$', raw, re.M))
+        self.assertIsNone(re.search(
+            r"(?<!worker-with-)\b(?:opus|sonnet|fable|haiku|luna|sol|astra|gpt-6\S*|grok-\d\S*)\b",
+            raw, re.I))
         gate = flat((SKILL / 'references/model-gate.md').read_text())
         self.assertTrue(gate.startswith(
             '# Honor explicitly required settings Read only when the user or '

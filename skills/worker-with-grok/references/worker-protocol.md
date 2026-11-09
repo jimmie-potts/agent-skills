@@ -51,8 +51,10 @@ accept stale task state as current permission.
 
 The labeled return contract extends the shared delivery brief contract in
 `skills/deliver-work/references/worker-briefs.md` (Return completed or blocked
-work) with two pairing labels, Consultations and Settings, which that contract
-leaves to a selected pairing's protocol. Report requested versus runtime-reported model/reasoning and the evidence
+work) with two pairing labels: Consultations, which that contract leaves to a
+selected pairing's protocol, and Settings, which this pairing always reports
+because its advisor protocol depends on requested versus reported settings.
+Report requested versus runtime-reported model/reasoning and the evidence
 source; unexposed identity remains unknown. A verified model mismatch stops this
 pairing. A successful spawn or model menu does not prove runtime identity.
 Use the labels below; include actual checks and required checks not run.
