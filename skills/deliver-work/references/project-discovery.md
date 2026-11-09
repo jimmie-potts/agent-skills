@@ -70,7 +70,10 @@ verify that owner and link its batch record. Feature delivery supplies source
 and acceptance evidence; only the designated deployment owner executes the
 shared installation. Standing authority alone does not transfer ownership.
 Reuse a verified result and scoped writer release without another conversational
-acknowledgment. Keep unfinished acceptance with its owner; apply the project's
+acknowledgment. A scoped writer release is the deployment record's entry stating
+that the designated writer finished its operation on the named target at the
+recorded revision and released the single-writer role for that target. It proves
+only that scope, not client or physical acceptance. Keep unfinished acceptance with its owner; apply the project's
 source-completion rule without claiming installed completion.
 
 After verified merge and applicable post-merge CI:

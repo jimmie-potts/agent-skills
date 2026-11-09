@@ -29,7 +29,9 @@ Recorded section reports the same line. Give every key a value, writing
 its key's line. Write issue links as `owner/repo#<n>` or full URLs. Keys are
 case-sensitive; consumers such as a cross-session digest or an
 installed-revisions view read `Session` and `Deployment gap`, so never rename
-or reorder them.
+or reorder them. The capture receipt is the record's last line: nothing follows
+it except a host's attribution footer after a `---` rule, and the chat report's
+sign-off never enters the record.
 
 Between `**Learnings:**` and `**Handoff:**`, optional `###` subsections may
 hold P3 findings, unrecorded decisions with the alternatives rejected, proposed

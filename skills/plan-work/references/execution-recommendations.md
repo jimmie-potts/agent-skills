@@ -32,6 +32,9 @@ and fields describe a recommendation, not mandatory execution choices.
    `Session type`, `Subagents`, `Reviewers` and `Availability` rows. The established
    three-host format uses `Claude Code`, `Codex` and `Grok` columns. Use it only
    when required; ordinary advice need not cover hosts the user did not ask for.
+   `Model` cells carry the host's model identifier in backticks beside any
+   display name, such as Opus (`opus`) or Sol (`gpt-6.1-sol`), so a delivery
+   that keeps the Execution record can copy it into its `Recommended` row.
    Name unavailable settings honestly. `Checkpoints` covers only uncovered
    decisions, including any uncovered authority for an installation or
    deployment step in acceptance. Existing standing authority needs no renewal.

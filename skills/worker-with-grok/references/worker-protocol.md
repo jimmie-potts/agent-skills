@@ -49,9 +49,10 @@ accept stale task state as current permission.
 
 ## Return completed or blocked work
 
-The labeled return contract matches the shared delivery brief contract in
+The labeled return contract extends the shared delivery brief contract in
 `skills/deliver-work/references/worker-briefs.md` (Return completed or blocked
-work). Report requested versus runtime-reported model/reasoning and the evidence
+work) with two pairing labels, Consultations and Settings, which that contract
+leaves to a selected pairing's protocol. Report requested versus runtime-reported model/reasoning and the evidence
 source; unexposed identity remains unknown. A verified model mismatch stops this
 pairing. A successful spawn or model menu does not prove runtime identity.
 Use the labels below; include actual checks and required checks not run.

@@ -255,6 +255,11 @@ class DeliverWorkStructureTest(unittest.TestCase):
                       'publish the complete checkpoint fields'):
             with self.subTest(stale=stale):
                 self.assertNotIn(stale.lower(), entry.lower())
+        raw = (SKILL / 'SKILL.md').read_text()
+        for shape in ('| Field | Value |', '**Recorded:**', '| Recommended |',
+                      '- Models:', '- Consultations:'):
+            with self.subTest(shape=shape):
+                self.assertNotIn(shape, raw)
         gate = flat((SKILL / 'references/model-gate.md').read_text())
         self.assertTrue(gate.startswith(
             '# Honor explicitly required settings Read only when the user or '

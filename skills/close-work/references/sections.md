@@ -187,7 +187,8 @@ Tracked Follow-up. It becomes a Loose End only when it was required and
 previously authorized and then omitted. Separate future work goes in Tracked
 Follow-ups. A required installation assigned to a verified designated batch owner
 is a tracked handoff, not an omitted installation by this feature task. Reuse the
-batch's verified result and scoped writer release; retain uncovered acceptance.
+batch's verified result and scoped writer release (the deployment record's
+writer-release entry); retain uncovered acceptance.
 Archiving a source session does not establish installed completion.
 
 ### 4. Cleanup
@@ -242,13 +243,13 @@ no general reassurance.
 
 ### 8. TL;DR
 
-At the very bottom, in two sentences at most: what was completed and whether
-the owner must act before archiving. When Loose Ends is "None", end with
-`Safe to archive.`; otherwise end with `Needs attention: <main archival
+The last section, in two sentences at most: what was completed and whether
+the owner must act before archiving. When Loose Ends is "None", those sentences
+end with `Safe to archive.`; otherwise end with `Needs attention: <main archival
 blocker>.` Safe to archive means the work and evidence are preserved and
 remaining follow-ups are durably tracked, not that every follow-up is
 finished. Whether a failed memory save blocks archival follows the memory
-fallback in `SKILL.md`.
+fallback in `SKILL.md`. Only the sign-off line below follows the TL;DR.
 
 After the verdict, close the chat report with one sign-off line: a light,
 good-humored send-off that nods to something from this task, such as a pun on

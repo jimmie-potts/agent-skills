@@ -415,9 +415,11 @@ active model, `effortLevel` and per-model `modelSettings` in `settings.json`
 persist it, and `CLAUDE_CODE_EFFORT_LEVEL` takes precedence for a process;
 `/effort` or the session header shows the effective level. A subagent inherits
 the session level unless its definition sets `effort`, and the `Agent` tool
-has no per-call effort parameter. Codex selects model and reasoning on each
-`collaboration.spawn_agent` call. Verify controls against the live host; the
-catalog neither sets nor reads them.
+has no per-call effort parameter. In Codex, `/model` picks the session's model
+and reasoning effort, `model_reasoning_effort` in `config.toml` persists it and
+`-c model_reasoning_effort=<level>` overrides it for one launch; a worker takes
+its own model and reasoning on each `collaboration.spawn_agent` call. Verify
+controls against the live host; the catalog neither sets nor reads them.
 Choose an advisory pairing deliberately; its own protocol still applies.
 Independent reviewers retain their fresh contexts, read-only restrictions and
 required coverage. Project-required reviewer profiles remain mandatory where

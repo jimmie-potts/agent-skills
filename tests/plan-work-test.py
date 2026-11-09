@@ -239,6 +239,11 @@ class PlanWorkStructureTest(unittest.TestCase):
                       'Name the session type the user'):
             with self.subTest(stale=stale):
                 self.assertNotIn(stale, entry)
+        raw = (SKILL / 'SKILL.md').read_text()
+        for shape in ('| Claude Code |', '| Codex |', '| Grok |', '| Model |',
+                      '**Prompt (', '**Cheaper start:**', '**Start with:**'):
+            with self.subTest(shape=shape):
+                self.assertNotIn(shape, raw)
         reference = ' '.join((
             SKILL / 'references/execution-recommendations.md'
         ).read_text().split())
