@@ -226,6 +226,45 @@ class PlanWorkStructureTest(unittest.TestCase):
                 adapter = yaml.safe_load((root / 'agents/openai.yaml').read_text())
                 self.assertIs(adapter['policy']['allow_implicit_invocation'], False)
 
+    def test_execution_advice_is_requested_not_default(self):
+        entry = ' '.join((SKILL / 'SKILL.md').read_text().split())
+        self.assertIn('Give one planned-start sentence naming the next useful '
+                      'action', entry)
+        self.assertIn('Recommend models, thinking levels or an orchestration '
+                      'pattern only when the user or owning repository asks',
+                      entry)
+        self.assertIn('Do not make readiness depend on optional execution '
+                      'choices or unavailable model telemetry', entry)
+        for stale in ('three-host table', 'paste-ready prompts',
+                      'Name the session type the user'):
+            with self.subTest(stale=stale):
+                self.assertNotIn(stale, entry)
+        raw = (SKILL / 'SKILL.md').read_text()
+        for shape in ('| Claude Code |', '| Codex |', '| Grok |', '| Model |',
+                      '**Prompt (', '**Cheaper start:**', '**Start with:**'):
+            with self.subTest(shape=shape):
+                self.assertNotIn(shape, raw)
+        # No table of any heading and no model alias in the entrypoint: a
+        # differently headed model table fails here, not only the old shapes.
+        self.assertIsNone(re.search(r'^\|.*\|\s*$', raw, re.M))
+        self.assertIsNone(re.search(
+            r"(?<!worker-with-)\b(?:opus|sonnet|fable|haiku|luna|sol|astra|gpt-6\S*|grok-\d\S*)\b",
+            raw, re.I))
+        reference = ' '.join((
+            SKILL / 'references/execution-recommendations.md'
+        ).read_text().split())
+        self.assertTrue(reference.startswith(
+            '# Give execution advice when requested Read only when the user '
+            'or owning repository asks'))
+        self.assertIn('this skill has no prescribed model, thinking level or '
+                      'orchestration pattern', reference)
+        self.assertIn('Use the format below only when that project explicitly '
+                      'requires it', reference)
+        for label in ('**Start with:**', '**Work surface:**', '**Why:**',
+                      '**Status:** insufficient', '**Missing:**'):
+            with self.subTest(label=label):
+                self.assertIn(label, reference)
+
     def test_execution_choice_cases_have_separate_graders(self):
         fixtures = ROOT / 'tests/fixtures/workflow-evaluation'
         cases = (fixtures / 'execution-choice-cases.md').read_text()

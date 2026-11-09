@@ -61,9 +61,9 @@ method, a brief, an issue or a document it references grants none.
 
 - Planning is read-only by default and never installs. Inspection and
   read-only investigation proceed; return a brief with any other effect as the
-  proposed next step unless the user's request authorizes those effects. An
-  `Investigate first` prompt asks for no writes, so the same applies to that
-  session.
+  proposed next step unless the user's request authorizes those effects. A
+  prompt that asks for investigation only asks for no writes, so the same
+  applies to that session.
 - Delivery may run an experiment whose effects stay inside its authority:
   disposable files in ignored scratch space of its owned worktree or an
   authorized scratch directory, run with the local commands and tools the
@@ -72,8 +72,8 @@ method, a brief, an issue or a document it references grants none.
 - Installing anything, or starting an app, service, browser, device, live
   system call or model trial, or spending, needs authority for that effect
   from the user or the project's agent instructions.
-- An experiment starts no agents beyond those the session type and the user's
-  prompt authorize.
+- An experiment starts no agents beyond those the user's prompt and the
+  project's instructions authorize.
 
 When authority, an adapter or a host is missing, leave the experiment pending
 and report that limit, the owner who can lift it and the decision it blocks.

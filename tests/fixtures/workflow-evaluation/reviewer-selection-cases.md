@@ -1,5 +1,9 @@
 # Reviewer selection decision cases
 
+Historical: these cases evaluated the former impact-and-tier reviewer mapping.
+Their model and effort expectations are not acceptance criteria for the current
+policy; use `execution-choice-cases.md` for that.
+
 These records are synthetic. They authorize read-only simulation only. Use the
 candidate review-work, deliver-work, plan-work and code-review entrypoints and
 the operating references they select. Do not read graders, observations,

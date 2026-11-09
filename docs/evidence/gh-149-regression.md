@@ -1,6 +1,5 @@
 # #149 Regression evidence — Grok-compat batch (smaller Acceptance)
 
-Historical results: the installed-files adapter and its test were retired with the shared delivery supervisor. The manual catalog update procedure remains in README.md.
 **Recorded:** 2026-10-07 (updated for evidence-only #155 + smaller Acceptance)
 **Host:** Grok Bot box (`box`, Linux); `gh` as `jimmie-potts`
 **Evidence PR:** https://github.com/jimmie-potts/agent-skills/pull/155 — **docs/evidence only** (no product files vs `main`)
@@ -122,3 +121,7 @@ Production install+readback for skill-touching siblings remains **owner-gated** 
 2. Separate approval for production grok install + host readback.
 3. Optional later: Claude/Codex CLI smoke; UpdateSkill UI; nested reviewer live spawn.
 4. Merge #155 only as docs/evidence after (or with) product merges — never as a product stack.
+
+---
+
+Note (2026-11-01, #169): the installed-files adapter and its test were retired with the shared delivery supervisor; the `installed-files-test.py` row above is historical. The manual catalog update procedure remains in README.md.

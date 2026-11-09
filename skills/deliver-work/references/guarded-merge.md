@@ -65,9 +65,13 @@ repository preflight owns those decisions. Missing/malformed results, nonzero
 exit, unresolved gates and unavailable reads produce zero merge calls.
 
 The Hub `delivery-preflight` schema 1 fixture supplies this shape.
-Discover the effective gate list from Hub's current policy and adapter; its
-historical `ci-main` and other gates are not portable requirements or evidence
-that a proposed replacement is active. Use Hub's declared prerequisites
+Discover the effective gate list from Hub's current policy and adapter. The
+gate set its delivered rules require, including `ci-main` while Hub still lists
+it, stays in force until Hub's own change to that list has merged and been
+verified; a proposed replacement in an open issue or PR activates nothing.
+Current means Hub's default branch as merged; verified means that change's own
+post-merge checks passed. The list is Hub policy, not portable policy for other
+projects. Use Hub's declared prerequisites
 and JSON mode with its expected PR/head/base, preserving all optional evidence
 arguments. This source change does not mutate Hub or make its status command
 mutating. The representative fixture is based on Hub source

@@ -104,7 +104,8 @@ Reusable SDLC workflows also include:
   owning repository's issue form, posts a parseable `## Closeout record` with a
   resume prompt on the owning issue, saves verified memory notes, deletes only
   guarded completed local branches, and reports in eight sections ending
-  `Safe to archive` or `Needs attention`. A project's documented read-only
+  `Safe to archive` or `Needs attention`, followed by one light sign-off
+  line in the chat report only. A project's documented read-only
   resource audit informs its cleanup report without adding deletion authority.
   It never changes product code, installs, merges, closes issues, deletes
   remote branches, removes worktrees or changes another session's work;
@@ -407,6 +408,17 @@ not block work. Report known mismatches with required settings and keep requeste
 settings distinct from observed execution.
 
 Host adapters describe launch and continuation mechanics, not model rankings.
+The controls themselves live in the host. In Claude Code, `claude --effort
+<level>` sets the level for one launch, `/effort <level>` saves it for the
+active model, `effortLevel` and per-model `modelSettings` in `settings.json`
+persist it, and `CLAUDE_CODE_EFFORT_LEVEL` takes precedence for a process;
+`/effort` or the session header shows the effective level. A subagent inherits
+the session level unless its definition sets `effort`, and the `Agent` tool
+has no per-call effort parameter. In Codex, `/model` picks the session's model
+and reasoning effort, `model_reasoning_effort` in `config.toml` persists it and
+`-c model_reasoning_effort=<level>` overrides it for one launch; a worker takes
+its own model and reasoning on each `collaboration.spawn_agent` call. Verify
+controls against the live host; the catalog neither sets nor reads them.
 Choose an advisory pairing deliberately; its own protocol still applies.
 Independent reviewers retain their fresh contexts, read-only restrictions and
 required coverage. Project-required reviewer profiles remain mandatory where
