@@ -54,9 +54,9 @@ that fixed it, and the issue that owns the miss, all in
   Node timer counts its delay from the event loop's cached millisecond time,
   which can lag the transport's nanosecond clock, so the timer can fire just
   before 800 ms by the transport clock. `sendReturn` then refuses the return as
-  early and the gesture ends `uncertain`. The removed commit used to sit between
-  the timer and the return and covered the gap; removing it exposes the early
-  edge while saving time at the late edge.
+  early and the gesture ends `uncertain`. The removed commit ran after the
+  sleep and before `sendReturn`, and its time covered the gap. Removing it saves
+  time at the late edge of the window but exposes the early edge.
 - **Counts when** the finding says that the sleep does not guarantee 800 ms on
   the transport clock and that the return can be refused as early, and asks for
   the hold to re-check `transport.nowNs()` and sleep again until it has elapsed.

@@ -98,14 +98,14 @@ reads a monotonic nanosecond clock. `HOLD_NS` is `800_000_000n`.
 ```diff
 --- a/src/gesture.ts
 +++ b/src/gesture.ts
-@@ -88,9 +88,8 @@ class Owner {
+@@ -88,8 +88,7 @@ class Owner {
      const sentAt = await this.#send(outbound);
 -    await this.#transmitted(row);
 +    await this.#transmitted(row, false);
      await this.#confirmMotion(sentAt, signal);
--    await this.#commit(() => {this.#state.phase = 'return';});
      const remaining = Math.ceil(Number(sentAt + HOLD_NS - this.#transport.nowNs()) / 1_000_000);
      if (remaining > 0) await this.#sleep(remaining, signal);
+-    await this.#commit(() => {this.#state.phase = 'return';});
      await this.#sendReturn(sentAt);
 -    await this.#transmitted(row);
 +    await this.#transmitted(row, true);

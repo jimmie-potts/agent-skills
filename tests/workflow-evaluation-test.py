@@ -152,11 +152,16 @@ class ReviewerCasesTest(unittest.TestCase):
     SOURCE = re.compile(
         r'\[#(\d+)\]\(https://github\.com/jimmie-potts/agent-device-hub/'
         r'(pull|issues)/(\d+)\)')
+    SECRET = re.compile(
+        r'(?i)["\']?\b(api[_-]?key|token|secret|password|passwd)\b["\']?\s*[:=]'
+        r'|(?-i:\bBearer)\s+\S')
 
     def sections(self, name):
         text = (self.DIRECTORY / name).read_text()
         parts = re.split(r'^## (RV\d\d)\b.*$', text, flags=re.MULTILINE)
-        return dict(zip(parts[1::2], parts[2::2]))
+        ids = parts[1::2]
+        self.assertEqual(len(ids), len(set(ids)), f'{name} repeats a case ID')
+        return dict(zip(ids, parts[2::2]))
 
     def test_inputs_and_graders_pair_up(self):
         cases, graders = self.sections('cases.md'), self.sections('graders.md')
@@ -196,7 +201,27 @@ class ReviewerCasesTest(unittest.TestCase):
                 self.assertIsNone(re.search(r'\b\d{1,3}(\.\d{1,3}){3}\b', text))
                 self.assertIsNone(re.search(r'[\w.+-]+@[\w-]+\.\w', text))
                 self.assertNotRegex(text, r'/(Users|home)/\w')
-                self.assertNotRegex(text, r'(?i)(api[_-]?key|token|secret)\s*[:=]')
+                self.assertIsNone(self.SECRET.search(text))
+
+    def test_secret_pattern_matches_common_shapes(self):
+        for sample in ('{"token": "abc"}', '"secret":"x"', 'password = "hunter2"',
+                       'Authorization: Bearer abc', 'API_KEY=abc', "'passwd': 'x'"):
+            with self.subTest(sample=sample):
+                self.assertIsNotNone(self.SECRET.search(sample))
+        for sample in ('tokens are refused', 'a secret-free fixture',
+                       'no password here', 'bearer of news'):
+            with self.subTest(sample=sample):
+                self.assertIsNone(self.SECRET.search(sample))
+
+    def test_sections_refuse_a_repeated_case_id(self):
+        with tempfile.TemporaryDirectory() as directory:
+            (Path(directory) / 'cases.md').write_text('## RV01: A\nx\n## RV01: B\ny\n')
+            original, self.DIRECTORY = self.DIRECTORY, Path(directory)
+            try:
+                with self.assertRaises(AssertionError):
+                    self.sections('cases.md')
+            finally:
+                self.DIRECTORY = original
 
     def test_format_names_the_withholding_rule(self):
         text = ' '.join((self.DIRECTORY / 'case-format.md').read_text().split())
