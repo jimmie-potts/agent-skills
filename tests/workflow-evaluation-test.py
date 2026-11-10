@@ -5,6 +5,7 @@ import hashlib
 import importlib.util
 import json
 from pathlib import Path
+import re
 import subprocess
 import sys
 import tempfile
@@ -144,6 +145,64 @@ class WorkflowEvaluationTest(unittest.TestCase):
                         'test_nonretryable_propagates_once',
                         'test_final_exception_identity'):
             self.assertIn(failure, result.stderr)
+
+
+class ReviewerCasesTest(unittest.TestCase):
+    DIRECTORY = ROOT / 'tests/fixtures/reviewer-cases'
+    SOURCE = re.compile(
+        r'\[#(\d+)\]\(https://github\.com/jimmie-potts/agent-device-hub/'
+        r'(pull|issues)/(\d+)\)')
+
+    def sections(self, name):
+        text = (self.DIRECTORY / name).read_text()
+        parts = re.split(r'^## (RV\d\d)\b.*$', text, flags=re.MULTILINE)
+        return dict(zip(parts[1::2], parts[2::2]))
+
+    def test_inputs_and_graders_pair_up(self):
+        cases, graders = self.sections('cases.md'), self.sections('graders.md')
+        self.assertGreaterEqual(len(cases), 5)
+        self.assertEqual(list(cases), [f'RV{n:02}' for n in range(1, len(cases) + 1)])
+        self.assertEqual(list(cases), list(graders))
+        for case, body in cases.items():
+            with self.subTest(case=case):
+                for part in ('**Requirement.**', '**Diff.**', '```diff'):
+                    self.assertIn(part, body)
+
+    def test_inputs_carry_no_sources_or_answers(self):
+        text = (self.DIRECTORY / 'cases.md').read_text()
+        for leak in ('http', 'github', '**Defect.**', '**Source.**',
+                     '**Counts when**', 'agent-device-hub'):
+            self.assertNotIn(leak, text)
+        self.assertIsNone(re.search(r'#\d', text))
+
+    def test_each_grader_links_its_real_miss(self):
+        for case, body in self.sections('graders.md').items():
+            with self.subTest(case=case):
+                for part in ('**Defect.**', '**Counts when**',
+                             '**Expected severity.**', '**Near misses.**'):
+                    self.assertIn(part, body)
+                source = body.split('**Source.**', 1)[1]
+                links = self.SOURCE.findall(source)
+                self.assertTrue(all(label == number for label, _, number in links))
+                self.assertIn('introduced in', ' '.join(source.split()).lower())
+                self.assertGreaterEqual(
+                    sum(kind == 'pull' for _, kind, _ in links), 2)
+                self.assertIn('issues', [kind for _, kind, _ in links])
+
+    def test_cases_stay_synthetic(self):
+        for path in self.DIRECTORY.iterdir():
+            text = path.read_text()
+            with self.subTest(path=path.name):
+                self.assertIsNone(re.search(r'\b\d{1,3}(\.\d{1,3}){3}\b', text))
+                self.assertIsNone(re.search(r'[\w.+-]+@[\w-]+\.\w', text))
+                self.assertNotRegex(text, r'/(Users|home)/\w')
+                self.assertNotRegex(text, r'(?i)(api[_-]?key|token|secret)\s*[:=]')
+
+    def test_format_names_the_withholding_rule(self):
+        text = ' '.join((self.DIRECTORY / 'case-format.md').read_text().split())
+        for part in ('`cases.md`', '`graders.md`', 'by access', 'instruction-only',
+                     'authorize no trial', 'issues/82'):
+            self.assertIn(part, text)
 
 
 if __name__ == '__main__':
