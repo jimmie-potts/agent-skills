@@ -152,10 +152,9 @@ never merge different failure conditions:
 The state is `unresolved`, `resolved`, `regression`, `pre-existing` with its
 owner and follow-up in the text, or, for P3 only, `accepted` or `deferred`
 with its reason in the text. A project whose tooling accepts a fixed list of
-states records a `pre-existing` finding as `deferred`, at its severity and
-naming it as outside the change in its text, until its parser accepts
-`pre-existing`. Findings keep their IDs across rounds, reviewers and
-resumption, as [review cycles](review-cycles.md) describes.
+states defines, in its own rule, how it records a `pre-existing` finding until
+its parser accepts `pre-existing`. Findings keep their IDs across rounds,
+reviewers and resumption, as [review cycles](review-cycles.md) describes.
 
 Then write `**Coverage:**` with the changed areas each axis covered, the gaps,
 the evidence limits and any required specialist or human review still pending.

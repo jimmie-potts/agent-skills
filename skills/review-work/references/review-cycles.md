@@ -144,7 +144,8 @@ candidate cannot lower; record policy as the result contract describes.
 The default limit is three counted final rounds of one work item. A final
 round counts when it assesses a new candidate or one corrected to resolve a P0
 to P2 finding, whatever the file type. A confirmation after a base move, a pure
-rebase, or a correction that resolves no P0 to P2 finding does not count. A
+rebase, or a correction that targets no P0 to P2 finding does not count, so
+the count is fixed before the round starts. A
 caller or project may set a different limit or counting definition; the
 coordinator never raises its own. Record the round limit and its source, or
 `default`, the counted rounds apart from the `Round` number, and each explicit
@@ -162,8 +163,9 @@ When the last counted round the limit allows still leaves a P0 to P2 finding
 open, stop. Return the latest result unchanged for the comparison it reviewed,
 with the open finding IDs, the consumed and unknown capacity and the next
 owner, and propose a changed approach, such as a design decision, a split or a
-requirement clarification, instead of another correction round. When the owner
-chooses a changed approach, it starts a new allowance; otherwise another
+requirement clarification, instead of another correction round. A changed
+approach chosen by the user or the project's decision owner starts a new
+allowance; the coordinator never chooses it. Otherwise another
 counted round needs a new limit from the caller or project. Any later candidate
 has no result: its axes are `incomplete`. A new pull request, or a resumed or
 renamed review, gets no fresh allowance without that choice. An exhausted limit

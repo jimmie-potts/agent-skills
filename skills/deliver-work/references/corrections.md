@@ -91,8 +91,9 @@ limit. Without an explicit cap, unknown cost alone creates no spending gate.
 
 At the limit, start no more affected attempts, corrections, reviews or dependent
 work. At the round limit, propose the changed approach to the owner instead of
-a further correction pass. The owner's choice of a changed approach starts a new
-allowance; otherwise another pass needs a new limit from the user or project.
+a further correction pass. A changed approach chosen by the user or the
+project's decision owner, never the coordinator, starts a new allowance;
+otherwise another pass needs a new limit from the user or project.
 Safely stop owned in-flight work through supported controls; reconcile
 pending external effects rather than duplicating or forgetting them. Record any
 unavoidable overrun or unknown outcome. Preserve partial artifacts and hand off:
