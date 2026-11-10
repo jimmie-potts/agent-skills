@@ -137,7 +137,7 @@ Read each reference below at its trigger:
   work, ordering tasks or dispatching.
 - [Corrections and explicit limits](references/corrections.md): before acting
   on a review result, correcting findings or failed acceptance, or working under
-  an explicit round, time or spend limit.
+  a round, time or spend limit.
 - [Verification maintenance](references/verification-maintenance.md): when
   changed behavior has a project-documented feature map, recipe, driver or
   check naming its expected observations, or a high-value changed criterion
