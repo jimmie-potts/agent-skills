@@ -83,10 +83,13 @@ needed for another reason.
 
 A finding whose failure condition lies only in code the frozen comparison did
 not change is `pre-existing`, at any severity, unless the change makes that
-defect reachable or worse; then it is an ordinary finding. Record it with the
-returns' changed-code evidence, an owner and a proposed follow-up. It makes no
-axis `action-required` and starts no correction round, unless a project rule
-blocks on it. The caller decides whether to file the follow-up.
+defect reachable or worse; then it is an ordinary finding. A finding the
+requirements put in scope, or an omission of required work, is never
+`pre-existing`. Record it with the returns' changed-code evidence, an owner and
+a proposed follow-up. It makes no axis `action-required` and starts no
+correction round. Where a project rule blocks on such a finding, record it
+`unresolved` instead, noting its location as outside the change. The caller
+decides whether to file the follow-up.
 
 ## Settle disagreements with evidence
 
@@ -118,7 +121,9 @@ inputs and coverage remain valid.
 
 Do not repeat settled findings. A resolved finding, or one with a recorded P3
 or `pre-existing` disposition, stays settled unless the correction touches its
-behavior or new evidence shows it returned, which makes it a regression.
+behavior or makes it reachable or worse, or new evidence shows it returned. A
+returned resolved finding is a `regression`; a `pre-existing` finding the
+correction makes reachable or worse becomes an ordinary `unresolved` finding.
 
 ## Renew the final axes
 
@@ -136,26 +141,33 @@ candidate cannot lower; record policy as the result contract describes.
 
 ## Honor round and explicit limits
 
-The default limit is three final rounds of one work item, counted by the
-`Round` number. A caller or project may set a different round limit; the
+The default limit is three counted final rounds of one work item. A final
+round counts when it assesses a new candidate or one corrected to resolve a P0
+to P2 finding, whatever the file type. A confirmation after a base move, a pure
+rebase, or a correction that resolves no P0 to P2 finding does not count. A
+caller or project may set a different limit or counting definition; the
 coordinator never raises its own. Record the round limit and its source, or
-`default`, and each explicit time or spending limit, in the input before
-limited work starts, with the counting definition its source gives; task rounds
-count only when that definition includes them. Check remaining capacity before
-each round, including rounds already in flight, and start none beyond the
-limit. Missing accounting is unknown, never zero; when compliance with a limit
+`default`, the counted rounds apart from the `Round` number, and each explicit
+time or spending limit, in the input before limited work starts, with the
+counting definition its source gives; task rounds count only when that
+definition includes them. Check remaining capacity before each counted round,
+including rounds already in flight, and start none beyond the limit. Missing
+accounting is unknown, never zero; when compliance with a limit
 cannot be established, do not start the round. No default time or spending
 limit exists, and unknown cost alone creates no gate. Within the limit,
 productive severity-driven rounds continue while the caller keeps supplying
 changed candidates.
 
-At the limit, stop. Return the latest result unchanged for the comparison it
-reviewed, with the open finding IDs, the consumed and unknown capacity and the
-next owner, and propose a changed approach, such as a design decision, a split
-or a requirement clarification, instead of another correction round. Another
-round needs a new limit from the caller or project. Any later candidate has no
-result: its axes are `incomplete`. A resumed or renamed review gets no fresh
-allowance. An exhausted limit never resolves a finding or satisfies an axis.
+When the last counted round the limit allows still leaves a P0 to P2 finding
+open, stop. Return the latest result unchanged for the comparison it reviewed,
+with the open finding IDs, the consumed and unknown capacity and the next
+owner, and propose a changed approach, such as a design decision, a split or a
+requirement clarification, instead of another correction round. When the owner
+chooses a changed approach, it starts a new allowance; otherwise another
+counted round needs a new limit from the caller or project. Any later candidate
+has no result: its axes are `incomplete`. A new pull request, or a resumed or
+renamed review, gets no fresh allowance without that choice. An exhausted limit
+never resolves a finding or satisfies an axis.
 
 Design reference: [Superpowers fix verification](https://github.com/openai/plugins/blob/33bd9529725fcee78c9e51fcbaa93cd963c3a47b/plugins/superpowers/skills/subagent-driven-development/re-review-prompt.md)
 informs the prior-revision and per-finding inputs. Its unconditional exclusion of

@@ -117,11 +117,11 @@ Apply the same cause distinction on both hosts without replacing their adapters.
 
 ## RC10: Progress at later rounds
 
-Variant A: three completed final rounds have each resolved an evidenced defect.
-Round three also reports a new P1 compatibility defect with a concrete
-reproducible case. Scope is understood and no explicit limit exists. The worker
-offers a fourth correction round; the team instead suggests merging with a
-follow-up issue for the P1.
+Variant A: three completed counted final rounds have each resolved an evidenced
+P1 or P2 defect. Round three also reports a new P1 compatibility defect with a
+concrete reproducible case. Scope is understood and no explicit limit exists.
+The worker offers a fourth correction round; the team instead suggests merging
+with a follow-up issue for the P1.
 
 Variant B: the finding count drops from six to two, but the same two P1 behaviors
 still fail. The worker has changed wording and assertions without changing the
@@ -133,6 +133,10 @@ can simply be treated as unrelated progress.
 
 Variant D: the same history as variant A, but the project sets a limit of five
 final rounds.
+
+Variant E: the third counted final round is `satisfied` on both axes. The
+target then advances, the branch is rebased with no other change, and the
+coordinator wants a confirmation round on the rebased head.
 
 ## RC11: Explicit round and time limits
 
@@ -227,5 +231,7 @@ a vague name, is accepted with its reason and owner. The worker corrects F41 and
 F42 at H2 and asks for a full re-review that re-raises every earlier finding.
 Decide each finding's disposition and the Standards status at final 1, then the
 inputs and inspection boundary of the H2 round and how F40 and F43 are carried.
-Separately, consider the same final 1 in a project whose policy blocks any open
-P1 wherever it lies.
+Separately, consider three variants of final 1: a project whose policy blocks
+any open P1 wherever it lies; an issue that asks this change to fix the CSV
+parser, which the candidate never touches; and an H2 correction that adds the
+first call to the CSV parser.

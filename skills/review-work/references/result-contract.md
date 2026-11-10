@@ -43,10 +43,12 @@ Record these before the first reviewer starts, and again for each round:
   cross-provider routing applies, include its trigger, selected provider/axis,
   qualification evidence or fallback reason, and actual coverage. Provider
   diversity alone supplies no verdict or extra axis.
-- Limits: the round limit, three final rounds with source `default` unless
-  the caller or project sets another, and each explicit time or spending limit,
-  each with its source, scope, unit, threshold, consumed amount and accounting
-  source. Missing accounting is unknown, never zero.
+- Limits: the round limit, with source `default` unless the caller or
+  project sets another, as [review cycles](review-cycles.md#honor-round-and-explicit-limits)
+  defines it, with its counted rounds recorded apart from the `Round` number,
+  and each explicit time or spending limit, each with its source, scope, unit,
+  threshold, consumed amount and accounting source. Missing accounting is
+  unknown, never zero.
 - History: earlier rounds with their comparisons, and stable finding IDs with
   state and the latest comparison that reviewed them.
 
@@ -149,8 +151,11 @@ never merge different failure conditions:
 
 The state is `unresolved`, `resolved`, `regression`, `pre-existing` with its
 owner and follow-up in the text, or, for P3 only, `accepted` or `deferred`
-with its reason in the text. Findings keep their IDs across rounds, reviewers
-and resumption, as [review cycles](review-cycles.md) describes.
+with its reason in the text. A project whose tooling accepts a fixed list of
+states records a `pre-existing` finding as `deferred`, at its severity and
+naming it as outside the change in its text, until its parser accepts
+`pre-existing`. Findings keep their IDs across rounds, reviewers and
+resumption, as [review cycles](review-cycles.md) describes.
 
 Then write `**Coverage:**` with the changed areas each axis covered, the gaps,
 the evidence limits and any required specialist or human review still pending.

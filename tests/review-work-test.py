@@ -426,6 +426,15 @@ class ResultContractTest(unittest.TestCase):
         self.assertIn(('F3', 'P2', ['standards'], 'pre-existing'),
                       [finding[:4] for finding in complete['findings']])
         self.assertEqual(rows['Standards'], 'satisfied')
+        # A project rule that blocks on it records the finding `unresolved`.
+        blocked = (examples()[0]
+                   .replace('P2 0; P3 0', 'P2 1; P3 0')
+                   .replace('| Standards | satisfied |',
+                            '| Standards | action-required |')
+                   .replace('F3 (P2, standards, pre-existing)',
+                            'F3 (P2, standards, unresolved)'))
+        self.assertEqual(parse_review_result(blocked)['rows']['Standards'],
+                         'action-required')
         other = standalone['rows']
         self.assertEqual(other['Specification'], 'incomplete')
         self.assertFalse(accepts(standalone, other['Comparison'],
@@ -493,7 +502,7 @@ class ResultContractTest(unittest.TestCase):
                 'standards-reviewer-2: specification', 'repeated reviewer'),
             'open count disagrees': (
                 standalone, 'P0 0; P1 1;', 'P0 0; P1 0;', 'count disagrees'),
-            'pre-existing finding left open': (
+            'project-blocked finding with its axis satisfied': (
                 good.replace('P2 0; P3 0', 'P2 1; P3 0'),
                 'F3 (P2, standards, pre-existing)',
                 'F3 (P2, standards, unresolved)', 'satisfied with an open'),

@@ -60,7 +60,7 @@ not mandate a stronger model. Reassess the approach using
 ladder. Preserve explicit limits and failure history.
 
 Continue productive, severity-driven corrections within review-work's round
-limit: three final rounds unless the user or project sets another. Progress
+limit, its default unless the user or project sets another. Progress
 needs evidence that behavior, acceptance coverage or understanding has
 improved; fewer findings alone prove none of these. Repeated
 new blockers that expose the same misunderstood behavior also trigger
@@ -91,8 +91,9 @@ limit. Without an explicit cap, unknown cost alone creates no spending gate.
 
 At the limit, start no more affected attempts, corrections, reviews or dependent
 work. At the round limit, propose the changed approach to the owner instead of
-a further correction pass; another pass needs a new limit from the user or
-project. Safely stop owned in-flight work through supported controls; reconcile
+a further correction pass. The owner's choice of a changed approach starts a new
+allowance; otherwise another pass needs a new limit from the user or project.
+Safely stop owned in-flight work through supported controls; reconcile
 pending external effects rather than duplicating or forgetting them. Record any
 unavoidable overrun or unknown outcome. Preserve partial artifacts and hand off:
 
