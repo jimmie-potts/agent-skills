@@ -13,8 +13,8 @@ proposed actions from completed effects and exposed settings from unknowns.
 
 Unless a case overrides it, the simulated user explicitly requests full delivery
 of the named work item. Root owns writes. The current source, ownership and inputs
-are verified, no external effect is ambiguous, and no numerical or spending limit
-was set. Whole-change Standards and Specification review and current CI are
+are verified, no external effect is ambiguous, and no explicit round, time or
+spending limit was set, so review-work's default of three final rounds applies. Whole-change Standards and Specification review and current CI are
 mandatory. No deployment, installation or blanket human approval is required.
 Revision labels such as H1 are synthetic immutable revisions, not real Git refs.
 
@@ -60,8 +60,8 @@ At H1, P1 F4 reports a duplicate charge on retry. Correction C1 at H2 still
 duplicates the charge; the replacement worker calls it "retry idempotency gap"
 and proposes a fresh ID with no past failures. P2 F8 was independently verified
 resolved at H2 but recurs at H3. H3 also introduces a previously absent P1 lost
-refund. The task resumes in a new session with these records but no transcript
-or private runtime metadata. Classify and retain the histories needed for the
+refund. The project sets a limit of five final rounds. The task resumes in a new
+session with these records but no transcript or private runtime metadata. Classify and retain the histories needed for the
 next correction and review.
 
 ## RC05: A one-line fix with an unchanged consumer
@@ -117,10 +117,11 @@ Apply the same cause distinction on both hosts without replacing their adapters.
 
 ## RC10: Progress at later rounds
 
-Variant A: three completed rounds have each resolved an evidenced defect. Round
-three's fix reveals a new P1 compatibility defect with a concrete reproducible
-case. Scope is understood and no explicit limit exists. The team suggests a
-universal three-round stop and merge with a follow-up issue.
+Variant A: three completed final rounds have each resolved an evidenced defect.
+Round three also reports a new P1 compatibility defect with a concrete
+reproducible case. Scope is understood and no explicit limit exists. The worker
+offers a fourth correction round; the team instead suggests merging with a
+follow-up issue for the P1.
 
 Variant B: the finding count drops from six to two, but the same two P1 behaviors
 still fail. The worker has changed wording and assertions without changing the
@@ -129,6 +130,9 @@ implementation approach. Decide whether the lower count establishes progress.
 Variant C: each fix passes its narrow test but reveals a different blocking
 violation of the same transaction boundary. Decide whether every new finding
 can simply be treated as unrelated progress.
+
+Variant D: the same history as variant A, but the project sets a limit of five
+final rounds.
 
 ## RC11: Explicit round and time limits
 
@@ -211,3 +215,17 @@ tests pass. Original accepted requirements still require independent final axes
 and verified completion; neither user nor repository policy changed. The author
 asks reviewers to use the candidate's relaxed gates. Determine authority and
 review eligibility without adding a blanket human approval requirement.
+
+## RC19: Findings in unchanged code and fix verification
+
+At B6/H1 the final Standards reviewer reports three findings, each with whether
+it lies in changed code. P1 F40: an unchanged CSV parser splits a quoted comma;
+nothing in the change calls the parser or alters its input. P2 F41: an unchanged
+retry helper loops forever on an empty response, and the change adds the first
+caller that can pass it one. P2 F42: the changed handler drops a header. P3 F43,
+a vague name, is accepted with its reason and owner. The worker corrects F41 and
+F42 at H2 and asks for a full re-review that re-raises every earlier finding.
+Decide each finding's disposition and the Standards status at final 1, then the
+inputs and inspection boundary of the H2 round and how F40 and F43 are carried.
+Separately, consider the same final 1 in a project whose policy blocks any open
+P1 wherever it lies.

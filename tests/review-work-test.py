@@ -56,7 +56,8 @@ FINDING_ID = r'[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*'
 ALIAS = rf'[a-z]+:{FINDING_ID}'
 FINDING = re.compile(
     rf'- ({FINDING_ID}) \((P[0-3]), ([a-z]+(?:\+[a-z]+)*), '
-    r'(unresolved|resolved|regression|accepted|deferred)\): ([^\s:,]+):\d'
+    r'(unresolved|resolved|regression|pre-existing|accepted|deferred)'
+    r'\): ([^\s:,]+):\d'
     r'(?:(?!; aliases ).)*?'
     rf'(?:; aliases ({ALIAS}(?:, {ALIAS})*))?; '
     r'first ((?:final|task) \d+), latest ((?:final|task) \d+)')
@@ -421,6 +422,10 @@ class ResultContractTest(unittest.TestCase):
         rows = complete['rows']
         self.assertTrue(accepts(complete, rows['Comparison'], rows['Requirements'],
                                 rows['Policy']))
+        # A pre-existing P2 is recorded but blocks no axis and is not open.
+        self.assertIn(('F3', 'P2', ['standards'], 'pre-existing'),
+                      [finding[:4] for finding in complete['findings']])
+        self.assertEqual(rows['Standards'], 'satisfied')
         other = standalone['rows']
         self.assertEqual(other['Specification'], 'incomplete')
         self.assertFalse(accepts(standalone, other['Comparison'],
@@ -488,6 +493,13 @@ class ResultContractTest(unittest.TestCase):
                 'standards-reviewer-2: specification', 'repeated reviewer'),
             'open count disagrees': (
                 standalone, 'P0 0; P1 1;', 'P0 0; P1 0;', 'count disagrees'),
+            'pre-existing finding left open': (
+                good.replace('P2 0; P3 0', 'P2 1; P3 0'),
+                'F3 (P2, standards, pre-existing)',
+                'F3 (P2, standards, unresolved)', 'satisfied with an open'),
+            'pre-existing finding counted as open': (
+                good, 'P1 0; P2 0; P3 0', 'P1 0; P2 1; P3 0',
+                'count disagrees'),
             'deferred blocker': (
                 standalone, '(P1, standards, unresolved)',
                 '(P1, standards, deferred)', 'only P3'),
@@ -624,7 +636,9 @@ class ResultContractTest(unittest.TestCase):
     def test_return_containing_a_tilde_fence(self):
         good = examples()[0]
         summary, (standards, specification) = split_returns(good)
-        body = 'Verdict: satisfied.\n~~~\nquoted fence\n~~~\nCoverage: all.\n'
+        body = ('Verdict: satisfied.\n~~~\nquoted fence\n~~~\n'
+                'Pre-existing P0 to P2 findings:\n'
+                '- P2 src/csv.ts:18: not in changed code.\nCoverage: all.\n')
         digest = hashlib.sha256(body.encode()).hexdigest()
         head = standards.split('~~~text\n', 1)[0]
         head = re.sub(r'sha256:[0-9a-f]{64}', 'sha256:' + digest, head)
@@ -917,7 +931,8 @@ class SharedFindingTest(unittest.TestCase):
         parse_review_result(carried)
         with self.assertRaisesRegex(ValueError, 'unknown axis'):
             parse_review_result(carried.replace(
-                'latest final 1\n\n**Coverage', 'latest final 2\n\n**Coverage'))
+                'prefers it; first final 1, latest final 1\n',
+                'prefers it; first final 1, latest final 2\n'))
 
 
 class MigrationTest(unittest.TestCase):

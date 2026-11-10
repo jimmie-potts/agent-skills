@@ -47,6 +47,8 @@ axis of a frozen comparison, review only that axis:
   independence, rounds and the result.
 - Return findings in the assigned format, P0 to P2 blockers first and P3
   observations separately, with the coverage and evidence limits of the review.
+- For each finding, say whether its failure condition lies in changed code.
+  When it does not, say whether the change makes the defect reachable or worse.
 
 ## Return findings
 

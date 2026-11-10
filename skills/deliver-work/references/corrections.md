@@ -1,9 +1,9 @@
 # Correct findings and honor explicit limits
 
 Read before acting on a review result, correcting a finding or failed
-acceptance, diagnosing a surviving blocker, or working under an explicit round,
-time or spending limit. The composed `review-work` skill owns review rounds,
-finding identity, fix verification and the per-axis result.
+acceptance, diagnosing a surviving blocker, or working under a round, time or
+spending limit. The composed `review-work` skill owns review rounds, finding
+identity, fix verification, the default round limit and the per-axis result.
 [Model selection](model-selection.md) and its host adapters own worker settings
 when execution choices need reassessment. [PR supervision](pr-supervision.md) owns provider
 feedback and check reruns.
@@ -34,7 +34,8 @@ names, then bring the changed candidate back to review-work for a new round with
 the finding IDs and the fix diff. For `incomplete`, obtain the missing
 specification, reviewer, control or evidence it names, or report the gap and its
 owner; never treat it as approval. Record a disposition for each P3 finding; a
-P3-only result starts no correction pass by itself.
+P3-only result starts no correction pass by itself. A `pre-existing` finding
+starts none either; hand its follow-up to the recorded owner.
 
 Disputed findings go back to review-work with concrete evidence for
 independent reassessment. A finding that depends on a requirement the sources
@@ -58,9 +59,10 @@ not mandate a stronger model. Reassess the approach using
 [execution choices](model-selection.md); there is no fixed worker escalation
 ladder. Preserve explicit limits and failure history.
 
-Continue productive, severity-driven corrections without a universal numerical
-cap. Progress needs evidence that behavior, acceptance coverage or
-understanding has improved; fewer findings alone prove none of these. Repeated
+Continue productive, severity-driven corrections within review-work's round
+limit: three final rounds unless the user or project sets another. Progress
+needs evidence that behavior, acceptance coverage or understanding has
+improved; fewer findings alone prove none of these. Repeated
 new blockers that expose the same misunderstood behavior also trigger
 reassessment. Do not keep retrying an unchanged approach. If reassessment
 yields no viable changed action, report the concrete blocker and next owner
@@ -80,15 +82,17 @@ accounting.
 Check remaining capacity before corrections, dispatch, renewed review and
 consequential effects, and at responsive checkpoints during active work. Account
 for in-flight commitments or reliable upper bounds before starting more work. Do
-not introduce a default spend allowance or review cap. Keep subscription usage
-separate from API dollars. Missing telemetry is unknown, never zero. If a hard
+not introduce a default spend allowance or any cap beyond review-work's
+default round limit. Keep subscription usage separate from API dollars. Missing telemetry is unknown, never zero. If a hard
 cap cannot be enforced with observable accounting or a reliable bound, pause
 actions whose compliance cannot be established. Reconcile the gap or obtain a
 limit/control decision; continue independently authorized work outside that
 limit. Without an explicit cap, unknown cost alone creates no spending gate.
 
 At the limit, start no more affected attempts, corrections, reviews or dependent
-work. Safely stop owned in-flight work through supported controls; reconcile
+work. At the round limit, propose the changed approach to the owner instead of
+a further correction pass; another pass needs a new limit from the user or
+project. Safely stop owned in-flight work through supported controls; reconcile
 pending external effects rather than duplicating or forgetting them. Record any
 unavoidable overrun or unknown outcome. Preserve partial artifacts and hand off:
 

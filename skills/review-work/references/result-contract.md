@@ -43,9 +43,10 @@ Record these before the first reviewer starts, and again for each round:
   cross-provider routing applies, include its trigger, selected provider/axis,
   qualification evidence or fallback reason, and actual coverage. Provider
   diversity alone supplies no verdict or extra axis.
-- Limits: each explicit round, time or spending limit with its source, scope,
-  unit, threshold, consumed amount and accounting source. `none` when no limit
-  was set; missing accounting is unknown, never zero.
+- Limits: the round limit, three final rounds with source `default` unless
+  the caller or project sets another, and each explicit time or spending limit,
+  each with its source, scope, unit, threshold, consumed amount and accounting
+  source. Missing accounting is unknown, never zero.
 - History: earlier rounds with their comparisons, and stable finding IDs with
   state and the latest comparison that reviewed them.
 
@@ -69,8 +70,8 @@ still prevents `satisfied` after the fix, and the caller obtains it with the
 correction. Findings from a failed return leave the axis `incomplete` instead,
 as [reviewer execution](reviewer-execution.md) describes. A required specialist
 axis has its own reviewer entry, and the coverage states its status with the
-same vocabulary. Unresolved P3 findings do not block an axis; record their
-disposition. A consumer accepts a final result
+same vocabulary. Unresolved P3 findings and `pre-existing` findings do not
+block an axis; record their disposition. A consumer accepts a final result
 only when both axes are `satisfied`, every required specialist axis is
 `satisfied`, its policy is known, and its comparison, requirement version and
 policy equal the current ones; any other result blocks the gate it governs.
@@ -126,7 +127,9 @@ condition keeps one ID however many axes raise it:
 - Support: each listed axis's retained return in the finding's latest round
   must raise or reassess it among its findings; naming the file only in its
   coverage is not support. The finding becomes `resolved` only when every
-  listed axis's return confirms the fix; until then it keeps its earlier state.
+  listed axis's return confirms the fix, and `pre-existing` only when every
+  listed axis's return places it outside the changed code and not made
+  reachable or worse by the change; until then it keeps its earlier state.
 
 When a reviewer's return names the finding by its own ID rather than this one,
 record that raw ID as an alias qualified by the axis whose return used it, such
@@ -144,10 +147,10 @@ never merge different failure conditions:
   finding, and no alias is another finding's ID. Another axis may reuse the
   same raw ID for a different condition.
 
-The state is `unresolved`, `resolved`, `regression`, or, for P3 only,
-`accepted` or `deferred` with its reason in the text. Findings keep their IDs
-across rounds, reviewers and resumption, as [review cycles](review-cycles.md)
-describes.
+The state is `unresolved`, `resolved`, `regression`, `pre-existing` with its
+owner and follow-up in the text, or, for P3 only, `accepted` or `deferred`
+with its reason in the text. Findings keep their IDs across rounds, reviewers
+and resumption, as [review cycles](review-cycles.md) describes.
 
 Then write `**Coverage:**` with the changed areas each axis covered, the gaps,
 the evidence limits and any required specialist or human review still pending.
@@ -226,8 +229,9 @@ A second final round after one correction:
 **Findings:**
 - F1 (P2, specification, resolved): src/export.ts:40, an empty filter exported every tenant's rows; first final 1, latest final 2
 - F2 (P3, standards, accepted): src/export.ts:12, the helper name is vague; accepted because the module owner prefers it; first final 1, latest final 1
+- F3 (P2, standards, pre-existing): src/csv.ts:18, a quoted comma splits one field into two; outside the changed code and not made reachable by it; owner the CSV module owner, follow-up proposed to the caller; first final 2, latest final 2
 
-**Coverage:** Both axes covered the export handler, its tests and the CI job. No specialist review was required. Neither reviewer exposed its executing level.
+**Coverage:** Both axes covered the export handler, its tests and the CI job. Standards reported F3 in unchanged code. No specialist review was required. Neither reviewer exposed its executing level.
 
 ### Reviewer return: standards-reviewer-2
 
@@ -238,7 +242,7 @@ A second final round after one correction:
 | Requirements | example-org/example-app#42 at 2026-09-25T10:00Z |
 | Policy | example-app@abcdef1234567890abcdef1234567890abcdef12 |
 | Return | complete |
-| Digest | sha256:b0d9bdbacf90cd3de2158490ca238515902791546d469b45b8f529ea1bc4b5f0 |
+| Digest | sha256:f6dbd54f8badb622765fcae7692d7067f4410422d145a8268f58ad0f51d3a6eb |
 | Redactions | none |
 
 ~~~text
@@ -247,6 +251,9 @@ Standards review of 333333333333 against base 111111111111, policy example-app@a
 Verdict: satisfied.
 
 Blocking findings: none.
+
+Pre-existing P0 to P2 findings:
+- P2 src/csv.ts:18: a quoted comma splits one field into two. Not in changed code; the change neither calls this parser nor widens its input, so it is not made reachable or worse.
 
 P3 observations: none new. F2 is unchanged.
 

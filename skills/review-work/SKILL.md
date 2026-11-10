@@ -96,8 +96,9 @@ round's first launch and after any host, profile or settings change; record
 requested, supported and observed settings separately.
 
 Read [review cycles](references/review-cycles.md) before the first round and on
-every later round, fix verification, disagreement or explicit limit. It owns
-round identity, stable findings, reassessment, fix verification and renewal.
+every later round, fix verification, disagreement or limit. It owns round
+identity, stable findings, reassessment, fix verification, renewal and the
+default limit of three final rounds.
 
 ## Return the result
 
