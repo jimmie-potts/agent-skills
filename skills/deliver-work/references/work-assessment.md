@@ -23,10 +23,17 @@ repository. Record missing assumptions as unknown and keep them visible.
 "Personal project" alone never establishes low impact: one owner's device,
 data or credentials can still suffer destructive or hard-to-recover failures.
 
-Then state the minimum useful outcome and a concrete stopping point: the
+Then state the complete agreed outcome and a concrete stopping point: the
 observable result after which the item is done, even when further improvement
-remains possible. Start from a direct implementation using existing
-components, checks and bounded manual steps.
+remains possible. Prioritize good coding practices, reusable components and
+shared foundations. Reuse and improve existing abstractions where they fit.
+When relevant consumers need the same behavior, implement it in the appropriate
+shared layer and include their adoption and integration in acceptance. Compare
+total delivery and maintenance effort, including repeated patches and
+coordination. Small PRs may stage a coherent design; they do not determine its
+architecture or defer essential integration. Avoid speculative abstractions
+without a concrete need. Bounded manual steps remain appropriate when they
+meet the accepted outcome.
 
 Before adding a meaningful capability, stage, story or acceptance requirement,
 name the current need or concrete failure it addresses and why existing checks,
@@ -172,7 +179,7 @@ compact assessment section in the issue description or existing authoritative
 work document, with:
 
 - source/revision or observation date, and planning or delivery stage;
-- the minimum useful outcome, necessary work and stopping point;
+- the complete agreed outcome, shared foundations, necessary integration and stopping point;
 - operating assumptions with their sources and unknowns, and each meaningful
   cut with its class, lost behavior or assurance, manual alternative, and
   owning issue or revisit trigger;

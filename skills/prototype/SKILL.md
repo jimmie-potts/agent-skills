@@ -15,7 +15,7 @@ Classify the requested result before work begins:
 
 - **Disposable experiment:** isolated code used to learn, then retained or
   discarded only through a separately authorized decision.
-- **Functional delivery slice:** the smallest production-quality behavior that
+- **Functional delivery slice:** a complete, bounded production-quality behavior that
   answers the question and satisfies its accepted tests and error handling.
 
 An explicit invocation does not itself grant filesystem, dependency-install,
@@ -76,6 +76,7 @@ For a functional delivery slice:
 
 - use only the production paths authorized by the implementation request;
 - define observable acceptance behavior before editing;
+- reuse or improve shared components and include relevant consumer integration;
 - follow repository architecture, tests, error handling, security, and quality
   gates for that accepted behavior; and
 - leave no unfinished, untested, or prototype-only code in production paths.

@@ -27,8 +27,9 @@ Sort what the issue says before judging it:
 
 Before proposing to drop or defer a capability, inspect the source and content
 paths that could already supply it, including rendered output, stored content
-and existing interfaces. Prefer a small implementation over those paths to a new
-capability. Never remove a useful visible feature merely to simplify the
+and existing interfaces. Prefer a maintainable implementation that reuses or
+improves those paths, including shared foundations and relevant consumer adoption.
+Never remove a useful visible feature merely to simplify the
 implementation: classify the cut under the assessment contract, whose scope
 owner decides a change to requested behavior or acceptance.
 
@@ -39,7 +40,7 @@ Missing evidence stays unknown and cannot establish that an issue is obsolete.
 | Disposition | When | Result |
 | --- | --- | --- |
 | Keep | Current evidence matches the outcome and guidance | Report the sources inspected. Propose no change. |
-| Refresh guidance | The outcome is still required and its guidance is stale | Retain the outcome and acceptance. Replace the guidance with the smallest implementation over existing components. |
+| Refresh guidance | The outcome is still required and its guidance is stale | Retain the outcome and acceptance. Replace the guidance with a maintainable implementation using existing components, with necessary shared foundations and consumer adoption. |
 | Superseded | Read evidence shows a named replacement delivered or owns the whole outcome, including its acceptance | Link the replacement, retain anything it leaves uncovered and propose closure. |
 | Reconcile overlap | Other work overlaps the same shared output | Name one owner: the one current evidence already shows, otherwise a proposal for their owner to settle. The others consume or link it. Shared-file coordination is not a dependency. |
 | Pending gate | Source is integrated and a required qualification, installation or physical acceptance has no evidence | Keep it open. Name the stage with evidence, the stage pending and its owner. |
@@ -49,7 +50,7 @@ Missing evidence stays unknown and cannot establish that an issue is obsolete.
 ## Return the result
 
 Return a short result in this order: motivation, expected outcome, disposition,
-smallest implementation using existing components, retained acceptance, genuine
+implementation approach and shared foundations, retained acceptance, genuine
 dependencies and next action. Add the alignment result with its sources, dates
 and search limit, and only the assessment ratings the refresh changes.
 

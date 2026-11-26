@@ -24,7 +24,7 @@ the experiment or its logic into production automatically.
 
 ## Functional delivery slice
 
-When the user requests a functional slice, implement the smallest accepted
+When the user requests a functional slice, implement the complete accepted
 state transition or invariant through the repository's real interface. Add the
 tests and error handling required by repository rules and the accepted behavior.
 Keep UI demonstration code out of production unless it is part of the accepted

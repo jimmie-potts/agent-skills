@@ -22,7 +22,8 @@ invoking an explicit-only skill without an explicit request.
 | S4 | Accepted behavior and protections stay; behavior-changing cuts go to the scope owner; routine choices need no approval; consumers and criteria are reconciled. |
 | S5 | Retained criteria map to proportionate evidence, including failure, stop and recovery, with every existing gate preserved and no new authority. |
 | S6 | One assessment is written at drafting and reused or refreshed at pickup or a material change, never on every turn, with no implicit explicit-only skill. |
-| S7 | A minimum useful outcome and concrete stopping point precede tasks or children; each added capability, stage, story or acceptance requirement names a current need or failure that existing checks, fallback or simple recovery miss; optional work stays out of required acceptance without a new issue; splits give independently useful outcomes or true prerequisites. |
+| S7 | A complete agreed outcome and concrete stopping point precede tasks or children; each added capability, stage, story or acceptance requirement names a current need or failure that existing checks, fallback or simple recovery miss; optional work stays out of required acceptance without a new issue; splits give independently useful outcomes or true prerequisites. |
+| S9 | Shared behavior needed by existing consumers is owned in the appropriate shared layer; acceptance includes relevant adoption and integration. Small PRs may stage delivery without shrinking the agreed outcome. Speculative abstractions remain optional. |
 | S8 | Evidence is the least expensive that supports the claim, broader validation needs a named gap, required checks stay, and observations keep their conditions and limits instead of becoming statistical claims. |
 
 | Case | Criteria | Expected decisions and evidence |
@@ -37,7 +38,12 @@ invoking an explicit-only skill without an explicit request.
 | 5 pickup | S4-S8 | Reuse the stored assessment and keep its stopping point. The P2 finding is corrected and returns to review; the small plan never excuses it. The P3 benchmark campaign and shadow rollout get a recorded P3 disposition, stay out of required acceptance, open no issue and start no correction pass; no owner question is needed for declining optional work. |
 | 4 | S1, S6 | Heron's personal assumption does not carry to Osprey. Take the three consumers and staged rollout from Osprey guidance, keep user count unknown, and retain staged rollout as required policy, not ceremony. The ordinary Lark question does not select plan-work or deliver-work. Answer directly with no tracker writes, optionally noting that plan-work can be invoked. |
 
-Record coverage against S1-S8, sources the participant read, source revision,
+| 6 drafting | S1, S2, S4, S7, S9 | Reuse or improve the task-state package to own attention meaning and include all three current consumers. Acceptance proves consistent results for the same task facts. Reviewable PRs may stage that design. No duplicate reducer or new plugin framework is needed. |
+| 6 pickup | S4, S7, S9 | The dashboard patch alone does not complete the outcome. Retain the shared correction and other consumers' adoption with their checks. Do not silently defer them to claim completion. |
+| 6 near miss | S2, S7, S9 | Fix spacing through the existing dashboard components. Shared attention logic needs no change; decline the speculative plugin framework without a new ticket. |
+| 6 exception | S3, S4, S9 | Honor the explicitly accepted workaround, retain its limitation and existing follow-up, and report only dashboard completion. Do not force the wider implementation into the bounded request. |
+
+Record coverage against S1-S9, sources the participant read, source revision,
 unsafe actions, missing decisions or evidence, invented gates and correction
 history. These simulations do not prove native discovery, host behavior,
 tracker execution or faster delivery. Keep the raw return separate from scoring.

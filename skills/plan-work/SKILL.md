@@ -99,8 +99,8 @@ accepted decisions and proposed glossary or decision-record edits without
 writing; apply them here only under this skill's planning authority.
 
 Before defining or decomposing items, apply the assessment contract's scope
-fit, including its minimum useful outcome and stopping point. Then define one
-item or decompose a larger outcome using the shared task-planning meanings. Carry outcomes, exclusions, acceptance/verification coverage and true
+fit, including its complete agreed outcome, shared foundations and stopping
+point. Then define one item or decompose a larger outcome using the shared task-planning meanings. Carry outcomes, exclusions, acceptance/verification coverage and true
 input dependencies into each proposed work item. Where the repository has a
 test, fixture, contract or mockup that states a criterion, link it as the
 acceptance reference rather than restating it in prose. An epic or list of chores
