@@ -24,6 +24,10 @@ updates, and organization-wide governance are out of scope.
   changing the shared implementation silently.
 - Treat scripts and requested tool permissions as security-sensitive. Review
   their full behavior and permission scope explicitly before accepting them.
+- For planning or delivery scope, follow the shared assessment contract in
+  `skills/deliver-work/references/work-assessment.md`: prioritize maintainable
+  code, reusable components, shared foundations and complete agreed outcomes.
+  Reading that contract does not invoke the explicit-only delivery workflow.
 - Preserve unrelated user changes.
 
 ## Installation

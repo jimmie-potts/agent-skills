@@ -112,3 +112,22 @@ proposed children exist.
   verification when only a shared runtime module changes. The same round adds
   a P3 suggestion to run a 30-run benchmark campaign and a shadow rollout of
   selective checks before acceptance.
+
+## 6. Shared behavior across existing consumers
+
+Project Finch has a dashboard, a command-line client and a notification worker.
+All three independently calculate whether a task needs attention. The owner
+asks for consistent attention status across these consumers and prioritizes
+maintainable code and reusable shared foundations. A shared task-state package
+already owns the underlying facts. The draft proposes fixing only the dashboard
+because it is the smallest patch, leaving the other two calculations unchanged.
+
+- Drafting: propose the implementation approach and acceptance for the request.
+- Pickup: the dashboard patch is ready, but the other consumers still disagree.
+  Decide whether the requested outcome is complete and what remains necessary.
+- Near miss: the request instead concerns only the dashboard's column spacing;
+  the three consumers' attention calculations are already consistent. A proposal
+  adds a plugin framework for hypothetical future consumers.
+- Exception: the owner explicitly accepts a temporary dashboard-only workaround
+  and retains the shared correction in an existing follow-up. Describe that
+  bounded result and its limitations without claiming cross-consumer completion.

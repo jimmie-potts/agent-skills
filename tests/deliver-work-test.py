@@ -206,7 +206,7 @@ class DeliverWorkStructureTest(unittest.TestCase):
         # Anchors only; held-out scope-assessment cases evaluate the behavior.
         assessment = ' '.join(
             (SKILL / 'references/work-assessment.md').read_text().split())
-        for anchor in ('minimum useful outcome and a concrete stopping point',
+        for anchor in ('complete agreed outcome and a concrete stopping point',
                        'name the current need or concrete failure',
                        'General possibility, thoroughness or future flexibility alone',
                        'keep it out of required acceptance and children',
