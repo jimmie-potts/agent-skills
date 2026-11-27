@@ -119,7 +119,9 @@ additional work proposed later, including by reviews, the same way. Include newl
 reuse opportunities and related work under the assessment contract; update the
 existing assessment. Map acceptance criteria to verification and identify
 conditional reviews and operational handoffs. Preserve the project's mandatory
-gates.
+gates. Before starting or dispatching each implementation task, apply the
+assessment section on behavior ownership and consumer evidence. Refresh the
+affected paths and checks after material design or scope changes.
 
 Choose an approach suited to the work and available tools. Direct work,
 delegation and parallel work are options, not prescribed session types.
@@ -183,9 +185,11 @@ control to this coordinator; they neither grant nor cancel existing authority.
 - For task, fix-verification and final independent reviews, compose
   `review-work` with its input: work and round, candidate, requirements and
   policy, raw validation, required coverage, reviewer requirements from the
-  prompt or project, limits and prior findings. It freezes the comparison,
-  selects and briefs the reviewers and returns a per-axis result; this
-  coordinator keeps corrections, publication, CI, merge and completion.
+  prompt or project, limits and prior findings. Include affected consumers
+  and current integration evidence in validation and coverage. Review-work
+  freezes the comparison, briefs selected reviewers and returns a per-axis
+  result. This coordinator keeps corrections, publication, CI, merge and
+  completion.
 - For meaningful executable behavior, compose `tdd`. For documentation or
   instruction changes, inspect the result and exercise representative behavior;
   do not invent executable tests that merely mirror prose.

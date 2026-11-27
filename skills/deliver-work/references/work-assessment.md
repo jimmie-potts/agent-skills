@@ -1,9 +1,9 @@
 # Assess work and its verification
 
 Read before deciding scope, readiness or verification for planning or
-delivery. This is the canonical contract for both workflows. It describes
-work, not models. Explicit user/project requirements and existing delivery
-gates remain floors.
+delivery. For review, use the behavior ownership and consumer evidence
+section. The contract describes work, not models. Explicit user/project
+requirements and existing gates remain floors.
 
 ## Fit scope to actual needs
 
@@ -78,6 +78,57 @@ accepted, reconcile affected consumers and acceptance criteria and update the
 stored assessment. Scope assessment waives no repository review, CI, UI,
 installation or physical-acceptance requirement and grants no tracker, runtime
 or deployment authority.
+
+## Trace behavior ownership and consumer evidence
+
+Before defining implementation tasks and again before each task starts, check
+whether the work affects shared behavior or a contract other callers depend
+on. For routine local work, record the owning component, the affected path,
+and the planned check. When source inspection shows no shared seam or affected
+caller, a brief reason is enough. Keep the behavior local unless a concrete
+consumer or failure calls for sharing it.
+
+Trace shared interfaces, state transitions, recovery paths, repeated fixes
+and newly discovered consumers in more depth:
+
+1. Locate the component and contract that own the behavior. Compare existing
+   implementations and reusable foundations, including duplicate paths.
+   Decide which owner or foundation should carry the invariant and why.
+2. Follow actual callers from their supported entrypoints and establish which
+   owner or path they reach. Include relevant callers outside the proposed
+   diff. Bound the search to the affected behavior. Use source and wiring
+   (such as registration or configuration), contracts and existing checks.
+   Record whether each affected consumer or evidenced group uses the owner,
+   must migrate, needs a supported compatibility path, or can be retired.
+   Before removing an old path, account for required migrations and remaining
+   consumers.
+3. Map the affected paths to accepted criteria. Plan verification at relevant
+   consumer entrypoints, including affected failure and recovery paths. A
+   passing helper check establishes only the helper's behavior. During
+   authorized delivery, carry out the planned verification and record what
+   each check observed on the candidate. Use the existing
+   [task planning](task-planning.md) for integration and migration boundaries
+   and [verification maintenance](verification-maintenance.md) for applicable
+   maintained checks, gaps and negative controls.
+
+Keep these facts in the existing assessment, task packet and acceptance
+evidence. After a material design or scope change, or when a newly discovered
+caller changes coverage, revisit the affected consumers, migration and
+verification before relying on earlier results. Update the existing record
+and renew affected evidence before accepting the task or change. Route
+unresolved ownership, compatibility or coverage questions to the appropriate
+owner under the existing scope rules.
+
+For review, inspect affected callers on the frozen candidate, including
+relevant callers outside the diff. Use the supplied paths as leads and check
+nearby wiring for omitted callers. Tie each required integration claim to its
+authoritative criterion or standard and evidence on that candidate. Record the
+paths inspected, the observations supporting the claim and any gaps in
+coverage. A demonstrated defect is a finding. Missing required integration
+evidence prevents a satisfied verdict. Justify an architectural finding with
+a concrete consumer or failure condition and its governing requirement or
+standard. Use existing finding dispositions for unrelated legacy defects.
+A cleanup proposal alone does not expand the approved scope.
 
 ## Rate three dimensions separately
 

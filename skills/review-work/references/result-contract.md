@@ -29,7 +29,8 @@ Record these before the first reviewer starts, and again for each round:
 - Validation: raw commands, results and the revision each ran on. Supply
   results as facts, never as a verdict for reviewers to confirm.
 - Coverage: required axes, the task boundary for a task round, changed areas,
-  and any specialist or qualified human review the assessment requires.
+  affected consumers and required integration evidence when applicable, and
+  any specialist or qualified human review the assessment requires.
 - Settings: explicit user or project reviewer requirements; the selection
   made from them with its rationale: the impact, the review task in a line or
   two, any consequential settings choice and its evidence or coverage
@@ -65,7 +66,9 @@ Give each required axis exactly one status:
 | `action-required` | The axis was assessed and at least one P0, P1, P2 or project-defined blocker that lists it remains unresolved |
 | `incomplete` | The axis cannot be decided: missing specification, failed, partial or missing return, no retained return matching this round's inputs, unavailable required independence or control, stale comparison, requirements or policy, a candidate no round could review before a limit ran out, or missing mandatory evidence |
 
-Specification cannot be `satisfied` without an authoritative requirement. One
+Specification cannot be `satisfied` without an authoritative requirement.
+Required consumer integration evidence must support the recorded requirements
+or policy on this comparison for the affected axis to be `satisfied`. One
 axis never supplies the other. When an axis has an open blocker and also lacks
 evidence, report `action-required` and name the gap in the coverage; the gap
 still prevents `satisfied` after the fix, and the caller obtains it with the

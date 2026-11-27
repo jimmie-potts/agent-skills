@@ -53,8 +53,10 @@ these resources from it. They are resource dependencies, not an invocation of
 delivery, and grant no implementation dispatch authority:
 
 - `references/work-assessment.md` and `references/task-planning.md` for every
-  item. Use the task-planning definition, boundary and dependency sections to
-  propose work.
+  item. Use the assessment section on behavior ownership and consumer
+  evidence before defining implementation tasks. Carry the affected paths,
+  migration needs and planned checks into the task proposal using the
+  task-planning definition, boundary and dependency sections.
 - `references/uncertainty-routing.md` when an unresolved question governs an
   item's scope, approach or acceptance.
 - `references/documentation.md` when project documentation or publication
