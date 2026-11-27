@@ -71,11 +71,13 @@ an unresolvable ref or an empty change. Verify a caller-supplied comparison
 instead of re-deriving a different one. Do not mutate the source while doing so.
 
 Use the caller's work assessment for impact, complexity and uncertainty.
-Without one, discover the installed canonical `deliver-work` package and read
-its `references/work-assessment.md` section on rating the three dimensions;
-this reads a shared contract and does not invoke delivery. If it is
-unavailable, report the gap and inspect the concrete risks and acceptance
-coverage; unknown ratings do not select a model or thinking level.
+When shared behavior or contracts are affected or the caller has no ratings,
+discover the installed canonical `deliver-work` package. Read the behavior
+ownership and consumer evidence section of `references/work-assessment.md`
+for affected shared behavior and the dimensions section for missing ratings.
+Reading this shared contract does not invoke delivery. If it is unavailable,
+report the gap and inspect concrete risks and acceptance coverage. Unknown
+ratings do not select a model or thinking level.
 
 ## Select, brief and run reviewers
 
@@ -89,8 +91,9 @@ other-provider reviewer, or the owner explicitly selects that review, read the o
 canonical `code-review` skill; if it is unavailable, report the gap before briefing and do not reconstruct it. Brief
 each reviewer with code-review's assigned-axis mode, its axis rubric, the frozen
 comparison, the raw requirements or standards sources for that axis, the
-validation facts and the finding format. Leave out implementer and advisor
-narratives, other reviewers' conclusions and any preferred verdict. Run the
+validation facts and the finding format. Use the review selection brief for
+consumer coverage. Leave out implementer and advisor narratives, other
+reviewers' conclusions and any preferred verdict. Run the
 [reviewer execution](references/reviewer-execution.md) preflight before each
 round's first launch and after any host, profile or settings change; record
 requested, supported and observed settings separately.

@@ -147,6 +147,67 @@ class WorkflowEvaluationTest(unittest.TestCase):
             self.assertIn(failure, result.stderr)
 
 
+class ConsumerEvidenceCasesTest(unittest.TestCase):
+    ids = tuple(f'CE{index:02}' for index in range(1, 7))
+
+    def test_inputs_and_hidden_grader_cover_each_decision(self):
+        for role in ('cases', 'graders'):
+            with self.subTest(role=role):
+                source = (FIXTURES / f'consumer-evidence-{role}.md').read_text()
+                actual_ids = tuple(re.findall(r'^## (CE\d{2})\b', source, re.M))
+                self.assertEqual(actual_ids, self.ids)
+        cases = (FIXTURES / 'consumer-evidence-cases.md').read_text()
+        self.assertNotIn('Required signals', cases)
+        self.assertNotIn('Reject signals', cases)
+
+    def controls(self):
+        source = (FIXTURES / 'consumer-evidence-graders.md').read_text()
+        rows = re.findall(r'^\| (CE\d{2}) \| ([^|]+) \| ([^|]+) \| ([^|]+) \|$',
+                          source, re.M)
+        self.assertEqual(tuple(row[0] for row in rows), self.ids)
+        return {
+            case: (disposition.strip(), set(required.strip().split(', ')),
+                   set(rejected.strip().split(', ')))
+            for case, disposition, required, rejected in rows
+        }
+
+    def test_structural_controls_accept_and_reject_decisions(self):
+        # These are hand-authored calibration inputs, not evaluator returns.
+        adequate = {
+            'CE01': ('revise-plan', {'owner', 'indirect-caller',
+                                    'caller-migration', 'entrypoint-checks'}),
+            'CE02': ('reconcile-task', {'store-transaction', 'both-callers',
+                                        'post-commit-retry', 'distinct-operation'}),
+            'CE03': ('withhold-satisfaction', {'current-requirement',
+                                              'current-candidate', 'command-failure',
+                                              'independent-renewal'}),
+            'CE04': ('refresh-before-integration', {'new-caller', 'plan-refresh',
+                                                    'migration', 'renewed-evidence'}),
+            'CE05': ('proceed-local', {'local-boundary', 'existing-checks'}),
+            'CE06': ('no-blocker', {'fixed-comparison', 'no-failure-path'}),
+        }
+        invalid = {
+            'CE01': ('accept-plan', 'indirect-caller', 'preview-only'),
+            'CE02': ('start-tasks', 'store-transaction', 'separate-wrappers'),
+            'CE03': ('satisfied', 'command-failure', 'helper-as-proof'),
+            'CE04': ('integrate', 'new-caller', 'clean-apply-as-proof'),
+            'CE05': ('require-framework', 'local-boundary', 'new-abstraction'),
+            'CE06': ('action-required', 'no-failure-path', 'require-cleanup'),
+        }
+        for case, (expected, required, rejected) in self.controls().items():
+            def accepted(disposition, evidence):
+                return (disposition == expected and required <= evidence
+                        and not rejected.intersection(evidence))
+
+            disposition, evidence = adequate[case]
+            wrong_disposition, missing, forbidden = invalid[case]
+            with self.subTest(case=case):
+                self.assertTrue(accepted(disposition, evidence))
+                self.assertFalse(accepted(wrong_disposition, evidence))
+                self.assertFalse(accepted(disposition, evidence - {missing}))
+                self.assertFalse(accepted(disposition, evidence | {forbidden}))
+
+
 class ReviewerCasesTest(unittest.TestCase):
     DIRECTORY = ROOT / 'tests/fixtures/reviewer-cases'
     SOURCE = re.compile(

@@ -17,6 +17,24 @@ Route elsewhere when asked: `review-work` for an explicit review-work request,
 `interrogate` for an adversarial or multi-reviewer review, and `blast-radius`
 for what a change could break.
 
+## Check shared behavior on the frozen candidate
+
+Apply this check in standalone and assigned-axis reviews, within each axis's
+sources and scope. When the change affects shared behavior or contracts, use
+the behavior ownership and consumer evidence section of
+`references/work-assessment.md`. Read it in the installed canonical
+`deliver-work` package through supported host discovery, or use the canonical
+text or accessible reference in the assigned brief. Reading this resource
+does not invoke delivery. If it is unavailable, report the gap and continue
+with available source evidence.
+
+Inspect relevant callers outside the diff and follow their actual execution
+paths. Tie required consumer coverage to the current comparison and governing
+requirements or standards. Report missing required evidence as a coverage gap
+that prevents a satisfied verdict. Ground architectural findings in a
+concrete consumer or failure. Apply existing review scope to unrelated
+legacy cleanup.
+
 ## Standalone review
 
 1. Resolve the base and head to commit IDs (or capture one patch and its

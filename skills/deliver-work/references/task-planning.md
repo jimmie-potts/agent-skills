@@ -22,6 +22,10 @@ compactly record:
   permitted writes and other effects;
 - expected artifact and the evidence required to accept it.
 
+Use [work assessment](work-assessment.md#trace-behavior-ownership-and-consumer-evidence)
+to record the behavior owner, affected paths, adoption or removal needs
+and their verification in these fields.
+
 Planning records proposed inputs, owners or roles and verification. Do not
 pretend a prerequisite has been accepted or a future check has passed. Refresh
 source revisions, input versions, ownership and available evidence at dispatch.

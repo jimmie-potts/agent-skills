@@ -64,10 +64,10 @@ Write a UTF-8 JSON packet with these nonempty string fields:
 | `assignment` | Stable task-local label, such as `standards-final-1` |
 | `work`, `round`, `axis` | Shared contract identity; `final 1` uses the cumulative round; one `standards` or `specification` axis |
 | `comparison`, `requirements`, `policy` | Exact shared-contract identity strings, including immutable commits or patch digest and versioned requirements/policy |
-| `code_review` | Canonical code-review assigned-axis instructions and its finding format, read from the installed skill |
+| `code_review` | Canonical code-review assigned-axis instructions, shared-behavior check and finding format, plus the canonical work-assessment section on behavior ownership and consumer evidence when applicable |
 | `axis_sources` | Complete authoritative sources for this axis, with their versions |
-| `source`, `diff` | Complete required source snapshot and frozen diff, including paths and SHA-256 digests; no mutable path-only references |
-| `validation`, `coverage` | Raw validation facts at their revision and the required coverage |
+| `source`, `diff` | Complete required source snapshot and frozen diff, including relevant caller and wiring sources outside the diff, paths and SHA-256 digests; no mutable path-only references |
+| `validation`, `coverage` | Raw validation facts at their revision and required coverage, including affected consumers and required integration evidence when applicable |
 | `settings`, `limits`, `history` | Shared-contract controls, cumulative allowance/accounting and earlier rounds/stable finding IDs; explicit `none` when applicable |
 
 Exclude implementer/advisor narratives, other reviewers' conclusions and

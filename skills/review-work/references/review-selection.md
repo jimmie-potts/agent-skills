@@ -40,6 +40,11 @@ requirement inferred from high impact. Resolve findings on evidence, not votes.
 Compose `code-review` in its assigned-axis mode for each context. Supply the
 axis rubric, the frozen comparison, the raw axis-specific requirements or
 standards sources, the relevant code and consumers, and the validation facts.
+For shared behavior, give the reviewer the canonical work-assessment section
+on behavior ownership and consumer evidence or an accessible reference to it.
+Include candidate paths to inspect (including callers outside the diff),
+required integration coverage and actual validation. Ask the reviewer to
+check for omitted callers and tie each required claim to current evidence.
 Reviewers may inspect implementation facts and validation outputs. Do not give
 initial reviewers implementer or advisor approval narratives, other reviewers'
 conclusions or instructions to confirm a preferred verdict. Tell each reviewer
