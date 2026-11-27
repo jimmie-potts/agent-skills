@@ -76,7 +76,7 @@ discover the installed canonical `deliver-work` package. Read the behavior
 ownership and consumer evidence section of `references/work-assessment.md`
 for affected shared behavior and the dimensions section for missing ratings.
 Reading this shared contract does not invoke delivery. If it is unavailable,
-report the gap and inspect concrete risks and acceptance coverage. Unknown
+report the gap and inspect concrete risks and acceptance coverage. In all cases, unknown
 ratings do not select a model or thinking level.
 
 ## Select, brief and run reviewers
